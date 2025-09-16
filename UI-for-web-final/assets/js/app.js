@@ -274,8 +274,9 @@ function openQuickView(productId) {
 function checkAuthState() {
     const notLoggedIn = document.getElementById('notLoggedIn');
     const loggedIn = document.getElementById('loggedIn');
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
     
-    if (currentUser) {
+    if (isLoggedIn) {
         // User is logged in
         notLoggedIn.classList.add('d-none');
         loggedIn.classList.remove('d-none');
@@ -290,29 +291,36 @@ function checkAuthState() {
 }
 
 function updateUserDisplay() {
-    if (!currentUser) return;
+    const username = localStorage.getItem('username');
+    const userEmail = localStorage.getItem('userEmail');
+    const userInfo = localStorage.getItem('userInfo');
+    
+    if (!username) return;
     
     // Update avatar
     const userAvatar = document.getElementById('userAvatar');
-    const firstLetter = currentUser.fullName ? currentUser.fullName.charAt(0).toUpperCase() : 'U';
+    const firstLetter = username.charAt(0).toUpperCase();
     userAvatar.textContent = firstLetter;
     
     // Update username
-    const username = document.getElementById('username');
-    username.textContent = currentUser.fullName || currentUser.email.split('@')[0];
+    const usernameElement = document.getElementById('username');
+    usernameElement.textContent = username;
     
     // Update full name and email in dropdown
     const userFullName = document.getElementById('userFullName');
-    userFullName.textContent = currentUser.fullName || 'Welcome back!';
+    userFullName.textContent = username || 'Welcome back!';
     
-    const userEmail = document.getElementById('userEmail');
-    userEmail.textContent = currentUser.email;
+    const userEmailElement = document.getElementById('userEmail');
+    userEmailElement.textContent = userEmail || username;
 }
 
 function logout() {
     // Clear user data
-    currentUser = null;
-    localStorage.removeItem('ueh-user');
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('username');
+    localStorage.removeItem('userEmail');
+    localStorage.removeItem('userInfo');
+    localStorage.removeItem('authToken');
     
     // Update UI
     checkAuthState();

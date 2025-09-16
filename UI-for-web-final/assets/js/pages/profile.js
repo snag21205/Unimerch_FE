@@ -48,9 +48,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Check if user is authenticated
 function checkAuth() {
-    if (!currentUser) {
-        // Redirect to login if not authenticated
-        window.location.href = 'login.html';
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    if (!isLoggedIn) {
+        alert('Please login to access this page');
+        window.location.href = '../auth/login.html';
         return;
     }
     
@@ -64,27 +65,31 @@ function updateHeaderInfo() {
     const headerName = document.getElementById('headerName');
     const headerEmail = document.getElementById('headerEmail');
     
-    if (currentUser) {
-        const firstName = userProfile.firstName || currentUser.fullName?.split(' ')[0] || currentUser.email.split('@')[0];
-        const fullName = userProfile.firstName && userProfile.lastName 
-            ? `${userProfile.firstName} ${userProfile.lastName}` 
-            : currentUser.fullName || firstName;
+    const username = localStorage.getItem('username');
+    const userEmail = localStorage.getItem('userEmail');
+    
+    if (username) {
+        const firstName = username.split(' ')[0] || username;
         
         profileAvatar.textContent = firstName.charAt(0).toUpperCase();
-        headerName.textContent = fullName;
-        headerEmail.textContent = currentUser.email;
+        headerName.textContent = username;
+        headerEmail.textContent = userEmail || username;
     }
 }
 
 // Load profile data into form
 function loadProfileData() {
-    if (currentUser) {
+    const username = localStorage.getItem('username');
+    const userEmail = localStorage.getItem('userEmail');
+    const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
+    
+    if (username) {
         // Parse full name if available
-        const nameParts = currentUser.fullName ? currentUser.fullName.split(' ') : [];
+        const nameParts = username ? username.split(' ') : [];
         
         document.getElementById('firstName').value = userProfile.firstName || nameParts[0] || '';
         document.getElementById('lastName').value = userProfile.lastName || nameParts.slice(1).join(' ') || '';
-        document.getElementById('email').value = currentUser.email || '';
+        document.getElementById('email').value = userEmail || username || '';
         document.getElementById('phone').value = userProfile.phone || '';
         document.getElementById('studentId').value = userProfile.studentId || '';
         document.getElementById('faculty').value = userProfile.faculty || '';
