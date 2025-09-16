@@ -29,18 +29,21 @@ async function handleSignIn() {
         
         
         
-        // Store auth token if provided
-        if (data.token) {
-            localStorage.setItem('authToken', data.token);
+        // Store auth token from data.data.token
+        if (data.data && data.data.token) {
+            localStorage.setItem('authToken', data.data.token);
         }
+
+      
         
-        // Store user info from API response
+        
+        // Store user info from API response (data.data.user)
         localStorage.setItem('isLoggedIn', 'true');
-        localStorage.setItem('userInfo', JSON.stringify(data.user || { email: username }));
-        localStorage.setItem('username', data.user?.name || username);
-        localStorage.setItem('userEmail', data.user?.email || username);
+        localStorage.setItem('userInfo', JSON.stringify(data.data.user || { email: username }));
+        localStorage.setItem('username', data.data.user?.fullName || data.data.user?.username || username);
+        localStorage.setItem('userEmail', data.data.user?.email || username);
         
-        
+        alert('Login successful! Welcome back!');
         window.location.href = '../../index.html';
     
 

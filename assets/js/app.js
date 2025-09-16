@@ -314,20 +314,7 @@ function updateUserDisplay() {
     userEmailElement.textContent = userEmail || username;
 }
 
-function logout() {
-    // Clear user data
-    localStorage.removeItem('isLoggedIn');
-    localStorage.removeItem('username');
-    localStorage.removeItem('userEmail');
-    localStorage.removeItem('userInfo');
-    localStorage.removeItem('authToken');
-    
-    // Update UI
-    checkAuthState();
-    
-    // Show success message
-    showToast('Logged out successfully!', 'success');
-}
+
 
 function showToast(message, type = 'info') {
     const toastContainer = document.getElementById('toastContainer');
