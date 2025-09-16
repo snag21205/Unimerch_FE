@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Detail - UEH Merch</title>
+    
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Minimal custom styles -->
+    <link rel="stylesheet" href="../../assets/css/styles.css">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Sticky Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top" id="mainNav">
+        <div class="container-fluid px-3 px-lg-5">
+            <!-- Brand -->
+            <a class="navbar-brand fw-semibold fs-4" href="../../index.html" style="color: #111;">UEH Merch</a>
+            
+            <!-- Toggle button for mobile -->
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <!-- Navigation items -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto d-none d-lg-flex">
+                    <li class="nav-item mx-3">
+                        <a class="nav-link" href="../../index.html#new">New</a>
+                    </li>
+                    <li class="nav-item mx-3">
+                        <a class="nav-link" href="../../index.html#products">Hoodies</a>
+                    </li>
+                    <li class="nav-item mx-3">
+                        <a class="nav-link" href="../../index.html#products">Tees</a>
+                    </li>
+                    <li class="nav-item mx-3">
+                        <a class="nav-link" href="../../index.html#products">Accessories</a>
+                    </li>
+                    <li class="nav-item mx-3">
+                        <a class="nav-link" href="../../index.html#products">Sale</a>
+                    </li>
+                </ul>
+                
+                <!-- Right side controls -->
+                <div class="d-flex align-items-center gap-3">
+                    <!-- Auth Section -->
+                    <div class="auth-section d-flex align-items-center gap-3">
+                        <!-- Not logged in -->
+                        <div class="not-logged-in d-flex align-items-center gap-2">
+                            <a href="../auth/login.html" class="btn btn-outline-dark btn-sm rounded-pill px-3">Sign in</a>
+                            <a href="../auth/register.html" class="btn btn-dark btn-sm rounded-pill px-3">Register</a>
+                        </div>
+                        
+                        <!-- Logged in -->
+                        <div class="logged-in d-none">
+                            <div class="dropdown">
+                                <button class="btn btn-link dropdown-toggle d-flex align-items-center gap-2 p-0 border-0" 
+                                        type="button" data-bs-toggle="dropdown" 
+                                        style="color: #374151; font-weight: 500;">
+                                    <div class="user-avatar rounded-circle d-flex align-items-center justify-content-center" 
+                                         style="width: 32px; height: 32px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; font-size: 14px; font-weight: 600;">
+                                        U
+                                    </div>
+                                    <span id="userDisplayName">User</span>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end shadow border-0" style="min-width: 200px; border-radius: 12px; padding: 0.5rem;">
+                                    <li>
+                                        <a class="dropdown-item d-flex align-items-center gap-2" href="../user/profile.html" style="padding: 0.5rem 1rem; font-size: 14px;">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                                <circle cx="12" cy="7" r="4"></circle>
+                                            </svg>
+                                            My Profile
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item d-flex align-items-center gap-2" href="#" style="padding: 0.5rem 1rem; font-size: 14px;">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <circle cx="8" cy="21" r="1"></circle>
+                                                <circle cx="19" cy="21" r="1"></circle>
+                                                <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57L20.5 9H5.12"></path>
+                                            </svg>
+                                            My Orders
+                                        </a>
+                                    </li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li>
+                                        <a class="dropdown-item d-flex align-items-center gap-2" href="#" onclick="logout()" style="padding: 0.5rem 1rem; font-size: 14px; color: #dc2626;">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                                                <polyline points="16,17 21,12 16,7"></polyline>
+                                                <line x1="21" y1="12" x2="9" y2="12"></line>
+                                            </svg>
+                                            Logout
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <a href="../../index.html" class="btn btn-outline-primary btn-sm rounded-pill px-3">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-1">
+                            <path d="M19 12H6m0 0l6 6m-6-6l6-6"/>
+                        </svg>
+                        Back to Shop
+                    </a>
+                    
+                    <button class="btn btn-link p-0 border-0" id="searchBtn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.35-4.35"></path>
+                        </svg>
+                    </button>
+                    
+                    <button class="btn btn-link p-0 border-0 position-relative" id="cartBtn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="8" cy="21" r="1"></circle>
+                            <circle cx="19" cy="21" r="1"></circle>
+                            <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57L20.5 9H5.12"></path>
+                        </svg>
+                        <span class="badge bg-primary rounded-pill position-absolute top-0 start-100 translate-middle d-none" id="cartCount">0</span>
+                    </button>
+                    
+                    <div class="dropdown">
+                        <button class="btn btn-link dropdown-toggle p-0 border-0" type="button" data-bs-toggle="dropdown">
+                            EN
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="#" onclick="toggleLanguage('en')">English</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="toggleLanguage('vi')">Tiếng Việt</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Product Detail -->
+    <main class="bg-white" style="min-height: 100vh;">
+        <div class="container-fluid" style="min-height: 100vh;">
+            <div class="row align-items-center" style="min-height: 85vh; padding-top: 2rem; padding-bottom: 2rem;">
+                <!-- Left Column - Product Image (55%) -->
+                <div class="col-lg-6 d-flex align-items-center justify-content-center" style="padding: 1.5rem;">
+                    <div style="max-width: 500px; width: 100%;">
+                        <img id="productImage" src="../../assets/images/products/demo.png" alt="Product" class="img-fluid hero-image" style="
+                            width: 100%; 
+                            height: auto; 
+                            filter: drop-shadow(0 8px 32px rgba(0, 0, 0, 0.12)); 
+                            transition: transform 0.3s ease;
+                            border-radius: 20px;
+                        ">
+                    </div>
+                </div>
+                
+                <!-- Right Column - Product Controls (45%) -->
+                <div class="col-lg-6" style="padding: 1.5rem; max-width: 500px;">
+                    <!-- Breadcrumb -->
+                    <nav aria-label="breadcrumb" class="mb-2">
+                        <ol class="breadcrumb mb-0" style="font-size: 13px;">
+                            <li class="breadcrumb-item"><a href="../../index.html" class="text-decoration-none">Products</a></li>
+                            <li class="breadcrumb-item text-muted" id="productCategory">Accessories</li>
+                        </ol>
+                    </nav>
+                    
+                    <!-- Product Title -->
+                    <h1 id="productTitle" class="display-6 fw-bold mb-2" style="
+                        font-size: clamp(1.8rem, 3.5vw, 2.5rem); 
+                        line-height: 1.2; 
+                        color: rgba(0, 0, 0, 0.9);
+                        letter-spacing: -0.02em;
+                    ">Black Dashers</h1>
+                    
+                    <!-- Rating -->
+                    <div class="d-flex align-items-center mb-3" id="productRating">
+                        <!-- Stars populated by JS -->
+                    </div>
+                    
+                    <!-- Description compact -->
+                    <div class="p-3 mb-3 rounded-3" style="
+                        background: rgba(0, 0, 0, 0.02); 
+                        border: 1px solid rgba(0, 0, 0, 0.05);
+                    ">
+                        <p id="productDescription" class="mb-0" style="
+                            font-size: 14px; 
+                            line-height: 1.5; 
+                            color: rgba(0, 0, 0, 0.7);
+                        ">
+                            The Black Dasher reimagines the traditional running shoe with natural materials engineered for serious performance.
+                        </p>
+                    </div>
+                    
+                    <!-- Size & Color Selection (inline) -->
+                    <div class="row mb-3">
+                        <div class="col-6">
+                            <label class="form-label fw-semibold mb-2" style="font-size: 14px; color: rgba(0, 0, 0, 0.8);">Size</label>
+                            <div class="d-flex gap-1 flex-wrap" id="sizeOptions">
+                                <!-- Populated by JS -->
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label fw-semibold mb-2" style="font-size: 14px; color: rgba(0, 0, 0, 0.8);">Color</label>
+                            <div class="d-flex gap-2 flex-wrap" id="colorOptions">
+                                <!-- Populated by JS -->
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Quantity & Price (inline) -->
+                    <div class="row align-items-end mb-3">
+                        <div class="col-5">
+                            <label class="form-label fw-semibold mb-2" style="font-size: 14px; color: rgba(0, 0, 0, 0.8);">Quantity</label>
+                            <div class="d-flex align-items-center gap-2">
+                                <button class="btn btn-outline-secondary" onclick="changeQuantity(-1)" style="
+                                    width: 36px; 
+                                    height: 36px; 
+                                    border-radius: 8px;
+                                    font-size: 16px;
+                                    font-weight: 600;
+                                ">−</button>
+                                <input type="number" id="quantity" value="1" min="1" max="10" class="form-control text-center fw-semibold" style="
+                                    width: 60px; 
+                                    height: 36px; 
+                                    border-radius: 8px; 
+                                    font-size: 14px;
+                                ">
+                                <button class="btn btn-outline-secondary" onclick="changeQuantity(1)" style="
+                                    width: 36px; 
+                                    height: 36px; 
+                                    border-radius: 8px;
+                                    font-size: 16px;
+                                    font-weight: 600;
+                                ">+</button>
+                            </div>
+                        </div>
+                        <div class="col-7">
+                            <div class="text-end">
+                                <span class="text-muted fw-medium" style="font-size: 14px;">Total</span>
+                                <div id="totalPrice" class="h4 fw-bold mb-0" style="
+                                    font-size: 1.8rem; 
+                                    color: #2563eb;
+                                    letter-spacing: -0.02em;
+                                ">$64</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Action Buttons (compact) -->
+                    <div class="d-grid gap-2 mb-3">
+                        <button class="btn btn-primary btn-lg rounded-3" onclick="buyNow()" style="
+                            font-size: 16px; 
+                            font-weight: 600; 
+                            padding: 0.8rem 1.5rem;
+                            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+                            border: none;
+                            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
+                        ">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-2">
+                                <path d="M9 12l2 2 4-4"></path>
+                                <path d="M21 12c-1 0-3-1-3-3s2-3 3-3 3 1 3 3-2 3-3 3"></path>
+                            </svg>
+                            Buy Now
+                        </button>
+                        <button class="btn btn-outline-dark btn-lg rounded-3" onclick="addToCart()" style="
+                            font-size: 16px; 
+                            font-weight: 600; 
+                            padding: 0.8rem 1.5rem;
+                            border-width: 2px;
+                        ">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-2">
+                                <circle cx="8" cy="21" r="1"></circle>
+                                <circle cx="19" cy="21" r="1"></circle>
+                                <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57L20.5 9H5.12"></path>
+                            </svg>
+                            Add to Cart
+                        </button>
+                    </div>
+                    
+                    <!-- Additional Info (compact) -->
+                    <div class="pt-3 border-top">
+                        <div class="row g-2">
+                            <div class="col-12">
+                                <div class="d-flex align-items-center">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" class="me-2">
+                                        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                                    </svg>
+                                    <small class="text-muted fw-medium">Free shipping within HCMC</small>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="d-flex align-items-center">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" class="me-2">
+                                        <path d="M9 12l2 2 4-4"></path>
+                                        <path d="M21 12c-1 0-3-1-3-3s2-3 3-3 3 1 3 3-2 3-3 3"></path>
+                                    </svg>
+                                    <small class="text-muted fw-medium">30-day return policy</small>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="d-flex align-items-center">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" class="me-2">
+                                        <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                                        <line x1="8" y1="21" x2="16" y2="21"></line>
+                                    </svg>
+                                    <small class="text-muted fw-medium">Secure payment guaranteed</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../../assets/js/pages/product-detail.js"></script>
+</body>
+</html>
