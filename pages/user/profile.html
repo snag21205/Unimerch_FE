@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - UEH Merch</title>
+    
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+      <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Auth protection script -->
+    <script>
+        // Check if user is logged in
+        if (localStorage.getItem('isLoggedIn') !== 'true') {
+            alert('Please login to access this page');
+            window.location.href = '../auth/login.html';
+        }
+    </script>
+    
+    <!-- Profile JavaScript -->
+    <script src="../../assets/js/pages/profile.js"></script>
+    <link rel="stylesheet" href="../../assets/css/styles.css">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .profile-header {
+            background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
+            color: white;
+            padding: 3rem 0;
+        }
+        
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            font-weight: 600;
+            color: white;
+            margin: 0 auto 1rem;
+            border: 4px solid rgba(255,255,255,0.2);
+        }
+        
+        .profile-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            border: none;
+        }
+        
+        .nav-tabs .nav-link {
+            border: none;
+            color: #6b7280;
+            font-weight: 500;
+            padding: 1rem 1.5rem;
+            border-radius: 8px 8px 0 0;
+        }
+        
+        .nav-tabs .nav-link.active {
+            background-color: #f8f9fa;
+            color: #1f2937;
+            border-bottom: 2px solid #0F766E;
+        }
+        
+        .form-control, .form-select {
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            font-size: 0.95rem;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: #0F766E;
+            box-shadow: 0 0 0 0.2rem rgba(15, 118, 110, 0.25);
+        }
+        
+        .order-item {
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+        
+        .order-item:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+        
+        .order-status {
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+        }
+        
+        .status-completed {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+        
+        .status-pending {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+        
+        .status-shipping {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+        
+        .btn-save {
+            background: linear-gradient(135deg, #0F766E 0%, #059669 100%);
+            border: none;
+            border-radius: 8px;
+            padding: 0.75rem 2rem;
+            font-weight: 500;
+        }
+        
+        .btn-save:hover {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top shadow-sm">
+        <div class="container-fluid px-3 px-lg-5">
+            <a class="navbar-brand fw-semibold fs-4" href="../../index.html" style="color: #111;">UEH Merch</a>
+            
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto d-none d-lg-flex">
+                    <li class="nav-item mx-3">
+                        <a class="nav-link" href="../../index.html">Home</a>
+                    </li>
+                    <li class="nav-item mx-3">
+                        <a class="nav-link" href="../../index.html#products">Products</a>
+                    </li>
+                </ul>
+                
+                <div class="d-flex align-items-center gap-3">
+                    <a href="../../index.html" class="btn btn-outline-dark btn-sm rounded-pill px-3">
+                        ← Back to Store
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Profile Header -->
+    <section class="profile-header">
+        <div class="container">
+            <div class="text-center">
+                <div class="profile-avatar" id="profileAvatar">U</div>
+                <h1 class="h3 mb-2" id="headerName">User Profile</h1>
+                <p class="mb-0 opacity-75" id="headerEmail">user@ueh.edu.vn</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Profile Content -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10 col-xl-8">
+                    <div class="profile-card">
+                        <!-- Tabs Navigation -->
+                        <ul class="nav nav-tabs" id="profileTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="personal-tab" data-bs-toggle="tab" data-bs-target="#personal" type="button" role="tab">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-2">
+                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="12" cy="7" r="4"></circle>
+                                    </svg>
+                                    Personal Info
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="orders-tab" data-bs-toggle="tab" data-bs-target="#orders" type="button" role="tab">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-2">
+                                        <circle cx="8" cy="21" r="1"></circle>
+                                        <circle cx="19" cy="21" r="1"></circle>
+                                        <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57L20.5 9H5.12"></path>
+                                    </svg>
+                                    Order History
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="settings-tab" data-bs-toggle="tab" data-bs-target="#settings" type="button" role="tab">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-2">
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                        <path d="M12 1v6m0 6v6m-8-8h6m6 0h6"></path>
+                                    </svg>
+                                    Settings
+                                </button>
+                            </li>
+                        </ul>
+
+                        <!-- Tab Content -->
+                        <div class="tab-content p-4" id="profileTabContent">
+                            <!-- Personal Info Tab -->
+                            <div class="tab-pane fade show active" id="personal" role="tabpanel">
+                                <h5 class="mb-4">Personal Information</h5>
+                                <form id="personalInfoForm">
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label for="firstName" class="form-label">First Name</label>
+                                            <input type="text" class="form-control" id="firstName" placeholder="Enter your first name">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="lastName" class="form-label">Last Name</label>
+                                            <input type="text" class="form-control" id="lastName" placeholder="Enter your last name">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="email" class="form-label">Email Address</label>
+                                            <input type="email" class="form-control" id="email" placeholder="your.email@ueh.edu.vn">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="phone" class="form-label">Phone Number</label>
+                                            <input type="tel" class="form-control" id="phone" placeholder="+84 XXX XXX XXX">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="studentId" class="form-label">Student ID</label>
+                                            <input type="text" class="form-control" id="studentId" placeholder="31XXXX">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="faculty" class="form-label">Faculty</label>
+                                            <select class="form-select" id="faculty">
+                                                <option value="">Select your faculty</option>
+                                                <option value="economics">School of Economics</option>
+                                                <option value="business">School of Business Administration</option>
+                                                <option value="finance">School of Finance</option>
+                                                <option value="accounting">School of Accounting</option>
+                                                <option value="law">School of Law</option>
+                                                <option value="english">School of Foreign Languages</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-12">
+                                            <label for="address" class="form-label">Address</label>
+                                            <textarea class="form-control" id="address" rows="3" placeholder="Enter your full address"></textarea>
+                                        </div>
+                                        <div class="col-12">
+                                            <button type="submit" class="btn btn-save text-white">
+                                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-2">
+                                                    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                                                    <polyline points="17,21 17,13 7,13 7,21"></polyline>
+                                                    <polyline points="7,3 7,8 15,8"></polyline>
+                                                </svg>
+                                                Save Changes
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <!-- Order History Tab -->
+                            <div class="tab-pane fade" id="orders" role="tabpanel">
+                                <div class="d-flex justify-content-between align-items-center mb-4">
+                                    <h5 class="mb-0">Order History</h5>
+                                    <div class="d-flex gap-2">
+                                        <select class="form-select form-select-sm" id="orderFilter" style="width: auto;">
+                                            <option value="all">All Orders</option>
+                                            <option value="completed">Completed</option>
+                                            <option value="pending">Pending</option>
+                                            <option value="shipping">Shipping</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div id="ordersList">
+                                    <!-- Orders will be populated by JavaScript -->
+                                </div>
+                            </div>
+
+                            <!-- Settings Tab -->
+                            <div class="tab-pane fade" id="settings" role="tabpanel">
+                                <h5 class="mb-4">Account Settings</h5>
+                                
+                                <!-- Change Password -->
+                                <div class="card mb-4">
+                                    <div class="card-body">
+                                        <h6 class="card-title">Change Password</h6>
+                                        <form id="changePasswordForm">
+                                            <div class="row g-3">
+                                                <div class="col-12">
+                                                    <label for="currentPassword" class="form-label">Current Password</label>
+                                                    <input type="password" class="form-control" id="currentPassword">
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="newPassword" class="form-label">New Password</label>
+                                                    <input type="password" class="form-control" id="newPassword">
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="confirmPassword" class="form-label">Confirm New Password</label>
+                                                    <input type="password" class="form-control" id="confirmPassword">
+                                                </div>
+                                                <div class="col-12">
+                                                    <button type="submit" class="btn btn-save text-white">Update Password</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+
+                                <!-- Notification Preferences -->
+                                <div class="card mb-4">
+                                    <div class="card-body">
+                                        <h6 class="card-title">Notifications</h6>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="emailNotifications" checked>
+                                            <label class="form-check-label" for="emailNotifications">
+                                                Email notifications for order updates
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="promotionalEmails" checked>
+                                            <label class="form-check-label" for="promotionalEmails">
+                                                Promotional emails and new arrivals
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Account Actions -->
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h6 class="card-title text-danger">Danger Zone</h6>
+                                        <p class="card-text text-muted">Once you delete your account, there is no going back.</p>
+                                        <button class="btn btn-outline-danger" onclick="confirmDeleteAccount()">Delete Account</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Toast Container -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" id="toastContainer">
+        <!-- Toasts will be inserted here -->
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Profile JavaScript -->
+    <script src="../../assets/js/pages/profile.js"></script>
+</body>
+</html>

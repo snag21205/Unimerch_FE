@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - UEH Merch</title>
+    
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Minimal custom styles -->
+    <link rel="stylesheet" href="../../assets/css/styles.css">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-white">
+    <!-- Modern Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top border-bottom">
+        <div class="container">
+            <a class="navbar-brand fw-bold fs-3" href="../../index.html" style="color: #111; letter-spacing: -0.02em;">UEH Merch</a>
+            
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        <a class="nav-link fw-medium px-3" href="../../index.html" style="color: #666;">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-medium px-3" href="../../index.html#products" style="color: #666;">Products</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-medium px-3" href="../user/orders.html" style="color: #666;">Orders</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-medium px-3" href="../user/profile.html" style="color: #666;">Profile</a>
+                    </li>
+                </ul>
+                
+                <div class="d-flex align-items-center gap-3">
+                    <a href="register.html" class="btn btn-outline-dark rounded-pill px-4 py-2 fw-medium">Register</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Login Form -->
+    <main class="d-flex align-items-center justify-content-center" style="min-height: 90vh;">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-5 col-lg-4">
+                    <div class="text-center mb-5">
+                        <h1 class="h2 fw-bold mb-2" style="color: #111; letter-spacing: -0.02em;">Welcome back</h1>
+                        <p class="text-muted">Sign in to your UEH Merch account</p>
+                    </div>
+                    
+                    <form id="loginForm" class="needs-validation" novalidate>
+                        <!-- Username Field -->
+                        <div class="mb-4">
+                            <label for="username" class="form-label fw-medium" style="color: #374151;">Username</label>
+                            <input type="text" class="form-control form-control-lg rounded-3" id="username" required 
+                                   style="border: 2px solid #e5e7eb; padding: 0.875rem 1rem; background: #fafafa;" 
+                                   placeholder="Enter your username">
+                            <div class="invalid-feedback">Please enter your username.</div>
+                        </div>
+                        
+                        <!-- Password Field -->
+                        <div class="mb-4">
+                            <label for="password" class="form-label fw-medium" style="color: #374151;">Password</label>
+                            <div class="position-relative">
+                                <input type="password" class="form-control form-control-lg rounded-3" id="password" required 
+                                       style="border: 2px solid #e5e7eb; padding: 0.875rem 1rem; background: #fafafa;" 
+                                       placeholder="Enter your password">
+                                <button type="button" class="btn btn-link position-absolute end-0 top-50 translate-middle-y me-2" 
+                                        onclick="togglePassword()" style="border: none; background: none;">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="invalid-feedback">Please enter your password.</div>
+                        </div>
+                        
+                        <!-- Remember Me -->
+                        <div class="mb-4">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="rememberMe">
+                                <label class="form-check-label text-muted" for="rememberMe">
+                                    Remember me for 30 days
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- Login Button -->
+                        <div class="d-grid gap-2 mb-4">
+                            <button type="button" class="btn btn-dark btn-lg rounded-3" onclick="handleSignIn()" style="
+                                font-weight: 600; 
+                                padding: 0.875rem;
+                                background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
+                                border: none;
+                                letter-spacing: -0.01em;
+                            ">
+                                Sign In
+                            </button>
+                        </div>
+                        
+                        <!-- Register Link -->
+                        <div class="text-center">
+                            <p class="text-muted mb-0">
+                                Don't have an account? 
+                                <a href="register.html" class="text-decoration-none fw-medium" style="color: #2563eb;">
+                                    Create one here
+                                </a>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../../assets/js/pages/login.js"></script>
+</body>
+</html>

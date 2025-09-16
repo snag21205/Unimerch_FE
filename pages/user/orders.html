@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý đơn hàng - Fashion Store</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/css/styles.css">
+    <link rel="stylesheet" href="../../assets/css/orders.css">
+</head>
+<body class="bg-light">
+    <!-- Sticky Navigation từ home -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top" id="mainNav">
+        <div class="container-fluid px-3 px-lg-5">
+            <!-- Brand -->
+            <a class="navbar-brand fw-semibold fs-4" href="../../index.html" style="color: #111;">UEH Merch</a>
+            
+            <!-- Toggle button for mobile -->
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <!-- Navigation items -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto d-none d-lg-flex">
+                    <li class="nav-item mx-3">
+                        <a class="nav-link" href="../../index.html#new">New</a>
+                    </li>
+                    <li class="nav-item mx-3">
+                        <a class="nav-link" href="../../index.html#products">Hoodies</a>
+                    </li>
+                    <li class="nav-item mx-3">
+                        <a class="nav-link" href="../../index.html#products">Tees</a>
+                    </li>
+                    <li class="nav-item mx-3">
+                        <a class="nav-link" href="../../index.html#products">Accessories</a>
+                    </li>
+                    <li class="nav-item mx-3">
+                        <a class="nav-link" href="../../index.html#products">Sale</a>
+                    </li>
+                </ul>
+                
+                <!-- Right side controls -->
+                <div class="d-flex align-items-center gap-3">
+                    <button class="btn btn-link p-0 border-0" id="searchBtn" data-bs-toggle="modal" data-bs-target="#searchModal">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.35-4.35"></path>
+                        </svg>
+                    </button>
+                    
+                    <button class="btn btn-link p-0 border-0 position-relative" id="cartBtn" data-bs-toggle="offcanvas" data-bs-target="#cartOffcanvas">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="8" cy="21" r="1"></circle>
+                            <circle cx="19" cy="21" r="1"></circle>
+                            <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57L20.5 9H5.12"></path>
+                        </svg>
+                        <span class="badge bg-primary rounded-pill position-absolute top-0 start-100 translate-middle d-none" id="cartCount">0</span>
+                    </button>
+                    
+                    <!-- Auth Section -->
+                    <div id="authSection">
+                        <!-- Not logged in state -->
+                        <div id="notLoggedIn" class="d-flex align-items-center gap-2">
+                            <a href="profile.html" class="btn btn-link p-0 border-0" title="Profile">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                            </a>
+                            <a href="../auth/login.html" class="btn btn-outline-dark btn-sm rounded-pill px-3" style="font-size: 14px; font-weight: 500;">
+                                Login
+                            </a>
+                            <a href="../auth/register.html" class="btn btn-dark btn-sm rounded-pill px-3" style="
+                                font-size: 14px; 
+                                font-weight: 500;
+                                background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
+                                border: none;
+                            ">
+                                Sign Up
+                            </a>
+                        </div>
+                        
+                        <!-- Logged in state -->
+                        <div id="loggedIn" class="d-none">
+                            <div class="dropdown">
+                                <button class="btn btn-link dropdown-toggle p-0 border-0 d-flex align-items-center gap-2" type="button" data-bs-toggle="dropdown" style="color: #374151;">
+                                    <div class="d-flex align-items-center justify-content-center rounded-circle" style="
+                                        width: 32px; 
+                                        height: 32px; 
+                                        background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+                                        color: white;
+                                        font-size: 14px;
+                                        font-weight: 600;
+                                    " id="userAvatar">
+                                        U
+                                    </div>
+                                    <span class="fw-medium d-none d-lg-inline" id="username" style="font-size: 14px;">User</span>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end shadow" style="min-width: 200px; border: none; box-shadow: 0 8px 32px rgba(0,0,0,0.12) !important;">
+                                    <li>
+                                        <div class="dropdown-header">
+                                            <div class="fw-semibold" style="color: #111; font-size: 14px;" id="userFullName">Welcome back!</div>
+                                            <small class="text-muted" id="userEmail">user@ueh.edu.vn</small>
+                                        </div>
+                                    </li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li>
+                                        <a class="dropdown-item d-flex align-items-center gap-2" href="profile.html" style="padding: 0.5rem 1rem; font-size: 14px;">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                                <circle cx="12" cy="7" r="4"></circle>
+                                            </svg>
+                                            My Profile
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item d-flex align-items-center gap-2" href="orders.html" style="padding: 0.5rem 1rem; font-size: 14px;">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <circle cx="8" cy="21" r="1"></circle>
+                                                <circle cx="19" cy="21" r="1"></circle>
+                                                <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57L20.5 9H5.12"></path>
+                                            </svg>
+                                            My Orders
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item d-flex align-items-center gap-2" href="#" style="padding: 0.5rem 1rem; font-size: 14px;">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.51 4.04 3 5.5l7 7 7-7z"></path>
+                                            </svg>
+                                            Wishlist
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item d-flex align-items-center gap-2" href="#" style="padding: 0.5rem 1rem; font-size: 14px;">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                                            </svg>
+                                            Settings
+                                        </a>
+                                    </li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li>
+                                        <button class="dropdown-item d-flex align-items-center gap-2 text-danger" onclick="logout()" style="padding: 0.5rem 1rem; font-size: 14px; border: none; background: none; width: 100%; text-align: left;">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                                                <polyline points="16,17 21,12 16,7"></polyline>
+                                                <line x1="21" y1="12" x2="9" y2="12"></line>
+                                            </svg>
+                                            Logout
+                                        </button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="dropdown">
+                        <button class="btn btn-link dropdown-toggle p-0 border-0" type="button" data-bs-toggle="dropdown">
+                            EN
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="#" onclick="toggleLanguage('en')">English</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="toggleLanguage('vi')">Tiếng Việt</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Add top padding to account for fixed navbar -->
+    <div style="padding-top: 100px;">
+        <!-- Main Content -->
+        <div class="container py-4">
+            <!-- Page Header -->
+            <div class="mb-4">
+                <h1 class="h3 fw-bold mb-1" style="color: #333;">Đơn hàng của tôi</h1>
+                <p class="text-muted mb-0">Quản lý và theo dõi tất cả đơn hàng của bạn</p>
+            </div>
+
+            <!-- Order Status Tabs -->
+            <div class="order-tabs-container mb-4">
+                <div class="order-tabs">
+                    <button class="order-tab active" data-status="CHO_XAC_NHAN">
+                        <span>Chờ xác nhận</span>
+                        <span class="order-count">2</span>
+                    </button>
+                    <button class="order-tab" data-status="VAN_CHUYEN">
+                        <span>Vận chuyển</span>
+                        <span class="order-count">1</span>
+                    </button>
+                    <button class="order-tab" data-status="CHO_GIAO_HANG">
+                        <span>Chờ giao hàng</span>
+                        <span class="order-count">1</span>
+                    </button>
+                    <button class="order-tab" data-status="HOAN_THANH">
+                        <span>Hoàn thành</span>
+                        <span class="order-count">3</span>
+                    </button>
+                    <button class="order-tab" data-status="DA_HUY">
+                        <span>Đã huỷ</span>
+                        <span class="order-count">1</span>
+                    </button>
+                    <button class="order-tab" data-status="TRA_HOAN_TIEN">
+                        <span>Trả hàng/Hoàn tiền</span>
+                        <span class="order-count">1</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Orders List -->
+            <div id="ordersContainer">
+                <!-- Orders will be rendered here by JavaScript -->
+            </div>
+
+            <!-- Empty State -->
+            <div id="emptyState" class="text-center py-5 d-none">
+                <div class="mb-3">
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="1">
+                        <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                        <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                    </svg>
+                </div>
+                <h5 class="text-muted">Chưa có đơn hàng nào</h5>
+                <p class="text-muted mb-3">Hãy bắt đầu mua sắm để có đơn hàng đầu tiên!</p>
+                <a href="../../index.html" class="btn btn-primary rounded-pill px-4">Tiếp tục mua sắm</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Check if user is logged in
+        if (localStorage.getItem('isLoggedIn') !== 'true') {
+            alert('Please login to access this page');
+            window.location.href = '../auth/login.html';
+        }
+        
+        // Rest of the existing script...
+        // Mock Orders Data
+        const ordersData = {
+            CHO_XAC_NHAN: [
+                {
+                    id: "DH001",
+                    orderDate: "2025-09-14T10:30:00",
+                    status: "CHO_XAC_NHAN",
+                    items: [
+                        {
+                            id: 1,
+                            name: "Áo Thun Nam Basic",
+                            variant: "Size: L, Màu: Đen",
+                            quantity: 2,
+                            price: 299000,
+                            image: "shirt.png"
+                        },
+                        {
+                            id: 2,
+                            name: "Quần Jeans Slim Fit",
+                            variant: "Size: 32, Màu: Xanh đậm",
+                            quantity: 1,
+                            price: 599000,
+                            image: "SP-04.png"
+                        }
+                    ],
+                    subtotal: 1197000,
+                    shippingFee: 30000,
+                    total: 1227000,
+                    paymentMethod: "COD",
+                    shippingMethod: "Giao tận nơi",
+                    eta: "2-3 ngày"
+                },
+                {
+                    id: "DH002",
+                    orderDate: "2025-09-13T15:20:00",
+                    status: "CHO_XAC_NHAN",
+                    items: [
+                        {
+                            id: 3,
+                            name: "Áo Sơ Mi Công Sở",
+                            variant: "Size: M, Màu: Trắng",
+                            quantity: 1,
+                            price: 449000,
+                            image: "SP-25.png"
+                        }
+                    ],
+                    subtotal: 449000,
+                    shippingFee: 25000,
+                    total: 474000,
+                    paymentMethod: "Chuyển khoản",
+                    shippingMethod: "Nhận tại trường",
+                    eta: "1-2 ngày"
+                }
+            ],
+            VAN_CHUYEN: [
+                {
+                    id: "DH003",
+                    orderDate: "2025-09-12T09:15:00",
+                    status: "VAN_CHUYEN",
+                    items: [
+                        {
+                            id: 4,
+                            name: "Hoodie Unisex",
+                            variant: "Size: L, Màu: Xám",
+                            quantity: 1,
+                            price: 699000,
+                            image: "shirt.png"
+                        }
+                    ],
+                    subtotal: 699000,
+                    shippingFee: 30000,
+                    total: 729000,
+                    paymentMethod: "Chuyển khoản",
+                    shippingMethod: "Giao tận nơi",
+                    eta: "Dự kiến giao: 15/09/2025",
+                    trackingCode: "VN123456789"
+                }
+            ],
+            CHO_GIAO_HANG: [
+                {
+                    id: "DH004",
+                    orderDate: "2025-09-11T14:45:00",
+                    status: "CHO_GIAO_HANG",
+                    items: [
+                        {
+                            id: 5,
+                            name: "Váy Midi Hoa",
+                            variant: "Size: S, Màu: Hồng",
+                            quantity: 1,
+                            price: 399000,
+                            image: "SP-04.png"
+                        }
+                    ],
+                    subtotal: 399000,
+                    shippingFee: 25000,
+                    total: 424000,
+                    paymentMethod: "COD",
+                    shippingMethod: "Giao tận nơi",
+                    eta: "Hôm nay (14/09)",
+                    shipperPhone: "0912345678"
+                }
+            ],
+            HOAN_THANH: [
+                {
+                    id: "DH005",
+                    orderDate: "2025-09-08T11:20:00",
+                    deliveredDate: "2025-09-10T16:30:00",
+                    status: "HOAN_THANH",
+                    items: [
+                        {
+                            id: 6,
+                            name: "Blazer Nữ Công Sở",
+                            variant: "Size: M, Màu: Đen",
+                            quantity: 1,
+                            price: 899000,
+                            image: "SP-25.png"
+                        }
+                    ],
+                    subtotal: 899000,
+                    shippingFee: 30000,
+                    total: 929000,
+                    paymentMethod: "Chuyển khoản",
+                    shippingMethod: "Giao tận nơi"
+                }
+            ],
+            DA_HUY: [
+                {
+                    id: "DH006",
+                    orderDate: "2025-09-07T13:10:00",
+                    cancelledDate: "2025-09-07T18:00:00",
+                    status: "DA_HUY",
+                    items: [
+                        {
+                            id: 7,
+                            name: "Áo Khoác Denim",
+                            variant: "Size: L, Màu: Xanh nhạt",
+                            quantity: 1,
+                            price: 799000,
+                            image: "shirt.png"
+                        }
+                    ],
+                    subtotal: 799000,
+                    shippingFee: 30000,
+                    total: 829000,
+                    paymentMethod: "COD",
+                    shippingMethod: "Giao tận nơi",
+                    cancelReason: "Khách hàng đổi ý"
+                }
+            ],
+            TRA_HOAN_TIEN: [
+                {
+                    id: "DH007",
+                    orderDate: "2025-09-05T16:25:00",
+                    returnDate: "2025-09-12T10:00:00",
+                    status: "TRA_HOAN_TIEN",
+                    items: [
+                        {
+                            id: 8,
+                            name: "Chân Váy Xòe",
+                            variant: "Size: M, Màu: Đỏ",
+                            quantity: 1,
+                            price: 349000,
+                            image: "SP-04.png"
+                        }
+                    ],
+                    subtotal: 349000,
+                    shippingFee: 25000,
+                    total: 374000,
+                    paymentMethod: "Chuyển khoản",
+                    shippingMethod: "Giao tận nơi",
+                    returnReason: "Sản phẩm bị lỗi",
+                    refundStatus: "Đang xử lý"
+                }
+            ]
+        };
+
+        // Current active status
+        let currentStatus = 'CHO_XAC_NHAN';
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            setupTabSwitching();
+            renderOrders(currentStatus);
+        });
+
+        // Setup tab switching functionality
+        function setupTabSwitching() {
+            const tabs = document.querySelectorAll('.order-tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // Remove active class from all tabs
+                    tabs.forEach(t => t.classList.remove('active'));
+                    // Add active class to clicked tab
+                    this.classList.add('active');
+                    
+                    // Get status and render orders
+                    currentStatus = this.dataset.status;
+                    renderOrders(currentStatus);
+                });
+            });
+        }
+
+        // Render orders based on status
+        function renderOrders(status) {
+            const container = document.getElementById('ordersContainer');
+            const emptyState = document.getElementById('emptyState');
+            const orders = ordersData[status] || [];
+
+            if (orders.length === 0) {
+                container.innerHTML = '';
+                emptyState.classList.remove('d-none');
+                return;
+            }
+
+            emptyState.classList.add('d-none');
+            container.innerHTML = orders.map(order => createOrderCard(order)).join('');
+        }
+
+        // Create order card HTML
+        function createOrderCard(order) {
+            const statusConfig = getStatusConfig(order.status);
+            const itemsHtml = order.items.map(item => `
+                <div class="order-item">
+                    <img src="${item.image}" alt="${item.name}" class="item-image">
+                    <div class="item-details">
+                        <h6 class="item-name">${item.name}</h6>
+                        <p class="item-variant">${item.variant}</p>
+                    </div>
+                    <div class="item-quantity">x${item.quantity}</div>
+                    <div class="item-price">${formatPrice(item.price)}</div>
+                    <div class="item-total">${formatPrice(item.price * item.quantity)}</div>
+                </div>
+            `).join('');
+
+            const actionsHtml = getActionButtons(order);
+
+            return `
+                <div class="order-card">
+                    <!-- Order Header -->
+                    <div class="order-header">
+                        <div class="order-info">
+                            <span class="order-id">Đơn hàng #${order.id}</span>
+                            <span class="order-date">${formatDate(order.orderDate)}</span>
+                        </div>
+                        <span class="order-status-chip ${statusConfig.class}">${statusConfig.label}</span>
+                    </div>
+
+                    <!-- Order Items -->
+                    <div class="order-items">
+                        ${itemsHtml}
+                    </div>
+
+                    <!-- Order Footer -->
+                    <div class="order-footer">
+                        <div class="order-summary">
+                            <div class="summary-row">
+                                <span>Tạm tính:</span>
+                                <span>${formatPrice(order.subtotal)}</span>
+                            </div>
+                            <div class="summary-row">
+                                <span>Phí vận chuyển:</span>
+                                <span>${formatPrice(order.shippingFee)}</span>
+                            </div>
+                            <div class="summary-row total">
+                                <span>Tổng thanh toán:</span>
+                                <span>${formatPrice(order.total)}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="order-details">
+                            <div class="payment-shipping-info">
+                                <span><strong>Thanh toán:</strong> ${order.paymentMethod}</span>
+                                <span><strong>Giao hàng:</strong> ${order.shippingMethod}</span>
+                                ${order.eta ? `<span><strong>Dự kiến:</strong> ${order.eta}</span>` : ''}
+                            </div>
+                            
+                            <div class="order-actions">
+                                ${actionsHtml}
+                                <a href="#" class="btn btn-link order-detail-link">Xem chi tiết đơn</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Get status configuration
+        function getStatusConfig(status) {
+            const configs = {
+                CHO_XAC_NHAN: { label: 'Chờ xác nhận', class: 'status-pending' },
+                VAN_CHUYEN: { label: 'Đang vận chuyển', class: 'status-shipping' },
+                CHO_GIAO_HANG: { label: 'Chờ giao hàng', class: 'status-ready' },
+                HOAN_THANH: { label: 'Hoàn thành', class: 'status-completed' },
+                DA_HUY: { label: 'Đã huỷ', class: 'status-cancelled' },
+                TRA_HOAN_TIEN: { label: 'Trả hàng/Hoàn tiền', class: 'status-refund' }
+            };
+            return configs[status] || { label: status, class: 'status-default' };
+        }
+
+        // Get action buttons based on order status
+        function getActionButtons(order) {
+            switch (order.status) {
+                case 'CHO_XAC_NHAN':
+                    return '<button class="btn btn-outline-danger btn-sm">Huỷ đơn</button>';
+                case 'VAN_CHUYEN':
+                    return '<button class="btn btn-outline-primary btn-sm">Theo dõi vận đơn</button>';
+                case 'CHO_GIAO_HANG':
+                    return '<button class="btn btn-outline-primary btn-sm">Liên hệ shipper</button>';
+                case 'HOAN_THANH':
+                    return `
+                        <button class="btn btn-outline-warning btn-sm me-2">Đánh giá</button>
+                        <button class="btn btn-primary btn-sm">Mua lại</button>
+                    `;
+                case 'DA_HUY':
+                    return '<button class="btn btn-primary btn-sm">Mua lại</button>';
+                case 'TRA_HOAN_TIEN':
+                    return '<button class="btn btn-outline-info btn-sm">Xem tiến trình hoàn tiền</button>';
+                default:
+                    return '';
+            }
+        }
+
+        // Utility functions
+        function formatPrice(price) {
+            return new Intl.NumberFormat('vi-VN', {
+                style: 'currency',
+                currency: 'VND'
+            }).format(price);
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('vi-VN', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+    </script>
+</body>
+</html>
