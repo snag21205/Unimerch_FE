@@ -8,8 +8,8 @@ const sampleOrders = [
         status: 'completed',
         total: 1125000,
         items: [
-            { name: 'UEH Classic Hoodie', quantity: 1, price: 1125000, image: 'shirt.png' },
-            { name: 'UEH Economics Tee', quantity: 1, price: 625000, image: 'shirt.png' }
+            { name: 'UEH Classic Hoodie', quantity: 1, price: 1125000, image: '/assets/images/products/shirt.png' },
+            { name: 'UEH Economics Tee', quantity: 1, price: 625000, image: '/assets/images/products/shirt.png' }
         ]
     },
     {
@@ -18,8 +18,8 @@ const sampleOrders = [
         status: 'shipping',
         total: 875000,
         items: [
-            { name: 'UEH Varsity Cap', quantity: 1, price: 550000, image: 'shirt.png' },
-            { name: 'UEH Water Bottle', quantity: 1, price: 450000, image: 'shirt.png' }
+            { name: 'UEH Varsity Cap', quantity: 1, price: 550000, image: '/assets/images/products/shirt.png' },
+            { name: 'UEH Water Bottle', quantity: 1, price: 450000, image: '/assets/images/products/shirt.png' }
         ]
     },
     {
@@ -28,7 +28,7 @@ const sampleOrders = [
         status: 'pending',
         total: 800000,
         items: [
-            { name: 'UEH Business Tote', quantity: 1, price: 875000, image: 'shirt.png' }
+            { name: 'UEH Business Tote', quantity: 1, price: 875000, image: '/assets/images/products/shirt.png' }
         ]
     }
 ];
