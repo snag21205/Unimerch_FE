@@ -29,7 +29,7 @@ document.getElementById('registerForm').addEventListener('submit', function(e) {
         localStorage.setItem('username', username);
         
         // Show success message and redirect
-        alert('Account created successfully! Welcome to UEH Merch!');
+        alert('Account created successfully! Welcome to Unimerch!');
         window.location.href = 'index.html';
     }
 });

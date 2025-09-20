@@ -307,7 +307,7 @@ function showToast(message, type = 'info') {
         <div id="${toastId}" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-header">
                 <div class="rounded me-2" style="width: 20px; height: 20px; background-color: ${type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#3b82f6'};"></div>
-                <strong class="me-auto">UEH Merch</strong>
+                <strong class="me-auto">Unimerch</strong>
                 <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
             </div>
             <div class="toast-body">

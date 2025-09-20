@@ -20,7 +20,7 @@ const CONFIG = {
     },
     
     // Application settings
-    APP_NAME: 'UEH Merch',
+    APP_NAME: 'Unierch',
     ITEMS_PER_PAGE: 12,
     DEFAULT_CURRENCY: 'USD',
     
