@@ -1,5 +1,35 @@
 /* Minimal styles for UEH Merch - Only essential styles not covered by Bootstrap */
 
+/* Disable browser default password reveal icon */
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+    display: none;
+}
+
+input[type="password"]::-webkit-credentials-auto-fill-button,
+input[type="password"]::-webkit-strong-password-auto-fill-button {
+    display: none !important;
+}
+
+/* Hide the default password reveal icon in Edge and Chrome */
+input[type="password"]::-webkit-outer-spin-button,
+input[type="password"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Additional styles to hide password reveal icons */
+input[type="password"]::-webkit-textfield-decoration-container {
+    visibility: hidden;
+    pointer-events: none;
+}
+
+/* Ensure custom button stays on top */
+.position-relative button[onclick*="togglePassword"] {
+    z-index: 10 !important;
+    pointer-events: auto !important;
+}
+
 /* Font family for consistency */
 * {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
