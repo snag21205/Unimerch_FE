@@ -1,7 +1,7 @@
 # UniMerch API Documentation
 
 **Version:** 1.0  
-**Base URL:** `http://localhost:3000` | `https://api.unimerch.space`  
+**Base URL:** `https://api.unimerch.space`  
 **Content-Type:** `application/json`
 
 ## Overview

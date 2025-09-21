@@ -10,32 +10,16 @@ async function handleSignIn() {
     }
     
     try {
-        const response = await fetch('https://api.unimerch.space/api/auth/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                email: username,
-                password: password
-            })
+        // Use API service for login
+        const data = await apiService.login({
+            email: username,
+            password: password
         });
         
-        const data = await response.json();
-        
-        if (!response.ok) {
-            throw new Error("Login failed: " + (data.message || response.statusText));
-        }
-        
-        
-        
-        // Store auth token from data.data.token
+        // Store auth token using API service
         if (data.data && data.data.token) {
-            localStorage.setItem('authToken', data.data.token);
+            apiService.setToken(data.data.token);
         }
-
-      
-        
         
         // Store user info from API response (data.data.user)
         localStorage.setItem('isLoggedIn', 'true');
@@ -45,13 +29,10 @@ async function handleSignIn() {
         
         alert('Login successful! Welcome back!');
         window.location.href = '../../index.html';
-    
-
-}
-    catch (error) {
-            console.error('Error during login:', error);
-            alert('Login failed: ' + error.message);
-        }
+    } catch (error) {
+        console.error('Error during login:', error);
+        alert('Login failed: ' + error.message);
+    }
 }
 
 // Form validation and submission

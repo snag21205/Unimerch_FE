@@ -36,6 +36,15 @@
                     </div>
                     
                     <form id="registerForm" class="needs-validation" novalidate>
+                        <!-- Full Name Field -->
+                        <div class="mb-4">
+                            <label for="fullName" class="form-label fw-medium" style="color: #374151;">Full Name</label>
+                            <input type="text" class="form-control form-control-lg rounded-3" id="fullName" required 
+                                   style="border: 2px solid #e5e7eb; padding: 0.875rem 1rem; background: #fafafa;" 
+                                   placeholder="Enter your full name" minlength="2" maxlength="50">
+                            <div class="invalid-feedback">Please enter your full name (2-50 characters).</div>
+                        </div>
+
                         <!-- Username Field -->
                         <div class="mb-4">
                             <label for="username" class="form-label fw-medium" style="color: #374151;">Username</label>
@@ -45,6 +54,15 @@
                             <div class="invalid-feedback">Please choose a username (3-20 characters).</div>
                             <div class="form-text">Must be 3-20 characters long</div>
                         </div>
+
+                        <!-- Email Field -->
+                        <div class="mb-4">
+                            <label for="email" class="form-label fw-medium" style="color: #374151;">Email Address</label>
+                            <input type="email" class="form-control form-control-lg rounded-3" id="email" required 
+                                   style="border: 2px solid #e5e7eb; padding: 0.875rem 1rem; background: #fafafa;" 
+                                   placeholder="Enter your email address">
+                            <div class="invalid-feedback">Please enter a valid email address.</div>
+                        </div>
                         
                         <!-- Password Field -->
                         <div class="mb-4">
@@ -52,7 +70,7 @@
                             <div class="position-relative">
                                 <input type="password" class="form-control form-control-lg rounded-3" id="password" required 
                                        style="border: 2px solid #e5e7eb; padding: 0.875rem 1rem; background: #fafafa;" 
-                                       placeholder="Create a password" minlength="6">
+                                       placeholder="Create a password" minlength="8">
                                 <button type="button" class="btn btn-link position-absolute end-0 top-50 translate-middle-y me-2" 
                                         onclick="togglePassword('password')" style="border: none; background: none;">
                                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -61,7 +79,16 @@
                                     </svg>
                                 </button>
                             </div>
-                            <div class="invalid-feedback">Password must be at least 6 characters.</div>
+                            <div class="invalid-feedback">Password does not meet requirements.</div>
+                            <div class="form-text">
+                                Password must contain:
+                                <ul class="mb-0 mt-1" style="font-size: 0.75rem; list-style: none; padding-left: 0;">
+                                    <li id="length-req" class="text-muted" style="padding: 2px 0;">• At least 8 characters</li>
+                                    <li id="uppercase-req" class="text-muted" style="padding: 2px 0;">• At least 1 uppercase letter (A-Z)</li>
+                                    <li id="number-req" class="text-muted" style="padding: 2px 0;">• At least 1 number (0-9)</li>
+                                    <li id="special-req" class="text-muted" style="padding: 2px 0;">• At least 1 special character (!@#$%^&*)</li>
+                                </ul>
+                            </div>
                         </div>
                         
                         <!-- Confirm Password Field -->
@@ -80,6 +107,49 @@
                                 </button>
                             </div>
                             <div class="invalid-feedback">Passwords do not match.</div>
+                        </div>
+
+                        <!-- Optional Fields Collapsible Section -->
+                        <div class="mb-4">
+                            <div class="d-grid">
+                                <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#optionalFields" 
+                                        aria-expanded="false" aria-controls="optionalFields" style="font-size: 0.875rem;">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-1">
+                                        <polyline points="6,9 12,15 18,9"></polyline>
+                                    </svg>
+                                    Add Optional Information (Student ID, Phone, Address)
+                                </button>
+                            </div>
+                            <div class="collapse mt-3" id="optionalFields">
+                                <div class="card card-body bg-light border-0">
+                                    <!-- Student ID Field -->
+                                    <div class="mb-3">
+                                        <label for="studentId" class="form-label fw-medium" style="color: #374151;">Student ID (Optional)</label>
+                                        <input type="text" class="form-control rounded-3" id="studentId" 
+                                               style="border: 2px solid #e5e7eb; padding: 0.75rem 1rem;" 
+                                               placeholder="e.g., SV2024001">
+                                        <div class="form-text">Enter your university student ID if applicable</div>
+                                    </div>
+
+                                    <!-- Phone Field -->
+                                    <div class="mb-3">
+                                        <label for="phone" class="form-label fw-medium" style="color: #374151;">Phone Number (Optional)</label>
+                                        <input type="tel" class="form-control rounded-3" id="phone" 
+                                               style="border: 2px solid #e5e7eb; padding: 0.75rem 1rem;" 
+                                               placeholder="e.g., 0987654321">
+                                        <div class="form-text">Enter your phone number for order updates</div>
+                                    </div>
+
+                                    <!-- Address Field -->
+                                    <div class="mb-0">
+                                        <label for="address" class="form-label fw-medium" style="color: #374151;">Address (Optional)</label>
+                                        <textarea class="form-control rounded-3" id="address" rows="2" 
+                                                  style="border: 2px solid #e5e7eb; padding: 0.75rem 1rem;" 
+                                                  placeholder="Enter your address for delivery"></textarea>
+                                        <div class="form-text">Full address for product delivery</div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         
                         <!-- Terms Agreement -->
@@ -124,6 +194,8 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../../js/utils.js"></script>
+    <script src="../../js/api-service.js"></script>
     <script src="../../js/register-validation.js"></script>
 </body>
 </html>
