@@ -1,9 +1,128 @@
-// Main Products Script - Script tổng duy nhất cho trang sản phẩm
+// Main Products Script - API Integrated
 (function() {
     'use strict';
     
-    // ===== SAMPLE PRODUCTS DATA - CẬP NHẬT THEO SCHEMA DATABASE =====
-    const sampleProducts = [
+    // ===== GLOBAL VARIABLES =====
+    let products = []; // Will be loaded from API
+    let isLoading = false;
+    
+    // ===== API INTEGRATION =====
+    async function loadProductsFromAPI() {
+        if (isLoading) return;
+        
+        console.log('🔄 Loading products from API...');
+        isLoading = true;
+        
+        try {
+            // Check if apiService is available
+            if (typeof window.apiService === 'undefined') {
+                throw new Error('API Service not available. Please ensure api-service.js is loaded first.');
+            }
+            
+            // Show loading state
+            showLoadingState();
+            
+            // Use API service to get products
+            const response = await window.apiService.getProducts();
+            console.log('📦 API Response:', response);
+            
+            if (response.success && response.data && Array.isArray(response.data.products)) {
+                products = response.data.products.map(transformProductData);
+                console.log('✅ Products loaded from API:', products.length, 'products');
+            } else {
+                throw new Error('Invalid API response format: expected data.products array');
+            }
+            
+        } catch (error) {
+            console.error('❌ Failed to load products from API:', error);
+            
+            // Fallback to sample data for development
+            console.log('🔄 Using fallback sample data...');
+            products = getSampleProducts();
+            
+            // Show user-friendly error message
+            if (window.UiUtils) {
+                UiUtils.showToast('Using sample products. API connection failed.', 'warning');
+            }
+            
+        } finally {
+            isLoading = false;
+            hideLoadingState();
+            
+            // Render products after loading
+            renderProducts();
+        }
+    }
+    
+    // Transform API product data to match UI expectations
+    function transformProductData(apiProduct) {
+        // Handle image URL - support both full URLs and relative paths
+        let imageUrl = apiProduct.image_url || apiProduct.image || 'demo.png';
+        
+        // If it's already a full URL (starts with http), use as is
+        // Otherwise, construct local path
+        if (!imageUrl.startsWith('http')) {
+            // Remove any leading path separators and construct proper path
+            const filename = imageUrl.replace(/^.*[\\\/]/, ''); // Get just filename
+            imageUrl = `assets/images/products/${filename}`;
+        }
+        
+        return {
+            id: apiProduct.id,
+            name: apiProduct.name || apiProduct.title || 'Unknown Product',
+            description: apiProduct.description || 'No description available',
+            price: parseFloat(apiProduct.price) || 0,
+            discount_price: apiProduct.discount_price ? parseFloat(apiProduct.discount_price) : null,
+            quantity: apiProduct.quantity || apiProduct.stock || 0,
+            image_url: imageUrl,
+            category_id: apiProduct.category_id,
+            category: apiProduct.category || 'General',
+            status: apiProduct.status || 'available',
+            created_at: apiProduct.created_at,
+            updated_at: apiProduct.updated_at,
+            
+            // UI specific data with defaults
+            rating: apiProduct.rating || Math.floor(Math.random() * 2) + 4, // 4-5 stars
+            reviews: apiProduct.reviews || Math.floor(Math.random() * 100) + 10,
+            sizes: apiProduct.sizes || ["S", "M", "L", "XL"],
+            colors: apiProduct.colors || ["black", "white"],
+            type: apiProduct.type || determineProductType(apiProduct.name)
+        };
+    }
+    
+    // Determine product type from name
+    function determineProductType(name) {
+        const lowerName = name.toLowerCase();
+        if (lowerName.includes('hoodie') || lowerName.includes('sweater')) return 'hoodie';
+        if (lowerName.includes('tee') || lowerName.includes('shirt')) return 'tee';
+        if (lowerName.includes('cap') || lowerName.includes('hat')) return 'accessory';
+        if (lowerName.includes('bag') || lowerName.includes('bottle')) return 'accessory';
+        return 'other';
+    }
+    
+    // Show loading state
+    function showLoadingState() {
+        const grid = document.getElementById('productsGrid');
+        if (grid) {
+            grid.innerHTML = `
+                <div class="col-12 text-center py-5">
+                    <div class="spinner-border text-primary mb-3" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="text-muted">Loading products...</p>
+                </div>
+            `;
+        }
+    }
+    
+    // Hide loading state
+    function hideLoadingState() {
+        // Loading state will be replaced by renderProducts()
+    }
+    
+    // Fallback sample data (same as before but as function)
+    function getSampleProducts() {
+        return [
         {
             id: 1,
             name: "Black Dashers",
@@ -257,6 +376,7 @@
             type: "accessory"
         }
     ];
+    }
     
     // ===== HELPER FUNCTIONS =====
     function generateStars(rating) {
@@ -336,7 +456,8 @@
                         justify-content: center;
                         transition: transform 0.4s ease;
                     ">
-                        <img src="assets/images/products/${product.image_url}" alt="${product.name}" class="img-fluid" style="
+                        <img src="${product.image_url}" alt="${product.name}" class="img-fluid" 
+                             onerror="this.src='assets/images/products/demo.png'" style="
                             max-width: 100%;
                             max-height: 100%;
                             object-fit: contain;
@@ -502,18 +623,30 @@
         
         // Render products với Bootstrap cols
         let html = '';
-        sampleProducts.forEach(product => {
-            html += `<div class="col mb-2">${createProductCard(product)}</div>`;
-        });
+        
+        if (products.length === 0) {
+            html = `
+                <div class="col-12 text-center py-5">
+                    <div class="text-muted">
+                        <h5>No products available</h5>
+                        <p>Please check back later or try refreshing the page.</p>
+                    </div>
+                </div>
+            `;
+        } else {
+            products.forEach(product => {
+                html += `<div class="col mb-2">${createProductCard(product)}</div>`;
+            });
+        }
         
         grid.innerHTML = html;
-        console.log('✅ Products rendered with Bootstrap design:', sampleProducts.length, 'products');
+        console.log('✅ Products rendered with Bootstrap design:', products.length, 'products');
     }
     
     // ===== EVENT HANDLERS =====
     function toggleWishlist(productId, event) {
         event.stopPropagation();
-        const product = sampleProducts.find(p => p.id === productId);
+        const product = products.find(p => p.id === productId);
         if (product) {
             console.log('Toggle wishlist:', product.name);
             showToast(`Added "${product.name}" to wishlist!`, 'success');
@@ -530,7 +663,7 @@
     
     function quickView(productId, event) {
         event.stopPropagation();
-        const product = sampleProducts.find(p => p.id === productId);
+        const product = products.find(p => p.id === productId);
         if (product) {
             console.log('Quick view:', product.name);
             showToast(`Opening quick view for "${product.name}"`, 'info');
@@ -571,7 +704,7 @@
     function addProductToCart(productId, event) {
         event.stopPropagation();
         
-        const product = sampleProducts.find(p => p.id === productId);
+        const product = products.find(p => p.id === productId);
         if (product) {
             console.log('Adding to cart:', product.name);
             showToast(`Added "${product.name}" to cart!`, 'success');
@@ -612,10 +745,10 @@
     }
     
     function filterProducts(filter) {
-        let filteredProducts = sampleProducts;
+        let filteredProducts = products;
         
         if (filter !== 'all') {
-            filteredProducts = sampleProducts.filter(product => product.type === filter);
+            filteredProducts = products.filter(product => product.type === filter);
         }
         
         const grid = document.getElementById('productsGrid');
@@ -639,6 +772,7 @@
     window.renderProducts = renderProducts;
     window.toggleWishlist = toggleWishlist;
     window.quickView = quickView;
+    window.filterProducts = filterProducts; // Export filter function for app.js
     
     // ===== INITIALIZATION =====
     function initialize() {
@@ -647,20 +781,26 @@
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', function() {
                 setTimeout(() => {
-                    renderProducts();
+                    waitForApiServiceAndLoad();
                     initializeFilters();
-                }, 100);
+                }, 200); // Increased delay to ensure api-service.js loads
             });
         } else {
             setTimeout(() => {
-                renderProducts();
+                waitForApiServiceAndLoad();
                 initializeFilters();
-            }, 100);
+            }, 200);
         }
-        
-        setTimeout(() => {
-            renderProducts();
-        }, 500);
+    }
+    
+    // Wait for apiService to be available before loading products
+    function waitForApiServiceAndLoad() {
+        if (typeof window.apiService !== 'undefined') {
+            loadProductsFromAPI();
+        } else {
+            console.log('⏳ Waiting for API Service to load...');
+            setTimeout(waitForApiServiceAndLoad, 100);
+        }
     }
     
     initialize();

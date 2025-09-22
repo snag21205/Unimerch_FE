@@ -15,7 +15,8 @@ class ApiService {
             },
             users: {
                 profile: '/api/users/profile',
-                updateProfile: '/api/users/profile'
+                updateProfile: '/api/users/profile',
+                changePassword: '/api/users/change-password'
             },
             products: {
                 list: '/api/products',
@@ -199,6 +200,14 @@ class ApiService {
         return this.request(this.endpoints.users.updateProfile, {
             method: 'PUT',
             body: profileData,
+            requireAuth: true
+        });
+    }
+
+    async changePassword(passwordData) {
+        return this.request(this.endpoints.users.changePassword, {
+            method: 'PUT',
+            body: passwordData,
             requireAuth: true
         });
     }

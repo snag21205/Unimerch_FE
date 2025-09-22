@@ -3,129 +3,8 @@
 // Authentication management
 let currentUser = JSON.parse(localStorage.getItem('ueh-user')) || null;
 
-// Product data
-const products = [
-    {
-        id: 1,
-        name: "UEH Classic Hoodie",
-        price: 45.00,
-        tags: ["new", "hoodie", "winter"],
-        colors: ["#1f2937", "#374151", "#0F766E"],
-        sizes: ["XS", "S", "M", "L", "XL"],
-        description: "Premium cotton blend hoodie with embroidered UEH logo. Perfect for campus life.",
-        category: "hoodie"
-    },
-    {
-        id: 2,
-        name: "UEH Economics Tee",
-        price: 25.00,
-        tags: ["tee", "bestseller"],
-        colors: ["#ffffff", "#111827", "#0F766E"],
-        sizes: ["XS", "S", "M", "L", "XL"],
-        description: "Soft cotton t-shirt featuring the School of Economics logo.",
-        category: "tee"
-    },
-    {
-        id: 3,
-        name: "UEH Varsity Cap",
-        price: 22.00,
-        tags: ["accessory", "cap"],
-        colors: ["#1f2937", "#ffffff"],
-        sizes: ["One Size"],
-        description: "Adjustable cap with classic UEH embroidery.",
-        category: "accessory"
-    },
-    {
-        id: 4,
-        name: "UEH Business Tote",
-        price: 35.00,
-        tags: ["accessory", "bag", "limited"],
-        colors: ["#1f2937", "#374151"],
-        sizes: ["One Size"],
-        description: "Durable canvas tote bag perfect for textbooks and laptops.",
-        category: "accessory"
-    },
-    {
-        id: 5,
-        name: "UEH Water Bottle",
-        price: 18.00,
-        tags: ["accessory", "sustainable"],
-        colors: ["#0F766E", "#ffffff", "#1f2937"],
-        sizes: ["500ml"],
-        description: "Insulated stainless steel water bottle with UEH branding.",
-        category: "accessory"
-    },
-    {
-        id: 6,
-        name: "UEH Notebook Set",
-        price: 15.00,
-        tags: ["accessory", "study"],
-        colors: ["#0F766E", "#ffffff"],
-        sizes: ["A5"],
-        description: "Set of 3 premium notebooks with UEH cover design.",
-        category: "accessory"
-    },
-    {
-        id: 7,
-        name: "UEH Winter Hoodie",
-        price: 55.00,
-        tags: ["hoodie", "winter", "premium"],
-        colors: ["#1f2937", "#6b7280"],
-        sizes: ["S", "M", "L", "XL"],
-        description: "Heavyweight hoodie with fleece lining for maximum warmth.",
-        category: "hoodie"
-    },
-    {
-        id: 8,
-        name: "UEH Vintage Tee",
-        price: 28.00,
-        tags: ["tee", "vintage", "sale"],
-        colors: ["#fef3c7", "#f3f4f6"],
-        sizes: ["S", "M", "L", "XL"],
-        description: "Retro-style t-shirt celebrating UEH's heritage.",
-        category: "tee"
-    },
-    {
-        id: 9,
-        name: "UEH Zip Hoodie",
-        price: 48.00,
-        tags: ["hoodie", "new"],
-        colors: ["#374151", "#0F766E"],
-        sizes: ["XS", "S", "M", "L", "XL"],
-        description: "Full-zip hoodie with kangaroo pocket and drawstring hood.",
-        category: "hoodie"
-    },
-    {
-        id: 10,
-        name: "UEH Long Sleeve Tee",
-        price: 30.00,
-        tags: ["tee", "long-sleeve"],
-        colors: ["#ffffff", "#1f2937", "#0F766E"],
-        sizes: ["S", "M", "L", "XL"],
-        description: "Comfortable long-sleeve tee with subtle UEH branding.",
-        category: "tee"
-    },
-    {
-        id: 11,
-        name: "UEH Laptop Sleeve",
-        price: 32.00,
-        tags: ["accessory", "tech", "new"],
-        colors: ["#1f2937", "#6b7280"],
-        sizes: ["13\"", "15\""],
-        description: "Padded laptop sleeve with UEH logo and secure zipper.",
-        category: "accessory"
-    },
-    {
-        id: 12,
-        name: "UEH Alumni Polo",
-        price: 42.00,
-        tags: ["polo", "alumni", "limited"],
-        colors: ["#ffffff", "#0F766E", "#1f2937"],
-        sizes: ["S", "M", "L", "XL", "XXL"],
-        description: "Classic polo shirt designed exclusively for UEH alumni.",
-        category: "tee"
-    }
-];
+// Products will be loaded from API - no static data needed
+// main-products.js handles all product data management via API
 
 // Cart management
 let cart = JSON.parse(localStorage.getItem('ueh-cart')) || [];
@@ -146,19 +25,19 @@ const content = {
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
     console.log('DOM loaded, initializing...');
-    console.log('Products array:', products);
+    console.log('Products will be loaded by main-products.js from API');
     
     // Check authentication state
     checkAuthState();
     
-    // renderProducts(); // VÔ HIỆU HÓA - để product-card.js handle
+    // Products are handled by main-products.js via API integration
     setupEventListeners();
 });
 
-// Main render function - Clean design with proper Bootstrap grid
-function renderProducts(productsToRender = products) {
-    // VÔ HIỆU HÓA FUNCTION NÀY - để product-card.js xử lý
-    console.log('app.js renderProducts() đã bị vô hiệu hóa');
+// Main render function - Now handled by main-products.js
+function renderProducts(productsToRender = []) {
+    // This function is disabled - main-products.js handles all product rendering via API
+    console.log('app.js renderProducts() has been disabled - main-products.js handles product rendering');
     return;
 }
 
@@ -214,11 +93,11 @@ function handleScroll() {
 
 function filterProducts(category) {
     console.log('Filtering by category:', category);
-    const filteredProducts = category === 'all' 
-        ? products 
-        : products.filter(product => product.category === category);
-    
-    renderProducts(filteredProducts);
+    // Products filtering is now handled by main-products.js
+    // Trigger the filter in main-products.js if it has filterProducts function
+    if (window.filterProducts) {
+        window.filterProducts(category);
+    }
 }
 
 function updateActiveTab(activeTab) {
@@ -231,26 +110,31 @@ function updateActiveTab(activeTab) {
 // Cart functions (simplified)
 function addToCart(productId) {
     console.log('Adding product to cart:', productId);
-    const product = products.find(p => p.id === productId);
-    if (!product) return;
     
-    const existingItem = cart.find(item => item.id === productId);
-    
-    if (existingItem) {
-        existingItem.quantity += 1;
+    // Get product data from API through main-products.js
+    if (window.apiService) {
+        // For now, just add a generic item - this should be enhanced later
+        const existingItem = cart.find(item => item.id === productId);
+        
+        if (existingItem) {
+            existingItem.quantity += 1;
+        } else {
+            cart.push({
+                id: productId,
+                name: `Product ${productId}`, // Will be enhanced with real API data
+                price: 0, // Will be fetched from API
+                image: 'demo.png',
+                quantity: 1
+            });
+        }
+        
+        localStorage.setItem('ueh-cart', JSON.stringify(cart));
+        updateCartUI();
+        showToast('Product added to cart!', 'success');
     } else {
-        cart.push({
-            id: productId,
-            name: product.name,
-            price: product.price,
-            image: 'shirt.png',
-            quantity: 1
-        });
+        console.error('API service not available');
+        showToast('Unable to add to cart. Please try again.', 'error');
     }
-    
-    localStorage.setItem('ueh-cart', JSON.stringify(cart));
-    updateCartUI();
-    alert(`${product.name} đã được thêm vào giỏ hàng!`);
 }
 
 function updateCartUI() {

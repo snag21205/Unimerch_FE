@@ -258,23 +258,121 @@ const productData = {
 // Initialize page
 document.addEventListener('DOMContentLoaded', function() {
     const productId = getProductIdFromUrl();
-    loadProduct(productId);
+    loadProductFromAPI(productId);
 });
 
-// Load product data
-function loadProduct(productId) {
-    console.log('🔍 Loading product ID:', productId);
-    currentProduct = productData[productId] || productData[1];
-    console.log('📦 Current product:', currentProduct);
+// Load product data from API
+async function loadProductFromAPI(productId) {
+    console.log('🔍 Loading product ID from API:', productId);
     
-    // Update DOM elements
+    try {
+        // Check if apiService is available
+        if (typeof window.apiService === 'undefined') {
+            throw new Error('API Service not available');
+        }
+        
+        // Show loading state
+        showLoadingState();
+        
+        // Call API to get product detail
+        const response = await window.apiService.getProductDetail(productId);
+        console.log('📦 API Response:', response);
+        
+        if (response.success && response.data) {
+            // Transform API data to match UI expectations
+            currentProduct = transformProductData(response.data);
+            console.log('✅ Current product loaded from API:', currentProduct);
+            
+            // Update DOM elements
+            updateProductUI();
+            
+        } else {
+            throw new Error('Invalid API response or product not found');
+        }
+        
+    } catch (error) {
+        console.error('❌ Failed to load product from API:', error);
+        
+        // Fallback to sample data
+        console.log('🔄 Using fallback sample data...');
+        loadProduct(productId);
+        
+        // Show user-friendly error message
+        if (window.UiUtils) {
+            UiUtils.showToast('Unable to load product details. Using cached data.', 'warning');
+        }
+        
+    } finally {
+        hideLoadingState();
+    }
+}
+
+// Transform API product data to match UI expectations
+function transformProductData(apiProduct) {
+    // Handle image URL - support both full URLs and relative paths
+    let imageUrl = apiProduct.image_url || 'demo.png';
+    
+    // If it's already a full URL (starts with http), use as is
+    // Otherwise, construct local path
+    if (!imageUrl.startsWith('http')) {
+        // Remove any leading path separators and construct proper path
+        const filename = imageUrl.replace(/^.*[\\\/]/, ''); // Get just filename
+        imageUrl = `../../assets/images/products/${filename}`;
+    }
+    
+    return {
+        id: apiProduct.id,
+        name: apiProduct.name || 'Unknown Product',
+        description: apiProduct.description || 'No description available',
+        price: parseFloat(apiProduct.price) || 0,
+        discount_price: apiProduct.discount_price ? parseFloat(apiProduct.discount_price) : null,
+        quantity: apiProduct.quantity || 0,
+        image_url: imageUrl,
+        category_id: apiProduct.category_id,
+        category: apiProduct.category_name || apiProduct.category || 'General',
+        rating: apiProduct.rating || Math.floor(Math.random() * 2) + 4, // 4-5 stars
+        reviews: apiProduct.reviews || Math.floor(Math.random() * 100) + 10,
+        sizes: apiProduct.sizes || ["S", "M", "L", "XL"],
+        colors: apiProduct.colors || ["black", "white"],
+        type: apiProduct.type || determineProductType(apiProduct.name),
+        status: apiProduct.status || 'available',
+        seller_name: apiProduct.seller_name || 'Unimerch'
+    };
+}
+
+// Determine product type from name (helper function)
+function determineProductType(name) {
+    const lowerName = name.toLowerCase();
+    if (lowerName.includes('hoodie') || lowerName.includes('sweater')) return 'hoodie';
+    if (lowerName.includes('tee') || lowerName.includes('shirt')) return 'tee';
+    if (lowerName.includes('cap') || lowerName.includes('hat')) return 'accessory';
+    if (lowerName.includes('bag') || lowerName.includes('bottle')) return 'accessory';
+    return 'other';
+}
+
+// Update product UI elements
+function updateProductUI() {
     const productImage = document.getElementById('productImage');
     const productTitle = document.getElementById('productTitle');
     const productCategory = document.getElementById('productCategory');
     const productDescription = document.getElementById('productDescription');
     const totalPrice = document.getElementById('totalPrice');
     
-    if (productImage) productImage.src = currentProduct.image_url;
+    if (productImage) {
+        productImage.src = currentProduct.image_url;
+        
+        // Add error handling for image loading
+        productImage.onerror = function() {
+            console.warn('Failed to load image:', currentProduct.image_url);
+            console.log('Falling back to demo.png');
+            this.src = '../../assets/images/products/demo.png';
+        };
+        
+        productImage.onload = function() {
+            console.log('✅ Product image loaded successfully');
+        };
+    }
+    
     if (productTitle) productTitle.textContent = currentProduct.name;
     if (productCategory) productCategory.textContent = currentProduct.category;
     if (productDescription) productDescription.textContent = currentProduct.description;
@@ -289,7 +387,7 @@ function loadProduct(productId) {
     console.log('🔧 Generating size options...');
     generateSizeOptions();
     
-    // Generate color options  
+    // Generate color options
     console.log('🎨 Generating color options...');
     generateColorOptions();
     
@@ -303,7 +401,41 @@ function loadProduct(productId) {
     updateTotalPrice();
     updateSelections();
     
+    // Update document title
+    document.title = `${currentProduct.name} - UEH Merch`;
+    
     console.log('🎯 Product load complete!');
+}
+
+// Show loading state
+function showLoadingState() {
+    const overlay = document.getElementById('loadingOverlay');
+    if (overlay) {
+        overlay.classList.remove('fade-out');
+        overlay.style.display = 'flex';
+    }
+}
+
+// Hide loading state
+function hideLoadingState() {
+    const overlay = document.getElementById('loadingOverlay');
+    if (overlay) {
+        overlay.classList.add('fade-out');
+        
+        // Remove overlay after animation completes
+        setTimeout(() => {
+            overlay.style.display = 'none';
+        }, 300);
+    }
+}
+
+// Legacy load product function (fallback)
+function loadProduct(productId) {
+    console.log('🔍 Loading product ID (fallback):', productId);
+    currentProduct = productData[productId] || productData[1];
+    console.log('📦 Current product (fallback):', currentProduct);
+    
+    updateProductUI();
 }
 
 // Generate rating stars

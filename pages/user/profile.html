@@ -17,6 +17,34 @@
     <link rel="stylesheet" href="../../css/styles.css">
     <link rel="stylesheet" href="../../css/profile.css">
     
+    <!-- Custom CSS to hide validation icons but keep colors -->
+    <style>
+        /* Hide Bootstrap validation icons to prevent overlap with toggle buttons */
+        .form-control.is-valid {
+            background-image: none !important;
+            padding-right: 3rem !important; /* Space for toggle button */
+        }
+        
+        .form-control.is-invalid {
+            background-image: none !important;
+            padding-right: 3rem !important; /* Space for toggle button */
+        }
+        
+        /* Keep the colored borders */
+        .form-control.is-valid {
+            border-color: #198754 !important;
+        }
+        
+        .form-control.is-invalid {
+            border-color: #dc3545 !important;
+        }
+        
+        /* Ensure toggle button is always visible */
+        .position-relative .btn {
+            z-index: 10 !important;
+        }
+    </style>
+    
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -179,15 +207,51 @@
                                             <div class="row g-3">
                                                 <div class="col-12">
                                                     <label for="currentPassword" class="form-label">Current Password</label>
-                                                    <input type="password" class="form-control" id="currentPassword">
+                                                    <div class="position-relative">
+                                                        <input type="password" class="form-control" id="currentPassword" required>
+                                                        <button type="button" class="btn btn-link position-absolute end-0 top-50 translate-middle-y me-2" 
+                                                                onclick="togglePassword('currentPassword')" style="border: none; background: none; z-index: 10;">
+                                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                                                <circle cx="12" cy="12" r="3"></circle>
+                                                            </svg>
+                                                        </button>
+                                                    </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label for="newPassword" class="form-label">New Password</label>
-                                                    <input type="password" class="form-control" id="newPassword">
+                                                    <div class="position-relative">
+                                                        <input type="password" class="form-control" id="newPassword" required minlength="8">
+                                                        <button type="button" class="btn btn-link position-absolute end-0 top-50 translate-middle-y me-2" 
+                                                                onclick="togglePassword('newPassword')" style="border: none; background: none; z-index: 10;">
+                                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                                                <circle cx="12" cy="12" r="3"></circle>
+                                                            </svg>
+                                                        </button>
+                                                    </div>
+                                                    <div class="form-text mt-2">
+                                                        Password requirements:
+                                                        <ul class="mb-0 mt-1" style="font-size: 0.75rem; list-style: none; padding-left: 0;">
+                                                            <li id="length-req" class="text-muted" style="padding: 1px 0;">• At least 8 characters</li>
+                                                            <li id="uppercase-req" class="text-muted" style="padding: 1px 0;">• At least 1 uppercase letter</li>
+                                                            <li id="number-req" class="text-muted" style="padding: 1px 0;">• At least 1 number</li>
+                                                            <li id="special-req" class="text-muted" style="padding: 1px 0;">• At least 1 special character</li>
+                                                        </ul>
+                                                    </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label for="confirmPassword" class="form-label">Confirm New Password</label>
-                                                    <input type="password" class="form-control" id="confirmPassword">
+                                                    <div class="position-relative">
+                                                        <input type="password" class="form-control" id="confirmPassword" required>
+                                                        <button type="button" class="btn btn-link position-absolute end-0 top-50 translate-middle-y me-2" 
+                                                                onclick="togglePassword('confirmPassword')" style="border: none; background: none; z-index: 10;">
+                                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                                                <circle cx="12" cy="12" r="3"></circle>
+                                                            </svg>
+                                                        </button>
+                                                    </div>
                                                 </div>
                                                 <div class="col-12">
                                                     <button type="submit" class="btn btn-save text-white">Update Password</button>
