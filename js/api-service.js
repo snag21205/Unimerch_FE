@@ -178,14 +178,25 @@ class ApiService {
 
     async logout() {
         try {
-            await this.request(this.endpoints.auth.logout, {
+            const token = this.getToken();
+            const response = await this.request(this.endpoints.auth.logout, {
                 method: 'POST',
-                requireAuth: true
+                requireAuth: true,
+                body: { token } // Send token in body as well
             });
+            
+            // Remove token after successful API call
+            this.removeToken();
+            
+            // Return the actual server response
+            return response;
         } catch (error) {
             console.warn('Logout API call failed:', error);
-        } finally {
+            // Still remove token locally even if API fails
             this.removeToken();
+            
+            // Re-throw the error so logout.js can handle it
+            throw error;
         }
     }
 

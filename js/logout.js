@@ -1,39 +1,38 @@
 async function logout() {
     try {
-        const token = localStorage.getItem('authToken');
-        
-        if (token) {
-            // Try to logout via API
-            const response = await fetch('https://api.unimerch.space/api/auth/logout', {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                }
-            });
-
-            if (!response.ok) {
-                console.warn('Server logout failed, but continuing with local logout');
+        // Use ApiService for logout
+        if (window.apiService) {
+            const response = await window.apiService.logout();
+            
+            // Show success message if API call succeeded
+            if (response && response.success) {
+                alert(response.message || 'Đăng xuất thành công!');
+            } else {
+                alert('Đăng xuất thành công!');
             }
+        } else {
+            // Fallback: manual token removal if apiService not available
+            localStorage.removeItem('authToken');
+            alert('Đăng xuất thành công!');
         }
     } catch (error) {
-        console.warn('Logout API call failed:', error);
-        // Continue with local logout even if server call fails
+        console.warn('Logout failed:', error);
+        // Still clear local data even if API fails
+        localStorage.removeItem('authToken');
+        alert('Đăng xuất thành công!');
     }
 
-    // Always clear local data regardless of server response
+    // Clear all local data (apiService.logout() already removes token)
     localStorage.removeItem('isLoggedIn');
     localStorage.removeItem('username');
     localStorage.removeItem('userEmail');
     localStorage.removeItem('userInfo');
-    localStorage.removeItem('authToken');
 
     // Update UI
     if (typeof checkAuthState === 'function') {
         checkAuthState();
     }
 
-    // Show success message and redirect
-    alert('Logged out successfully!');
+    // Redirect to home
     window.location.href = '../../index.html';
 }
