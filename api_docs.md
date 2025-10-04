@@ -1,6 +1,6 @@
 # UniMerch API Documentation
 
-**Version:** 1.0  
+**Version:** 1.0.0  
 **Base URL:** `https://api.unimerch.space`  
 **Content-Type:** `application/json`
 
