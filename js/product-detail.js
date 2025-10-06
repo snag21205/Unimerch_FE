@@ -575,18 +575,44 @@ function updateTotalPrice() {
 
 // Add to cart
 function addToCart() {
-    const cartItem = {
-        id: currentProduct.id,
-        name: currentProduct.name,
-        price: currentProduct.price,
-        size: selectedSize,
-        color: selectedColor,
-        quantity: quantity,
-        image: currentProduct.image_url
-    };
-    
-    console.log('Adding to cart:', cartItem);
-    alert(`Added ${cartItem.name} (${cartItem.size}, ${cartItem.color}) x${cartItem.quantity} to cart!`);
+    // Check if cart service is available
+    if (window.cartService) {
+        // Prepare product data for cart
+        const productData = {
+            product_name: currentProduct.name,
+            product_price: currentProduct.price,
+            discount_price: currentProduct.discount_price,
+            image: currentProduct.image_url,
+            name: currentProduct.name,
+            price: currentProduct.price,
+            size: selectedSize,
+            color: selectedColor
+        };
+        
+        // Add to cart using cart service
+        cartService.addToCart(currentProduct.id, quantity, productData);
+        
+        // Show cart after adding
+        if (window.cartUI) {
+            setTimeout(() => {
+                cartUI.showCart();
+            }, 500); // Small delay to let the cart update
+        }
+    } else {
+        // Fallback for when cart service is not available
+        const cartItem = {
+            id: currentProduct.id,
+            name: currentProduct.name,
+            price: currentProduct.price,
+            size: selectedSize,
+            color: selectedColor,
+            quantity: quantity,
+            image: currentProduct.image_url
+        };
+        
+        console.log('Adding to cart:', cartItem);
+        alert(`Added ${cartItem.name} (${cartItem.size}, ${cartItem.color}) x${cartItem.quantity} to cart!`);
+    }
 }
 
 // Buy now

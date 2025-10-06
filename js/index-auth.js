@@ -4,15 +4,26 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Check authentication state for index page
     checkAuthState();
-    updateCartUI();
     
     // Listen for storage changes
     window.addEventListener('storage', function(e) {
-        if (e.key === 'isLoggedIn' || e.key === 'username') {
+        if (e.key === 'isLoggedIn' || e.key === 'username' || e.key === 'token') {
             checkAuthState();
         }
-        if (e.key === 'ueh-cart') {
-            updateCartUI();
+    });
+    
+    // Listen for auth state changes to handle cart sync
+    // This will be called when user logs in
+    window.addEventListener('user-logged-in', function() {
+        if (window.cartService) {
+            cartService.handleUserLogin();
+        }
+    });
+    
+    // This will be called when user logs out
+    window.addEventListener('user-logged-out', function() {
+        if (window.cartService) {
+            cartService.handleUserLogout();
         }
     });
 });
@@ -21,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
 function checkAuthState() {
     const notLoggedIn = document.getElementById('notLoggedIn');
     const loggedIn = document.getElementById('loggedIn');
-    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    const isLoggedIn = apiService && apiService.isAuthenticated();
     
     if (isLoggedIn) {
         // User is logged in
@@ -30,10 +41,20 @@ function checkAuthState() {
         
         // Update user info
         updateUserDisplay();
+        
+        // Sync cart if cart service is available
+        if (window.cartService && !cartService.isLoaded) {
+            cartService.init();
+        }
     } else {
         // User is not logged in
         if (notLoggedIn) notLoggedIn.classList.remove('d-none');
         if (loggedIn) loggedIn.classList.add('d-none');
+        
+        // Still initialize cart service for guest users
+        if (window.cartService && !cartService.isLoaded) {
+            cartService.init();
+        }
     }
 }
 
@@ -68,31 +89,51 @@ function updateUserDisplay() {
     }
 }
 
-// Update cart UI
+// Update cart UI (now delegated to cart service)
 function updateCartUI() {
-    const cartCount = document.getElementById('cartCount');
-    const cart = JSON.parse(localStorage.getItem('ueh-cart')) || [];
-    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-    
-    if (cartCount) {
-        if (totalItems > 0) {
-            cartCount.textContent = totalItems;
-            cartCount.classList.remove('d-none');
-        } else {
-            cartCount.classList.add('d-none');
+    // This function is now handled by cart service
+    // Keep for backward compatibility
+    if (window.cartService) {
+        const cartData = cartService.getCart();
+        const cartCount = document.getElementById('cartCount');
+        
+        if (cartCount) {
+            const totalItems = cartData.summary ? cartData.summary.total_items : 0;
+            if (totalItems > 0) {
+                cartCount.textContent = totalItems;
+                cartCount.classList.remove('d-none');
+            } else {
+                cartCount.classList.add('d-none');
+            }
         }
     }
 }
 
 // Logout function for index page
 function logout() {
+    // Use API service logout if available
+    if (window.apiService) {
+        apiService.logout().catch(error => {
+            console.warn('API logout failed:', error);
+        });
+    }
+    
+    // Clear local storage
     localStorage.removeItem('isLoggedIn');
     localStorage.removeItem('username');
     localStorage.removeItem('userEmail');
     localStorage.removeItem('userInfo');
     localStorage.removeItem('ueh-user');
     localStorage.removeItem('ueh-profile');
-    localStorage.removeItem('ueh-cart');
+    localStorage.removeItem('token');
+    
+    // Handle cart logout
+    if (window.cartService) {
+        cartService.handleUserLogout();
+    }
+    
+    // Dispatch logout event
+    window.dispatchEvent(new CustomEvent('user-logged-out'));
     
     // Refresh the page to update auth state
     window.location.reload();

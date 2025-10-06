@@ -26,9 +26,12 @@ class ApiService {
             cart: {
                 get: '/api/cart',
                 add: '/api/cart/add',
-                update: '/api/cart/update',
-                remove: '/api/cart/remove',
-                clear: '/api/cart/clear'
+                update: '/api/cart/update/:id',
+                remove: '/api/cart/remove/:id',
+                clear: '/api/cart/clear',
+                count: '/api/cart/count',
+                total: '/api/cart/total',
+                validate: '/api/cart/validate'
             },
             orders: {
                 list: '/api/orders',
@@ -253,7 +256,7 @@ class ApiService {
     async addToCart(productId, quantity = 1, options = {}) {
         return this.request(this.endpoints.cart.add, {
             method: 'POST',
-            body: { productId, quantity, ...options },
+            body: { product_id: productId, quantity, ...options },
             requireAuth: true
         });
     }
@@ -261,7 +264,8 @@ class ApiService {
     async updateCartItem(itemId, quantity) {
         return this.request(this.endpoints.cart.update, {
             method: 'PUT',
-            body: { itemId, quantity },
+            body: { quantity },
+            params: { id: itemId },
             requireAuth: true
         });
     }
@@ -269,7 +273,7 @@ class ApiService {
     async removeFromCart(itemId) {
         return this.request(this.endpoints.cart.remove, {
             method: 'DELETE',
-            body: { itemId },
+            params: { id: itemId },
             requireAuth: true
         });
     }
@@ -277,6 +281,24 @@ class ApiService {
     async clearCart() {
         return this.request(this.endpoints.cart.clear, {
             method: 'DELETE',
+            requireAuth: true
+        });
+    }
+
+    async getCartCount() {
+        return this.request(this.endpoints.cart.count, {
+            requireAuth: true
+        });
+    }
+
+    async getCartTotal() {
+        return this.request(this.endpoints.cart.total, {
+            requireAuth: true
+        });
+    }
+
+    async validateCart() {
+        return this.request(this.endpoints.cart.validate, {
             requireAuth: true
         });
     }

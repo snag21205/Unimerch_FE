@@ -707,7 +707,25 @@
         const product = products.find(p => p.id === productId);
         if (product) {
             console.log('Adding to cart:', product.name);
-            showToast(`Added "${product.name}" to cart!`, 'success');
+            
+            // Check if cart service is available
+            if (window.cartService) {
+                // Prepare product data for cart
+                const productData = {
+                    product_name: product.name,
+                    product_price: product.price,
+                    discount_price: product.discount_price,
+                    image: product.image_url,
+                    name: product.name,
+                    price: product.price
+                };
+                
+                // Add to cart using cart service
+                cartService.addToCart(productId, 1, productData);
+            } else {
+                // Fallback to simple toast
+                showToast(`Added "${product.name}" to cart!`, 'success');
+            }
         }
     }
     
