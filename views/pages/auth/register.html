@@ -9,21 +9,18 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     
     <!-- Minimal custom styles -->
-    <link rel="stylesheet" href="../../css/styles.css">
+    <link rel="stylesheet" href="../../styles/styles.css">
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Header Component Script -->
+    <script src="../../components/header.js"></script>
 </head>
 <body class="bg-white">
-    <!-- Simple Navigation -->
-    <nav class="navbar navbar-light bg-white border-bottom">
-        <div class="container-fluid px-4">
-            <a class="navbar-brand fw-semibold fs-4" href="../../index.html" style="color: #111;">Unimerch</a>
-            <a href="login.html" class="btn btn-outline-dark btn-sm rounded-pill px-3">Login</a>
-        </div>
-    </nav>
+    <!-- Header will be loaded here automatically by header.js -->
 
     <!-- Register Form -->
     <main class="d-flex align-items-center justify-content-center" style="min-height: 90vh;">
@@ -194,8 +191,8 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../../js/utils.js"></script>
-    <script src="../../js/api-service.js"></script>
-    <script src="../../js/register-validation.js"></script>
+    <script src="../../../controllers/utils.js"></script>
+    <script src="../../../models/api-service.js"></script>
+    <script src="../../../controllers/register-validation.js"></script>
 </body>
 </html>
