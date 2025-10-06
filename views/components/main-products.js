@@ -712,7 +712,7 @@
     }
     
     function goToProductDetail(productId) {
-        window.location.href = `pages/products/product-detail.html?id=${productId}`;
+        window.location.href = `views/pages/products/product-detail.html?id=${productId}`;
     }
     
     function showToast(message, type = 'info') {

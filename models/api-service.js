@@ -106,7 +106,7 @@ class ApiService {
             // Handle different error types
             if (response.status === 401) {
                 this.removeToken();
-                window.location.href = '/pages/auth/login.html';
+                window.location.href = './views/pages/auth/login.html';
             }
             
             throw new Error(data.message || `HTTP error! status: ${response.status}`);

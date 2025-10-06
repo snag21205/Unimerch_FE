@@ -28,7 +28,7 @@ async function handleSignIn() {
         localStorage.setItem('userEmail', data.data.user?.email || username);
         
         alert('Login successful! Welcome back!');
-        window.location.href = '../../index.html';
+        window.location.href = '../../../index.html';
     } catch (error) {
         console.error('Error during login:', error);
         alert('Login failed: ' + error.message);
