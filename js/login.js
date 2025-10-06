@@ -27,6 +27,11 @@ async function handleSignIn() {
         localStorage.setItem('username', data.data.user?.fullName || data.data.user?.username || username);
         localStorage.setItem('userEmail', data.data.user?.email || username);
         
+        // Dispatch login event for cart sync
+        window.dispatchEvent(new CustomEvent('user-logged-in', {
+            detail: data.data.user
+        }));
+        
         alert('Login successful! Welcome back!');
         window.location.href = '../../index.html';
     } catch (error) {

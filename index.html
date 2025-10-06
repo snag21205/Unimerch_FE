@@ -533,11 +533,17 @@
             </div>
             <div id="cartFooter" class="d-none">
                 <hr>
-                <div class="d-flex justify-content-between mb-3">
-                    <strong>Subtotal:</strong>
-                    <strong id="cartSubtotal">$0.00</strong>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <button class="btn btn-link text-danger btn-sm p-0" onclick="cartUI.clearCart()">
+                        Xóa tất cả
+                    </button>
+                    <small class="text-muted">Tạm tính</small>
                 </div>
-                <button class="btn btn-dark w-100 rounded-pill" onclick="checkout()">Checkout</button>
+                <div class="d-flex justify-content-between mb-3">
+                    <strong>Tổng cộng:</strong>
+                    <strong id="cartSubtotal">0₫</strong>
+                </div>
+                <button class="btn btn-dark w-100 rounded-pill" onclick="checkout()">Thanh toán</button>
             </div>
         </div>
     </div>
@@ -553,6 +559,10 @@
     <!-- API Service and Utils - MUST BE LOADED FIRST -->
     <script src="js/utils.js"></script>
     <script src="js/api-service.js"></script>
+    
+    <!-- Cart Services -->
+    <script src="js/cart-service.js"></script>
+    <script src="js/cart-ui.js"></script>
 
     <!-- Auth logic for index page -->
     <script src="js/index-auth.js"></script>
