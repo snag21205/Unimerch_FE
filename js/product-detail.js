@@ -19,7 +19,7 @@ const productData = {
         price: 64.00,
         discount_price: null,
         quantity: 15,
-        image_url: "../../../assets/images/products/demo.png",
+        image_url: "../../assets/images/products/demo.png",
         category_id: 3,
         seller_id: 1,
         status: "available",
@@ -40,7 +40,7 @@ const productData = {
         price: 45.00,
         discount_price: 39.99,
         quantity: 25,
-        image_url: "../../../assets/images/products/SP-04.png",
+        image_url: "../../assets/images/products/SP-04.png",
         category_id: 1,
         seller_id: 1,
         status: "available",
@@ -60,7 +60,7 @@ const productData = {
         price: 25.00,
         discount_price: null,
         quantity: 50,
-        image_url: "../../../assets/images/products/shirt.png",
+        image_url: "../../assets/images/products/shirt.png",
         category_id: 2,
         seller_id: 1,
         status: "available",
@@ -80,7 +80,7 @@ const productData = {
         price: 75.00,
         discount_price: null,
         quantity: 20,
-        image_url: "../../../assets/images/products/SP-25.png",
+        image_url: "../../assets/images/products/SP-25.png",
         category_id: 3,
         seller_id: 1,
         status: "available",
@@ -100,7 +100,7 @@ const productData = {
         price: 89.00,
         discount_price: null,
         quantity: 10,
-        image_url: "../../../assets/images/products/demo.png",
+        image_url: "../../assets/images/products/demo.png",
         category_id: 1,
         seller_id: 1,
         status: "available",
@@ -120,7 +120,7 @@ const productData = {
         price: 22.00,
         discount_price: null,
         quantity: 30,
-        image_url: "../../../assets/images/products/demo.png",
+        image_url: "../../assets/images/products/demo.png",
         category_id: 3,
         seller_id: 1,
         status: "available",
@@ -140,7 +140,7 @@ const productData = {
         price: 55.00,
         discount_price: null,
         quantity: 40,
-        image_url: "../../../assets/images/products/demo.png",
+        image_url: "../../assets/images/products/demo.png",
         category_id: 1,
         seller_id: 1,
         status: "available",
@@ -160,7 +160,7 @@ const productData = {
         price: 28.00,
         discount_price: null,
         quantity: 25,
-        image_url: "../../../assets/images/products/demo.png",
+        image_url: "../../assets/images/products/demo.png",
         category_id: 3,
         seller_id: 1,
         status: "available",
@@ -180,7 +180,7 @@ const productData = {
         price: 42.00,
         discount_price: null,
         quantity: 35,
-        image_url: "../../../assets/images/products/demo.png",
+        image_url: "../../assets/images/products/demo.png",
         category_id: 2,
         seller_id: 1,
         status: "available",
@@ -200,7 +200,7 @@ const productData = {
         price: 18.00,
         discount_price: null,
         quantity: 50,
-        image_url: "../../../assets/images/products/demo.png",
+        image_url: "../../assets/images/products/demo.png",
         category_id: 3,
         seller_id: 1,
         status: "available",
@@ -220,7 +220,7 @@ const productData = {
         price: 32.00,
         discount_price: null,
         quantity: 45,
-        image_url: "../../../assets/images/products/demo.png",
+        image_url: "../../assets/images/products/demo.png",
         category_id: 2,
         seller_id: 1,
         status: "available",
@@ -240,7 +240,7 @@ const productData = {
         price: 35.00,
         discount_price: null,
         quantity: 0,
-        image_url: "../../../assets/images/products/demo.png",
+        image_url: "../../assets/images/products/demo.png",
         category_id: 3,
         seller_id: 1,
         status: "out_of_stock",
@@ -317,7 +317,7 @@ function transformProductData(apiProduct) {
     if (!imageUrl.startsWith('http')) {
         // Remove any leading path separators and construct proper path
         const filename = imageUrl.replace(/^.*[\\\/]/, ''); // Get just filename
-        imageUrl = `../../../assets/images/products/${filename}`;
+        imageUrl = `../../assets/images/products/${filename}`;
     }
     
     return {
@@ -365,7 +365,7 @@ function updateProductUI() {
         productImage.onerror = function() {
             console.warn('Failed to load image:', currentProduct.image_url);
             console.log('Falling back to demo.png');
-            this.src = '../../../assets/images/products/demo.png';
+            this.src = '../../assets/images/products/demo.png';
         };
         
         productImage.onload = function() {

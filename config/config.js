@@ -12,11 +12,11 @@ const CONFIG = {
     // Route configurations
     ROUTES: {
         HOME: './index.html',
-        LOGIN: './views/pages/auth/login.html',
-        REGISTER: './views/pages/auth/register.html',
-        PROFILE: './views/pages/user/profile.html',
-        ORDERS: './views/pages/user/orders.html',
-        PRODUCT_DETAIL: './views/pages/products/product-detail.html'
+        LOGIN: './pages/auth/login.html',
+        REGISTER: './pages/auth/register.html',
+        PROFILE: './pages/user/profile.html',
+        ORDERS: './pages/user/orders.html',
+        PRODUCT_DETAIL: './pages/products/product-detail.html'
     },
     
     // Application settings

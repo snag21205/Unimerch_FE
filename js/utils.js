@@ -319,7 +319,7 @@ class AuthUtils {
     /**
      * Logout user and redirect
      */
-    static async logout(redirectUrl = './views/pages/auth/login.html') {
+    static async logout(redirectUrl = '/pages/auth/login.html') {
         try {
             if (apiService) {
                 await apiService.logout();
@@ -338,7 +338,7 @@ class AuthUtils {
     /**
      * Redirect to login if not authenticated
      */
-    static requireAuth(redirectUrl = './views/pages/auth/login.html') {
+    static requireAuth(redirectUrl = '/pages/auth/login.html') {
         if (!this.isAuthenticated()) {
             window.location.href = redirectUrl;
             return false;

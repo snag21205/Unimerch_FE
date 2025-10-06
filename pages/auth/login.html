@@ -9,18 +9,45 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     
     <!-- Minimal custom styles -->
-    <link rel="stylesheet" href="../../styles/styles.css">
+    <link rel="stylesheet" href="../../css/styles.css">
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Header Component Script -->
-    <script src="../../components/header.js"></script>
 </head>
 <body class="bg-white">
-    <!-- Header will be loaded here automatically by header.js -->
+    <!-- Modern Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top border-bottom">
+        <div class="container">
+            <a class="navbar-brand fw-bold fs-3" href="../../index.html" style="color: #111; letter-spacing: -0.02em;">Unimerch</a>
+            
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        <a class="nav-link fw-medium px-3" href="../../index.html" style="color: #666;">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-medium px-3" href="../../index.html#products" style="color: #666;">Products</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-medium px-3" href="../user/orders.html" style="color: #666;">Orders</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-medium px-3" href="../user/profile.html" style="color: #666;">Profile</a>
+                    </li>
+                </ul>
+                
+                <div class="d-flex align-items-center gap-3">
+                    <a href="register.html" class="btn btn-outline-dark rounded-pill px-4 py-2 fw-medium">Register</a>
+                </div>
+            </div>
+        </div>
+    </nav>
 
     <!-- Login Form -->
     <main class="d-flex align-items-center justify-content-center" style="min-height: 90vh;">
@@ -105,8 +132,8 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../../../controllers/utils.js"></script>
-    <script src="../../../models/api-service.js"></script>
-    <script src="../../../controllers/login.js"></script>
+    <script src="../../js/utils.js"></script>
+    <script src="../../js/api-service.js"></script>
+    <script src="../../js/login.js"></script>
 </body>
 </html>
