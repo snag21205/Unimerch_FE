@@ -1,116 +1,27 @@
-<!-- Reusable Header Component -->
-<style>
-/* Simple navbar styling */
-.navbar {
-    z-index: 1030 !important;
-}
-
-/* User profile button hover effect */
-.logged-in-btn:hover {
-    opacity: 0.8;
-    transform: translateY(-1px);
-    transition: all 0.3s ease;
-}
-</style>
-
-<nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top" id="mainNav">
+<!-- Reusable Header Component (Simple Style like Profile Page) -->
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top shadow-sm" id="mainNav">
     <div class="container-fluid px-3 px-lg-5">
-        <!-- Brand -->
-        <a class="navbar-brand fw-semibold fs-4" href="../../index.html" style="color: #111;">Unimerch</a>
+        <a class="navbar-brand fw-semibold fs-4" href="../../../index.html" style="color: #111;">Unimerch</a>
         
-        <!-- Toggle button for mobile -->
         <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
         
-        <!-- Navigation items -->
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav mx-auto d-none d-lg-flex">
                 <li class="nav-item mx-3">
-                    <a class="nav-link" href="../../index.html#new">New</a>
+                    <a class="nav-link" href="../../../index.html">Home</a>
                 </li>
                 <li class="nav-item mx-3">
-                    <a class="nav-link" href="../../index.html#products">Hoodies</a>
-                </li>
-                <li class="nav-item mx-3">
-                    <a class="nav-link" href="../../index.html#products">Tees</a>
-                </li>
-                <li class="nav-item mx-3">
-                    <a class="nav-link" href="../../index.html#products">Accessories</a>
-                </li>
-                <li class="nav-item mx-3">
-                    <a class="nav-link" href="../../index.html#products">Sale</a>
+                    <a class="nav-link" href="../../../index.html#products">Products</a>
                 </li>
             </ul>
             
-            <!-- Right side controls -->
             <div class="d-flex align-items-center gap-3">
-                <button class="btn btn-link p-0 border-0" id="searchBtn" data-bs-toggle="modal" data-bs-target="#searchModal">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <path d="m21 21-4.35-4.35"></path>
-                    </svg>
-                </button>
-                
-                <button class="btn btn-link p-0 border-0 position-relative" id="cartBtn" data-bs-toggle="offcanvas" data-bs-target="#cartOffcanvas">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="8" cy="21" r="1"></circle>
-                        <circle cx="19" cy="21" r="1"></circle>
-                        <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57L20.5 9H5.12"></path>
-                    </svg>
-                    <span class="badge bg-white text-dark rounded-pill position-absolute top-0 start-100 translate-middle d-none" id="cartCount" style="border: 1px solid #e5e7eb; font-weight: 600;">0</span>
-                </button>
-                
-                <!-- Auth Section -->
-                <div id="authSection">
-                    <!-- Not logged in state -->
-                    <div id="notLoggedIn" class="d-flex align-items-center gap-2">
-                        <a href="../user/profile.html" class="btn btn-link p-0 border-0" title="Profile">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                                <circle cx="12" cy="7" r="4"></circle>
-                            </svg>
-                        </a>
-                        <a href="../auth/login.html" class="btn btn-outline-dark btn-sm rounded-pill px-3" style="font-size: 14px; font-weight: 500;">
-                            Login
-                        </a>
-                        <a href="../auth/register.html" class="btn btn-dark btn-sm rounded-pill px-3" style="
-                            font-size: 14px; 
-                            font-weight: 500;
-                            background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
-                            border: none;
-                        ">
-                            Sign Up
-                        </a>
-                    </div>
-                    
-                    <!-- Logged in state -->
-                    <div id="loggedIn" class="d-none">
-                        <a href="../user/profile.html" class="btn btn-link p-0 border-0 d-flex align-items-center gap-2 text-decoration-none logged-in-btn" style="color: #374151;">
-                            <div class="d-flex align-items-center justify-content-center rounded-circle" style="
-                                width: 32px; 
-                                height: 32px; 
-                                background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
-                                color: white;
-                                font-size: 14px;
-                                font-weight: 600;
-                            " id="userAvatar">
-                                U
-                            </div>
-                            <span class="fw-medium d-none d-lg-inline" id="username" style="font-size: 14px;">User</span>
-                        </a>
-                    </div>
-                </div>
-                
-                <div class="dropdown">
-                    <button class="btn btn-link dropdown-toggle p-0 border-0" type="button" data-bs-toggle="dropdown">
-                        EN
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="#" onclick="toggleLanguage('en')">English</a></li>
-                        <li><a class="dropdown-item" href="#" onclick="toggleLanguage('vi')">Tiếng Việt</a></li>
-                    </ul>
-                </div>
+                <a href="../../../index.html" class="btn btn-outline-dark btn-sm rounded-pill px-3">
+                    ← Back to Store
+                </a>
             </div>
         </div>
     </div>
