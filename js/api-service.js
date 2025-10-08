@@ -37,7 +37,18 @@ class ApiService {
                 list: '/api/orders',
                 create: '/api/orders',
                 detail: '/api/orders/:id',
-                cancel: '/api/orders/:id/cancel'
+                updateStatus: '/api/orders/:id/status',
+                cancel: '/api/orders/:id',
+                items: '/api/orders/:id/items',
+                stats: '/api/orders/stats'
+            },
+            payments: {
+                create: '/api/payments',
+                orderPayments: '/api/payments/:orderId',
+                detail: '/api/payments/detail/:id',
+                updateStatus: '/api/payments/:id/status',
+                userPayments: '/api/payments/user',
+                refund: '/api/payments/:id/refund'
             }
         };
     }
@@ -103,16 +114,48 @@ class ApiService {
      * Handle API response
      */
     async handleResponse(response) {
-        const data = await response.json();
+        let data;
+        
+        try {
+            data = await response.json();
+        } catch (error) {
+            throw new Error(`Lỗi phân tích phản hồi từ server: ${error.message}`);
+        }
 
         if (!response.ok) {
             // Handle different error types
             if (response.status === 401) {
                 this.removeToken();
+                localStorage.setItem('isLoggedIn', 'false');
                 window.location.href = '/pages/auth/login.html';
+                throw new Error('Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.');
             }
             
-            throw new Error(data.message || `HTTP error! status: ${response.status}`);
+            if (response.status === 403) {
+                throw new Error('Bạn không có quyền thực hiện thao tác này.');
+            }
+            
+            if (response.status === 404) {
+                throw new Error('Không tìm thấy dữ liệu yêu cầu.');
+            }
+            
+            if (response.status === 400) {
+                console.error('🔍 400 Bad Request details:', JSON.stringify(data, null, 2));
+                const errorMessage = data?.errors ? data.errors.join(', ') : data?.message;
+                throw new Error(errorMessage || 'Dữ liệu không hợp lệ.');
+            }
+            
+            if (response.status === 422) {
+                console.error('🔍 422 Validation Error details:', JSON.stringify(data, null, 2));
+                const errorMessage = data?.errors ? data.errors.join(', ') : data?.message;
+                throw new Error(errorMessage || 'Dữ liệu không hợp lệ.');
+            }
+            
+            if (response.status >= 500) {
+                throw new Error('Lỗi server. Vui lòng thử lại sau.');
+            }
+            
+            throw new Error(data?.message || `Lỗi HTTP: ${response.status}`);
         }
 
         return data;
@@ -142,7 +185,10 @@ class ApiService {
         }
 
         try {
+            console.log('🌐 Making request to:', url);
+            console.log('🌐 Request config:', JSON.stringify(config, null, 2));
             const response = await fetch(url, config);
+            console.log('🌐 Response status:', response.status);
             return await this.handleResponse(response);
         } catch (error) {
             console.error('API Request failed:', error);
@@ -304,13 +350,18 @@ class ApiService {
     }
 
     // Order Methods
-    async getOrders() {
-        return this.request(this.endpoints.orders.list, {
+    async getOrders(queryParams = {}) {
+        const query = new URLSearchParams(queryParams).toString();
+        const endpoint = this.endpoints.orders.list + (query ? `?${query}` : '');
+        return this.request(endpoint, {
             requireAuth: true
         });
     }
 
     async createOrder(orderData) {
+        console.log('🔍 API createOrder called with data:', JSON.stringify(orderData, null, 2));
+        console.log('🔍 Is authenticated:', this.isAuthenticated());
+        console.log('🔍 Token exists:', !!this.getToken());
         return this.request(this.endpoints.orders.create, {
             method: 'POST',
             body: orderData,
@@ -325,10 +376,81 @@ class ApiService {
         });
     }
 
+    async updateOrderStatus(orderId, status) {
+        return this.request(this.endpoints.orders.updateStatus, {
+            method: 'PUT',
+            body: { status },
+            params: { id: orderId },
+            requireAuth: true
+        });
+    }
+
     async cancelOrder(orderId) {
         return this.request(this.endpoints.orders.cancel, {
-            method: 'POST',
+            method: 'DELETE',
             params: { id: orderId },
+            requireAuth: true
+        });
+    }
+
+    async getOrderItems(orderId) {
+        return this.request(this.endpoints.orders.items, {
+            params: { id: orderId },
+            requireAuth: true
+        });
+    }
+
+    async getOrderStats() {
+        return this.request(this.endpoints.orders.stats, {
+            requireAuth: true
+        });
+    }
+
+    // Payment Methods
+    async createPayment(paymentData) {
+        return this.request(this.endpoints.payments.create, {
+            method: 'POST',
+            body: paymentData,
+            requireAuth: true
+        });
+    }
+
+    async getOrderPayments(orderId) {
+        return this.request(this.endpoints.payments.orderPayments, {
+            params: { orderId: orderId },
+            requireAuth: true
+        });
+    }
+
+    async getPaymentDetail(paymentId) {
+        return this.request(this.endpoints.payments.detail, {
+            params: { id: paymentId },
+            requireAuth: true
+        });
+    }
+
+    async updatePaymentStatus(paymentId, status, transactionId) {
+        return this.request(this.endpoints.payments.updateStatus, {
+            method: 'PUT',
+            body: { status, transaction_id: transactionId },
+            params: { id: paymentId },
+            requireAuth: true
+        });
+    }
+
+    async getUserPayments(queryParams = {}) {
+        const query = new URLSearchParams(queryParams).toString();
+        const endpoint = this.endpoints.payments.userPayments + (query ? `?${query}` : '');
+        return this.request(endpoint, {
+            requireAuth: true
+        });
+    }
+
+    async processRefund(paymentId, reason) {
+        return this.request(this.endpoints.payments.refund, {
+            method: 'POST',
+            body: { reason },
+            params: { id: paymentId },
             requireAuth: true
         });
     }

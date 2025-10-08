@@ -391,9 +391,16 @@ function updateProductUI() {
     console.log('🎨 Generating color options...');
     generateColorOptions();
     
-    // Set default selections
-    selectedSize = currentProduct.sizes[0];
-    selectedColor = currentProduct.colors[0];
+    // Set default selections only if the product has valid options
+    const hasValidSizes = currentProduct.sizes && 
+                         currentProduct.sizes.length > 0 && 
+                         !(currentProduct.sizes.length === 1 && currentProduct.sizes[0] === "One Size");
+    const hasValidColors = currentProduct.colors && 
+                          currentProduct.colors.length > 0 &&
+                          !currentProduct.colors.every(color => !color || color === null);
+    
+    selectedSize = hasValidSizes ? currentProduct.sizes[0] : null;
+    selectedColor = hasValidColors ? currentProduct.colors[0] : null;
     
     console.log('✅ Default selections:', { selectedSize, selectedColor });
     
@@ -461,6 +468,8 @@ function generateRatingStars() {
 // Generate size options
 function generateSizeOptions() {
     const sizeContainer = document.getElementById('sizeOptions');
+    const sizeSection = sizeContainer?.closest('.mb-3');
+    
     console.log('📏 Size container found:', !!sizeContainer);
     console.log('📏 Available sizes:', currentProduct.sizes);
     
@@ -469,8 +478,29 @@ function generateSizeOptions() {
         return;
     }
     
-    let sizesHtml = '';
+    // Check if product has valid sizes (not null/empty/just ["One Size"])
+    const hasValidSizes = currentProduct.sizes && 
+                         currentProduct.sizes.length > 0 && 
+                         !(currentProduct.sizes.length === 1 && currentProduct.sizes[0] === "One Size");
     
+    if (!hasValidSizes) {
+        // Hide size section or show disabled state
+        if (sizeSection) {
+            sizeSection.style.opacity = '0.5';
+            sizeSection.style.pointerEvents = 'none';
+        }
+        sizeContainer.innerHTML = '<span class="text-muted">Không có tùy chọn kích thước</span>';
+        selectedSize = null; // No size selection needed
+        return;
+    }
+    
+    // Show size section normally
+    if (sizeSection) {
+        sizeSection.style.opacity = '1';
+        sizeSection.style.pointerEvents = 'auto';
+    }
+    
+    let sizesHtml = '';
     currentProduct.sizes.forEach((size, index) => {
         sizesHtml += `<button class="btn btn-outline-secondary btn-sm ${index === 0 ? 'active' : ''}" 
                                onclick="selectSize('${size}')"
@@ -485,6 +515,8 @@ function generateSizeOptions() {
 // Generate color options
 function generateColorOptions() {
     const colorContainer = document.getElementById('colorOptions');
+    const colorSection = colorContainer?.closest('.mb-3');
+    
     console.log('🎨 Color container found:', !!colorContainer);
     console.log('🎨 Available colors:', currentProduct.colors);
     
@@ -493,8 +525,29 @@ function generateColorOptions() {
         return;
     }
     
-    let colorsHtml = '';
+    // Check if product has valid colors (not null/empty)
+    const hasValidColors = currentProduct.colors && 
+                          currentProduct.colors.length > 0 &&
+                          !currentProduct.colors.every(color => !color || color === null);
     
+    if (!hasValidColors) {
+        // Hide color section or show disabled state
+        if (colorSection) {
+            colorSection.style.opacity = '0.5';
+            colorSection.style.pointerEvents = 'none';
+        }
+        colorContainer.innerHTML = '<span class="text-muted">Không có tùy chọn màu sắc</span>';
+        selectedColor = null; // No color selection needed
+        return;
+    }
+    
+    // Show color section normally
+    if (colorSection) {
+        colorSection.style.opacity = '1';
+        colorSection.style.pointerEvents = 'auto';
+    }
+    
+    let colorsHtml = '';
     currentProduct.colors.forEach((color, index) => {
         const colorValue = getColorValue(color);
         colorsHtml += `<div class="rounded-circle ${index === 0 ? 'border border-dark border-2' : 'border border-transparent border-2'}" 
@@ -575,6 +628,37 @@ function updateTotalPrice() {
 
 // Add to cart
 function addToCart() {
+    // Check if size/color selection is required and valid
+    const hasValidSizes = currentProduct.sizes && 
+                         currentProduct.sizes.length > 0 && 
+                         !(currentProduct.sizes.length === 1 && currentProduct.sizes[0] === "One Size");
+    const hasValidColors = currentProduct.colors && 
+                          currentProduct.colors.length > 0 &&
+                          !currentProduct.colors.every(color => !color || color === null);
+
+    // Only validate selections if the product actually has these options
+    let finalSize = null;
+    let finalColor = null;
+
+    if (hasValidSizes) {
+        const selectedSizeElement = document.querySelector('#sizeOptions .btn.active');
+        if (!selectedSizeElement) {
+            alert('Vui lòng chọn kích thước');
+            return;
+        }
+        finalSize = selectedSizeElement.textContent;
+    }
+
+    if (hasValidColors) {
+        const selectedColorElement = document.querySelector('#colorOptions .border-dark');
+        if (!selectedColorElement) {
+            alert('Vui lòng chọn màu sắc');
+            return;
+        }
+        const colorIndex = Array.from(selectedColorElement.parentNode.children).indexOf(selectedColorElement);
+        finalColor = currentProduct.colors[colorIndex];
+    }
+
     // Check if cart service is available
     if (window.cartService) {
         // Prepare product data for cart
@@ -584,10 +668,12 @@ function addToCart() {
             discount_price: currentProduct.discount_price,
             image: currentProduct.image_url,
             name: currentProduct.name,
-            price: currentProduct.price,
-            size: selectedSize,
-            color: selectedColor
+            price: currentProduct.price
         };
+
+        // Only add size/color if the product has these options
+        if (finalSize) productData.size = finalSize;
+        if (finalColor) productData.color = finalColor;
         
         // Add to cart using cart service
         cartService.addToCart(currentProduct.id, quantity, productData);
@@ -604,22 +690,85 @@ function addToCart() {
             id: currentProduct.id,
             name: currentProduct.name,
             price: currentProduct.price,
-            size: selectedSize,
-            color: selectedColor,
             quantity: quantity,
             image: currentProduct.image_url
         };
+
+        // Only add size/color if the product has these options
+        if (finalSize) cartItem.size = finalSize;
+        if (finalColor) cartItem.color = finalColor;
         
         console.log('Adding to cart:', cartItem);
-        alert(`Added ${cartItem.name} (${cartItem.size}, ${cartItem.color}) x${cartItem.quantity} to cart!`);
+        
+        // Create display message with or without size/color
+        let message = `Added ${cartItem.name}`;
+        if (finalSize || finalColor) {
+            const details = [];
+            if (finalSize) details.push(finalSize);
+            if (finalColor) details.push(finalColor);
+            message += ` (${details.join(', ')})`;
+        }
+        message += ` x${cartItem.quantity} to cart!`;
+        
+        alert(message);
     }
 }
 
-// Buy now
-function buyNow() {
-    addToCart();
-    alert('Redirecting to checkout...');
-    // window.location.href = 'checkout.html';
+// Buy now - Redirect to create order page
+async function buyNow() {
+    // Check if user is logged in
+    if (!window.apiService?.isAuthenticated()) {
+        if (confirm('Bạn cần đăng nhập để mua hàng. Chuyển đến trang đăng nhập?')) {
+            window.location.href = '../auth/login.html';
+        }
+        return;
+    }
+
+    // Check if size/color selection is required and valid
+    const hasValidSizes = currentProduct.sizes && 
+                         currentProduct.sizes.length > 0 && 
+                         !(currentProduct.sizes.length === 1 && currentProduct.sizes[0] === "One Size");
+    const hasValidColors = currentProduct.colors && 
+                          currentProduct.colors.length > 0 &&
+                          !currentProduct.colors.every(color => !color || color === null);
+
+    // Only validate selections if the product actually has these options
+    if (hasValidSizes) {
+        const selectedSizeElement = document.querySelector('#sizeOptions .btn.active');
+        if (!selectedSizeElement) {
+            alert('Vui lòng chọn kích thước');
+            return;
+        }
+        selectedSize = selectedSizeElement.textContent;
+    }
+
+    if (hasValidColors) {
+        const selectedColorElement = document.querySelector('#colorOptions .border-dark');
+        if (!selectedColorElement) {
+            alert('Vui lòng chọn màu sắc');
+            return;
+        }
+        const colorIndex = Array.from(selectedColorElement.parentNode.children).indexOf(selectedColorElement);
+        selectedColor = currentProduct.colors[colorIndex];
+    }
+
+    // Create URL with product parameters (only include size/color if product has them)
+    const params = new URLSearchParams({
+        from: 'product',
+        productId: currentProduct.id,
+        quantity: quantity
+    });
+
+    if (hasValidSizes && selectedSize) {
+        params.append('size', selectedSize);
+    }
+    
+    if (hasValidColors && selectedColor) {
+        params.append('color', selectedColor);
+    }
+
+    // Redirect to create order page
+    window.location.href = `../user/create-order.html?${params.toString()}`;
 }
 
 // Add to wishlist

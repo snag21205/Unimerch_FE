@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tạo đơn hàng - Unimerch</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/styles.css">
+    <link rel="stylesheet" href="../../css/orders.css">
+</head>
+<body class="bg-light">
+    <!-- Header component will be loaded here by JavaScript -->
+
+    <!-- Add top padding to account for fixed navbar -->
+    <div style="padding-top: 100px;">
+        <!-- Main Content -->
+        <div class="container py-4">
+            <!-- Loading State -->
+            <div id="loadingState" class="text-center py-5">
+                <div class="spinner-border text-primary mb-3" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="text-muted">Đang tải thông tin...</p>
+            </div>
+
+            <!-- Create Order Content -->
+            <div id="createOrderContent" class="d-none">
+                <!-- Page Header -->
+                <div class="mb-4">
+                    <h2 class="h3 fw-bold mb-1" style="color: #333;">Tạo đơn hàng</h2>
+                    <p class="text-muted mb-0">Xác nhận thông tin và hoàn tất đơn hàng của bạn</p>
+                </div>
+
+                <div class="row">
+                    <!-- Left Column - Order Form -->
+                    <div class="col-lg-8 mb-4">
+                        <!-- Shipping Information -->
+                        <div class="card border-0 shadow-sm mb-4">
+                            <div class="card-body">
+                                <h5 class="card-title mb-3">
+                                    <i class="bi bi-truck me-2"></i>
+                                    Thông tin giao hàng
+                                </h5>
+                                
+                                <form id="shippingForm">
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label for="fullName" class="form-label">Họ và tên *</label>
+                                            <input type="text" class="form-control" id="fullName" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="phone" class="form-label">Số điện thoại *</label>
+                                            <input type="tel" class="form-control" id="phone" required>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="email" class="form-label">Email</label>
+                                        <input type="email" class="form-control" id="email">
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="address" class="form-label">Địa chỉ giao hàng *</label>
+                                        <textarea class="form-control" id="address" rows="3" placeholder="Số nhà, tên đường, phường/xã, quận/huyện, tỉnh/thành phố" required></textarea>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="notes" class="form-label">Ghi chú đơn hàng</label>
+                                        <textarea class="form-control" id="notes" rows="2" placeholder="Ghi chú về đơn hàng (không bắt buộc)"></textarea>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- Payment Method -->
+                        <div class="card border-0 shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title mb-3">
+                                    <i class="bi bi-credit-card me-2"></i>
+                                    Phương thức thanh toán
+                                </h5>
+                                
+                                <div class="payment-methods">
+                                    <div class="form-check payment-option mb-3">
+                                        <input class="form-check-input" type="radio" name="paymentMethod" id="cod" value="COD" checked>
+                                        <label class="form-check-label w-100" for="cod">
+                                            <div class="d-flex align-items-center">
+                                                <div class="payment-icon me-3">💵</div>
+                                                <div>
+                                                    <strong>Thanh toán khi nhận hàng (COD)</strong>
+                                                    <div class="text-muted small">Thanh toán bằng tiền mặt khi nhận hàng</div>
+                                                </div>
+                                            </div>
+                                        </label>
+                                    </div>
+                                    
+                                    <div class="form-check payment-option mb-3">
+                                        <input class="form-check-input" type="radio" name="paymentMethod" id="bank_transfer" value="Banking">
+                                        <label class="form-check-label w-100" for="bank_transfer">
+                                            <div class="d-flex align-items-center">
+                                                <div class="payment-icon me-3">🏦</div>
+                                                <div>
+                                                    <strong>Chuyển khoản ngân hàng</strong>
+                                                    <div class="text-muted small">Chuyển khoản trước khi giao hàng</div>
+                                                </div>
+                                            </div>
+                                        </label>
+                                    </div>
+                                    
+                                    <div class="form-check payment-option mb-3">
+                                        <input class="form-check-input" type="radio" name="paymentMethod" id="momo" value="E-Wallet">
+                                        <label class="form-check-label w-100" for="momo">
+                                            <div class="d-flex align-items-center">
+                                                <div class="payment-icon me-3">📱</div>
+                                                <div>
+                                                    <strong>Ví MoMo</strong>
+                                                    <div class="text-muted small">Thanh toán qua ví điện tử MoMo</div>
+                                                </div>
+                                            </div>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column - Order Summary -->
+                    <div class="col-lg-4">
+                        <div class="card border-0 shadow-sm position-sticky" style="top: 120px;">
+                            <div class="card-body">
+                                <h5 class="card-title mb-3">
+                                    <i class="bi bi-receipt me-2"></i>
+                                    Tóm tắt đơn hàng
+                                </h5>
+                                
+                                <!-- Order Items -->
+                                <div id="orderItems" class="mb-3">
+                                    <!-- Items will be rendered here -->
+                                </div>
+                                
+                                <!-- Order Summary -->
+                                <div class="border-top pt-3">
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span>Tạm tính:</span>
+                                        <span id="subtotal">0₫</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between mb-2">
+                                        <span>Phí vận chuyển:</span>
+                                        <span id="shippingFee">30,000₫</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between mb-3 border-top pt-2">
+                                        <strong>Tổng cộng:</strong>
+                                        <strong class="text-primary" id="totalAmount">30,000₫</strong>
+                                    </div>
+                                    
+                                    <!-- Create Order Button -->
+                                    <button class="btn btn-primary w-100 btn-lg rounded-pill" id="createOrderBtn">
+                                        <i class="bi bi-check-circle me-2"></i>
+                                        Đặt hàng
+                                    </button>
+                                    
+                                    <div class="text-center mt-3">
+                                        <small class="text-muted">
+                                            Bằng việc đặt hàng, bạn đồng ý với 
+                                            <a href="#" class="text-decoration-none">Điều khoản sử dụng</a>
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Error State -->
+            <div id="errorState" class="text-center py-5 d-none">
+                <div class="mb-3">
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#dc3545" stroke-width="1">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="12"></line>
+                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                    </svg>
+                </div>
+                <h5 class="text-danger">Có lỗi xảy ra</h5>
+                <p class="text-muted mb-3" id="errorMessage">Không thể tải thông tin đơn hàng</p>
+                <button class="btn btn-primary" onclick="window.history.back()">Quay lại</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../../js/utils.js"></script>
+    <script src="../../js/api-service.js"></script>
+    <script src="../../js/order-service.js"></script>
+    <script src="../../js/cart-service.js"></script>
+    <script src="../../components/header.js"></script>
+    <script src="../../js/create-order.js"></script>
+</body>
+</html>
