@@ -262,8 +262,12 @@ class CartService {
         this.cart.summary = {
             total_items: this.cart.items.reduce((sum, item) => sum + item.quantity, 0),
             total_amount: this.cart.items.reduce((sum, item) => {
-                const price = item.discount_price || item.product_price || item.price || 0;
-                return sum + (price * item.quantity);
+                // Use same pricing logic: check for product_discount_price first, then discount_price
+                const originalPrice = parseFloat(item.product_price || item.price || 0);
+                const rawDiscountPrice = item.product_discount_price || item.discount_price || null;
+                const discountPrice = rawDiscountPrice ? parseFloat(rawDiscountPrice) : null;
+                const currentPrice = (discountPrice && discountPrice > 0 && discountPrice < originalPrice) ? discountPrice : originalPrice;
+                return sum + (currentPrice * item.quantity);
             }, 0),
             item_count: this.cart.items.length
         };
