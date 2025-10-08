@@ -10,6 +10,7 @@ class CartUI {
         this.cartFooter = null;
         this.cartCount = null;
         this.cartSubtotal = null;
+        this.selectedItems = new Set(); // Track selected items
         
         this.init();
     }
@@ -111,8 +112,27 @@ class CartUI {
                     <small class="text-muted">Thêm sản phẩm để bắt đầu mua sắm</small>
                 </div>
             `;
+            this.selectedItems.clear();
         } else {
-            this.cartItemsContainer.innerHTML = items.map(item => this.createCartItemHTML(item)).join('');
+            // Initialize all items as selected by default
+            this.selectedItems.clear();
+            items.forEach(item => this.selectedItems.add(item.id));
+            
+            this.cartItemsContainer.innerHTML = `
+                <div class="d-flex align-items-center justify-content-between mb-3 pb-2 border-bottom">
+                    <div class="form-check">
+                        <input type="checkbox" 
+                               class="form-check-input" 
+                               id="selectAllItems"
+                               checked
+                               onchange="cartUI.toggleSelectAll(this.checked)">
+                        <label class="form-check-label fw-semibold" for="selectAllItems">
+                            Chọn tất cả (${items.length})
+                        </label>
+                    </div>
+                </div>
+                ${items.map(item => this.createCartItemHTML(item)).join('')}
+            `;
         }
     }
 
@@ -120,20 +140,19 @@ class CartUI {
      * Create HTML for a cart item
      */
     createCartItemHTML(item) {
-        const price = item.discount_price || item.product_price || item.price || 0;
-        const subtotal = price * item.quantity;
+        // Get original price from either field - handle string conversion
+        const originalPrice = parseFloat(item.product_price || item.price || 0);
+        
+        // Get discount price - check multiple possible field names and convert to number
+        const rawDiscountPrice = item.product_discount_price || item.discount_price || null;
+        const discountPrice = rawDiscountPrice ? parseFloat(rawDiscountPrice) : null;
+        
+        // Use discount price if available and valid
+        const currentPrice = (discountPrice && discountPrice > 0) ? discountPrice : originalPrice;
+        const subtotal = currentPrice * item.quantity;
 
         // Get image URL - handle different field names
-        let imageUrl = item.image || item.image_url || item.product_image || 'assets/images/products/demo.png';
-        
-        // Debug log
-        console.log('Cart item image debug:', {
-            item,
-            originalImage: item.image,
-            imageUrl: item.image_url,
-            productImage: item.product_image,
-            finalImageUrl: imageUrl
-        });
+        let imageUrl = item.product_image || item.image || item.image_url || item.product_image || 'assets/images/products/demo.png';
         
         // If image doesn't start with http or assets, assume it's a filename
         if (imageUrl && !imageUrl.startsWith('http') && !imageUrl.startsWith('assets')) {
@@ -142,9 +161,21 @@ class CartUI {
             imageUrl = `assets/images/products/${filename}`;
         }
 
+        // Check if we have a valid discount
+        const hasValidDiscount = discountPrice && discountPrice > 0 && discountPrice < originalPrice;
+
         return `
             <div class="cart-item mb-3 pb-3 border-bottom" data-item-id="${item.id}">
-                <div class="d-flex gap-3">
+                <div class="d-flex gap-3 position-relative">
+                    <!-- Checkbox moved to top right -->
+                    <div class="position-absolute top-0 end-0">
+                        <input type="checkbox" 
+                               class="form-check-input cart-item-checkbox" 
+                               data-item-id="${item.id}"
+                               checked
+                               onchange="cartUI.handleItemSelection(${item.id}, this.checked)">
+                    </div>
+                    
                     <div class="cart-item-image">
                         <img src="${imageUrl}" 
                              alt="${item.product_name || item.name}" 
@@ -152,10 +183,17 @@ class CartUI {
                              style="width: 64px; height: 64px; object-fit: cover;"
                              onerror="this.src='assets/images/products/demo.png'">
                     </div>
-                    <div class="cart-item-details flex-grow-1">
+                    <div class="cart-item-details flex-grow-1" style="padding-right: 30px;">
                         <h6 class="mb-1 fw-semibold">${item.product_name || item.name}</h6>
                         <div class="d-flex align-items-center justify-content-between mb-2">
-                            <span class="text-muted small">${this.formatPrice(price)}</span>
+                            <div class="price-info">
+                                ${hasValidDiscount ? `
+                                    <span class="text-decoration-line-through text-muted small me-2">${this.formatPrice(originalPrice)}</span>
+                                    <span class="text-danger fw-semibold">${this.formatPrice(discountPrice)}</span>
+                                ` : `
+                                    <span class="text-muted">${this.formatPrice(originalPrice)}</span>
+                                `}
+                            </div>
                             <button class="btn btn-link btn-sm text-danger p-0" 
                                     onclick="cartUI.removeItem(${item.id})"
                                     title="Xóa sản phẩm">
@@ -199,12 +237,142 @@ class CartUI {
 
         if (summary.total_items > 0) {
             this.cartFooter.classList.remove('d-none');
+            
+            // Calculate selected items totals
+            const selectedTotals = this.calculateSelectedTotals();
+            
             if (this.cartSubtotal) {
-                this.cartSubtotal.textContent = this.formatPrice(summary.total_amount);
+                this.cartSubtotal.textContent = this.formatPrice(selectedTotals.amount);
+            }
+            
+            // Update selected count info
+            const selectedCountElement = this.cartFooter.querySelector('.selected-count');
+            if (selectedCountElement) {
+                selectedCountElement.textContent = `${selectedTotals.items} sản phẩm được chọn`;
+            }
+            
+            // Update checkout button text
+            const checkoutButtonCount = this.cartFooter.querySelector('.selected-items-count');
+            if (checkoutButtonCount) {
+                checkoutButtonCount.textContent = selectedTotals.items;
             }
         } else {
             this.cartFooter.classList.add('d-none');
         }
+    }
+
+    /**
+     * Handle item selection change
+     */
+    handleItemSelection(itemId, isSelected) {
+        if (isSelected) {
+            this.selectedItems.add(itemId);
+        } else {
+            this.selectedItems.delete(itemId);
+        }
+        
+        // Update select all checkbox
+        this.updateSelectAllCheckbox();
+        
+        // Update cart footer with new totals
+        if (window.cartService) {
+            const cartData = cartService.getCart();
+            this.updateCartFooter(cartData.summary);
+        }
+    }
+
+    /**
+     * Toggle select all items
+     */
+    toggleSelectAll(selectAll) {
+        const checkboxes = document.querySelectorAll('.cart-item-checkbox');
+        
+        if (selectAll) {
+            this.selectedItems.clear();
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = true;
+                this.selectedItems.add(parseInt(checkbox.dataset.itemId));
+            });
+        } else {
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = false;
+            });
+            this.selectedItems.clear();
+        }
+        
+        // Update cart footer with new totals
+        if (window.cartService) {
+            const cartData = cartService.getCart();
+            this.updateCartFooter(cartData.summary);
+        }
+    }
+
+    /**
+     * Update select all checkbox state
+     */
+    updateSelectAllCheckbox() {
+        const selectAllCheckbox = document.getElementById('selectAllItems');
+        const allCheckboxes = document.querySelectorAll('.cart-item-checkbox');
+        
+        if (selectAllCheckbox && allCheckboxes.length > 0) {
+            const checkedCount = this.selectedItems.size;
+            const totalCount = allCheckboxes.length;
+            
+            if (checkedCount === 0) {
+                selectAllCheckbox.checked = false;
+                selectAllCheckbox.indeterminate = false;
+            } else if (checkedCount === totalCount) {
+                selectAllCheckbox.checked = true;
+                selectAllCheckbox.indeterminate = false;
+            } else {
+                selectAllCheckbox.checked = false;
+                selectAllCheckbox.indeterminate = true;
+            }
+        }
+    }
+
+    /**
+     * Calculate totals for selected items only
+     */
+    calculateSelectedTotals() {
+        if (!window.cartService) {
+            return { count: 0, amount: 0, items: 0 };
+        }
+
+        const cartData = cartService.getCart();
+        let selectedCount = 0;
+        let selectedAmount = 0;
+        let selectedItemsCount = 0;
+
+        cartData.items.forEach(item => {
+            if (this.selectedItems.has(item.id)) {
+                // Use same pricing logic as createCartItemHTML
+                const originalPrice = parseFloat(item.product_price || item.price || 0);
+                const rawDiscountPrice = item.product_discount_price || item.discount_price || null;
+                const discountPrice = rawDiscountPrice ? parseFloat(rawDiscountPrice) : null;
+                const currentPrice = (discountPrice && discountPrice > 0 && discountPrice < originalPrice) ? discountPrice : originalPrice;
+                
+                selectedCount += item.quantity;
+                selectedAmount += currentPrice * item.quantity;
+                selectedItemsCount++;
+            }
+        });
+
+        return {
+            count: selectedCount,
+            amount: selectedAmount,
+            items: selectedItemsCount
+        };
+    }
+
+    /**
+     * Get selected items for checkout
+     */
+    getSelectedItems() {
+        if (!window.cartService) return [];
+        
+        const cartData = cartService.getCart();
+        return cartData.items.filter(item => this.selectedItems.has(item.id));
     }
 
     /**
@@ -305,9 +473,30 @@ function checkout() {
         return;
     }
 
-    // Redirect to checkout page (to be implemented)
-    console.log('Proceeding to checkout...');
-    // window.location.href = '/pages/checkout.html';
+    // Get selected items
+    const selectedItems = cartUI.getSelectedItems();
+    if (selectedItems.length === 0) {
+        alert('Vui lòng chọn ít nhất một sản phẩm để thanh toán');
+        return;
+    }
+
+    // Calculate selected totals
+    const totals = cartUI.calculateSelectedTotals();
+    console.log('Proceeding to checkout with:', {
+        items: selectedItems,
+        totals: totals
+    });
+
+    // Show confirmation
+    const confirmMessage = `Bạn đang thanh toán ${totals.items} sản phẩm với tổng tiền ${cartUI.formatPrice(totals.amount)}. Tiếp tục?`;
+    if (confirm(confirmMessage)) {
+        // Redirect to checkout page (to be implemented)
+        console.log('Proceeding to checkout...');
+        // window.location.href = '/pages/checkout.html';
+        
+        // For now, show success message
+        alert('Chức năng thanh toán sẽ được triển khai trong phiên bản tiếp theo!');
+    }
 }
 
 /**

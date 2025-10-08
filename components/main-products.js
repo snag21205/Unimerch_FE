@@ -59,12 +59,25 @@
         // Handle image URL - support both full URLs and relative paths
         let imageUrl = apiProduct.image_url || apiProduct.image || 'demo.png';
         
-        // If it's already a full URL (starts with http), use as is
-        // Otherwise, construct local path
-        if (!imageUrl.startsWith('http')) {
-            // Remove any leading path separators and construct proper path
-            const filename = imageUrl.replace(/^.*[\\\/]/, ''); // Get just filename
-            imageUrl = `assets/images/products/${filename}`;
+        // Validate and clean image URL
+        if (imageUrl && imageUrl.trim()) {
+            // If it's already a full URL (starts with http), use as is
+            if (imageUrl.startsWith('http')) {
+                // Validate URL format
+                try {
+                    new URL(imageUrl);
+                } catch {
+                    // Invalid URL, fallback to demo
+                    imageUrl = 'assets/images/products/demo.png';
+                }
+            } else {
+                // Remove any leading path separators and construct proper path
+                const filename = imageUrl.replace(/^.*[\\\/]/, ''); // Get just filename
+                imageUrl = filename ? `assets/images/products/${filename}` : 'assets/images/products/demo.png';
+            }
+        } else {
+            // No image URL provided
+            imageUrl = 'assets/images/products/demo.png';
         }
         
         return {
@@ -455,9 +468,10 @@
                         align-items: center;
                         justify-content: center;
                         transition: transform 0.4s ease;
+                        background: transparent;
                     ">
-                        <img src="${product.image_url}" alt="${product.name}" class="img-fluid" 
-                             onerror="this.src='assets/images/products/demo.png'" style="
+                        <img src="${product.image_url}" alt="${product.name}" class="img-fluid product-image" 
+                             style="
                             max-width: 100%;
                             max-height: 100%;
                             object-fit: contain;
@@ -640,7 +654,53 @@
         }
         
         grid.innerHTML = html;
+        
+        // Setup image error handling after DOM is updated
+        setupImageErrorHandling();
+        
         console.log('✅ Products rendered with Bootstrap design:', products.length, 'products');
+    }
+
+    // Setup image error handling with better performance
+    function setupImageErrorHandling() {
+        const productImages = document.querySelectorAll('.product-image');
+        productImages.forEach(img => {
+            // Remove any existing error handlers
+            img.onerror = null;
+            
+            // Add optimized error handler
+            img.addEventListener('error', function() {
+                // Only try fallback once
+                if (!this.dataset.fallbackAttempted) {
+                    this.dataset.fallbackAttempted = 'true';
+                    this.src = 'assets/images/products/demo.png';
+                } else {
+                    // If even fallback fails, hide image and show placeholder
+                    this.style.display = 'none';
+                    const container = this.parentElement;
+                    if (container && !container.querySelector('.image-placeholder')) {
+                        const placeholder = document.createElement('div');
+                        placeholder.className = 'image-placeholder d-flex align-items-center justify-content-center';
+                        placeholder.style.cssText = `
+                            width: 100%;
+                            height: 100%;
+                            background: #f1f3f4;
+                            border-radius: 8px;
+                            color: #6b7280;
+                            font-size: 0.875rem;
+                        `;
+                        placeholder.innerHTML = `
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                <polyline points="21,15 16,10 5,21"></polyline>
+                            </svg>
+                        `;
+                        container.appendChild(placeholder);
+                    }
+                }
+            });
+        });
     }
     
     // ===== EVENT HANDLERS =====
@@ -798,12 +858,20 @@
         
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', function() {
+                // Preload fallback image to avoid delays
+                const fallbackImg = new Image();
+                fallbackImg.src = 'assets/images/products/demo.png';
+                
                 setTimeout(() => {
                     waitForApiServiceAndLoad();
                     initializeFilters();
                 }, 200); // Increased delay to ensure api-service.js loads
             });
         } else {
+            // Preload fallback image to avoid delays
+            const fallbackImg = new Image();
+            fallbackImg.src = 'assets/images/products/demo.png';
+            
             setTimeout(() => {
                 waitForApiServiceAndLoad();
                 initializeFilters();

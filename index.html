@@ -537,13 +537,15 @@
                     <button class="btn btn-link text-danger btn-sm p-0" onclick="cartUI.clearCart()">
                         Xóa tất cả
                     </button>
-                    <small class="text-muted">Tạm tính</small>
+                    <small class="text-muted selected-count">0 sản phẩm được chọn</small>
                 </div>
                 <div class="d-flex justify-content-between mb-3">
-                    <strong>Tổng cộng:</strong>
+                    <strong>Tổng thanh toán:</strong>
                     <strong id="cartSubtotal">0₫</strong>
                 </div>
-                <button class="btn btn-dark w-100 rounded-pill" onclick="checkout()">Thanh toán</button>
+                <button class="btn btn-dark w-100 rounded-pill" onclick="checkout()">
+                    Thanh toán (<span class="selected-items-count">0</span>)
+                </button>
             </div>
         </div>
     </div>
