@@ -114,9 +114,8 @@ class CartUI {
             `;
             this.selectedItems.clear();
         } else {
-            // Initialize all items as selected by default
+            // Initialize all items as unselected by default
             this.selectedItems.clear();
-            items.forEach(item => this.selectedItems.add(item.id));
             
             this.cartItemsContainer.innerHTML = `
                 <div class="d-flex align-items-center justify-content-between mb-3 pb-2 border-bottom">
@@ -124,7 +123,6 @@ class CartUI {
                         <input type="checkbox" 
                                class="form-check-input" 
                                id="selectAllItems"
-                               checked
                                onchange="cartUI.toggleSelectAll(this.checked)">
                         <label class="form-check-label fw-semibold" for="selectAllItems">
                             Chọn tất cả (${items.length})
@@ -133,6 +131,89 @@ class CartUI {
                 </div>
                 ${items.map(item => this.createCartItemHTML(item)).join('')}
             `;
+            
+            // Auto-select for buy now flow
+            this.autoSelectForBuyNow();
+        }
+    }
+
+    /**
+     * Auto-select cart items for buy now flow
+     */
+    autoSelectForBuyNow() {
+        // Check if coming from buy now flow or cart after product purchase
+        const urlParams = new URLSearchParams(window.location.search);
+        const fromProduct = urlParams.get('from') === 'product' || urlParams.get('from') === 'buy-now';
+        
+        // Also check if we're on the cart page after adding from product detail
+        const isCartPage = window.location.pathname.includes('cart');
+        const fromCreateOrder = window.location.pathname.includes('create-order');
+        const wasBuyNow = sessionStorage.getItem('lastAction') === 'buyNow';
+        
+        if (fromProduct || (isCartPage && wasBuyNow) || fromCreateOrder) {
+            const cartItems = cartService.getCart().items;
+            if (cartItems && cartItems.length > 0) {
+                
+                let targetItem = null;
+                
+                // Try to find the exact product that was purchased
+                const buyNowProductId = sessionStorage.getItem('buyNowProductId');
+                const buyNowSize = sessionStorage.getItem('buyNowSize') || '';
+                const buyNowColor = sessionStorage.getItem('buyNowColor') || '';
+                
+                if (buyNowProductId) {
+                    console.log('🎯 Looking for buy now product in cart UI:', { buyNowProductId, buyNowSize, buyNowColor });
+                    
+                    // Find item with matching product_id and optional size/color
+                    targetItem = cartItems.find(item => {
+                        const productIdMatch = item.product_id.toString() === buyNowProductId;
+                        const sizeMatch = !buyNowSize || (item.size || '') === buyNowSize;
+                        const colorMatch = !buyNowColor || (item.color || '') === buyNowColor;
+                        
+                        return productIdMatch && sizeMatch && colorMatch;
+                    });
+                    
+                    // If exact match not found, try to find by product_id only
+                    if (!targetItem) {
+                        targetItem = cartItems.find(item => 
+                            item.product_id.toString() === buyNowProductId
+                        );
+                    }
+                }
+                
+                // Fallback to the most recently added item (last item)
+                if (!targetItem) {
+                    targetItem = cartItems[cartItems.length - 1];
+                }
+                
+                if (targetItem) {
+                    this.selectedItems.add(targetItem.id);
+                    
+                    // Update checkbox for target item
+                    const checkbox = document.querySelector(`input[data-item-id="${targetItem.id}"]`);
+                    if (checkbox) {
+                        checkbox.checked = true;
+                        console.log('✅ Auto-selected cart item:', targetItem.id);
+                    }
+                    
+                    // Update select all checkbox state
+                    this.updateSelectAllCheckbox();
+                    
+                    // Update cart footer
+                    if (window.cartService) {
+                        const cartData = cartService.getCart();
+                        this.updateCartFooter(cartData.summary);
+                    }
+                }
+                
+                // Clear the session flag for cart UI (but keep for create-order)
+                if (isCartPage) {
+                    sessionStorage.removeItem('lastAction');
+                    sessionStorage.removeItem('buyNowProductId');
+                    sessionStorage.removeItem('buyNowSize');
+                    sessionStorage.removeItem('buyNowColor');
+                }
+            }
         }
     }
 
@@ -172,7 +253,6 @@ class CartUI {
                         <input type="checkbox" 
                                class="form-check-input cart-item-checkbox" 
                                data-item-id="${item.id}"
-                               checked
                                onchange="cartUI.handleItemSelection(${item.id}, this.checked)">
                     </div>
                     
@@ -479,6 +559,10 @@ async function createOrderFromCart() {
         alert('Vui lòng chọn ít nhất một sản phẩm để tạo đơn hàng');
         return;
     }
+
+    // Store selected item IDs in sessionStorage for the order page
+    const selectedItemIds = selectedItems.map(item => item.id);
+    sessionStorage.setItem('selectedCartItems', JSON.stringify(selectedItemIds));
 
     // Redirect to create order page
     window.location.href = '/pages/user/create-order.html?from=cart';

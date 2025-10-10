@@ -219,6 +219,38 @@ class CartService {
     }
 
     /**
+     * Remove multiple items from cart by IDs
+     */
+    async removeMultipleFromCart(itemIds) {
+        try {
+            if (apiService.isAuthenticated()) {
+                // Remove items one by one from server
+                for (const itemId of itemIds) {
+                    try {
+                        await apiService.removeFromCart(itemId);
+                    } catch (error) {
+                        console.warn(`Failed to remove item ${itemId} from server:`, error);
+                    }
+                }
+                // Sync with server after all removals
+                await this.syncWithServer();
+                this.showToast(`Đã xóa ${itemIds.length} sản phẩm khỏi giỏ hàng`, 'success');
+            } else {
+                // Remove from local cart
+                this.cart.items = this.cart.items.filter(item => !itemIds.includes(item.id));
+                this.updateLocalCartSummary();
+                this.saveToLocalStorage();
+                this.notifyListeners();
+                this.showToast(`Đã xóa ${itemIds.length} sản phẩm khỏi giỏ hàng`, 'success');
+            }
+        } catch (error) {
+            console.error('Error removing multiple items from cart:', error);
+            this.showToast('Lỗi khi xóa sản phẩm khỏi giỏ hàng', 'error');
+            throw error;
+        }
+    }
+
+    /**
      * Remove from local cart
      */
     removeFromLocalCart(itemId) {

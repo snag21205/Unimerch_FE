@@ -714,7 +714,7 @@ function addToCart() {
     }
 }
 
-// Buy now - Redirect to create order page
+// Buy now - Add to cart then redirect to create order page
 async function buyNow() {
     // Check if user is logged in
     if (!window.apiService?.isAuthenticated()) {
@@ -724,51 +724,93 @@ async function buyNow() {
         return;
     }
 
-    // Check if size/color selection is required and valid
-    const hasValidSizes = currentProduct.sizes && 
-                         currentProduct.sizes.length > 0 && 
-                         !(currentProduct.sizes.length === 1 && currentProduct.sizes[0] === "One Size");
-    const hasValidColors = currentProduct.colors && 
-                          currentProduct.colors.length > 0 &&
-                          !currentProduct.colors.every(color => !color || color === null);
+    try {
+        // Show loading state
+        const buyButton = document.querySelector('button[onclick="buyNow()"]');
+        const originalText = buyButton.innerHTML;
+        buyButton.disabled = true;
+        buyButton.innerHTML = `
+            <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+            Đang xử lý...
+        `;
 
-    // Only validate selections if the product actually has these options
-    if (hasValidSizes) {
-        const selectedSizeElement = document.querySelector('#sizeOptions .btn.active');
-        if (!selectedSizeElement) {
-            alert('Vui lòng chọn kích thước');
-            return;
+        // Check if size/color selection is required and valid
+        const hasValidSizes = currentProduct.sizes && 
+                             currentProduct.sizes.length > 0 && 
+                             !(currentProduct.sizes.length === 1 && currentProduct.sizes[0] === "One Size");
+        const hasValidColors = currentProduct.colors && 
+                              currentProduct.colors.length > 0 &&
+                              !currentProduct.colors.every(color => !color || color === null);
+
+        // Only validate selections if the product actually has these options
+        if (hasValidSizes) {
+            const selectedSizeElement = document.querySelector('#sizeOptions .btn.active');
+            if (!selectedSizeElement) {
+                alert('Vui lòng chọn kích thước');
+                buyButton.disabled = false;
+                buyButton.innerHTML = originalText;
+                return;
+            }
+            selectedSize = selectedSizeElement.textContent;
         }
-        selectedSize = selectedSizeElement.textContent;
-    }
 
-    if (hasValidColors) {
-        const selectedColorElement = document.querySelector('#colorOptions .border-dark');
-        if (!selectedColorElement) {
-            alert('Vui lòng chọn màu sắc');
-            return;
+        if (hasValidColors) {
+            const selectedColorElement = document.querySelector('#colorOptions .border-dark');
+            if (!selectedColorElement) {
+                alert('Vui lòng chọn màu sắc');
+                buyButton.disabled = false;
+                buyButton.innerHTML = originalText;
+                return;
+            }
+            const colorIndex = Array.from(selectedColorElement.parentNode.children).indexOf(selectedColorElement);
+            selectedColor = currentProduct.colors[colorIndex];
         }
-        const colorIndex = Array.from(selectedColorElement.parentNode.children).indexOf(selectedColorElement);
-        selectedColor = currentProduct.colors[colorIndex];
-    }
 
-    // Create URL with product parameters (only include size/color if product has them)
-    const params = new URLSearchParams({
-        from: 'product',
-        productId: currentProduct.id,
-        quantity: quantity
-    });
+        // Prepare product data for cart
+        const productData = {
+            product_id: currentProduct.id,
+            product_name: currentProduct.name,
+            product_price: currentProduct.price,
+            product_discount_price: currentProduct.discount_price,
+            product_image: currentProduct.image_url,
+            size: hasValidSizes ? selectedSize : null,
+            color: hasValidColors ? selectedColor : null
+        };
 
-    if (hasValidSizes && selectedSize) {
-        params.append('size', selectedSize);
-    }
-    
-    if (hasValidColors && selectedColor) {
-        params.append('color', selectedColor);
-    }
+        // Add to cart first
+        if (window.cartService) {
+            await cartService.addToCart(currentProduct.id, quantity, productData);
+            
+            // Set session flag for buy now action with product info
+            sessionStorage.setItem('lastAction', 'buyNow');
+            sessionStorage.setItem('buyNowProductId', currentProduct.id.toString());
+            sessionStorage.setItem('buyNowSize', hasValidSizes ? selectedSize : '');
+            sessionStorage.setItem('buyNowColor', hasValidColors ? selectedColor : '');
+        } else {
+            throw new Error('Cart service not available');
+        }
 
-    // Redirect to create order page
-    window.location.href = `../user/create-order.html?${params.toString()}`;
+        // Wait a moment for cart to update
+        await new Promise(resolve => setTimeout(resolve, 500));
+
+        // Now redirect to create order page from cart with buy-now flag
+        window.location.href = '../user/create-order.html?from=cart&buyNow=true';
+
+    } catch (error) {
+        console.error('❌ Error during buy now process:', error);
+        alert('Có lỗi xảy ra khi thêm sản phẩm vào giỏ hàng. Vui lòng thử lại.');
+        
+        // Restore button
+        const buyButton = document.querySelector('button[onclick="buyNow()"]');
+        buyButton.disabled = false;
+        buyButton.innerHTML = `
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-2">
+                <path d="M9 12l2 2 4-4"></path>
+                <path d="M21 12c-1 0-3-1-3-3s2-3 3-3 3 1 3 3-2 3-3 3"></path>
+            </svg>
+            Mua
+        `;
+    }
 }
 
 // Add to wishlist
