@@ -805,7 +805,7 @@
         
         setTimeout(() => {
             toast.remove();
-        }, 3000);
+        }, 500);
     }
     
     // ===== FILTER FUNCTIONALITY =====

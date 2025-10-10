@@ -489,3 +489,277 @@
 .order-tabs::-webkit-scrollbar-thumb:hover {
     background: var(--text-muted);
 }
+
+/* Order Detail Page Specific Styles */
+
+/* Progress Timeline */
+.progress-timeline {
+    position: relative;
+    padding: 20px 0;
+}
+
+.progress-step {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--border-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    transition: all 0.3s ease;
+    margin: 0 auto;
+}
+
+.progress-step.completed {
+    background: var(--apple-blue);
+    color: white;
+}
+
+.progress-step.active {
+    background: var(--apple-blue);
+    color: white;
+    box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.2);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.2);
+    }
+    50% {
+        box-shadow: 0 0 0 8px rgba(0, 122, 255, 0.1);
+    }
+    100% {
+        box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.2);
+    }
+}
+
+.step-icon {
+    font-size: 20px;
+}
+
+.progress-line {
+    height: 2px;
+    background: var(--border-light);
+    flex: 1;
+    margin: 0 15px;
+    position: relative;
+    top: -25px;
+    transition: background-color 0.3s ease;
+}
+
+.progress-line.completed {
+    background: var(--apple-blue);
+}
+
+/* Order Detail Cards */
+.order-detail-content .card {
+    border: none;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-light);
+    transition: all 0.3s ease;
+}
+
+.order-detail-content .card:hover {
+    box-shadow: var(--shadow-hover);
+}
+
+.order-detail-content .card-title {
+    color: var(--text-primary);
+    font-weight: 600;
+    font-size: 16px;
+    margin-bottom: 16px;
+}
+
+/* Order Item Styles for Detail Page */
+.order-detail-content .order-item {
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border-light);
+}
+
+.order-detail-content .order-item:last-child {
+    border-bottom: none;
+}
+
+/* Order Status Badge */
+.order-detail-content .badge {
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+/* Action Buttons */
+.order-detail-content .btn {
+    border-radius: var(--border-radius-sm);
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.order-detail-content .btn:hover {
+    transform: translateY(-1px);
+}
+
+/* Loading and Error States */
+#loadingState, #errorState {
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#errorState svg {
+    opacity: 0.5;
+    margin-bottom: 16px;
+}
+
+/* Create Order Page Specific Styles */
+
+/* Payment Methods */
+.payment-methods .payment-option {
+    border: 2px solid var(--border-light);
+    border-radius: var(--border-radius);
+    padding: 16px;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.payment-methods .payment-option:hover {
+    border-color: var(--apple-blue);
+    background-color: var(--apple-blue-light);
+}
+
+.payment-methods .payment-option:has(.form-check-input:checked) {
+    border-color: var(--apple-blue);
+    background-color: var(--apple-blue-light);
+}
+
+.payment-icon {
+    font-size: 24px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-light);
+    border-radius: var(--border-radius-sm);
+}
+
+.payment-option:has(.form-check-input:checked) .payment-icon {
+    background: var(--apple-blue);
+    color: white;
+}
+
+/* Order Summary Sticky Card */
+.position-sticky {
+    transition: all 0.3s ease;
+}
+
+/* Form Styles */
+.create-order-content .form-control {
+    border: 2px solid var(--border-light);
+    border-radius: var(--border-radius-sm);
+    padding: 12px 16px;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.create-order-content .form-control:focus {
+    border-color: var(--apple-blue);
+    box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+}
+
+.create-order-content .form-label {
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+/* Order Items in Summary */
+#orderItems .border-bottom:last-child {
+    border-bottom: none !important;
+    padding-bottom: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+/* Create Order Button */
+#createOrderBtn {
+    background: linear-gradient(135deg, var(--apple-blue) 0%, var(--apple-blue-hover) 100%);
+    border: none;
+    padding: 16px 24px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 14px rgba(0, 122, 255, 0.3);
+}
+
+#createOrderBtn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 122, 255, 0.4);
+}
+
+#createOrderBtn:disabled {
+    opacity: 0.6;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Responsive Styles for Create Order */
+@media (max-width: 768px) {
+    .position-sticky {
+        position: static !important;
+    }
+    
+    .create-order-content .row {
+        flex-direction: column-reverse;
+    }
+    
+    .payment-methods .payment-option {
+        padding: 12px;
+    }
+    
+    .payment-icon {
+        width: 35px;
+        height: 35px;
+        font-size: 20px;
+    }
+}
+
+/* Responsive Styles for Order Detail */
+@media (max-width: 768px) {
+    .progress-timeline {
+        padding: 15px 0;
+    }
+    
+    .progress-step {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .step-icon {
+        font-size: 16px;
+    }
+    
+    .progress-line {
+        margin: 0 10px;
+        top: -20px;
+    }
+    
+    .order-detail-content .card-body {
+        padding: 16px;
+    }
+    
+    .order-detail-content #orderActions {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .order-detail-content #orderActions .btn {
+        width: 100%;
+    }
+    
+    .order-detail-content #orderActions .btn.ms-auto {
+        margin-left: 0 !important;
+        margin-top: 8px;
+    }
+}

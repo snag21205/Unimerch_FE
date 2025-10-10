@@ -457,12 +457,12 @@ class CartUI {
 }
 
 /**
- * Global function to handle checkout
+ * Global function to create order from cart
  */
-function checkout() {
+async function createOrderFromCart() {
     // Check if user is authenticated
     if (!apiService.isAuthenticated()) {
-        alert('Vui lòng đăng nhập để tiến hành thanh toán');
+        alert('Vui lòng đăng nhập để tạo đơn hàng');
         window.location.href = '/pages/auth/login.html';
         return;
     }
@@ -476,27 +476,20 @@ function checkout() {
     // Get selected items
     const selectedItems = cartUI.getSelectedItems();
     if (selectedItems.length === 0) {
-        alert('Vui lòng chọn ít nhất một sản phẩm để thanh toán');
+        alert('Vui lòng chọn ít nhất một sản phẩm để tạo đơn hàng');
         return;
     }
 
-    // Calculate selected totals
-    const totals = cartUI.calculateSelectedTotals();
-    console.log('Proceeding to checkout with:', {
-        items: selectedItems,
-        totals: totals
-    });
+    // Redirect to create order page
+    window.location.href = '/pages/user/create-order.html?from=cart';
+}
 
-    // Show confirmation
-    const confirmMessage = `Bạn đang thanh toán ${totals.items} sản phẩm với tổng tiền ${cartUI.formatPrice(totals.amount)}. Tiếp tục?`;
-    if (confirm(confirmMessage)) {
-        // Redirect to checkout page (to be implemented)
-        console.log('Proceeding to checkout...');
-        // window.location.href = '/pages/checkout.html';
-        
-        // For now, show success message
-        alert('Chức năng thanh toán sẽ được triển khai trong phiên bản tiếp theo!');
-    }
+/**
+ * Legacy checkout function for backward compatibility
+ */
+function checkout() {
+    // Redirect to new function
+    createOrderFromCart();
 }
 
 /**
