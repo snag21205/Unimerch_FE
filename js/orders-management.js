@@ -13,11 +13,11 @@ let ordersByStatus = {};
 
 // Status mapping from API to UI
 const statusMapping = {
-    'pending': 'CHO_XAC_NHAN',
-    'processing': 'CHO_XAC_NHAN', 
-    'shipped': 'VAN_CHUYEN',
-    'delivered': 'HOAN_THANH',
-    'cancelled': 'DA_HUY'
+    'pending': 'CHO_XAC_NHAN',      // Pending → Chờ xác nhận
+    'processing': 'VAN_CHUYEN',     // Processing → Vận chuyển  
+    'shipped': 'CHO_GIAO_HANG',     // Shipped → Chờ giao hàng
+    'delivered': 'HOAN_THANH',      // Delivered → Hoàn thành
+    'cancelled': 'DA_HUY'           // Cancelled → Đã huỷ
 };
 
 // Initialize page

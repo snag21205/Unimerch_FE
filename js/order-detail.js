@@ -134,8 +134,8 @@ function renderOrderProgress(order) {
     
     const steps = [
         { key: 'pending', label: 'Đơn hàng đã đặt', icon: '📝' },
-        { key: 'processing', label: 'Đang xử lý', icon: '⚡' },
-        { key: 'shipped', label: 'Đang giao hàng', icon: '🚚' },
+        { key: 'processing', label: 'Đang vận chuyển', icon: '🚚' },
+        { key: 'shipped', label: 'Chờ giao hàng', icon: '�' },
         { key: 'delivered', label: 'Đã giao hàng', icon: '✅' }
     ];
     
@@ -341,8 +341,8 @@ function reorder(orderId) {
 function getStatusConfig(status) {
     const configs = {
         'pending': { label: 'Chờ xác nhận', class: 'bg-warning text-dark' },
-        'processing': { label: 'Đang xử lý', class: 'bg-info text-white' },
-        'shipped': { label: 'Đang giao hàng', class: 'bg-primary text-white' },
+        'processing': { label: 'Đang vận chuyển', class: 'bg-info text-white' },
+        'shipped': { label: 'Chờ giao hàng', class: 'bg-primary text-white' },
         'delivered': { label: 'Đã giao hàng', class: 'bg-success text-white' },
         'cancelled': { label: 'Đã hủy', class: 'bg-danger text-white' }
     };
