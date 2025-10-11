@@ -9,6 +9,7 @@ if (localStorage.getItem('isLoggedIn') !== 'true') {
 let orderData = {
     items: [],
     fromCart: false,
+    selectedItemIds: [], // Track selected cart item IDs
     subtotal: 0,
     shippingFee: 30000,
     total: 0
@@ -19,6 +20,13 @@ document.addEventListener('DOMContentLoaded', function() {
     loadOrderData();
     setupEventListeners();
     loadUserProfile();
+    
+    // Clean up sessionStorage if not from cart
+    const urlParams = new URLSearchParams(window.location.search);
+    const fromCart = urlParams.get('from') === 'cart';
+    if (!fromCart) {
+        sessionStorage.removeItem('selectedCartItems');
+    }
 });
 
 // Load order data from URL parameters or cart
@@ -27,20 +35,17 @@ async function loadOrderData() {
         showLoadingState();
 
         const urlParams = new URLSearchParams(window.location.search);
-        const fromCart = urlParams.get('from') === 'cart';
-        const productId = urlParams.get('productId') || urlParams.get('product_id'); // Support both
-        const quantity = urlParams.get('quantity');
-        const size = urlParams.get('size');
-        const color = urlParams.get('color');
-
+        const fromCart = urlParams.get('from') === 'cart' || !urlParams.has('from');
+        const isBuyNow = urlParams.get('buyNow') === 'true';
+        
         if (fromCart) {
-            // Load from cart
-            await loadFromCart();
-        } else if (productId && quantity) {
-            // Load single product with optional size and color
-            await loadSingleProduct(productId, quantity, size, color);
+            // Load from cart (main flow)
+            await loadFromCart(isBuyNow);
         } else {
-            throw new Error('Không có thông tin sản phẩm để tạo đơn hàng');
+            // Fallback - redirect to cart if not from cart
+            console.log('Not from cart, redirecting to cart page');
+            window.location.href = 'cart.html';
+            return;
         }
 
         hideLoadingState();
@@ -70,7 +75,7 @@ function transformImageUrl(imageUrl) {
 }
 
 // Load items from cart
-async function loadFromCart() {
+async function loadFromCart(isBuyNow = false) {
     try {
         if (window.cartService) {
             const cartData = cartService.getCart();
@@ -78,6 +83,72 @@ async function loadFromCart() {
             
             if (!cartData.items || cartData.items.length === 0) {
                 throw new Error('Giỏ hàng của bạn đang trống');
+            }
+
+            // Get selected items from sessionStorage (if coming from cart with selections)
+            const selectedItemIds = JSON.parse(sessionStorage.getItem('selectedCartItems') || '[]');
+            console.log('🎯 Selected item IDs:', selectedItemIds);
+
+            let itemsToOrder;
+            if (selectedItemIds.length > 0) {
+                // Filter only selected items
+                itemsToOrder = cartData.items.filter(item => selectedItemIds.includes(item.id));
+                // Store the selected IDs for later use when removing items
+                orderData.selectedItemIds = selectedItemIds;
+            } else if (isBuyNow && cartData.items.length > 0) {
+                // If this is from buy now, find the exact product that was purchased
+                const buyNowProductId = sessionStorage.getItem('buyNowProductId');
+                const buyNowSize = sessionStorage.getItem('buyNowSize') || '';
+                const buyNowColor = sessionStorage.getItem('buyNowColor') || '';
+                
+                console.log('🎯 Looking for buy now product:', { buyNowProductId, buyNowSize, buyNowColor });
+                
+                // Find the matching item in cart
+                let targetItem = null;
+                
+                if (buyNowProductId) {
+                    // Find item with matching product_id and optional size/color
+                    targetItem = cartData.items.find(item => {
+                        const productIdMatch = item.product_id.toString() === buyNowProductId;
+                        const sizeMatch = !buyNowSize || (item.size || '') === buyNowSize;
+                        const colorMatch = !buyNowColor || (item.color || '') === buyNowColor;
+                        
+                        return productIdMatch && sizeMatch && colorMatch;
+                    });
+                }
+                
+                // If exact match not found, try to find by product_id only (fallback)
+                if (!targetItem && buyNowProductId) {
+                    targetItem = cartData.items.find(item => 
+                        item.product_id.toString() === buyNowProductId
+                    );
+                }
+                
+                // If still not found, use the last item as fallback
+                if (!targetItem) {
+                    targetItem = cartData.items[cartData.items.length - 1];
+                    console.warn('⚠️ Could not find exact buy now product, using last item');
+                }
+                
+                if (targetItem) {
+                    itemsToOrder = [targetItem];
+                    orderData.selectedItemIds = [targetItem.id];
+                    console.log('✅ Auto-selected buy now item:', targetItem);
+                } else {
+                    throw new Error('Không tìm thấy sản phẩm vừa thêm vào giỏ hàng');
+                }
+                
+                // Clear session storage
+                sessionStorage.removeItem('buyNowProductId');
+                sessionStorage.removeItem('buyNowSize');
+                sessionStorage.removeItem('buyNowColor');
+            } else {
+                // If no selection info, use all items (backward compatibility)
+                itemsToOrder = cartData.items;
+            }
+
+            if (itemsToOrder.length === 0) {
+                throw new Error('Không có sản phẩm nào được chọn');
             }
 
             // Also check server cart to make sure it's in sync
@@ -90,7 +161,7 @@ async function loadFromCart() {
                 }
             }
 
-            orderData.items = cartData.items.map(item => {
+            orderData.items = itemsToOrder.map(item => {
                 const orderItem = {
                     product_id: item.product_id,
                     product_name: item.product_name || item.name,
@@ -110,7 +181,7 @@ async function loadFromCart() {
 
                 return orderItem;
             });
-            orderData.fromCart = true;
+            orderData.fromCart = true; // Always use cart flow now
 
         } else {
             throw new Error('Không thể truy cập giỏ hàng');
@@ -145,7 +216,7 @@ async function loadSingleProduct(productId, quantity, size = null, color = null)
                 }
 
                 orderData.items = [item];
-                orderData.fromCart = false;
+                orderData.fromCart = false; // Direct product order, not from cart
             } else {
                 throw new Error('Không tìm thấy sản phẩm');
             }
@@ -289,76 +360,120 @@ async function handleCreateOrder() {
             paymentMethod: document.querySelector('input[name="paymentMethod"]:checked').value
         };
 
-        // Prepare order data - use form data again since payment method is fixed
-        const orderPayload = {
-            shipping_address: formData.address,
-            payment_method: formData.paymentMethod
-        };
+        console.log('🔍 Form data collected:', JSON.stringify(formData, null, 2));
 
-        // Always include items array instead of using from_cart flag
-        orderPayload.items = orderData.items.map(item => {
-            const orderItem = {
-                product_id: parseInt(item.product_id), // Ensure it's a number
-                quantity: parseInt(item.quantity)      // Ensure it's a number
+        let tempRemovedItems = []; // Track temporarily removed items
+
+        try {
+            // If this order is from cart with selected items, we need to manipulate cart temporarily
+            if (orderData.fromCart && orderData.selectedItemIds && orderData.selectedItemIds.length > 0) {
+                // Get current cart
+                await cartService.syncWithServer();
+                const currentCart = cartService.getCart();
+                
+                // Find items to temporarily remove (not selected)
+                const itemsToTempRemove = currentCart.items.filter(item => 
+                    !orderData.selectedItemIds.includes(item.id)
+                );
+                
+                // Remove unselected items temporarily
+                for (const item of itemsToTempRemove) {
+                    try {
+                        await apiService.removeFromCart(item.id);
+                        tempRemovedItems.push({
+                            product_id: item.product_id,
+                            quantity: item.quantity,
+                            size: item.size,
+                            color: item.color
+                        });
+                    } catch (error) {
+                        console.warn('Failed to remove item temporarily:', error);
+                    }
+                }
+            }
+
+            // Prepare order payload - use from_cart when from cart, direct when from product
+            const orderPayload = {
+                shipping_address: formData.address,
+                payment_method: formData.paymentMethod
             };
 
-            // Only include size and color if they exist
-            if (item.size && item.size !== null && item.size !== '') {
-                orderItem.size = item.size;
-            }
-            if (item.color && item.color !== null && item.color !== '') {
-                orderItem.color = item.color;
-            }
-
-            return orderItem;
-        });
-
-        console.log('🔍 Form data collected:', JSON.stringify(formData, null, 2));
-        console.log('🔍 Order payload prepared:', JSON.stringify(orderPayload, null, 2));
-
-        // If this was from cart, try to sync cart with server first
-        if (orderData.fromCart && window.cartService) {
-            try {
-                console.log('🔄 Syncing local cart with server...');
-                await cartService.syncWithServer();
-            } catch (error) {
-                console.warn('⚠️ Could not sync cart with server:', error);
-            }
-        }
-
-        // Create order - always use direct order approach with explicit items
-        let response;
-        if (window.orderService) {
-            response = await orderService.createDirectOrder(
-                orderPayload.items,
-                orderPayload.shipping_address,
-                orderPayload.payment_method
-            );
-        } else {
-            response = await window.apiService.createOrder(orderPayload);
-            if (response.success) {
-                response = response.data;
+            // Decide approach based on source
+            if (orderData.fromCart) {
+                // From cart - use from_cart approach (cart now contains only selected items)
+                orderPayload.from_cart = true;
+                console.log('� Using from_cart approach');
             } else {
-                throw new Error(response.message || 'Không thể tạo đơn hàng');
+                // From product detail - use direct order
+                orderPayload.items = orderData.items.map(item => {
+                    const orderItem = {
+                        product_id: parseInt(item.product_id),
+                        quantity: parseInt(item.quantity)
+                    };
+
+                    if (item.size && item.size !== null && item.size !== '') {
+                        orderItem.size = item.size;
+                    }
+                    if (item.color && item.color !== null && item.color !== '') {
+                        orderItem.color = item.color;
+                    }
+
+                    return orderItem;
+                });
+            }
+
+            console.log('🔍 Order payload prepared:', JSON.stringify(orderPayload, null, 2));
+
+            // Create order
+            let response;
+            if (orderPayload.from_cart && window.orderService) {
+                response = await orderService.createOrderFromCart(
+                    orderPayload.shipping_address,
+                    orderPayload.payment_method
+                );
+            } else if (orderPayload.items && window.orderService) {
+                response = await orderService.createDirectOrder(
+                    orderPayload.items,
+                    orderPayload.shipping_address,
+                    orderPayload.payment_method
+                );
+            } else {
+                response = await window.apiService.createOrder(orderPayload);
+                if (response.success) {
+                    response = response.data;
+                } else {
+                    throw new Error(response.message || 'Không thể tạo đơn hàng');
+                }
+            }
+
+            // Success
+            UiUtils.showToast('Tạo đơn hàng thành công!', 'success');
+
+            // If from cart: backend already cleared cart, no need to manually clear
+            // If from product: no cart manipulation needed
+
+            // Clean up sessionStorage
+            sessionStorage.removeItem('selectedCartItems');
+
+            // Redirect to order detail
+            setTimeout(() => {
+                window.location.href = `order-detail.html?id=${response.id}`;
+            }, 1000);
+
+        } finally {
+            // Restore temporarily removed items back to cart
+            if (tempRemovedItems.length > 0) {
+                for (const item of tempRemovedItems) {
+                    try {
+                        await apiService.addToCart(item.product_id, item.quantity);
+                    } catch (error) {
+                        console.warn('Failed to restore item:', error);
+                    }
+                }
+                // Sync cart after restoration
+                await cartService.syncWithServer();
             }
         }
-
-        // Success
-        UiUtils.showToast('Tạo đơn hàng thành công!', 'success');
-        
-        // Clear cart if order was from cart
-        if (orderData.fromCart && window.cartService) {
-            try {
-                await cartService.clearCart();
-            } catch (error) {
-                console.warn('Could not clear cart:', error);
-            }
-        }
-
-        // Redirect to order detail
-        setTimeout(() => {
-            window.location.href = `order-detail.html?id=${response.id}`;
-        }, 1000);
 
     } catch (error) {
         console.error('❌ Failed to create order:', error);
