@@ -393,10 +393,20 @@ async function handleCreateOrder() {
             }
 
             // Prepare order payload - use from_cart when from cart, direct when from product
+            // Normalize payment method for backend compatibility
+            const normalizedPaymentMethod = window.paymentService ? 
+                paymentService.normalizePaymentMethod(formData.paymentMethod) : 
+                formData.paymentMethod;
+
             const orderPayload = {
                 shipping_address: formData.address,
-                payment_method: formData.paymentMethod
+                payment_method: normalizedPaymentMethod
             };
+
+            console.log('🔍 Payment method normalized:', {
+                original: formData.paymentMethod,
+                normalized: normalizedPaymentMethod
+            });
 
             // Decide approach based on source
             if (orderData.fromCart) {
@@ -424,26 +434,81 @@ async function handleCreateOrder() {
 
             console.log('🔍 Order payload prepared:', JSON.stringify(orderPayload, null, 2));
 
-            // Create order
-            let response;
+            // Step 1: Create order (without payment)
+            let orderResponse;
             if (orderPayload.from_cart && window.orderService) {
-                response = await orderService.createOrderFromCart(
+                orderResponse = await orderService.createOrderFromCart(
                     orderPayload.shipping_address,
                     orderPayload.payment_method
                 );
             } else if (orderPayload.items && window.orderService) {
-                response = await orderService.createDirectOrder(
+                orderResponse = await orderService.createDirectOrder(
                     orderPayload.items,
                     orderPayload.shipping_address,
                     orderPayload.payment_method
                 );
             } else {
-                response = await window.apiService.createOrder(orderPayload);
-                if (response.success) {
-                    response = response.data;
+                orderResponse = await window.apiService.createOrder(orderPayload);
+                if (orderResponse.success) {
+                    orderResponse = orderResponse.data;
                 } else {
-                    throw new Error(response.message || 'Không thể tạo đơn hàng');
+                    throw new Error(orderResponse.message || 'Không thể tạo đơn hàng');
                 }
+            }
+
+            console.log('✅ Order created successfully:', orderResponse);
+
+            // Step 2: Create payment for the order (API v2.0 requirement)
+            if (window.paymentService && orderResponse.id) {
+                try {
+                    console.log('💳 Creating payment for order:', orderResponse.id);
+                    
+                    // Generate transaction ID for non-COD payments
+                    let transactionId = null;
+                    if (paymentService.requiresTransactionId(formData.paymentMethod)) {
+                        transactionId = paymentService.generateTransactionId(
+                            normalizedPaymentMethod, // Use normalized method
+                            orderResponse.id
+                        );
+                    }
+
+                    const paymentResponse = await paymentService.createPayment(
+                        orderResponse.id,
+                        normalizedPaymentMethod, // Use normalized payment method
+                        transactionId
+                    );
+
+                    console.log('✅ Payment created successfully:', paymentResponse.data);
+
+                    // For COD, automatically mark as pending (default)
+                    // For other methods, would need real payment gateway integration
+                    if (normalizedPaymentMethod.toLowerCase() !== 'cod' && transactionId) {
+                        // Simulate payment processing (in real app, this would be payment gateway callback)
+                        setTimeout(async () => {
+                            try {
+                                await paymentService.updatePaymentStatus(
+                                    paymentResponse.data.id,
+                                    'completed',
+                                    transactionId + '_CONFIRMED'
+                                );
+                                console.log('💳 Payment status updated to completed');
+                            } catch (error) {
+                                console.warn('Failed to update payment status:', error);
+                            }
+                        }, 2000);
+                    }
+
+                } catch (paymentError) {
+                    console.warn('⚠️ Payment creation failed (API endpoints may not be implemented yet):', paymentError.message);
+                    // Don't fail the entire process if payment creation fails
+                    // Order is still valid, payment can be created later manually if needed
+                    
+                    if (paymentError.message.includes('API Service not available')) {
+                        console.warn('⚠️ API Service not ready, skipping payment creation');
+                    }
+                }
+            } else {
+                console.warn('⚠️ Payment service not available or order ID missing, skipping payment creation');
             }
 
             // Success
@@ -457,7 +522,7 @@ async function handleCreateOrder() {
 
             // Redirect to order detail
             setTimeout(() => {
-                window.location.href = `order-detail.html?id=${response.id}`;
+                window.location.href = `order-detail.html?id=${orderResponse.id}`;
             }, 1000);
 
         } finally {

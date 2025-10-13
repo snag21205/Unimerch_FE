@@ -135,9 +135,14 @@ class OrderService {
             throw new Error('Địa chỉ giao hàng không được để trống');
         }
 
+        // Normalize payment method
+        const normalizedPaymentMethod = window.paymentService ? 
+            paymentService.normalizePaymentMethod(paymentMethod) : 
+            paymentMethod;
+
         const orderData = {
             shipping_address: shippingAddress.trim(),
-            payment_method: paymentMethod,
+            payment_method: normalizedPaymentMethod,
             from_cart: true
         };
 
@@ -180,10 +185,15 @@ class OrderService {
             return validItem;
         });
 
+        // Normalize payment method
+        const normalizedPaymentMethod = window.paymentService ? 
+            paymentService.normalizePaymentMethod(paymentMethod) : 
+            paymentMethod;
+
         const orderData = {
             items: validItems,
             shipping_address: shippingAddress.trim(),
-            payment_method: paymentMethod
+            payment_method: normalizedPaymentMethod
         };
 
         console.log('🛒 Creating direct order with data:', JSON.stringify(orderData, null, 2));

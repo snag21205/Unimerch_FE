@@ -81,8 +81,9 @@
                                 </h5>
                                 
                                 <div class="payment-methods">
+                                    <!-- COD -->
                                     <div class="form-check payment-option mb-3">
-                                        <input class="form-check-input" type="radio" name="paymentMethod" id="cod" value="COD" checked>
+                                        <input class="form-check-input" type="radio" name="paymentMethod" id="cod" value="cod" checked>
                                         <label class="form-check-label w-100" for="cod">
                                             <div class="d-flex align-items-center">
                                                 <div class="payment-icon me-3">💵</div>
@@ -94,8 +95,9 @@
                                         </label>
                                     </div>
                                     
+                                    <!-- Bank Transfer -->
                                     <div class="form-check payment-option mb-3">
-                                        <input class="form-check-input" type="radio" name="paymentMethod" id="bank_transfer" value="Banking">
+                                        <input class="form-check-input" type="radio" name="paymentMethod" id="bank_transfer" value="bank_transfer">
                                         <label class="form-check-label w-100" for="bank_transfer">
                                             <div class="d-flex align-items-center">
                                                 <div class="payment-icon me-3">🏦</div>
@@ -107,14 +109,85 @@
                                         </label>
                                     </div>
                                     
+                                    <!-- Credit Card -->
                                     <div class="form-check payment-option mb-3">
-                                        <input class="form-check-input" type="radio" name="paymentMethod" id="momo" value="E-Wallet">
+                                        <input class="form-check-input" type="radio" name="paymentMethod" id="credit_card" value="credit_card">
+                                        <label class="form-check-label w-100" for="credit_card">
+                                            <div class="d-flex align-items-center">
+                                                <div class="payment-icon me-3">💳</div>
+                                                <div>
+                                                    <strong>Thẻ tín dụng</strong>
+                                                    <div class="text-muted small">Visa, MasterCard, JCB</div>
+                                                </div>
+                                            </div>
+                                        </label>
+                                    </div>
+
+                                    <!-- Debit Card -->
+                                    <div class="form-check payment-option mb-3">
+                                        <input class="form-check-input" type="radio" name="paymentMethod" id="debit_card" value="debit_card">
+                                        <label class="form-check-label w-100" for="debit_card">
+                                            <div class="d-flex align-items-center">
+                                                <div class="payment-icon me-3">💳</div>
+                                                <div>
+                                                    <strong>Thẻ ghi nợ</strong>
+                                                    <div class="text-muted small">Thẻ ATM nội địa</div>
+                                                </div>
+                                            </div>
+                                        </label>
+                                    </div>
+                                    
+                                    <!-- MoMo -->
+                                    <div class="form-check payment-option mb-3">
+                                        <input class="form-check-input" type="radio" name="paymentMethod" id="momo" value="momo">
                                         <label class="form-check-label w-100" for="momo">
                                             <div class="d-flex align-items-center">
                                                 <div class="payment-icon me-3">📱</div>
                                                 <div>
                                                     <strong>Ví MoMo</strong>
                                                     <div class="text-muted small">Thanh toán qua ví điện tử MoMo</div>
+                                                </div>
+                                            </div>
+                                        </label>
+                                    </div>
+
+                                    <!-- ZaloPay -->
+                                    <div class="form-check payment-option mb-3">
+                                        <input class="form-check-input" type="radio" name="paymentMethod" id="zalopay" value="zalopay">
+                                        <label class="form-check-label w-100" for="zalopay">
+                                            <div class="d-flex align-items-center">
+                                                <div class="payment-icon me-3">🔵</div>
+                                                <div>
+                                                    <strong>ZaloPay</strong>
+                                                    <div class="text-muted small">Thanh toán qua ví ZaloPay</div>
+                                                </div>
+                                            </div>
+                                        </label>
+                                    </div>
+
+                                    <!-- VNPay -->
+                                    <div class="form-check payment-option mb-3">
+                                        <input class="form-check-input" type="radio" name="paymentMethod" id="vnpay" value="vnpay">
+                                        <label class="form-check-label w-100" for="vnpay">
+                                            <div class="d-flex align-items-center">
+                                                <div class="payment-icon me-3">🇻🇳</div>
+                                                <div>
+                                                    <strong>VNPay</strong>
+                                                    <div class="text-muted small">Cổng thanh toán VNPay</div>
+                                                </div>
+                                            </div>
+                                        </label>
+                                    </div>
+
+                                    <!-- PayPal -->
+                                    <div class="form-check payment-option mb-3">
+                                        <input class="form-check-input" type="radio" name="paymentMethod" id="paypal" value="paypal">
+                                        <label class="form-check-label w-100" for="paypal">
+                                            <div class="d-flex align-items-center">
+                                                <div class="payment-icon me-3">💙</div>
+                                                <div>
+                                                    <strong>PayPal</strong>
+                                                    <div class="text-muted small">Thanh toán quốc tế PayPal</div>
                                                 </div>
                                             </div>
                                         </label>
@@ -192,6 +265,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../../js/utils.js"></script>
     <script src="../../js/api-service.js"></script>
+    <script src="../../js/payment-service.js"></script>
     <script src="../../js/order-service.js"></script>
     <script src="../../js/cart-service.js"></script>
     <script src="../../components/header.js"></script>

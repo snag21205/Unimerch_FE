@@ -51,6 +51,28 @@ async function loadOrderDetail(orderId) {
             
             if (orderData) {
                 currentOrder = orderData;
+                
+                // Load payment information if available
+                if (window.paymentService) {
+                    try {
+                        const payments = await paymentService.getOrderPayments(orderId);
+                        currentOrder.payments = payments || [];
+                        console.log('💳 Payment data loaded:', payments);
+                    } catch (error) {
+                        console.warn('⚠️ Could not load payment data (endpoints may not be implemented yet):', error.message);
+                        // Set empty payments array as fallback
+                        currentOrder.payments = [];
+                        
+                        // If error is about API service, show a more helpful message
+                        if (error.message.includes('API Service not available')) {
+                            console.warn('⚠️ API Service not ready yet, payment info will not be displayed');
+                        }
+                    }
+                } else {
+                    console.warn('⚠️ Payment service not available');
+                    currentOrder.payments = [];
+                }
+                
                 renderOrderDetail(orderData);
                 hideLoadingState();
             } else {
@@ -228,15 +250,65 @@ function renderOrderSummary(order) {
 function renderShippingPaymentInfo(order) {
     const infoContainer = document.getElementById('shippingPaymentInfo');
     
+    // Format payment information
+    let paymentInfoHtml = `
+        <div class="mb-3">
+            <h6 class="mb-2">� Thông tin thanh toán</h6>
+            <p class="mb-1 small"><strong>Phương thức:</strong> ${formatPaymentMethod(order.payment_method)}</p>
+    `;
+
+    // Add payment status if payments are available
+    if (order.payments && order.payments.length > 0) {
+        const latestPayment = order.payments[order.payments.length - 1]; // Get latest payment
+        const statusInfo = window.paymentService ? 
+            paymentService.formatPaymentStatus(latestPayment.payment_status) :
+            { text: latestPayment.payment_status, class: 'badge-secondary', icon: '💳' };
+
+        paymentInfoHtml += `
+            <p class="mb-1 small">
+                <strong>Trạng thái:</strong> 
+                <span class="badge ${statusInfo.class} ms-1">
+                    ${statusInfo.icon} ${statusInfo.text}
+                </span>
+            </p>
+        `;
+
+        // Add transaction ID if available
+        if (latestPayment.transaction_id) {
+            paymentInfoHtml += `
+                <p class="mb-1 small"><strong>Mã giao dịch:</strong> ${latestPayment.transaction_id}</p>
+            `;
+        }
+
+        // Add payment amount
+        if (latestPayment.amount) {
+            paymentInfoHtml += `
+                <p class="mb-1 small"><strong>Số tiền:</strong> ${formatPrice(latestPayment.amount)}</p>
+            `;
+        }
+
+        // Add payment date
+        if (latestPayment.created_at) {
+            paymentInfoHtml += `
+                <p class="mb-0 small"><strong>Ngày tạo:</strong> ${formatDateTime(latestPayment.created_at)}</p>
+            `;
+        }
+    } else {
+        paymentInfoHtml += `
+            <p class="mb-0 small text-muted">
+                <span class="badge badge-warning">⏳ Chưa có thông tin thanh toán</span>
+            </p>
+        `;
+    }
+
+    paymentInfoHtml += `</div>`;
+
     infoContainer.innerHTML = `
         <div class="mb-3">
             <h6 class="mb-2">📍 Địa chỉ giao hàng</h6>
             <p class="mb-0 small">${order.shipping_address || 'Chưa có thông tin'}</p>
         </div>
-        <div class="mb-3">
-            <h6 class="mb-2">💳 Phương thức thanh toán</h6>
-            <p class="mb-0 small">${formatPaymentMethod(order.payment_method)}</p>
-        </div>
+        ${paymentInfoHtml}
         <div>
             <h6 class="mb-2">🚚 Phương thức giao hàng</h6>
             <p class="mb-0 small">Giao hàng tiêu chuẩn</p>
@@ -376,5 +448,17 @@ function formatDate(dateString) {
         year: 'numeric',
         hour: '2-digit',
         minute: '2-digit'
+    });
+}
+
+function formatDateTime(dateString) {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('vi-VN', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
     });
 }

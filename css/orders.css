@@ -616,26 +616,59 @@
 /* Create Order Page Specific Styles */
 
 /* Payment Methods */
+.payment-methods {
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 8px;
+}
+
+.payment-methods::-webkit-scrollbar {
+    width: 6px;
+}
+
+.payment-methods::-webkit-scrollbar-track {
+    background: var(--bg-light);
+    border-radius: 3px;
+}
+
+.payment-methods::-webkit-scrollbar-thumb {
+    background: var(--text-muted);
+    border-radius: 3px;
+}
+
+.payment-methods::-webkit-scrollbar-thumb:hover {
+    background: var(--text-secondary);
+}
+
 .payment-methods .payment-option {
     border: 2px solid var(--border-light);
     border-radius: var(--border-radius);
     padding: 16px;
     transition: all 0.2s ease;
     cursor: pointer;
+    margin-bottom: 12px;
+}
+
+.payment-methods .payment-option:last-child {
+    margin-bottom: 0;
 }
 
 .payment-methods .payment-option:hover {
     border-color: var(--apple-blue);
     background-color: var(--apple-blue-light);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
 }
 
 .payment-methods .payment-option:has(.form-check-input:checked) {
     border-color: var(--apple-blue);
     background-color: var(--apple-blue-light);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
 }
 
 .payment-icon {
-    font-size: 24px;
+    font-size: 20px;
     width: 40px;
     height: 40px;
     display: flex;
@@ -643,11 +676,13 @@
     justify-content: center;
     background: var(--bg-light);
     border-radius: var(--border-radius-sm);
+    transition: all 0.2s ease;
 }
 
 .payment-option:has(.form-check-input:checked) .payment-icon {
     background: var(--apple-blue);
     color: white;
+    transform: scale(1.1);
 }
 
 /* Order Summary Sticky Card */
@@ -761,5 +796,74 @@
     .order-detail-content #orderActions .btn.ms-auto {
         margin-left: 0 !important;
         margin-top: 8px;
+    }
+}
+
+/* Payment Status Badges */
+.badge-warning {
+    background-color: #FFC107 !important;
+    color: #000 !important;
+}
+
+.badge-success {
+    background-color: #28A745 !important;
+    color: #fff !important;
+}
+
+.badge-danger {
+    background-color: #DC3545 !important;
+    color: #fff !important;
+}
+
+.badge-info {
+    background-color: #17A2B8 !important;
+    color: #fff !important;
+}
+
+.badge-secondary {
+    background-color: #6C757D !important;
+    color: #fff !important;
+}
+
+/* Payment Information Section */
+.payment-info-section {
+    background: var(--bg-light);
+    border-radius: var(--border-radius);
+    padding: 16px;
+    margin-bottom: 12px;
+}
+
+.payment-status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 16px;
+}
+
+/* Payment Methods Animation */
+.payment-methods .payment-option {
+    animation: fadeInUp 0.3s ease forwards;
+}
+
+.payment-methods .payment-option:nth-child(1) { animation-delay: 0.1s; }
+.payment-methods .payment-option:nth-child(2) { animation-delay: 0.2s; }
+.payment-methods .payment-option:nth-child(3) { animation-delay: 0.3s; }
+.payment-methods .payment-option:nth-child(4) { animation-delay: 0.4s; }
+.payment-methods .payment-option:nth-child(5) { animation-delay: 0.5s; }
+.payment-methods .payment-option:nth-child(6) { animation-delay: 0.6s; }
+.payment-methods .payment-option:nth-child(7) { animation-delay: 0.7s; }
+.payment-methods .payment-option:nth-child(8) { animation-delay: 0.8s; }
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }

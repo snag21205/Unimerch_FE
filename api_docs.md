@@ -1,8 +1,7 @@
-
 # UniMerch API Documentation
 
-**Version:** 1.0.0  
-**Base URL:** `https://api.unimerch.space`  
+**Version:** 1.0  
+**Base URL:** `http://localhost:3000` | `https://api.unimerch.space`  
 **Content-Type:** `application/json`
 
 ## Overview
@@ -1444,6 +1443,809 @@ Content-Type: application/json
 }
 ```
 
+
+
+## 📝 Review APIs
+
+### 1. GET /api/reviews - Lấy danh sách tất cả reviews
+```
+Method: GET
+URL: {{base_url}}/api/reviews
+Headers: None (public endpoint)
+
+Query Parameters (optional):
+- page: 1
+- limit: 20
+- product_id: 1
+- user_id: 1
+- rating: 5
+
+Expected Response (200):
+{
+  "success": true,
+  "message": "Lấy danh sách reviews thành công",
+  "data": {
+    "reviews": [...],
+    "pagination": {...}
+  }
+}
+```
+
+### 2. GET /api/reviews/:id - Lấy review theo ID
+```
+Method: GET
+URL: {{base_url}}/api/reviews/1
+Headers: None
+
+Expected Response (200):
+{
+  "success": true,
+  "message": "Lấy thông tin review thành công",
+  "data": {
+    "id": 1,
+    "product_id": 1,
+    "user_id": 1,
+    "rating": 5,
+    "comment": "Sản phẩm rất tốt!",
+    "created_at": "2024-01-01T00:00:00.000Z",
+    "username": "user123",
+    "user_full_name": "Nguyễn Văn A",
+    "product_name": "Áo thun nam"
+  }
+}
+```
+
+### 3. GET /api/reviews/product/:product_id - Lấy reviews theo sản phẩm
+```
+Method: GET
+URL: {{base_url}}/api/reviews/product/1
+Headers: None
+
+Query Parameters (optional):
+- page: 1
+- limit: 20
+- rating: 5
+
+Expected Response (200):
+{
+  "success": true,
+  "message": "Lấy danh sách reviews của sản phẩm thành công",
+  "data": {
+    "reviews": [...],
+    "pagination": {...}
+  }
+}
+```
+
+### 4. GET /api/reviews/product/:product_id/stats - Thống kê rating sản phẩm
+```
+Method: GET
+URL: {{base_url}}/api/reviews/product/1/stats
+Headers: None
+
+Expected Response (200):
+{
+  "success": true,
+  "message": "Lấy thống kê rating sản phẩm thành công",
+  "data": {
+    "total_reviews": 25,
+    "average_rating": 4.2,
+    "rating_distribution": {
+      "5": 10,
+      "4": 8,
+      "3": 5,
+      "2": 1,
+      "1": 1
+    }
+  }
+}
+```
+
+### 5. GET /api/reviews/my-reviews - Lấy reviews của user hiện tại
+```
+Method: GET
+URL: {{base_url}}/api/reviews/my-reviews
+Headers: Authorization: Bearer {{token}}
+
+Query Parameters (optional):
+- page: 1
+- limit: 20
+
+Expected Response (200):
+{
+  "success": true,
+  "message": "Lấy danh sách reviews của bạn thành công",
+  "data": {
+    "reviews": [...],
+    "pagination": {...}
+  }
+}
+```
+
+### 6. GET /api/reviews/check/:product_id - Kiểm tra đã review chưa
+```
+Method: GET
+URL: {{base_url}}/api/reviews/check/1
+Headers: Authorization: Bearer {{token}}
+
+Expected Response (200):
+{
+  "success": true,
+  "message": "Kiểm tra trạng thái review thành công",
+  "data": {
+    "has_reviewed": false
+  }
+}
+```
+
+### 7. GET /api/reviews/top-products - Sản phẩm rating cao nhất
+```
+Method: GET
+URL: {{base_url}}/api/reviews/top-products
+Headers: None
+
+Query Parameters (optional):
+- limit: 10
+
+Expected Response (200):
+{
+  "success": true,
+  "message": "Lấy danh sách sản phẩm có rating cao nhất thành công",
+  "data": [
+    {
+      "id": 1,
+      "name": "Áo thun nam",
+      "image_url": "...",
+      "price": 199000,
+      "discount_price": 150000,
+      "average_rating": 4.8,
+      "total_reviews": 50
+    }
+  ]
+}
+```
+
+### 8. POST /api/reviews - Tạo review mới
+```
+Method: POST
+URL: {{base_url}}/api/reviews
+Headers: 
+- Authorization: Bearer {{token}}
+- Content-Type: application/json
+
+Body (JSON):
+{
+  "product_id": 1,
+  "rating": 5,
+  "comment": "Sản phẩm tuyệt vời, chất lượng rất tốt!"
+}
+
+Expected Response (201):
+{
+  "success": true,
+  "message": "Tạo review thành công",
+  "data": {
+    "id": 1,
+    "product_id": 1,
+    "user_id": 1,
+    "rating": 5,
+    "comment": "Sản phẩm tuyệt vời, chất lượng rất tốt!"
+  }
+}
+
+Test Cases:
+✓ Valid data → 201 Created
+✗ Missing product_id → 400 Bad Request
+✗ Invalid rating (not 1-5) → 400 Bad Request
+✗ Product not exists → 404 Not Found
+✗ Already reviewed → 400 Bad Request
+✗ No auth token → 401 Unauthorized
+```
+
+### 9. PUT /api/reviews/:id - Cập nhật review
+```
+Method: PUT
+URL: {{base_url}}/api/reviews/1
+Headers: 
+- Authorization: Bearer {{token}}
+- Content-Type: application/json
+
+Body (JSON):
+{
+  "rating": 4,
+  "comment": "Cập nhật: Sản phẩm khá tốt"
+}
+
+Expected Response (200):
+{
+  "success": true,
+  "message": "Cập nhật review thành công",
+  "data": {
+    "id": 1,
+    "product_id": 1,
+    "user_id": 1,
+    "rating": 4,
+    "comment": "Cập nhật: Sản phẩm khá tốt"
+  }
+}
+
+Test Cases:
+✓ Owner updates own review → 200 OK
+✓ Admin updates any review → 200 OK
+✗ User updates others' review → 403 Forbidden
+✗ Review not exists → 404 Not Found
+✗ Invalid rating → 400 Bad Request
+✗ No auth token → 401 Unauthorized
+```
+
+### 10. DELETE /api/reviews/:id - Xóa review
+```
+Method: DELETE
+URL: {{base_url}}/api/reviews/1
+Headers: Authorization: Bearer {{token}}
+
+Expected Response (200):
+{
+  "success": true,
+  "message": "Xóa review thành công",
+  "data": null
+}
+
+Test Cases:
+✓ Owner deletes own review → 200 OK
+✓ Admin deletes any review → 200 OK  
+✗ User deletes others' review → 403 Forbidden
+✗ Review not exists → 404 Not Found
+✗ No auth token → 401 Unauthorized
+```
+
+### 11. GET /api/reviews/user/:user_id - Reviews của user (Admin only)
+```
+Method: GET
+URL: {{base_url}}/api/reviews/user/1
+Headers: Authorization: Bearer {{admin_token}}
+
+Query Parameters (optional):
+- page: 1
+- limit: 20
+
+Expected Response (200):
+{
+  "success": true,
+  "message": "Lấy danh sách reviews của người dùng thành công",
+  "data": {
+    "reviews": [...],
+    "pagination": {...}
+  }
+}
+
+
+```
+
+## 📝 Search APIs
+
+Link to postman collection: https://bom.so/LGfOns
+
+
+## 📊 Admin Stats Endpoints
+
+### 1. Dashboard Overview
+
+**Endpoint:** `GET /api/admin/stats/dashboard`  
+**Description:** Lấy thống kê tổng quan cho Admin Dashboard  
+
+**Headers:**
+```
+Authorization: Bearer <ADMIN_JWT_TOKEN>
+```
+
+**Response (200 OK):**
+```json
+{
+  "success": true,
+  "message": "Lấy thống kê dashboard thành công",
+  "data": {
+    "overview": {
+      "total_users": 150,
+      "total_sellers": 25,
+      "total_admins": 3,
+      "total_products": 500,
+      "available_products": 450,
+      "total_categories": 12,
+      "total_orders": 300,
+      "completed_orders": 250,
+      "total_reviews": 180,
+      "total_revenue": "15000000.00",
+      "successful_payments": 245,
+      "conversion_rate": 83.33,
+      "average_order_value": "60000.00",
+      "payment_success_rate": 81.67
+    },
+    "calculated_at": "2025-01-15T10:30:00.000Z"
+  }
+}
+```
+
+### 2. Recent Activity
+
+**Endpoint:** `GET /api/admin/stats/recent-activity`  
+**Description:** Lấy hoạt động gần đây trong hệ thống  
+
+**Query Parameters:**
+- `limit` (number, optional): Số lượng hoạt động (default: 20, max: 100)
+
+**Response (200 OK):**
+```json
+{
+  "success": true,
+  "message": "Lấy hoạt động gần đây thành công",
+  "data": {
+    "activities": [
+      {
+        "activity_type": "user_registered",
+        "title": "Nguyễn Văn A",
+        "description": "Người dùng mới: john_doe (john@example.com)",
+        "timestamp": "2025-01-15T10:25:00.000Z",
+        "entity_id": 151,
+        "time_ago": "5 phút trước"
+      },
+      {
+        "activity_type": "order_created",
+        "title": "Đơn hàng #301",
+        "description": "Đơn hàng mới: 150000 VND",
+        "timestamp": "2025-01-15T10:20:00.000Z",
+        "entity_id": 301,
+        "time_ago": "10 phút trước"
+      }
+    ],
+    "total": 20,
+    "fetched_at": "2025-01-15T10:30:00.000Z"
+  }
+}
+```
+
+### 3. Revenue Analytics
+
+**Endpoint:** `GET /api/admin/stats/revenue`  
+**Description:** Thống kê doanh thu theo thời gian  
+
+**Query Parameters:**
+- `period` (string, optional): Khoảng thời gian - `hour`, `day`, `week`, `month`, `year` (default: day)
+- `limit` (number, optional): Số kỳ thống kê (default: 30, max: 365)
+
+**Response (200 OK):**
+```json
+{
+  "success": true,
+  "message": "Lấy thống kê doanh thu thành công",
+  "data": {
+    "period": "day",
+    "data": [
+      {
+        "period": "2025-01-15",
+        "total_orders": 15,
+        "completed_orders": 12,
+        "revenue": "1800000.00",
+        "avg_order_value": "150000.00"
+      },
+      {
+        "period": "2025-01-14",
+        "total_orders": 18,
+        "completed_orders": 15,
+        "revenue": "2250000.00",
+        "avg_order_value": "150000.00"
+      }
+    ],
+    "summary": {
+      "total_revenue": "54000000.00",
+      "total_orders": 450,
+      "completed_orders": 360,
+      "avg_order_value": "150000.00",
+      "conversion_rate": 80.00,
+      "periods_count": 30
+    },
+    "generated_at": "2025-01-15T10:30:00.000Z"
+  }
+}
+```
+
+### 4. Revenue Comparison
+
+**Endpoint:** `GET /api/admin/stats/revenue/compare`  
+**Description:** So sánh doanh thu giữa các kỳ  
+
+**Query Parameters:**
+- `current_period` (string, optional): Kỳ hiện tại (default: day)
+- `comparison_period` (string, optional): Kỳ so sánh (default: day)  
+- `limit` (number, optional): Số kỳ (default: 30, max: 365)
+
+**Response (200 OK):**
+```json
+{
+  "success": true,
+  "message": "So sánh doanh thu thành công",
+  "data": {
+    "current_period": {
+      "period": "day",
+      "data": [...],
+      "summary": {
+        "total_revenue": "54000000.00",
+        "total_orders": 450,
+        "completed_orders": 360,
+        "avg_order_value": "150000.00",
+        "conversion_rate": 80.00
+      }
+    },
+    "previous_period": {
+      "period": "day",
+      "summary": {
+        "total_revenue": "48000000.00",
+        "total_orders": 400,
+        "completed_orders": 320,
+        "avg_order_value": "150000.00",
+        "conversion_rate": 80.00
+      }
+    },
+    "growth_metrics": {
+      "revenue_growth": 12.5,
+      "orders_growth": 12.5,
+      "avg_order_value_growth": 0,
+      "conversion_rate_growth": 0
+    },
+    "generated_at": "2025-01-15T10:30:00.000Z"
+  }
+}
+```
+
+### 5. Payment Method Analytics
+
+**Endpoint:** `GET /api/admin/stats/payment-methods`  
+**Description:** Thống kê phương thức thanh toán  
+
+**Response (200 OK):**
+```json
+{
+  "success": true,
+  "message": "Lấy thống kê phương thức thanh toán thành công",
+  "data": {
+    "payment_methods": [
+      {
+        "payment_method": "cod",
+        "transaction_count": 150,
+        "successful_count": 145,
+        "failed_count": 5,
+        "total_amount": "21750000.00",
+        "avg_amount": "150000.00",
+        "success_rate": 96.67,
+        "percentage_of_revenue": "40.28",
+        "percentage_of_transactions": "50.00"
+      },
+      {
+        "payment_method": "momo",
+        "transaction_count": 100,
+        "successful_count": 95,
+        "failed_count": 5,
+        "total_amount": "14250000.00",
+        "avg_amount": "150000.00",
+        "success_rate": 95.00,
+        "percentage_of_revenue": "26.39",
+        "percentage_of_transactions": "33.33"
+      }
+    ],
+    "summary": {
+      "total_amount": "54000000.00",
+      "total_transactions": 300,
+      "overall_success_rate": "95.00"
+    },
+    "generated_at": "2025-01-15T10:30:00.000Z"
+  }
+}
+```
+
+### 6. Product Analytics
+
+**Endpoint:** `GET /api/admin/stats/products`  
+**Description:** Thống kê sản phẩm và danh mục  
+
+**Query Parameters:**
+- `limit` (number, optional): Số sản phẩm top (default: 10, max: 50)
+
+**Response (200 OK):**
+```json
+{
+  "success": true,
+  "message": "Lấy thống kê sản phẩm thành công",
+  "data": {
+    "top_products": [
+      {
+        "id": 1,
+        "name": "iPhone 15",
+        "price": 25000000.00,
+        "discount_price": 23000000.00,
+        "image_url": "https://example.com/iphone15.jpg",
+        "category_name": "Điện thoại",
+        "seller_name": "seller1",
+        "total_sold": 50,
+        "total_revenue": "1150000000.00",
+        "order_count": 45,
+        "avg_revenue_per_order": "25555555.56"
+      }
+    ],
+    "category_analysis": [
+      {
+        "id": 1,
+        "name": "Điện thoại",
+        "description": "Các loại điện thoại thông minh",
+        "product_count": 25,
+        "available_products": 22,
+        "total_sold": 150,
+        "total_revenue": "3750000000.00",
+        "avg_rating": 4.5,
+        "review_count": 120,
+        "avg_revenue_per_product": "150000000.00",
+        "revenue_percentage": "69.44"
+      }
+    ],
+    "summary": {
+      "total_categories": 12,
+      "total_revenue_all_categories": "5400000000.00",
+      "best_performing_category": "Điện thoại",
+      "avg_products_per_category": "20.8"
+    },
+    "generated_at": "2025-01-15T10:30:00.000Z"
+  }
+}
+```
+
+### 7. Seller Analytics
+
+**Endpoint:** `GET /api/admin/stats/sellers`  
+**Description:** Thống kê người bán hàng  
+
+**Query Parameters:**
+- `limit` (number, optional): Số seller top (default: 10, max: 50)
+
+**Response (200 OK):**
+```json
+{
+  "success": true,
+  "message": "Lấy thống kê người bán thành công",
+  "data": {
+    "top_sellers": [
+      {
+        "id": 5,
+        "username": "seller1",
+        "full_name": "Nguyễn Văn Seller",
+        "email": "seller1@example.com",
+        "created_at": "2024-06-01T00:00:00.000Z",
+        "product_count": 50,
+        "active_products": 45,
+        "total_sold": 200,
+        "total_revenue": "30000000.00",
+        "order_count": 180,
+        "avg_rating": 4.8,
+        "review_count": 150,
+        "avg_revenue_per_product": "600000.00",
+        "avg_revenue_per_order": "166666.67",
+        "product_activity_rate": "90.00"
+      }
+    ],
+    "summary": {
+      "total_sellers_analyzed": 10,
+      "total_revenue_all_sellers": "150000000.00",
+      "total_products_all_sellers": 250,
+      "avg_revenue_per_seller": "15000000.00",
+      "avg_products_per_seller": "25.0",
+      "best_seller": "seller1"
+    },
+    "generated_at": "2025-01-15T10:30:00.000Z"
+  }
+}
+```
+
+### 8. Order Status Analytics
+
+**Endpoint:** `GET /api/admin/stats/orders`  
+**Description:** Thống kê đơn hàng theo trạng thái  
+
+**Response (200 OK):**
+```json
+{
+  "success": true,
+  "message": "Lấy thống kê đơn hàng thành công",
+  "data": {
+    "order_status_breakdown": [
+      {
+        "status": "pending",
+        "count": 50,
+        "total_amount": "7500000.00",
+        "avg_amount": "150000.00",
+        "percentage_of_orders": "16.67",
+        "percentage_of_revenue": "13.89",
+        "status_label": "Chờ xử lý"
+      },
+      {
+        "status": "delivered",
+        "count": 200,
+        "total_amount": "30000000.00",
+        "avg_amount": "150000.00",
+        "percentage_of_orders": "66.67",
+        "percentage_of_revenue": "55.56",
+        "status_label": "Đã giao hàng"
+      }
+    ],
+    "conversion_funnel": {
+      "pending_to_processing": "20.00",
+      "processing_to_shipped": "16.67",
+      "shipped_to_delivered": "66.67",
+      "overall_completion": "66.67",
+      "cancellation_rate": "10.00"
+    },
+    "summary": {
+      "total_orders": 300,
+      "total_revenue": "54000000.00",
+      "avg_order_value": "180000.00",
+      "completion_rate": "66.67"
+    },
+    "generated_at": "2025-01-15T10:30:00.000Z"
+  }
+}
+```
+
+### 9. User Growth Analytics
+
+**Endpoint:** `GET /api/admin/stats/users/growth`  
+**Description:** Thống kê tăng trưởng người dùng  
+
+**Query Parameters:**
+- `period` (string, optional): Khoảng thời gian (default: day)
+- `limit` (number, optional): Số kỳ (default: 30, max: 365)
+
+**Response (200 OK):**
+```json
+{
+  "success": true,
+  "message": "Lấy thống kê tăng trưởng người dùng thành công",
+  "data": {
+    "period": "day",
+    "growth_data": [
+      {
+        "period": "2025-01-15",
+        "new_users": 5,
+        "new_sellers": 1
+      },
+      {
+        "period": "2025-01-14",
+        "new_users": 8,
+        "new_sellers": 2
+      }
+    ],
+    "summary": {
+      "total_new_users": 150,
+      "total_new_sellers": 30,
+      "avg_new_users_per_period": "5.0",
+      "peak_registration_period": {
+        "period": "2025-01-10",
+        "new_users": 15,
+        "new_sellers": 3
+      }
+    },
+    "generated_at": "2025-01-15T10:30:00.000Z"
+  }
+}
+```
+
+### 10. Complete Admin Stats
+
+**Endpoint:** `GET /api/admin/stats/complete`  
+**Description:** Thống kê tổng hợp toàn bộ cho dashboard chính  
+
+**Query Parameters:**
+- `include_overview` (boolean, optional): Bao gồm overview (default: true)
+- `include_revenue` (boolean, optional): Bao gồm revenue stats (default: true)
+- `include_business` (boolean, optional): Bao gồm business stats (default: true)
+- `revenue_period` (string, optional): Period cho revenue (default: day)
+- `revenue_limit` (number, optional): Limit cho revenue (default: 30)
+- `product_limit` (number, optional): Limit cho products (default: 10)
+- `seller_limit` (number, optional): Limit cho sellers (default: 10)
+- `growth_period` (string, optional): Period cho user growth (default: day)
+- `growth_limit` (number, optional): Limit cho user growth (default: 30)
+
+**Response (200 OK):**
+```json
+{
+  "success": true,
+  "message": "Lấy thống kê tổng hợp thành công",
+  "data": {
+    "overview": {
+      "overview": {...},
+      "calculated_at": "2025-01-15T10:30:00.000Z"
+    },
+    "revenue": {
+      "period": "day",
+      "data": [...],
+      "summary": {...}
+    },
+    "payment_methods": {
+      "payment_methods": [...],
+      "summary": {...}
+    },
+    "products": {
+      "top_products": [...],
+      "category_analysis": [...]
+    },
+    "sellers": {
+      "top_sellers": [...],
+      "summary": {...}
+    },
+    "orders": {
+      "order_status_breakdown": [...],
+      "conversion_funnel": {...}
+    },
+    "user_growth": {
+      "period": "day",
+      "growth_data": [...],
+      "summary": {...}
+    },
+    "generated_at": "2025-01-15T10:30:00.000Z",
+    "cache_duration": "5 minutes"
+  }
+}
+```
+
+### 11. Stats Summary
+
+**Endpoint:** `GET /api/admin/stats/summary`  
+**Description:** Tóm tắt các chỉ số quan trọng cho widgets  
+
+**Response (200 OK):**
+```json
+{
+  "success": true,
+  "message": "Lấy tóm tắt thống kê thành công",
+  "data": {
+    "key_metrics": {
+      "total_revenue": "54000000.00",
+      "total_orders": 300,
+      "total_users": 150,
+      "total_products": 500,
+      "conversion_rate": 83.33,
+      "average_order_value": "180000.00"
+    },
+    "growth_indicators": {
+      "revenue_growth_7d": 12.5,
+      "weekly_revenue": "10500000.00",
+      "orders_this_week": 70
+    },
+    "order_status_summary": [
+      {
+        "status": "pending",
+        "count": 50,
+        "percentage": "16.67"
+      },
+      {
+        "status": "delivered",
+        "count": 200,
+        "percentage": "66.67"
+      }
+    ],
+    "generated_at": "2025-01-15T10:30:00.000Z"
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 > **Note:** When refunding, order status automatically changes to `cancelled`
 
 ---
@@ -1580,6 +2382,7 @@ All error responses follow a consistent format:
   "message": "Lỗi server nội bộ"
 }
 ```
+
 
 ---
 
