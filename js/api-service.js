@@ -49,6 +49,18 @@ class ApiService {
                 updateStatus: '/api/payments/:id/status',
                 userPayments: '/api/payments/user',
                 refund: '/api/payments/:id/refund'
+            },
+            reviews: {
+                list: '/api/reviews',
+                detail: '/api/reviews/:id',
+                productReviews: '/api/reviews/product/:productId',
+                productStats: '/api/reviews/product/:productId/stats',
+                myReviews: '/api/reviews/my-reviews',
+                checkReview: '/api/reviews/check/:productId',
+                topProducts: '/api/reviews/top-products',
+                create: '/api/reviews',
+                update: '/api/reviews/:id',
+                delete: '/api/reviews/:id'
             }
         };
     }
@@ -451,6 +463,79 @@ class ApiService {
             method: 'POST',
             body: { reason },
             params: { id: paymentId },
+            requireAuth: true
+        });
+    }
+
+    // Review Methods
+    async getReviews(queryParams = {}) {
+        const query = new URLSearchParams(queryParams).toString();
+        const endpoint = this.endpoints.reviews.list + (query ? `?${query}` : '');
+        return this.request(endpoint);
+    }
+
+    async getReviewDetail(reviewId) {
+        return this.request(this.endpoints.reviews.detail, {
+            params: { id: reviewId }
+        });
+    }
+
+    async getProductReviews(productId, queryParams = {}) {
+        const query = new URLSearchParams(queryParams).toString();
+        const endpoint = this.endpoints.reviews.productReviews + (query ? `?${query}` : '');
+        return this.request(endpoint, {
+            params: { productId: productId }
+        });
+    }
+
+    async getProductReviewStats(productId) {
+        return this.request(this.endpoints.reviews.productStats, {
+            params: { productId: productId }
+        });
+    }
+
+    async getMyReviews(queryParams = {}) {
+        const query = new URLSearchParams(queryParams).toString();
+        const endpoint = this.endpoints.reviews.myReviews + (query ? `?${query}` : '');
+        return this.request(endpoint, {
+            requireAuth: true
+        });
+    }
+
+    async checkProductReview(productId) {
+        return this.request(this.endpoints.reviews.checkReview, {
+            params: { productId: productId },
+            requireAuth: true
+        });
+    }
+
+    async getTopProducts(limit = 10) {
+        const query = new URLSearchParams({ limit }).toString();
+        const endpoint = this.endpoints.reviews.topProducts + `?${query}`;
+        return this.request(endpoint);
+    }
+
+    async createReview(reviewData) {
+        return this.request(this.endpoints.reviews.create, {
+            method: 'POST',
+            body: reviewData,
+            requireAuth: true
+        });
+    }
+
+    async updateReview(reviewId, reviewData) {
+        return this.request(this.endpoints.reviews.update, {
+            method: 'PUT',
+            body: reviewData,
+            params: { id: reviewId },
+            requireAuth: true
+        });
+    }
+
+    async deleteReview(reviewId) {
+        return this.request(this.endpoints.reviews.delete, {
+            method: 'DELETE',
+            params: { id: reviewId },
             requireAuth: true
         });
     }
