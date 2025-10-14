@@ -73,9 +73,10 @@
     <!-- Main Product Detail -->
     <main class="bg-white" style="min-height: 100vh;">
         <div class="container-fluid" style="min-height: 100vh;">
+            <!-- Product Info Section -->
             <div class="row align-items-center" style="min-height: 85vh; padding-top: 2rem; padding-bottom: 2rem;">
-                <!-- Left Column - Product Image (55%) -->
-                <div class="col-lg-6 d-flex align-items-center justify-content-center" style="padding: 1.5rem;">
+                <!-- Left Column - Product Image -->
+                <div class="col-12 col-lg-6 d-flex align-items-center justify-content-center" style="padding: 1rem 1.5rem;">
                     <div style="max-width: 500px; width: 100%;">
                         <img id="productImage" src="../../assets/images/products/demo.png" alt="Product" class="img-fluid hero-image" style="
                             width: 100%; 
@@ -87,8 +88,8 @@
                     </div>
                 </div>
                 
-                <!-- Right Column - Product Controls (45%) -->
-                <div class="col-lg-6" style="padding: 1.5rem; max-width: 500px;">
+                <!-- Right Column - Product Controls -->
+                <div class="col-12 col-lg-6" style="padding: 1rem 1.5rem;">
                     <!-- Breadcrumb -->
                     <nav aria-label="breadcrumb" class="mb-2">
                         <ol class="breadcrumb mb-0" style="font-size: 13px;">
@@ -124,89 +125,78 @@
                         </p>
                     </div>
                     
-                    <!-- Size & Color Selection (inline) -->
-                    <div class="row mb-3">
-                        <div class="col-6">
-                            <label class="form-label fw-semibold mb-2" style="font-size: 14px; color: rgba(0, 0, 0, 0.8);">Size</label>
-                            <div class="d-flex gap-1 flex-wrap" id="sizeOptions">
-                                <!-- Populated by JS -->
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <label class="form-label fw-semibold mb-2" style="font-size: 14px; color: rgba(0, 0, 0, 0.8);">Color</label>
-                            <div class="d-flex gap-2 flex-wrap" id="colorOptions">
-                                <!-- Populated by JS -->
+                    
+                    <!-- Price & Quantity Section -->
+                    <div class="row mb-4">
+                        <div class="col-12">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <div>
+                                    <span class="text-muted fw-medium" style="font-size: 14px;">Price</span>
+                                    <div id="totalPrice" class="h3 fw-bold mb-0" style="
+                                        font-size: 2.2rem; 
+                                        color: #2563eb;
+                                        letter-spacing: -0.02em;
+                                    ">$64</div>
+                                </div>
+                                <div class="text-end">
+                                    <span class="text-muted fw-medium" style="font-size: 14px;">Quantity</span>
+                                    <div class="d-flex align-items-center gap-2 mt-1">
+                                        <button class="btn btn-outline-secondary" onclick="changeQuantity(-1)" style="
+                                            width: 40px; 
+                                            height: 40px; 
+                                            border-radius: 8px;
+                                            font-size: 18px;
+                                            font-weight: 600;
+                                        ">−</button>
+                                        <input type="number" id="quantity" value="1" min="1" max="10" class="form-control text-center fw-semibold" style="
+                                            width: 70px; 
+                                            height: 40px; 
+                                            border-radius: 8px; 
+                                            font-size: 16px;
+                                        ">
+                                        <button class="btn btn-outline-secondary" onclick="changeQuantity(1)" style="
+                                            width: 40px; 
+                                            height: 40px; 
+                                            border-radius: 8px;
+                                            font-size: 18px;
+                                            font-weight: 600;
+                                        ">+</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- Quantity & Price (inline) -->
-                    <div class="row align-items-end mb-3">
-                        <div class="col-5">
-                            <label class="form-label fw-semibold mb-2" style="font-size: 14px; color: rgba(0, 0, 0, 0.8);">Quantity</label>
-                            <div class="d-flex align-items-center gap-2">
-                                <button class="btn btn-outline-secondary" onclick="changeQuantity(-1)" style="
-                                    width: 36px; 
-                                    height: 36px; 
-                                    border-radius: 8px;
-                                    font-size: 16px;
-                                    font-weight: 600;
-                                ">−</button>
-                                <input type="number" id="quantity" value="1" min="1" max="10" class="form-control text-center fw-semibold" style="
-                                    width: 60px; 
-                                    height: 36px; 
-                                    border-radius: 8px; 
-                                    font-size: 14px;
-                                ">
-                                <button class="btn btn-outline-secondary" onclick="changeQuantity(1)" style="
-                                    width: 36px; 
-                                    height: 36px; 
-                                    border-radius: 8px;
-                                    font-size: 16px;
-                                    font-weight: 600;
-                                ">+</button>
-                            </div>
-                        </div>
-                        <div class="col-7">
-                            <div class="text-end">
-                                <span class="text-muted fw-medium" style="font-size: 14px;">Total</span>
-                                <div id="totalPrice" class="h4 fw-bold mb-0" style="
-                                    font-size: 1.8rem; 
-                                    color: #2563eb;
-                                    letter-spacing: -0.02em;
-                                ">$64</div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Action Buttons (compact) -->
-                    <div class="d-grid gap-2 mb-3">
+                    <!-- Action Buttons -->
+                    <div class="d-grid gap-2 mb-4">
                         <button class="btn btn-primary btn-lg rounded-3" onclick="buyNow()" style="
-                            font-size: 16px; 
-                            font-weight: 600; 
-                            padding: 0.8rem 1.5rem;
+                            font-size: 18px; 
+                            font-weight: 700; 
+                            padding: 1rem 2rem;
                             background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
                             border: none;
-                            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
-                        ">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-2">
+                            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+                            transition: all 0.3s ease;
+                        " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-2">
                                 <path d="M9 12l2 2 4-4"></path>
                                 <path d="M21 12c-1 0-3-1-3-3s2-3 3-3 3 1 3 3-2 3-3 3"></path>
                             </svg>
-                            Mua
+                            Mua ngay
                         </button>
                         <button class="btn btn-outline-dark btn-lg rounded-3" onclick="addToCart()" style="
-                            font-size: 16px; 
+                            font-size: 18px; 
                             font-weight: 600; 
-                            padding: 0.8rem 1.5rem;
+                            padding: 1rem 2rem;
                             border-width: 2px;
-                        ">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-2">
+                            transition: all 0.3s ease;
+                        " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-2">
                                 <circle cx="8" cy="21" r="1"></circle>
                                 <circle cx="19" cy="21" r="1"></circle>
                                 <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57L20.5 9H5.12"></path>
                             </svg>
-                            Add to Cart
+                            Thêm vào giỏ hàng
                         </button>
                     </div>
                     
@@ -237,6 +227,143 @@
                                         <line x1="8" y1="21" x2="16" y2="21"></line>
                                     </svg>
                                     <small class="text-muted fw-medium">Secure payment guaranteed</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Reviews Section -->
+            <div class="row" style="padding: 2rem 0;">
+                <div class="col-12">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12">
+                                <h3 class="fw-bold mb-4" style="color: #1f2937;">Customer Reviews</h3>
+                                
+                                <!-- Rating Summary -->
+                                <div class="row mb-4">
+                                    <div class="col-12 col-md-4">
+                                        <div class="card border-0 shadow-sm">
+                                            <div class="card-body text-center">
+                                                <div id="averageRating" class="display-4 fw-bold text-primary mb-2">0.0</div>
+                                                <div id="ratingStars" class="mb-2">
+                                                    <!-- Stars will be populated by JS -->
+                                                </div>
+                                                <div id="totalReviews" class="text-muted">0 reviews</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-8">
+                                        <div class="card border-0 shadow-sm">
+                                            <div class="card-body">
+                                                <h6 class="fw-semibold mb-3">Rating Distribution</h6>
+                                                <div id="ratingDistribution">
+                                                    <!-- Rating bars will be populated by JS -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Reviews List -->
+                                <div class="card border-0 shadow-sm">
+                                    <div class="card-header bg-white border-bottom">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <h6 class="mb-0 fw-semibold">All Reviews</h6>
+                                            <div class="d-flex gap-2">
+                                                <select id="ratingFilter" class="form-select form-select-sm" style="width: auto;">
+                                                    <option value="">All Ratings</option>
+                                                    <option value="5">5 Stars</option>
+                                                    <option value="4">4 Stars</option>
+                                                    <option value="3">3 Stars</option>
+                                                    <option value="2">2 Stars</option>
+                                                    <option value="1">1 Star</option>
+                                                </select>
+                                                <select id="sortFilter" class="form-select form-select-sm" style="width: auto;">
+                                                    <option value="newest">Newest First</option>
+                                                    <option value="oldest">Oldest First</option>
+                                                    <option value="highest">Highest Rating</option>
+                                                    <option value="lowest">Lowest Rating</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body p-0">
+                                        <div id="reviewsList">
+                                            <!-- Reviews will be populated by JS -->
+                                        </div>
+                                        <div id="reviewsLoading" class="text-center py-4" style="display: none;">
+                                            <div class="spinner-border text-primary" role="status">
+                                                <span class="visually-hidden">Loading...</span>
+                                            </div>
+                                        </div>
+                                        <div id="noReviews" class="text-center py-5" style="display: none;">
+                                            <div class="text-muted">
+                                                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="mb-3">
+                                                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                                </svg>
+                                                <h6>No reviews yet</h6>
+                                                <p class="mb-0">Be the first to review this product!</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Write Review Section (if user is logged in) -->
+                                <div id="writeReviewSection" class="card border-0 shadow-sm mt-4" style="display: none;">
+                                    <div class="card-header bg-white">
+                                        <h6 class="mb-0 fw-semibold">Write a Review</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <form id="reviewForm">
+                                            <div class="mb-3">
+                                                <label class="form-label fw-semibold">Your Rating</label>
+                                                <div class="rating-input d-flex gap-1">
+                                                    <button type="button" class="btn btn-outline-warning p-0" data-rating="1" style="width: 32px; height: 32px;">
+                                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                            <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"></polygon>
+                                                        </svg>
+                                                    </button>
+                                                    <button type="button" class="btn btn-outline-warning p-0" data-rating="2" style="width: 32px; height: 32px;">
+                                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                            <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"></polygon>
+                                                        </svg>
+                                                    </button>
+                                                    <button type="button" class="btn btn-outline-warning p-0" data-rating="3" style="width: 32px; height: 32px;">
+                                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                            <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"></polygon>
+                                                        </svg>
+                                                    </button>
+                                                    <button type="button" class="btn btn-outline-warning p-0" data-rating="4" style="width: 32px; height: 32px;">
+                                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                            <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"></polygon>
+                                                        </svg>
+                                                    </button>
+                                                    <button type="button" class="btn btn-outline-warning p-0" data-rating="5" style="width: 32px; height: 32px;">
+                                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                            <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"></polygon>
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                                <input type="hidden" id="selectedRating" name="rating" required>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="reviewComment" class="form-label fw-semibold">Your Review</label>
+                                                <textarea id="reviewComment" name="comment" class="form-control" rows="4" placeholder="Share your experience with this product..." required></textarea>
+                                            </div>
+                                            <div class="d-flex gap-2">
+                                                <button type="submit" class="btn btn-primary">
+                                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-2">
+                                                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                                    </svg>
+                                                    Submit Review
+                                                </button>
+                                                <button type="button" class="btn btn-outline-secondary" onclick="cancelReview()">Cancel</button>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -49,8 +49,40 @@
             isLoading = false;
             hideLoadingState();
             
+            // Load ratings for all products
+            await loadProductRatings();
+            
             // Render products after loading
             renderProducts();
+        }
+    }
+    
+    // Load ratings for all products
+    async function loadProductRatings() {
+        if (!products || products.length === 0) return;
+        
+        try {
+            console.log('🔄 Loading product ratings...');
+            
+            // Load ratings for each product
+            const ratingPromises = products.map(async (product) => {
+                try {
+                    const response = await window.apiService.getProductReviewStats(product.id);
+                    if (response.success && response.data) {
+                        product.rating = response.data.average_rating || 0;
+                        product.reviews = response.data.total_reviews || 0;
+                    }
+                } catch (error) {
+                    console.warn(`Failed to load rating for product ${product.id}:`, error);
+                    // Keep default values
+                }
+            });
+            
+            await Promise.all(ratingPromises);
+            console.log('✅ Product ratings loaded');
+            
+        } catch (error) {
+            console.warn('Failed to load product ratings:', error);
         }
     }
     
@@ -94,9 +126,8 @@
             created_at: apiProduct.created_at,
             updated_at: apiProduct.updated_at,
             
-            // UI specific data with defaults
-            rating: apiProduct.rating || Math.floor(Math.random() * 2) + 4, // 4-5 stars
-            reviews: apiProduct.reviews || Math.floor(Math.random() * 100) + 10,
+            rating: apiProduct.average_rating || 0,
+            reviews: apiProduct.total_reviews || 0,
             sizes: apiProduct.sizes || ["S", "M", "L", "XL"],
             colors: apiProduct.colors || ["black", "white"],
             type: apiProduct.type || determineProductType(apiProduct.name)
@@ -529,64 +560,26 @@
                         </div>
                     </div>
                     
-                    <!-- Size Selection -->
-                    <div class="mb-3 mt-auto">
-                        <div class="d-flex gap-1 mb-2 flex-wrap">
-                            ${product.sizes.slice(0, 4).map((size, index) => `
-                                <button class="btn btn-outline-dark btn-sm ${index === 0 ? 'active' : ''}" 
-                                        onclick="selectProductSize(this, '${size}', event)"
-                                        style="
-                                            min-width: 36px; 
-                                            height: 36px; 
-                                            padding: 0; 
-                                            font-size: 0.75rem; 
-                                            border-radius: 8px;
-                                            font-weight: 500;
-                                            ${size === 'One Size' ? 'min-width: 60px; padding: 0 8px;' : ''}
-                                        ">${size}</button>
-                            `).join('')}
-                            ${product.sizes.length > 4 ? `<span class="align-self-center text-muted" style="font-size: 0.75rem;">+${product.sizes.length - 4}</span>` : ''}
-                        </div>
-                        
-                        <!-- Color Selection -->
-                        <div class="d-flex gap-2 align-items-center">
-                            ${product.colors.slice(0, 5).map((color, index) => `
-                                <div class="color-swatch rounded-circle ${index === 0 ? 'selected' : ''}" 
-                                     onclick="selectProductColor(this, '${color}', event)" 
-                                     title="${color}"
-                                     style="
-                                        width: 24px; 
-                                        height: 24px; 
-                                        cursor: pointer; 
-                                        transition: all 0.3s ease; 
-                                        background-color: ${getColorValue(color)};
-                                        border: 2px solid ${index === 0 ? '#1f2937' : 'transparent'};
-                                        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-                                     ">
-                                </div>
-                            `).join('')}
-                            ${product.colors.length > 5 ? `<span class="text-muted" style="font-size: 0.75rem;">+${product.colors.length - 5}</span>` : ''}
-                        </div>
-                    </div>
                     
                     <!-- Action Button -->
-                    <div class="mt-2">
+                    <div class="mt-auto">
                         <button class="btn btn-dark w-100 rounded-pill" 
                                 onclick="addProductToCart(${product.id}, event)" 
                                 style="
-                                    font-size: 0.85rem; 
+                                    font-size: 0.9rem; 
                                     font-weight: 600; 
-                                    padding: 12px 24px;
+                                    padding: 14px 24px;
                                     background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
                                     border: none;
                                     transition: all 0.3s ease;
-                                ">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-2">
+                                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                                " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-2">
                                 <circle cx="8" cy="21" r="1"></circle>
                                 <circle cx="19" cy="21" r="1"></circle>
                                 <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57L20.5 9H5.12"></path>
                             </svg>
-                            Add to cart
+                            Thêm vào giỏ
                         </button>
                     </div>
                 </div>
@@ -610,17 +603,6 @@
         `;
     }
 
-    // Helper function to get color values
-    function getColorValue(color) {
-        const colorMap = {
-            'black': '#000',
-            'blue': '#007AFF', 
-            'brown': '#8B4513',
-            'red': '#FF3B30',
-            'white': '#fff'
-        };
-        return colorMap[color] || '#ccc';
-    }
     
     // ===== MAIN RENDER FUNCTION =====
     function renderProducts() {
@@ -731,35 +713,6 @@
         }
     }
 
-    function selectProductSize(element, size, event) {
-        event.stopPropagation();
-        
-        // Remove active class from all size buttons in the same card
-        element.parentNode.querySelectorAll('.btn').forEach(btn => {
-            btn.classList.remove('active');
-        });
-        
-        // Add active class to clicked button
-        element.classList.add('active');
-        
-        console.log('Selected size:', size);
-    }
-    
-    function selectProductColor(element, color, event) {
-        event.stopPropagation();
-        
-        // Remove selected border from all color swatches in the same card
-        element.parentNode.querySelectorAll('.color-swatch').forEach(swatch => {
-            swatch.style.borderColor = 'transparent';
-            swatch.classList.remove('selected');
-        });
-        
-        // Add selected border to clicked swatch
-        element.style.borderColor = '#1f2937';
-        element.classList.add('selected');
-        
-        console.log('Selected color:', color);
-    }
 
     function addProductToCart(productId, event) {
         event.stopPropagation();
@@ -842,8 +795,6 @@
     }
     
     // ===== GLOBAL FUNCTIONS =====
-    window.selectProductSize = selectProductSize;
-    window.selectProductColor = selectProductColor;
     window.addProductToCart = addProductToCart;
     window.goToProductDetail = goToProductDetail;
     window.showToast = showToast;

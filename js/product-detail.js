@@ -3,6 +3,9 @@ let currentProduct = {};
 let selectedSize = '';
 let selectedColor = '';
 let quantity = 1;
+let productReviews = [];
+let reviewStats = {};
+let currentUserReview = null;
 
 // Get product ID from URL or default to first product
 function getProductIdFromUrl() {
@@ -259,6 +262,9 @@ const productData = {
 document.addEventListener('DOMContentLoaded', function() {
     const productId = getProductIdFromUrl();
     loadProductFromAPI(productId);
+    
+    // Initialize review functionality
+    initializeReviewFunctionality();
 });
 
 // Load product data from API
@@ -285,6 +291,10 @@ async function loadProductFromAPI(productId) {
             
             // Update DOM elements
             updateProductUI();
+            
+            // Load reviews and ratings
+            await loadProductReviews(productId);
+            await loadProductReviewStats(productId);
             
         } else {
             throw new Error('Invalid API response or product not found');
@@ -383,30 +393,8 @@ function updateProductUI() {
     // Generate rating stars
     generateRatingStars();
     
-    // Generate size options
-    console.log('🔧 Generating size options...');
-    generateSizeOptions();
-    
-    // Generate color options
-    console.log('🎨 Generating color options...');
-    generateColorOptions();
-    
-    // Set default selections only if the product has valid options
-    const hasValidSizes = currentProduct.sizes && 
-                         currentProduct.sizes.length > 0 && 
-                         !(currentProduct.sizes.length === 1 && currentProduct.sizes[0] === "One Size");
-    const hasValidColors = currentProduct.colors && 
-                          currentProduct.colors.length > 0 &&
-                          !currentProduct.colors.every(color => !color || color === null);
-    
-    selectedSize = hasValidSizes ? currentProduct.sizes[0] : null;
-    selectedColor = hasValidColors ? currentProduct.colors[0] : null;
-    
-    console.log('✅ Default selections:', { selectedSize, selectedColor });
-    
     // Update UI
     updateTotalPrice();
-    updateSelections();
     
     // Update document title
     document.title = `${currentProduct.name} - UEH Merch`;
@@ -465,147 +453,6 @@ function generateRatingStars() {
     ratingContainer.innerHTML = starsHtml;
 }
 
-// Generate size options
-function generateSizeOptions() {
-    const sizeContainer = document.getElementById('sizeOptions');
-    const sizeSection = sizeContainer?.closest('.mb-3');
-    
-    console.log('📏 Size container found:', !!sizeContainer);
-    console.log('📏 Available sizes:', currentProduct.sizes);
-    
-    if (!sizeContainer) {
-        console.error('❌ Size container #sizeOptions not found!');
-        return;
-    }
-    
-    // Check if product has valid sizes (not null/empty/just ["One Size"])
-    const hasValidSizes = currentProduct.sizes && 
-                         currentProduct.sizes.length > 0 && 
-                         !(currentProduct.sizes.length === 1 && currentProduct.sizes[0] === "One Size");
-    
-    if (!hasValidSizes) {
-        // Hide size section or show disabled state
-        if (sizeSection) {
-            sizeSection.style.opacity = '0.5';
-            sizeSection.style.pointerEvents = 'none';
-        }
-        sizeContainer.innerHTML = '<span class="text-muted">Không có tùy chọn kích thước</span>';
-        selectedSize = null; // No size selection needed
-        return;
-    }
-    
-    // Show size section normally
-    if (sizeSection) {
-        sizeSection.style.opacity = '1';
-        sizeSection.style.pointerEvents = 'auto';
-    }
-    
-    let sizesHtml = '';
-    currentProduct.sizes.forEach((size, index) => {
-        sizesHtml += `<button class="btn btn-outline-secondary btn-sm ${index === 0 ? 'active' : ''}" 
-                               onclick="selectSize('${size}')"
-                               style="padding: 0.4rem 0.8rem; border-radius: 8px; font-size: 13px; min-width: 42px; ${size === 'One Size' ? 'min-width: 52px;' : ''}">${size}</button>`;
-    });
-    
-    console.log('📏 Generated HTML:', sizesHtml);
-    sizeContainer.innerHTML = sizesHtml;
-    console.log('✅ Size options rendered');
-}
-
-// Generate color options
-function generateColorOptions() {
-    const colorContainer = document.getElementById('colorOptions');
-    const colorSection = colorContainer?.closest('.mb-3');
-    
-    console.log('🎨 Color container found:', !!colorContainer);
-    console.log('🎨 Available colors:', currentProduct.colors);
-    
-    if (!colorContainer) {
-        console.error('❌ Color container #colorOptions not found!');
-        return;
-    }
-    
-    // Check if product has valid colors (not null/empty)
-    const hasValidColors = currentProduct.colors && 
-                          currentProduct.colors.length > 0 &&
-                          !currentProduct.colors.every(color => !color || color === null);
-    
-    if (!hasValidColors) {
-        // Hide color section or show disabled state
-        if (colorSection) {
-            colorSection.style.opacity = '0.5';
-            colorSection.style.pointerEvents = 'none';
-        }
-        colorContainer.innerHTML = '<span class="text-muted">Không có tùy chọn màu sắc</span>';
-        selectedColor = null; // No color selection needed
-        return;
-    }
-    
-    // Show color section normally
-    if (colorSection) {
-        colorSection.style.opacity = '1';
-        colorSection.style.pointerEvents = 'auto';
-    }
-    
-    let colorsHtml = '';
-    currentProduct.colors.forEach((color, index) => {
-        const colorValue = getColorValue(color);
-        colorsHtml += `<div class="rounded-circle ${index === 0 ? 'border border-dark border-2' : 'border border-transparent border-2'}" 
-                            onclick="selectColor('${color}')" 
-                            title="${color}"
-                            style="width: 28px; height: 28px; cursor: pointer; transition: all 0.2s ease; background-color: ${colorValue}; ${color === 'white' ? 'border: 2px solid rgba(0, 0, 0, 0.2) !important;' : ''}">
-                       </div>`;
-    });
-    
-    console.log('🎨 Generated HTML:', colorsHtml);
-    colorContainer.innerHTML = colorsHtml;
-    console.log('✅ Color options rendered');
-}
-
-// Helper function to get color values
-function getColorValue(color) {
-    const colorMap = {
-        'black': '#000',
-        'blue': '#007AFF', 
-        'brown': '#8B4513',
-        'red': '#FF3B30',
-        'white': '#fff'
-    };
-    return colorMap[color] || '#ccc';
-}
-
-// Select size
-function selectSize(size) {
-    selectedSize = size;
-    updateSelections();
-}
-
-// Select color
-function selectColor(color) {
-    selectedColor = color;
-    updateSelections();
-}
-
-// Update visual selections
-function updateSelections() {
-    // Update size selections
-    document.querySelectorAll('#sizeOptions .btn').forEach(option => {
-        option.classList.remove('active');
-        if (option.textContent === selectedSize) {
-            option.classList.add('active');
-        }
-    });
-    
-    // Update color selections
-    document.querySelectorAll('#colorOptions > div').forEach((option, index) => {
-        option.classList.remove('border-dark');
-        option.classList.add('border-transparent');
-        if (currentProduct.colors[index] === selectedColor) {
-            option.classList.remove('border-transparent');
-            option.classList.add('border-dark');
-        }
-    });
-}
 
 // Change quantity
 function changeQuantity(change) {
@@ -628,37 +475,6 @@ function updateTotalPrice() {
 
 // Add to cart
 function addToCart() {
-    // Check if size/color selection is required and valid
-    const hasValidSizes = currentProduct.sizes && 
-                         currentProduct.sizes.length > 0 && 
-                         !(currentProduct.sizes.length === 1 && currentProduct.sizes[0] === "One Size");
-    const hasValidColors = currentProduct.colors && 
-                          currentProduct.colors.length > 0 &&
-                          !currentProduct.colors.every(color => !color || color === null);
-
-    // Only validate selections if the product actually has these options
-    let finalSize = null;
-    let finalColor = null;
-
-    if (hasValidSizes) {
-        const selectedSizeElement = document.querySelector('#sizeOptions .btn.active');
-        if (!selectedSizeElement) {
-            alert('Vui lòng chọn kích thước');
-            return;
-        }
-        finalSize = selectedSizeElement.textContent;
-    }
-
-    if (hasValidColors) {
-        const selectedColorElement = document.querySelector('#colorOptions .border-dark');
-        if (!selectedColorElement) {
-            alert('Vui lòng chọn màu sắc');
-            return;
-        }
-        const colorIndex = Array.from(selectedColorElement.parentNode.children).indexOf(selectedColorElement);
-        finalColor = currentProduct.colors[colorIndex];
-    }
-
     // Check if cart service is available
     if (window.cartService) {
         // Prepare product data for cart
@@ -670,10 +486,6 @@ function addToCart() {
             name: currentProduct.name,
             price: currentProduct.price
         };
-
-        // Only add size/color if the product has these options
-        if (finalSize) productData.size = finalSize;
-        if (finalColor) productData.color = finalColor;
         
         // Add to cart using cart service
         cartService.addToCart(currentProduct.id, quantity, productData);
@@ -693,23 +505,11 @@ function addToCart() {
             quantity: quantity,
             image: currentProduct.image_url
         };
-
-        // Only add size/color if the product has these options
-        if (finalSize) cartItem.size = finalSize;
-        if (finalColor) cartItem.color = finalColor;
         
         console.log('Adding to cart:', cartItem);
         
-        // Create display message with or without size/color
-        let message = `Added ${cartItem.name}`;
-        if (finalSize || finalColor) {
-            const details = [];
-            if (finalSize) details.push(finalSize);
-            if (finalColor) details.push(finalColor);
-            message += ` (${details.join(', ')})`;
-        }
-        message += ` x${cartItem.quantity} to cart!`;
-        
+        // Create display message
+        const message = `Added ${cartItem.name} x${cartItem.quantity} to cart!`;
         alert(message);
     }
 }
@@ -734,47 +534,13 @@ async function buyNow() {
             Đang xử lý...
         `;
 
-        // Check if size/color selection is required and valid
-        const hasValidSizes = currentProduct.sizes && 
-                             currentProduct.sizes.length > 0 && 
-                             !(currentProduct.sizes.length === 1 && currentProduct.sizes[0] === "One Size");
-        const hasValidColors = currentProduct.colors && 
-                              currentProduct.colors.length > 0 &&
-                              !currentProduct.colors.every(color => !color || color === null);
-
-        // Only validate selections if the product actually has these options
-        if (hasValidSizes) {
-            const selectedSizeElement = document.querySelector('#sizeOptions .btn.active');
-            if (!selectedSizeElement) {
-                alert('Vui lòng chọn kích thước');
-                buyButton.disabled = false;
-                buyButton.innerHTML = originalText;
-                return;
-            }
-            selectedSize = selectedSizeElement.textContent;
-        }
-
-        if (hasValidColors) {
-            const selectedColorElement = document.querySelector('#colorOptions .border-dark');
-            if (!selectedColorElement) {
-                alert('Vui lòng chọn màu sắc');
-                buyButton.disabled = false;
-                buyButton.innerHTML = originalText;
-                return;
-            }
-            const colorIndex = Array.from(selectedColorElement.parentNode.children).indexOf(selectedColorElement);
-            selectedColor = currentProduct.colors[colorIndex];
-        }
-
         // Prepare product data for cart
         const productData = {
             product_id: currentProduct.id,
             product_name: currentProduct.name,
             product_price: currentProduct.price,
             product_discount_price: currentProduct.discount_price,
-            product_image: currentProduct.image_url,
-            size: hasValidSizes ? selectedSize : null,
-            color: hasValidColors ? selectedColor : null
+            product_image: currentProduct.image_url
         };
 
         // Add to cart first
@@ -784,8 +550,6 @@ async function buyNow() {
             // Set session flag for buy now action with product info
             sessionStorage.setItem('lastAction', 'buyNow');
             sessionStorage.setItem('buyNowProductId', currentProduct.id.toString());
-            sessionStorage.setItem('buyNowSize', hasValidSizes ? selectedSize : '');
-            sessionStorage.setItem('buyNowColor', hasValidColors ? selectedColor : '');
         } else {
             throw new Error('Cart service not available');
         }
@@ -832,3 +596,320 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+// Load product reviews
+async function loadProductReviews(productId) {
+    try {
+        console.log('🔄 Loading product reviews...');
+        const response = await window.apiService.getProductReviews(productId, { page: 1, limit: 20 });
+        
+        if (response.success && response.data) {
+            productReviews = response.data.reviews || [];
+            console.log('✅ Product reviews loaded:', productReviews.length);
+            renderReviews();
+        }
+    } catch (error) {
+        console.warn('Failed to load product reviews:', error);
+        productReviews = [];
+    }
+}
+
+// Load product review stats
+async function loadProductReviewStats(productId) {
+    try {
+        console.log('🔄 Loading product review stats...');
+        const response = await window.apiService.getProductReviewStats(productId);
+        
+        if (response.success && response.data) {
+            reviewStats = response.data;
+            console.log('✅ Product review stats loaded:', reviewStats);
+            renderReviewStats();
+        }
+    } catch (error) {
+        console.warn('Failed to load product review stats:', error);
+        reviewStats = {};
+    }
+}
+
+// Render review stats
+function renderReviewStats() {
+    const averageRating = document.getElementById('averageRating');
+    const ratingStars = document.getElementById('ratingStars');
+    const totalReviews = document.getElementById('totalReviews');
+    const ratingDistribution = document.getElementById('ratingDistribution');
+    
+    if (averageRating) {
+        averageRating.textContent = reviewStats.average_rating ? reviewStats.average_rating.toFixed(1) : '0.0';
+    }
+    
+    if (ratingStars) {
+        ratingStars.innerHTML = generateStarsHTML(reviewStats.average_rating || 0);
+    }
+    
+    if (totalReviews) {
+        totalReviews.textContent = `${reviewStats.total_reviews || 0} reviews`;
+    }
+    
+    if (ratingDistribution && reviewStats.rating_distribution) {
+        let distributionHTML = '';
+        for (let i = 5; i >= 1; i--) {
+            const count = reviewStats.rating_distribution[i] || 0;
+            const percentage = reviewStats.total_reviews > 0 ? (count / reviewStats.total_reviews) * 100 : 0;
+            
+            distributionHTML += `
+                <div class="d-flex align-items-center mb-2">
+                    <div class="me-2" style="width: 20px; text-align: center; font-size: 0.8rem;">${i}</div>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" class="me-2" style="color: #ffc107;">
+                        <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"></polygon>
+                    </svg>
+                    <div class="flex-grow-1 me-2">
+                        <div class="progress" style="height: 8px;">
+                            <div class="progress-bar bg-warning" style="width: ${percentage}%"></div>
+                        </div>
+                    </div>
+                    <div style="width: 40px; text-align: right; font-size: 0.8rem; color: #6b7280;">${count}</div>
+                </div>
+            `;
+        }
+        ratingDistribution.innerHTML = distributionHTML;
+    }
+}
+
+// Render reviews list
+function renderReviews() {
+    const reviewsList = document.getElementById('reviewsList');
+    const noReviews = document.getElementById('noReviews');
+    
+    if (!reviewsList) return;
+    
+    if (productReviews.length === 0) {
+        reviewsList.innerHTML = '';
+        if (noReviews) noReviews.style.display = 'block';
+        return;
+    }
+    
+    if (noReviews) noReviews.style.display = 'none';
+    
+    let reviewsHTML = '';
+    productReviews.forEach(review => {
+        reviewsHTML += `
+            <div class="border-bottom p-3">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                    <div>
+                        <div class="fw-semibold">${review.user_full_name || review.username || 'Anonymous'}</div>
+                        <div class="d-flex align-items-center">
+                            ${generateStarsHTML(review.rating)}
+                            <span class="text-muted ms-2" style="font-size: 0.8rem;">
+                                ${new Date(review.created_at).toLocaleDateString()}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-muted">
+                    ${review.comment || 'No comment provided'}
+                </div>
+            </div>
+        `;
+    });
+    
+    reviewsList.innerHTML = reviewsHTML;
+}
+
+// Generate stars HTML
+function generateStarsHTML(rating) {
+    let stars = '';
+    for (let i = 1; i <= 5; i++) {
+        if (i <= rating) {
+            stars += `<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="color: #ffc107;">
+                        <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"></polygon>
+                      </svg>`;
+        } else {
+            stars += `<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="color: #e5e7eb;">
+                        <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"></polygon>
+                      </svg>`;
+        }
+    }
+    return stars;
+}
+
+// Initialize review functionality
+function initializeReviewFunctionality() {
+    // Rating input handlers
+    document.querySelectorAll('.rating-input button').forEach(button => {
+        button.addEventListener('click', function() {
+            const rating = parseInt(this.dataset.rating);
+            selectRating(rating);
+        });
+    });
+    
+    // Review form handler
+    const reviewForm = document.getElementById('reviewForm');
+    if (reviewForm) {
+        reviewForm.addEventListener('submit', handleReviewSubmit);
+    }
+    
+    // Filter handlers
+    const ratingFilter = document.getElementById('ratingFilter');
+    const sortFilter = document.getElementById('sortFilter');
+    
+    if (ratingFilter) {
+        ratingFilter.addEventListener('change', filterReviews);
+    }
+    
+    if (sortFilter) {
+        sortFilter.addEventListener('change', sortReviews);
+    }
+    
+    // Check if user can write review
+    checkUserReviewStatus();
+}
+
+// Select rating for review
+function selectRating(rating) {
+    document.getElementById('selectedRating').value = rating;
+    
+    // Update visual state
+    document.querySelectorAll('.rating-input button').forEach((button, index) => {
+        if (index < rating) {
+            button.classList.remove('btn-outline-warning');
+            button.classList.add('btn-warning');
+        } else {
+            button.classList.remove('btn-warning');
+            button.classList.add('btn-outline-warning');
+        }
+    });
+}
+
+// Handle review form submission
+async function handleReviewSubmit(event) {
+    event.preventDefault();
+    
+    if (!window.apiService?.isAuthenticated()) {
+        alert('Bạn cần đăng nhập để viết đánh giá');
+        return;
+    }
+    
+    const formData = new FormData(event.target);
+    const reviewData = {
+        product_id: currentProduct.id,
+        rating: parseInt(formData.get('rating')),
+        comment: formData.get('comment')
+    };
+    
+    try {
+        const response = await window.apiService.createReview(reviewData);
+        if (response.success) {
+            alert('Đánh giá của bạn đã được gửi thành công!');
+            event.target.reset();
+            document.getElementById('writeReviewSection').style.display = 'none';
+            
+            // Reload reviews
+            await loadProductReviews(currentProduct.id);
+            await loadProductReviewStats(currentProduct.id);
+        }
+    } catch (error) {
+        console.error('Failed to submit review:', error);
+        alert('Có lỗi xảy ra khi gửi đánh giá. Vui lòng thử lại.');
+    }
+}
+
+// Check if user can write review
+async function checkUserReviewStatus() {
+    if (!window.apiService?.isAuthenticated()) {
+        return;
+    }
+    
+    try {
+        const response = await window.apiService.checkProductReview(currentProduct.id);
+        if (response.success && !response.data.has_reviewed) {
+            document.getElementById('writeReviewSection').style.display = 'block';
+        }
+    } catch (error) {
+        console.warn('Failed to check review status:', error);
+    }
+}
+
+// Filter reviews by rating
+function filterReviews() {
+    const ratingFilter = document.getElementById('ratingFilter');
+    const selectedRating = ratingFilter.value;
+    
+    if (!selectedRating) {
+        renderReviews();
+        return;
+    }
+    
+    const filteredReviews = productReviews.filter(review => review.rating == selectedRating);
+    renderFilteredReviews(filteredReviews);
+}
+
+// Sort reviews
+function sortReviews() {
+    const sortFilter = document.getElementById('sortFilter');
+    const sortBy = sortFilter.value;
+    
+    let sortedReviews = [...productReviews];
+    
+    switch (sortBy) {
+        case 'newest':
+            sortedReviews.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+            break;
+        case 'oldest':
+            sortedReviews.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+            break;
+        case 'highest':
+            sortedReviews.sort((a, b) => b.rating - a.rating);
+            break;
+        case 'lowest':
+            sortedReviews.sort((a, b) => a.rating - b.rating);
+            break;
+    }
+    
+    renderFilteredReviews(sortedReviews);
+}
+
+// Render filtered reviews
+function renderFilteredReviews(reviews) {
+    const reviewsList = document.getElementById('reviewsList');
+    const noReviews = document.getElementById('noReviews');
+    
+    if (!reviewsList) return;
+    
+    if (reviews.length === 0) {
+        reviewsList.innerHTML = '';
+        if (noReviews) noReviews.style.display = 'block';
+        return;
+    }
+    
+    if (noReviews) noReviews.style.display = 'none';
+    
+    let reviewsHTML = '';
+    reviews.forEach(review => {
+        reviewsHTML += `
+            <div class="border-bottom p-3">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                    <div>
+                        <div class="fw-semibold">${review.user_full_name || review.username || 'Anonymous'}</div>
+                        <div class="d-flex align-items-center">
+                            ${generateStarsHTML(review.rating)}
+                            <span class="text-muted ms-2" style="font-size: 0.8rem;">
+                                ${new Date(review.created_at).toLocaleDateString()}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-muted">
+                    ${review.comment || 'No comment provided'}
+                </div>
+            </div>
+        `;
+    });
+    
+    reviewsList.innerHTML = reviewsHTML;
+}
+
+// Cancel review
+function cancelReview() {
+    document.getElementById('reviewForm').reset();
+    document.getElementById('writeReviewSection').style.display = 'none';
+}
