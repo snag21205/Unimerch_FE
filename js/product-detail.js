@@ -262,9 +262,7 @@ const productData = {
 document.addEventListener('DOMContentLoaded', function() {
     const productId = getProductIdFromUrl();
     loadProductFromAPI(productId);
-    
-    // Initialize review functionality
-    initializeReviewFunctionality();
+    // Review functionality will be initialized after product is loaded
 });
 
 // Load product data from API
@@ -295,6 +293,9 @@ async function loadProductFromAPI(productId) {
             // Load reviews and ratings
             await loadProductReviews(productId);
             await loadProductReviewStats(productId);
+            
+            // Initialize review functionality after product is loaded
+            initializeReviewFunctionality();
             
         } else {
             throw new Error('Invalid API response or product not found');
@@ -729,6 +730,8 @@ function generateStarsHTML(rating) {
 
 // Initialize review functionality
 function initializeReviewFunctionality() {
+    console.log('Initializing review functionality');
+    
     // Rating input handlers
     document.querySelectorAll('.rating-input button').forEach(button => {
         button.addEventListener('click', function() {
@@ -755,7 +758,8 @@ function initializeReviewFunctionality() {
         sortFilter.addEventListener('change', sortReviews);
     }
     
-    // Check if user can write review
+    // Always check user review status - this function will handle both
+    // authenticated and non-authenticated cases
     checkUserReviewStatus();
 }
 
@@ -808,16 +812,52 @@ async function handleReviewSubmit(event) {
     }
 }
 
+// Display login message if not authenticated
+function displayLoginMessage() {
+    const noReviewsSection = document.getElementById('noReviews');
+    if (noReviewsSection && !window.apiService?.isAuthenticated()) {
+        noReviewsSection.innerHTML = `
+            <div class="text-muted">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="mb-3">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                </svg>
+                <h6>Đăng nhập để viết đánh giá</h6>
+                <p class="mb-0">
+                    <a href="../auth/login.html" class="text-primary text-decoration-none">Đăng nhập</a>
+                    để chia sẻ trải nghiệm của bạn về sản phẩm này!
+                </p>
+            </div>
+        `;
+    }
+}
+
 // Check if user can write review
 async function checkUserReviewStatus() {
+    const writeReviewSection = document.getElementById('writeReviewSection');
+    const writeReviewButton = document.getElementById('writeReviewButton');
+    
+    // Hide both by default
+    writeReviewSection.style.display = 'none';
+    writeReviewButton.style.display = 'none';
+    
+    // First check if user is authenticated
     if (!window.apiService?.isAuthenticated()) {
+        displayLoginMessage();
         return;
     }
     
     try {
+        console.log('Checking review status for product:', currentProduct.id);
         const response = await window.apiService.checkProductReview(currentProduct.id);
-        if (response.success && !response.data.has_reviewed) {
-            document.getElementById('writeReviewSection').style.display = 'block';
+        
+        if (response.success) {
+            if (!response.data.has_reviewed) {
+                console.log('User can write a review');
+                writeReviewSection.style.display = 'block';
+                writeReviewSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            } else {
+                console.log('User has already reviewed');
+            }
         }
     } catch (error) {
         console.warn('Failed to check review status:', error);
