@@ -542,21 +542,21 @@ class CartUI {
 async function createOrderFromCart() {
     // Check if user is authenticated
     if (!apiService.isAuthenticated()) {
-        alert('Vui lòng đăng nhập để tạo đơn hàng');
+            alert('Vui lòng đăng nhập để tạo đơn hàng');
         window.location.href = '/pages/auth/login.html';
         return;
     }
 
     // Check if cart is empty
     if (cartService.isEmpty()) {
-        alert('Giỏ hàng của bạn đang trống');
+            alert('Giỏ hàng của bạn đang trống');
         return;
     }
 
     // Get selected items
     const selectedItems = cartUI.getSelectedItems();
     if (selectedItems.length === 0) {
-        alert('Vui lòng chọn ít nhất một sản phẩm để tạo đơn hàng');
+            alert('Vui lòng chọn ít nhất một sản phẩm để tạo đơn hàng');
         return;
     }
 

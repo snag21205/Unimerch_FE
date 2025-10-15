@@ -577,11 +577,6 @@ async function buyNow() {
     }
 }
 
-// Add to wishlist
-function addToWishlist() {
-    console.log('Adding to wishlist:', currentProduct);
-    alert(`Added ${currentProduct.name} to wishlist!`);
-}
 
 // Quantity input change handler
 document.addEventListener('DOMContentLoaded', function() {

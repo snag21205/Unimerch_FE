@@ -42,14 +42,7 @@ class ApiService {
                 items: '/api/orders/:id/items',
                 stats: '/api/orders/stats'
             },
-            payments: {
-                create: '/api/payments',
-                orderPayments: '/api/payments/:orderId',
-                detail: '/api/payments/detail/:id',
-                updateStatus: '/api/payments/:id/status',
-                userPayments: '/api/payments/user',
-                refund: '/api/payments/:id/refund'
-            },
+
             reviews: {
                 list: '/api/reviews',
                 detail: '/api/reviews/:id',
@@ -418,54 +411,7 @@ class ApiService {
         });
     }
 
-    // Payment Methods
-    async createPayment(paymentData) {
-        return this.request(this.endpoints.payments.create, {
-            method: 'POST',
-            body: paymentData,
-            requireAuth: true
-        });
-    }
 
-    async getOrderPayments(orderId) {
-        return this.request(this.endpoints.payments.orderPayments, {
-            params: { orderId: orderId },
-            requireAuth: true
-        });
-    }
-
-    async getPaymentDetail(paymentId) {
-        return this.request(this.endpoints.payments.detail, {
-            params: { id: paymentId },
-            requireAuth: true
-        });
-    }
-
-    async updatePaymentStatus(paymentId, status, transactionId) {
-        return this.request(this.endpoints.payments.updateStatus, {
-            method: 'PUT',
-            body: { status, transaction_id: transactionId },
-            params: { id: paymentId },
-            requireAuth: true
-        });
-    }
-
-    async getUserPayments(queryParams = {}) {
-        const query = new URLSearchParams(queryParams).toString();
-        const endpoint = this.endpoints.payments.userPayments + (query ? `?${query}` : '');
-        return this.request(endpoint, {
-            requireAuth: true
-        });
-    }
-
-    async processRefund(paymentId, reason) {
-        return this.request(this.endpoints.payments.refund, {
-            method: 'POST',
-            body: { reason },
-            params: { id: paymentId },
-            requireAuth: true
-        });
-    }
 
     // Review Methods
     async getReviews(queryParams = {}) {

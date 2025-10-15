@@ -318,12 +318,6 @@ input[type="password"]::-webkit-textfield-decoration-container {
     text-underline-offset: 4px;
 }
 
-/* Wishlist button hover */
-.product-card-modern .btn:hover {
-    transform: scale(1.1);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15) !important;
-}
-
 /* Add to cart button hover */
 .product-card-modern .btn-dark:hover {
     background: linear-gradient(135deg, #000 0%, #1f2937 100%) !important;

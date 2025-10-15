@@ -2,7 +2,7 @@
 
 // Check if user is logged in
 if (localStorage.getItem('isLoggedIn') !== 'true') {
-    alert('Please login to access this page');
+    alert('Vui lòng đăng nhập để truy cập trang này');
     window.location.href = '../auth/login.html';
 }
 
@@ -57,7 +57,7 @@ async function loadOrderDetail(orderId) {
                 throw new Error('Không tìm thấy đơn hàng');
             }
         } else {
-            throw new Error('Order service not available');
+            throw new Error('Không thể kết nối đến dịch vụ đơn hàng');
         }
         
     } catch (error) {

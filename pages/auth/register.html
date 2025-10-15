@@ -21,7 +21,7 @@
     <nav class="navbar navbar-light bg-white border-bottom">
         <div class="container-fluid px-4">
             <a class="navbar-brand fw-semibold fs-4" href="../../index.html" style="color: #111;">Unimerch</a>
-            <a href="login.html" class="btn btn-outline-dark btn-sm rounded-pill px-3">Login</a>
+            <a href="login.html" class="btn btn-outline-dark btn-sm rounded-pill px-3">Đăng nhập</a>
         </div>
     </nav>
 
@@ -31,46 +31,46 @@
             <div class="row justify-content-center">
                 <div class="col-md-5 col-lg-4">
                     <div class="text-center mb-5">
-                        <h1 class="h2 fw-bold mb-2" style="color: #111; letter-spacing: -0.02em;">Create Account</h1>
-                        <p class="text-muted">Join Unimerch community today</p>
+                        <h1 class="h2 fw-bold mb-2" style="color: #111; letter-spacing: -0.02em;">Tạo tài khoản</h1>
+                        <p class="text-muted">Tham gia cộng đồng Unimerch ngay hôm nay</p>
                     </div>
                     
                     <form id="registerForm" class="needs-validation" novalidate>
                         <!-- Full Name Field -->
                         <div class="mb-4">
-                            <label for="fullName" class="form-label fw-medium" style="color: #374151;">Full Name</label>
+                            <label for="fullName" class="form-label fw-medium" style="color: #374151;">Họ và tên</label>
                             <input type="text" class="form-control form-control-lg rounded-3" id="fullName" required 
                                    style="border: 2px solid #e5e7eb; padding: 0.875rem 1rem; background: #fafafa;" 
-                                   placeholder="Enter your full name" minlength="2" maxlength="50">
-                            <div class="invalid-feedback">Please enter your full name (2-50 characters).</div>
+                                   placeholder="Nhập họ và tên của bạn" minlength="2" maxlength="50">
+                            <div class="invalid-feedback">Vui lòng nhập họ tên đầy đủ (2-50 ký tự).</div>
                         </div>
 
                         <!-- Username Field -->
                         <div class="mb-4">
-                            <label for="username" class="form-label fw-medium" style="color: #374151;">Username</label>
+                            <label for="username" class="form-label fw-medium" style="color: #374151;">Tên đăng nhập</label>
                             <input type="text" class="form-control form-control-lg rounded-3" id="username" required 
                                    style="border: 2px solid #e5e7eb; padding: 0.875rem 1rem; background: #fafafa;" 
-                                   placeholder="Choose a username" minlength="3" maxlength="20">
-                            <div class="invalid-feedback">Please choose a username (3-20 characters).</div>
-                            <div class="form-text">Must be 3-20 characters long</div>
+                                   placeholder="Chọn tên đăng nhập" minlength="3" maxlength="20">
+                            <div class="invalid-feedback">Vui lòng chọn tên đăng nhập (3-20 ký tự).</div>
+                            <div class="form-text">Phải có độ dài từ 3-20 ký tự</div>
                         </div>
 
                         <!-- Email Field -->
                         <div class="mb-4">
-                            <label for="email" class="form-label fw-medium" style="color: #374151;">Email Address</label>
+                            <label for="email" class="form-label fw-medium" style="color: #374151;">Địa chỉ email</label>
                             <input type="email" class="form-control form-control-lg rounded-3" id="email" required 
                                    style="border: 2px solid #e5e7eb; padding: 0.875rem 1rem; background: #fafafa;" 
-                                   placeholder="Enter your email address">
-                            <div class="invalid-feedback">Please enter a valid email address.</div>
+                                   placeholder="Nhập địa chỉ email của bạn">
+                            <div class="invalid-feedback">Vui lòng nhập một địa chỉ email hợp lệ.</div>
                         </div>
                         
                         <!-- Password Field -->
                         <div class="mb-4">
-                            <label for="password" class="form-label fw-medium" style="color: #374151;">Password</label>
+                            <label for="password" class="form-label fw-medium" style="color: #374151;">Mật khẩu</label>
                             <div class="position-relative">
                                 <input type="password" class="form-control form-control-lg rounded-3" id="password" required 
                                        style="border: 2px solid #e5e7eb; padding: 0.875rem 1rem; background: #fafafa;" 
-                                       placeholder="Create a password" minlength="8" autocomplete="new-password">
+                                       placeholder="Tạo mật khẩu" minlength="8" autocomplete="new-password">
                                 <button type="button" class="btn btn-link position-absolute end-0 top-50 translate-middle-y me-2" 
                                         onclick="togglePassword('password')" style="border: none; background: none; z-index: 10;">
                                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -79,25 +79,25 @@
                                     </svg>
                                 </button>
                             </div>
-                            <div class="invalid-feedback">Password does not meet requirements.</div>
+                            <div class="invalid-feedback">Mật khẩu không đáp ứng các yêu cầu.</div>
                             <div class="form-text">
-                                Password must contain:
+                                Mật khẩu phải có:
                                 <ul class="mb-0 mt-1" style="font-size: 0.75rem; list-style: none; padding-left: 0;">
-                                    <li id="length-req" class="text-muted" style="padding: 2px 0;">• At least 8 characters</li>
-                                    <li id="uppercase-req" class="text-muted" style="padding: 2px 0;">• At least 1 uppercase letter (A-Z)</li>
-                                    <li id="number-req" class="text-muted" style="padding: 2px 0;">• At least 1 number (0-9)</li>
-                                    <li id="special-req" class="text-muted" style="padding: 2px 0;">• At least 1 special character (!@#$%^&*)</li>
+                                    <li id="length-req" class="text-muted" style="padding: 2px 0;">• Ít nhất 8 ký tự</li>
+                                    <li id="uppercase-req" class="text-muted" style="padding: 2px 0;">• Ít nhất 1 chữ cái in hoa (A-Z)</li>
+                                    <li id="number-req" class="text-muted" style="padding: 2px 0;">• Ít nhất 1 số (0-9)</li>
+                                    <li id="special-req" class="text-muted" style="padding: 2px 0;">• Ít nhất 1 ký tự đặc biệt (!@#$%^&*)</li>
                                 </ul>
                             </div>
                         </div>
                         
                         <!-- Confirm Password Field -->
                         <div class="mb-4">
-                            <label for="confirmPassword" class="form-label fw-medium" style="color: #374151;">Confirm Password</label>
+                            <label for="confirmPassword" class="form-label fw-medium" style="color: #374151;">Xác nhận mật khẩu</label>
                             <div class="position-relative">
                                 <input type="password" class="form-control form-control-lg rounded-3" id="confirmPassword" required 
                                        style="border: 2px solid #e5e7eb; padding: 0.875rem 1rem; background: #fafafa;" 
-                                       placeholder="Confirm your password" autocomplete="new-password">
+                                       placeholder="Xác nhận mật khẩu của bạn" autocomplete="new-password">
                                 <button type="button" class="btn btn-link position-absolute end-0 top-50 translate-middle-y me-2" 
                                         onclick="togglePassword('confirmPassword')" style="border: none; background: none; z-index: 10;">
                                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

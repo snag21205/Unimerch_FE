@@ -5,7 +5,7 @@ async function handleSignIn() {
     
     // Validate input
     if (!username || !password) {
-        alert('Please enter both username and password');
+        alert('Vui lòng nhập đầy đủ tên đăng nhập và mật khẩu');
         return;
     }
     
@@ -32,11 +32,11 @@ async function handleSignIn() {
             detail: data.data.user
         }));
         
-        alert('Login successful! Welcome back!');
+        alert('Đăng nhập thành công! Chào mừng trở lại!');
         window.location.href = '../../index.html';
     } catch (error) {
         console.error('Error during login:', error);
-        alert('Login failed: ' + error.message);
+        alert('Đăng nhập thất bại: ' + error.message);
     }
 }
 
