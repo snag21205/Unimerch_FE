@@ -65,7 +65,7 @@
     <!-- Loading Overlay -->
     <div id="loadingOverlay" class="loading-overlay">
         <div class="loading-spinner"></div>
-        <div class="loading-text">Loading product details...</div>
+        <div class="loading-text">Đang tải thông tin sản phẩm...</div>
     </div>
     
     <!-- Header component will be loaded here by JavaScript -->
@@ -93,8 +93,8 @@
                     <!-- Breadcrumb -->
                     <nav aria-label="breadcrumb" class="mb-2">
                         <ol class="breadcrumb mb-0" style="font-size: 13px;">
-                            <li class="breadcrumb-item"><a href="../../index.html" class="text-decoration-none">Products</a></li>
-                            <li class="breadcrumb-item text-muted" id="productCategory">Accessories</li>
+                            <li class="breadcrumb-item"><a href="../../index.html" class="text-decoration-none">Sản phẩm</a></li>
+                            <li class="breadcrumb-item text-muted" id="productCategory">Phụ kiện</li>
                         </ol>
                     </nav>
                     
@@ -131,7 +131,7 @@
                         <div class="col-12">
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <div>
-                                    <span class="text-muted fw-medium" style="font-size: 14px;">Price</span>
+                                    <span class="text-muted fw-medium" style="font-size: 14px;">Giá</span>
                                     <div id="totalPrice" class="h3 fw-bold mb-0" style="
                                         font-size: 2.2rem; 
                                         color: #2563eb;
@@ -139,7 +139,7 @@
                                     ">$64</div>
                                 </div>
                                 <div class="text-end">
-                                    <span class="text-muted fw-medium" style="font-size: 14px;">Quantity</span>
+                                    <span class="text-muted fw-medium" style="font-size: 14px;">Số lượng</span>
                                     <div class="d-flex align-items-center gap-2 mt-1">
                                         <button class="btn btn-outline-secondary" onclick="changeQuantity(-1)" style="
                                             width: 40px; 
@@ -208,7 +208,7 @@
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" class="me-2">
                                         <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
                                     </svg>
-                                    <small class="text-muted fw-medium">Free shipping within HCMC</small>
+                                    <small class="text-muted fw-medium">Miễn phí vận chuyển trong TP.HCM</small>
                                 </div>
                             </div>
                             <div class="col-12">
@@ -217,7 +217,7 @@
                                         <path d="M9 12l2 2 4-4"></path>
                                         <path d="M21 12c-1 0-3-1-3-3s2-3 3-3 3 1 3 3-2 3-3 3"></path>
                                     </svg>
-                                    <small class="text-muted fw-medium">30-day return policy</small>
+                                    <small class="text-muted fw-medium">Chính sách đổi trả trong 30 ngày</small>
                                 </div>
                             </div>
                             <div class="col-12">
@@ -226,7 +226,7 @@
                                         <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
                                         <line x1="8" y1="21" x2="16" y2="21"></line>
                                     </svg>
-                                    <small class="text-muted fw-medium">Secure payment guaranteed</small>
+                                    <small class="text-muted fw-medium">Đảm bảo thanh toán an toàn</small>
                                 </div>
                             </div>
                         </div>
@@ -240,7 +240,7 @@
                     <div class="container">
                         <div class="row">
                             <div class="col-12">
-                                <h3 class="fw-bold mb-4" style="color: #1f2937;">Customer Reviews</h3>
+                                <h3 class="fw-bold mb-4" style="color: #1f2937;">Đánh giá từ khách hàng</h3>
                                 
                                 <!-- Rating Summary -->
                                 <div class="row mb-4">
@@ -251,14 +251,14 @@
                                                 <div id="ratingStars" class="mb-2">
                                                     <!-- Stars will be populated by JS -->
                                                 </div>
-                                                <div id="totalReviews" class="text-muted">0 reviews</div>
+                                                <div id="totalReviews" class="text-muted">0 đánh giá</div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-8">
                                         <div class="card border-0 shadow-sm">
                                             <div class="card-body">
-                                                <h6 class="fw-semibold mb-3">Rating Distribution</h6>
+                                                <h6 class="fw-semibold mb-3">Phân bố đánh giá</h6>
                                                 <div id="ratingDistribution">
                                                     <!-- Rating bars will be populated by JS -->
                                                 </div>
@@ -271,21 +271,21 @@
                                 <div class="card border-0 shadow-sm">
                                     <div class="card-header bg-white border-bottom">
                                         <div class="d-flex justify-content-between align-items-center">
-                                            <h6 class="mb-0 fw-semibold">All Reviews</h6>
+                                            <h6 class="mb-0 fw-semibold">Tất cả đánh giá</h6>
                                             <div class="d-flex gap-2">
                                                 <select id="ratingFilter" class="form-select form-select-sm" style="width: auto;">
-                                                    <option value="">All Ratings</option>
-                                                    <option value="5">5 Stars</option>
-                                                    <option value="4">4 Stars</option>
-                                                    <option value="3">3 Stars</option>
-                                                    <option value="2">2 Stars</option>
-                                                    <option value="1">1 Star</option>
+                                                    <option value="">Tất cả sao</option>
+                                                    <option value="5">5 Sao</option>
+                                                    <option value="4">4 Sao</option>
+                                                    <option value="3">3 Sao</option>
+                                                    <option value="2">2 Sao</option>
+                                                    <option value="1">1 Sao</option>
                                                 </select>
                                                 <select id="sortFilter" class="form-select form-select-sm" style="width: auto;">
-                                                    <option value="newest">Newest First</option>
-                                                    <option value="oldest">Oldest First</option>
-                                                    <option value="highest">Highest Rating</option>
-                                                    <option value="lowest">Lowest Rating</option>
+                                                    <option value="newest">Mới nhất</option>
+                                                    <option value="oldest">Cũ nhất</option>
+                                                    <option value="highest">Đánh giá cao nhất</option>
+                                                    <option value="lowest">Đánh giá thấp nhất</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -296,7 +296,7 @@
                                         </div>
                                         <div id="reviewsLoading" class="text-center py-4" style="display: none;">
                                             <div class="spinner-border text-primary" role="status">
-                                                <span class="visually-hidden">Loading...</span>
+                                                <span class="visually-hidden">Đang tải...</span>
                                             </div>
                                         </div>
                                         <div id="noReviews" class="text-center py-5" style="display: none;">
@@ -304,8 +304,8 @@
                                                 <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="mb-3">
                                                     <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
                                                 </svg>
-                                                <h6>No reviews yet</h6>
-                                                <p class="mb-0">Be the first to review this product!</p>
+                                                <h6>Chưa có đánh giá nào </h6>
+                                                <p class="mb-0">Hãy là người đầu tiên đánh giá sản phẩm này!</p>
                                             </div>
                                         </div>
                                     </div>
@@ -314,12 +314,12 @@
                                 <!-- Write Review Section (if user is logged in) -->
                                 <div id="writeReviewSection" class="card border-0 shadow-sm mt-4" style="display: none;">
                                     <div class="card-header bg-white">
-                                        <h6 class="mb-0 fw-semibold">Write a Review</h6>
+                                        <h6 class="mb-0 fw-semibold">Viết đánh giá</h6>
                                     </div>
                                     <div class="card-body">
                                         <form id="reviewForm">
                                             <div class="mb-3">
-                                                <label class="form-label fw-semibold">Your Rating</label>
+                                                <label class="form-label fw-semibold">Đánh giá của bạn</label>
                                                 <div class="rating-input d-flex gap-1">
                                                     <button type="button" class="btn btn-outline-warning p-0" data-rating="1" style="width: 32px; height: 32px;">
                                                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -350,7 +350,7 @@
                                                 <input type="hidden" id="selectedRating" name="rating" required>
                                             </div>
                                             <div class="mb-3">
-                                                <label for="reviewComment" class="form-label fw-semibold">Your Review</label>
+                                                <label for="reviewComment" class="form-label fw-semibold">Đánh giá của bạn</label>
                                                 <textarea id="reviewComment" name="comment" class="form-control" rows="4" placeholder="Share your experience with this product..." required></textarea>
                                             </div>
                                             <div class="d-flex gap-2">
@@ -358,7 +358,7 @@
                                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-2">
                                                         <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
                                                     </svg>
-                                                    Submit Review
+                                                    Gửi đánh giá
                                                 </button>
                                                 <button type="button" class="btn btn-outline-secondary" onclick="cancelReview()">Cancel</button>
                                             </div>

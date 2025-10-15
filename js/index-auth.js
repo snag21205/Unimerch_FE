@@ -139,12 +139,6 @@ function logout() {
     window.location.reload();
 }
 
-// Language toggle function
-function toggleLanguage(lang) {
-    console.log('Language changed to:', lang);
-    // Implement language switching logic here
-}
 
 // Make functions globally available
 window.logout = logout;
-window.toggleLanguage = toggleLanguage;

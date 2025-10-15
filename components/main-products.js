@@ -466,21 +466,6 @@
                     </div>
                 ` : ''}
                 
-                <!-- Wishlist Button -->
-                <div class="position-absolute" style="top: 16px; right: 16px; z-index: 10;">
-                    <button class="btn btn-light rounded-circle p-2 border-0" onclick="toggleWishlist(${product.id}, event)" style="
-                        width: 40px; 
-                        height: 40px; 
-                        backdrop-filter: blur(10px);
-                        background: rgba(255, 255, 255, 0.9);
-                        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-                        transition: all 0.3s ease;
-                    ">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-                        </svg>
-                    </button>
-                </div>
                 
                 <!-- Product Image Section -->
                 <div class="position-relative overflow-hidden" style="
@@ -686,23 +671,6 @@
     }
     
     // ===== EVENT HANDLERS =====
-    function toggleWishlist(productId, event) {
-        event.stopPropagation();
-        const product = products.find(p => p.id === productId);
-        if (product) {
-            console.log('Toggle wishlist:', product.name);
-            showToast(`Added "${product.name}" to wishlist!`, 'success');
-            
-            // Toggle heart icon
-            const heartIcon = event.target.closest('button').querySelector('svg path');
-            if (heartIcon) {
-                const isLiked = heartIcon.getAttribute('fill') === 'currentColor';
-                heartIcon.setAttribute('fill', isLiked ? 'none' : 'currentColor');
-                heartIcon.style.color = isLiked ? 'inherit' : '#ef4444';
-            }
-        }
-    }
-    
     function quickView(productId, event) {
         event.stopPropagation();
         const product = products.find(p => p.id === productId);
@@ -799,7 +767,6 @@
     window.goToProductDetail = goToProductDetail;
     window.showToast = showToast;
     window.renderProducts = renderProducts;
-    window.toggleWishlist = toggleWishlist;
     window.quickView = quickView;
     window.filterProducts = filterProducts; // Export filter function for app.js
     
