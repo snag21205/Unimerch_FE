@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - UEH Merch</title>
+    
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #007AFF;
+            --secondary-color: #5856D6;
+            --success-color: #34C759;
+            --warning-color: #FF9500;
+            --danger-color: #FF3B30;
+            --gray-50: #F9FAFB;
+            --gray-100: #F3F4F6;
+            --gray-200: #E5E7EB;
+            --gray-300: #D1D5DB;
+            --gray-400: #9CA3AF;
+            --gray-500: #6B7280;
+            --gray-600: #4B5563;
+            --gray-700: #374151;
+            --gray-800: #1F2937;
+            --gray-900: #111827;
+            --white: #FFFFFF;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        * {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--gray-50) 0%, #FAFBFC 100%);
+            font-size: 14px;
+            color: var(--gray-800);
+            letter-spacing: -0.01em;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid var(--gray-200);
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 280px;
+            z-index: 1000;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .sidebar-brand {
+            padding: 2rem 1.5rem 1.5rem;
+            border-bottom: 1px solid var(--gray-100);
+        }
+
+        .sidebar-brand h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin: 0;
+            letter-spacing: -0.02em;
+        }
+
+        .sidebar-nav {
+            padding: 1rem 0;
+        }
+
+        .nav-section {
+            margin-bottom: 2rem;
+        }
+
+        .nav-section-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--gray-500);
+            padding: 0 1.5rem;
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.05em;
+        }
+
+        .nav-link {
+            padding: 0.75rem 1.5rem;
+            color: var(--gray-600);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            font-weight: 500;
+            border-radius: 0;
+            transition: all 0.2s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .nav-link:hover {
+            background: var(--gray-50);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
+        }
+
+        .nav-link.active {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            border-left-color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .nav-link svg {
+            width: 20px;
+            height: 20px;
+            margin-right: 0.75rem;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 280px;
+            min-height: 100vh;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--gray-200);
+            padding: 1.5rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin: 0;
+            letter-spacing: -0.03em;
+        }
+
+        .header-subtitle {
+            color: var(--gray-500);
+            margin: 0;
+            font-weight: 400;
+        }
+
+        /* Cards */
+        .card {
+            background: white;
+            border: none;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        .card-header {
+            background: white;
+            border-bottom: 1px solid var(--gray-100);
+            padding: 1.5rem;
+            font-weight: 600;
+            color: var(--gray-900);
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        /* Stats Cards */
+        .stats-card {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            border-radius: 16px;
+            padding: 2rem;
+            color: white;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stats-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform: translate(30px, -30px);
+        }
+
+        .stats-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .stats-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .stats-label {
+            font-weight: 500;
+            opacity: 0.9;
+            font-size: 0.9rem;
+        }
+
+        .stats-change {
+            margin-top: 0.75rem;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Buttons */
+        .btn {
+            font-weight: 500;
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+            letter-spacing: -0.01em;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            border: none;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #0056CC 0%, #4A47B8 100%);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-outline-primary {
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            background: transparent;
+        }
+
+        .btn-outline-primary:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        /* Tables */
+        .table {
+            font-size: 0.875rem;
+        }
+
+        .table thead th {
+            background: var(--gray-50);
+            border: none;
+            font-weight: 600;
+            color: var(--gray-700);
+            padding: 1rem;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .table tbody tr {
+            border-bottom: 1px solid var(--gray-100);
+            transition: all 0.2s ease;
+        }
+
+        .table tbody tr:hover {
+            background: var(--gray-50);
+        }
+
+        .table tbody td {
+            padding: 1rem;
+            vertical-align: middle;
+            border: none;
+        }
+
+        /* Badges */
+        .badge {
+            font-weight: 500;
+            font-size: 0.75rem;
+            padding: 0.375rem 0.75rem;
+            border-radius: 50px;
+        }
+
+        /* Forms */
+        .form-control, .form-select {
+            border: 2px solid var(--gray-200);
+            border-radius: 8px;
+            padding: 0.75rem;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+        }
+
+        /* Status badges */
+        .status-pending { background: var(--warning-color); }
+        .status-processing { background: var(--primary-color); }
+        .status-shipped { background: var(--secondary-color); }
+        .status-delivered { background: var(--success-color); }
+        .status-cancelled { background: var (--danger-color); }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .sidebar.show {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0;
+            }
+        }
+
+        /* Custom gradients for different stats cards */
+        .stats-card.revenue {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .stats-card.orders {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+        .stats-card.customers {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+        .stats-card.products {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        /* Chart containers */
+        .chart-container {
+            position: relative;
+            height: 400px;
+        }
+
+        /* Loading states */
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        /* Mobile menu toggle */
+        .mobile-menu-toggle {
+            display: none;
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            z-index: 1001;
+            background: white;
+            border: 2px solid var(--gray-200);
+            border-radius: 8px;
+            padding: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu-toggle {
+                display: block;
+            }
+        }
+
+        /* Animation utilities */
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .slide-up {
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { 
+                opacity: 0; 
+                transform: translateY(20px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+
+        /* Login Modal Styles */
+        .login-modal .modal-content {
+            border: none;
+            border-radius: 16px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .login-modal .modal-header {
+            border-bottom: 1px solid var(--gray-200);
+            padding: 2rem 2rem 1rem;
+        }
+        
+        .login-modal .modal-body {
+            padding: 1rem 2rem 2rem;
+        }
+        
+        .token-input {
+            font-family: 'Courier New', monospace;
+            font-size: 0.875rem;
+        }
+        
+        .api-status {
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+        
+        .api-status.success {
+            background-color: #d1fae5;
+            border: 1px solid #10b981;
+            color: #065f46;
+        }
+        
+        .api-status.error {
+            background-color: #fee2e2;
+            border: 1px solid #ef4444;
+            color: #991b1b;
+        }
+    </style>
+</head>
+<body>
+    <!-- Admin Login Modal -->
+    <div class="modal fade login-modal" id="adminLoginModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div>
+                        <h5 class="modal-title">Admin Authentication</h5>
+                        <small class="text-muted">Enter your admin token to access the dashboard</small>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div id="apiStatus" class="api-status"></div>
+                    
+                    <form id="adminLoginForm">
+                        <div class="mb-3">
+                            <label for="adminToken" class="form-label">Admin Token</label>
+                            <textarea class="form-control token-input" id="adminToken" rows="3" 
+                                    placeholder="Paste your admin JWT token here..." required></textarea>
+                            <div class="form-text">
+                                Get your admin token from the API server or contact the system administrator.
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary" id="loginBtn">
+                                <span class="spinner-border spinner-border-sm me-2 d-none" id="loginSpinner"></span>
+                                Authenticate & Access Dashboard
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary" onclick="useSampleData()">
+                                Use Sample Data (Demo Mode)
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Menu Toggle -->
+    <button class="mobile-menu-toggle btn" onclick="toggleSidebar()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+    </button>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <h1>UEH Admin</h1>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <div class="nav-section">
+                <div class="nav-section-title">Overview</div>
+                <a href="#" class="nav-link active" data-tab="dashboard">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="7" height="7"></rect>
+                        <rect x="14" y="3" width="7" height="7"></rect>
+                        <rect x="14" y="14" width="7" height="7"></rect>
+                        <rect x="3" y="14" width="7" height="7"></rect>
+                    </svg>
+                    Dashboard
+                </a>
+                <a href="#" class="nav-link" data-tab="analytics">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="22,12 18,12 15,21 9,3 6,12 2,12"></polyline>
+                    </svg>
+                    Analytics
+                </a>
+            </div>
+            
+            <div class="nav-section">
+                <div class="nav-section-title">Commerce</div>
+                <a href="#" class="nav-link" data-tab="products">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 7H4a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2zM4 7v11a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7"></path>
+                    </svg>
+                    Products
+                </a>
+                <a href="#" class="nav-link" data-tab="orders">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                        <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                    </svg>
+                    Orders
+                </a>
+                <a href="#" class="nav-link" data-tab="categories">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 3h7v7H3z"></path>
+                        <path d="M14 3h7v7h-7z"></path>
+                        <path d="M14 14h7v7h-7z"></path>
+                        <path d="M3 14h7v7H3z"></path>
+                    </svg>
+                    Categories
+                </a>
+            </div>
+            
+            <div class="nav-section">
+                <div class="nav-section-title">Customers</div>
+                <a href="#" class="nav-link" data-tab="customers">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    </svg>
+                    Customers
+                </a>
+                <a href="#" class="nav-link" data-tab="reviews">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"></polygon>
+                    </svg>
+                    Reviews
+                </a>
+            </div>
+            
+            <div class="nav-section">
+                <div class="nav-section-title">Settings</div>
+                <a href="#" class="nav-link" data-tab="attributes">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path d="M12 1v6m0 6v6m11-7h-6m-6 0H1"></path>
+                    </svg>
+                    Attributes
+                </a>
+                <a href="#" class="nav-link" data-tab="settings">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1 1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1h.09a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                    </svg>
+                    Settings
+                </a>
+            </div>
+        </nav>
+        
+        <!-- User Profile in Sidebar -->
+        <div class="position-absolute bottom-0 w-100 p-3 border-top" style="border-color: var(--gray-200) !important;">
+            <div class="d-flex align-items-center">
+                <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                    <span class="text-white fw-bold">A</span>
+                </div>
+                <div class="flex-grow-1">
+                    <div class="fw-semibold" style="font-size: 0.875rem;">Admin User</div>
+                    <small class="text-muted">admin@ueh.edu.vn</small>
+                </div>
+                <div class="dropdown">
+                    <button class="btn btn-link p-0 text-muted" data-bs-toggle="dropdown">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="1"></circle>
+                            <circle cx="12" cy="5" r="1"></circle>
+                            <circle cx="12" cy="19" r="1"></circle>
+                        </svg>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="../index.html">View Store</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="../login.html">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Header -->
+        <div class="header">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h1 class="header-title">Dashboard</h1>
+                    <p class="header-subtitle">Welcome back! Here's what's happening with your store today.</p>
+                </div>
+                <div class="d-flex align-items-center gap-3">
+                    <select class="form-select" style="width: auto;">
+                        <option>Last 30 days</option>
+                        <option>Last 7 days</option>
+                        <option>Last 3 months</option>
+                        <option>Last year</option>
+                    </select>
+                    <button class="btn btn-outline-primary">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7,10 12,15 17,10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                        Export
+                    </button>
+                    <button class="btn btn-primary">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-2">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        Add Product
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard Content -->
+        <div class="container-fluid p-4" id="dashboard-tab">
+            <!-- Stats Cards -->
+            <div class="row mb-4">
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="stats-card revenue fade-in">
+                        <div class="stats-number" id="card_total_revenue">-</div>
+                        <div class="stats-label">Total Revenue</div>
+                        <div class="stats-change">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="23,6 13.5,15.5 8.5,10.5 1,18"></polyline>
+                                <polyline points="17,6 23,6 23,12"></polyline>
+                            </svg>
+                            <span>+12.5% from last month</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="stats-card orders fade-in" style="animation-delay: 0.1s;">
+                        <div class="stats-number" id="card_total_orders">-</div>
+                        <div class="stats-label">Total Orders</div>
+                        <div class="stats-change">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="23,6 13.5,15.5 8.5,10.5 1,18"></polyline>
+                                <polyline points="17,6 23,6 23,12"></polyline>
+                            </svg>
+                            <span>+8.2% from last month</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="stats-card customers fade-in" style="animation-delay: 0.2s;">
+                        <div class="stats-number" id="card_total_users">-</div>
+                        <div class="stats-label">Total Users</div>
+                        <div class="stats-change">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="23,6 13.5,15.5 8.5,10.5 1,18"></polyline>
+                                <polyline points="17,6 23,6 23,12"></polyline>
+                            </svg>
+                            <span>+15.3% from last month</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="stats-card products fade-in" style="animation-delay: 0.3s;">
+                        <div class="stats-number" id="card_total_products">-</div>
+                        <div class="stats-label">Products</div>
+                        <div class="stats-change">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                            <span>+2 new this month</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Row -->
+            <div class="row mb-4">
+                <div class="col-lg-8 mb-4">
+                    <div class="card slide-up">
+                        <div class="card-header">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h5 class="mb-1">Revenue Analytics</h5>
+                                    <small class="text-muted">Daily revenue for the selected period</small>
+                                </div>
+                                <div class="btn-group btn-group-sm">
+                                    <button class="btn btn-outline-primary active">Daily</button>
+                                    <button class="btn btn-outline-primary">Weekly</button>
+                                    <button class="btn btn-outline-primary">Monthly</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-container">
+                                <canvas id="revenueChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 mb-4">
+                    <div class="card slide-up" style="animation-delay: 0.1s;">
+                        <div class="card-header">
+                            <h5 class="mb-1">Order Status</h5>
+                            <small class="text-muted">Distribution of order statuses</small>
+                        </div>
+                        <div class="card-body text-center">
+                            <canvas id="orderStatusChart" style="max-height: 250px;"></canvas>
+                            <div class="row mt-4">
+                                <div class="col-6">
+                                    <div class="fw-bold text-success">68%</div>
+                                    <small class="text-muted">Completed</small>
+                                </div>
+                                <div class="col-6">
+                                    <div class="fw-bold text-warning">32%</div>
+                                    <small class="text-muted">Processing</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tables Row -->
+            <div class="row">
+                <div class="col-lg-6 mb-4">
+                    <div class="card slide-up" style="animation-delay: 0.2s;">
+                        <div class="card-header">
+                            <h5 class="mb-1">Top Selling Products</h5>
+                            <small class="text-muted">Best performing products this month</small>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>Product</th>
+                                            <th>Sales</th>
+                                            <th>Revenue</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <img src="../SP-04.png" alt="Product" class="rounded me-3" style="width: 40px; height: 40px; object-fit: cover;">
+                                                    <div>
+                                                        <div class="fw-semibold">UEH Classic Hoodie</div>
+                                                        <small class="text-muted">Hoodie</small>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>245</td>
+                                            <td class="fw-semibold">$12,250</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <img src="../SP-25.png" alt="Product" class="rounded me-3" style="width: 40px; height: 40px; object-fit: cover;">
+                                                    <div>
+                                                        <div class="fw-semibold">UEH Campus Tee</div>
+                                                        <small class="text-muted">T-Shirt</small>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>189</td>
+                                            <td class="fw-semibold">$5,670</td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <img src="../shirt.png" alt="Product" class="rounded me-3" style="width: 40px; height: 40px; object-fit: cover;">
+                                                    <div>
+                                                        <div class="fw-semibold">UEH Premium Shirt</div>
+                                                        <small class="text-muted">Shirt</small>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>156</td>
+                                            <td class="fw-semibold">$7,800</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 mb-4">
+                    <div class="card slide-up" style="animation-delay: 0.3s;">
+                        <div class="card-header">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h5 class="mb-1">Recent Orders</h5>
+                                    <small class="text-muted">Latest customer orders</small>
+                                </div>
+                                <a href="#" class="btn btn-sm btn-outline-primary">View All</a>
+                            </div>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="list-group list-group-flush">
+                                <div class="list-group-item border-0 py-3">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <div class="fw-semibold">#UEH-1001</div>
+                                            <small class="text-muted">John Doe • 2 items</small>
+                                        </div>
+                                        <div class="text-end">
+                                            <div class="fw-semibold">$129.00</div>
+                                            <span class="badge status-processing">Processing</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="list-group-item border-0 py-3">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <div class="fw-semibold">#UEH-1002</div>
+                                            <small class="text-muted">Jane Smith • 1 item</small>
+                                        </div>
+                                        <div class="text-end">
+                                            <div class="fw-semibold">$75.00</div>
+                                            <span class="badge status-delivered">Delivered</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="list-group-item border-0 py-3">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <div class="fw-semibold">#UEH-1003</div>
+                                            <small class="text-muted">Mike Johnson • 3 items</small>
+                                        </div>
+                                        <div class="text-end">
+                                            <div class="fw-semibold">$245.00</div>
+                                            <span class="badge status-pending">Pending</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Other tabs content will be populated by JavaScript -->
+        <div class="container-fluid p-4 d-none" id="products-tab">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h1 class="header-title">Product Management</h1>
+                    <p class="header-subtitle">Manage your product catalog</p>
+                </div>
+                <button class="btn btn-primary">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-2">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    Add Product
+                </button>
+            </div>
+            
+            <div class="card">
+                <div class="card-body">
+                    <p class="text-muted text-center py-5">Product management interface will be implemented here.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid p-4 d-none" id="orders-tab">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h1 class="header-title">Order Management</h1>
+                    <p class="header-subtitle">Track and manage customer orders</p>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-body">
+                    <p class="text-muted text-center py-5">Order management interface will be implemented here.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid p-4 d-none" id="customers-tab">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h1 class="header-title">Customer Management</h1>
+                    <p class="header-subtitle">Manage customer accounts and information</p>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-body">
+                    <p class="text-muted text-center py-5">Customer management interface will be implemented here.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid p-4 d-none" id="categories-tab">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h1 class="header-title">Category Management</h1>
+                    <p class="header-subtitle">Organize your product categories</p>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-body">
+                    <p class="text-muted text-center py-5">Category management interface will be implemented here.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Admin JavaScript -->
+    <script src="admin.js"></script>
+    
+    <script>
+        // Basic navigation functionality
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('show');
+        }
+
+        // Tab switching
+        document.querySelectorAll('[data-tab]').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Remove active class from all nav links
+                document.querySelectorAll('.nav-link').forEach(nav => nav.classList.remove('active'));
+                
+                // Add active class to clicked nav
+                this.classList.add('active');
+                
+                // Hide all tab contents
+                document.querySelectorAll('[id$="-tab"]').forEach(tab => {
+                    tab.classList.add('d-none');
+                });
+                
+                // Show selected tab
+                const tabId = this.getAttribute('data-tab') + '-tab';
+                document.getElementById(tabId)?.classList.remove('d-none');
+                
+                // Update header title
+                const title = this.textContent.trim();
+                document.querySelector('.header-title').textContent = title;
+            });
+        });
+
+        // Initialize charts (placeholder)
+        document.addEventListener('DOMContentLoaded', function() {
+            // Revenue Chart
+            const revenueCtx = document.getElementById('revenueChart');
+            if (revenueCtx) {
+                new Chart(revenueCtx, {
+                    type: 'line',
+                    data: {
+                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                        datasets: [{
+                            label: 'Revenue',
+                            data: [12000, 19000, 15000, 25000, 22000, 30000],
+                            borderColor: '#007AFF',
+                            backgroundColor: 'rgba(0, 122, 255, 0.1)',
+                            tension: 0.4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Order Status Chart
+            const statusCtx = document.getElementById('orderStatusChart');
+            if (statusCtx) {
+                new Chart(statusCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Completed', 'Processing', 'Pending'],
+                        datasets: [{
+                            data: [68, 22, 10],
+                            backgroundColor: ['#34C759', '#007AFF', '#FF9500']
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        }
+                    }
+                });
+            }
+        });
+
+        // Admin Authentication Functions
+        let isAuthenticated = false;
+        let demoMode = false;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if user is already authenticated
+            const existingToken = localStorage.getItem('um_token');
+            if (existingToken) {
+                // Try to validate the token
+                validateTokenAndProceed(existingToken);
+            } else {
+                // Show login modal
+                showLoginModal();
+            }
+            
+            // Setup login form
+            setupLoginForm();
+        });
+
+        function showLoginModal() {
+            const loginModal = new bootstrap.Modal(document.getElementById('adminLoginModal'));
+            loginModal.show();
+        }
+
+        function hideLoginModal() {
+            const loginModal = bootstrap.Modal.getInstance(document.getElementById('adminLoginModal'));
+            if (loginModal) {
+                loginModal.hide();
+            }
+        }
+
+        function setupLoginForm() {
+            const loginForm = document.getElementById('adminLoginForm');
+            loginForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const token = document.getElementById('adminToken').value.trim();
+                if (!token) {
+                    showApiStatus('Please enter a valid admin token', 'error');
+                    return;
+                }
+                
+                // Show loading state
+                setLoginLoading(true);
+                
+                try {
+                    // Store token temporarily and test it
+                    localStorage.setItem('um_token', token);
+                    
+                    // Test the token by calling dashboard API
+                    const response = await AdminAPI.dashboard();
+                    
+                    // If successful, proceed to dashboard
+                    isAuthenticated = true;
+                    hideLoginModal();
+                    showApiStatus('Authentication successful! Loading dashboard...', 'success');
+                    
+                    // Initialize the main application
+                    initializeMainApp();
+                    
+                } catch (error) {
+                    // Remove invalid token
+                    localStorage.removeItem('um_token');
+                    
+                    let errorMessage = 'Authentication failed. Please check your token.';
+                    if (error.status === 401) {
+                        errorMessage = 'Invalid or expired token. Please get a new admin token.';
+                    } else if (error.status === 403) {
+                        errorMessage = 'Access denied. This token does not have admin privileges.';
+                    } else if (!navigator.onLine) {
+                        errorMessage = 'No internet connection. Please check your network and try again.';
+                    }
+                    
+                    showApiStatus(errorMessage, 'error');
+                } finally {
+                    setLoginLoading(false);
+                }
+            });
+        }
+
+        async function validateTokenAndProceed(token) {
+            try {
+                // Test the existing token
+                const response = await AdminAPI.dashboard();
+                isAuthenticated = true;
+                initializeMainApp();
+            } catch (error) {
+                // Token is invalid, remove it and show login
+                localStorage.removeItem('um_token');
+                showLoginModal();
+            }
+        }
+
+        function useSampleData() {
+            // Enable demo mode
+            demoMode = true;
+            localStorage.removeItem('um_token'); // Remove any existing token
+            hideLoginModal();
+            
+            // Initialize with sample data
+            initializeMainApp();
+            showToast('Demo mode activated - using sample data', 'info');
+        }
+
+        function initializeMainApp() {
+            // Initialize sample data for fallback
+            initializeSampleData();
+            
+            // Setup event listeners
+            setupEventListeners();
+            
+            // Initialize tabs
+            initializeTabs();
+            
+            // Load dashboard by default
+            switchTab('dashboard');
+            
+            // Initialize dashboard with API data (or sample data in demo mode)
+            if (demoMode) {
+                initializeFallbackDashboard();
+                showToast('Admin dashboard loaded in demo mode!', 'success');
+            } else {
+                loadDashboardFromAPI();
+                showToast('Admin dashboard loaded successfully!', 'success');
+            }
+        }
+
+        function setLoginLoading(loading) {
+            const loginBtn = document.getElementById('loginBtn');
+            const loginSpinner = document.getElementById('loginSpinner');
+            
+            if (loading) {
+                loginBtn.disabled = true;
+                loginSpinner.classList.remove('d-none');
+                loginBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Authenticating...';
+            } else {
+                loginBtn.disabled = false;
+                loginSpinner.classList.add('d-none');
+                loginBtn.innerHTML = 'Authenticate & Access Dashboard';
+            }
+        }
+
+        function showApiStatus(message, type) {
+            const statusDiv = document.getElementById('apiStatus');
+            statusDiv.className = `api-status ${type}`;
+            statusDiv.textContent = message;
+            statusDiv.style.display = 'block';
+            
+            // Auto-hide success messages after 3 seconds
+            if (type === 'success') {
+                setTimeout(() => {
+                    statusDiv.style.display = 'none';
+                }, 3000);
+            }
+        }
+
+        // Add logout functionality
+        function logout() {
+            localStorage.removeItem('um_token');
+            isAuthenticated = false;
+            demoMode = false;
+            location.reload();
+        }
+
+        // Update the existing user profile dropdown
+        document.addEventListener('DOMContentLoaded', function() {
+            // Update logout link to use the logout function
+            const logoutLink = document.querySelector('a[href="../login.html"]');
+            if (logoutLink) {
+                logoutLink.href = '#';
+                logoutLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    logout();
+                });
+            }
+        });
+    </script>
+</body>
+</html>
