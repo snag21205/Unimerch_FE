@@ -11,6 +11,7 @@ class ApiService {
                 login: '/api/auth/login',
                 register: '/api/auth/register', 
                 forgotPassword: '/api/auth/forgot-password',
+                resetPassword: '/api/auth/reset-password',
                 logout: '/api/auth/logout'
             },
             users: {
@@ -223,10 +224,10 @@ class ApiService {
         });
     }
 
-    async resetPassword(token, newPassword) {
+    async resetPassword(resetToken, newPassword) {
         return this.request(this.endpoints.auth.resetPassword, {
             method: 'POST',
-            body: { token, newPassword }
+            body: { resetToken, newPassword }
         });
     }
 
