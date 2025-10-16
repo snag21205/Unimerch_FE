@@ -485,6 +485,27 @@ class ApiService {
             requireAuth: true
         });
     }
+
+    /**
+     * Get current user ID
+     */
+    getCurrentUserId() {
+        try {
+            const token = this.getToken();
+            if (!token) return null;
+
+            // Parse JWT token
+            const base64Url = token.split('.')[1];
+            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            const payload = JSON.parse(atob(base64));
+            console.log('Token payload:', payload);
+            
+            return payload.id;
+        } catch (error) {
+            console.error('Error getting current user ID:', error);
+            return null;
+        }
+    }
 }
 
 // Create global instance

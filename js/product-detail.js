@@ -6,6 +6,8 @@ let quantity = 1;
 let productReviews = [];
 let reviewStats = {};
 let currentUserReview = null;
+let isEditing = false;
+let editingReviewId = null;
 
 // Get product ID from URL or default to first product
 function getProductIdFromUrl() {
@@ -287,17 +289,18 @@ async function loadProductFromAPI(productId) {
             currentProduct = transformProductData(response.data);
             console.log('✅ Current product loaded from API:', currentProduct);
             
-            // Update DOM elements
-            updateProductUI();
-            
-            // Load reviews and ratings
-            await loadProductReviews(productId);
-            await loadProductReviewStats(productId);
-            
-            // Initialize review functionality after product is loaded
-            initializeReviewFunctionality();
-            
-        } else {
+    // Update basic DOM elements first
+    updateBasicProductUI();
+    
+    // Load reviews and ratings
+    await loadProductReviews(productId);
+    await loadProductReviewStats(productId);
+    
+    // Update rating display after stats are loaded
+    updateRatingDisplay();
+    
+    // Initialize review functionality after product is loaded
+    initializeReviewFunctionality();        } else {
             throw new Error('Invalid API response or product not found');
         }
         
@@ -361,8 +364,8 @@ function determineProductType(name) {
     return 'other';
 }
 
-// Update product UI elements
-function updateProductUI() {
+// Update basic product UI elements
+function updateBasicProductUI() {
     const productImage = document.getElementById('productImage');
     const productTitle = document.getElementById('productTitle');
     const productCategory = document.getElementById('productCategory');
@@ -391,16 +394,22 @@ function updateProductUI() {
     
     console.log('✅ Basic elements updated');
     
-    // Generate rating stars
-    generateRatingStars();
-    
-    // Update UI
+    // Update price UI
     updateTotalPrice();
     
     // Update document title
     document.title = `${currentProduct.name} - UEH Merch`;
-    
-    console.log('🎯 Product load complete!');
+}
+
+// Update rating display after stats are loaded
+function updateRatingDisplay() {
+    const ratingContainer = document.getElementById('productRating');
+    if (ratingContainer && reviewStats.average_rating) {
+        ratingContainer.innerHTML = generateStarsHTML(reviewStats.average_rating);
+        console.log('Updated product rating with average:', reviewStats.average_rating);
+    } else {
+        console.log('No rating stats available');
+    }
 }
 
 // Show loading state
@@ -437,21 +446,10 @@ function loadProduct(productId) {
 // Generate rating stars
 function generateRatingStars() {
     const ratingContainer = document.getElementById('productRating');
-    let starsHtml = '';
-    
-    for (let i = 1; i <= 5; i++) {
-        if (i <= currentProduct.rating) {
-            starsHtml += `<svg class="rating-star" viewBox="0 0 24 24" fill="currentColor">
-                            <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"></polygon>
-                          </svg>`;
-        } else {
-            starsHtml += `<svg class="rating-star empty" viewBox="0 0 24 24" fill="currentColor">
-                            <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"></polygon>
-                          </svg>`;
-        }
+    if (ratingContainer) {
+        ratingContainer.innerHTML = generateStarsHTML(currentProduct.rating || 0);
+        console.log('Generating stars for product rating:', currentProduct.rating);
     }
-    
-    ratingContainer.innerHTML = starsHtml;
 }
 
 
@@ -686,8 +684,34 @@ function renderReviews() {
     
     if (noReviews) noReviews.style.display = 'none';
     
+    const currentUserId = window.apiService?.getCurrentUserId?.();
+    console.log('Current user ID:', currentUserId);
+    console.log('Is authenticated:', window.apiService?.isAuthenticated());
+    
     let reviewsHTML = '';
     productReviews.forEach(review => {
+        const isOwnReview = currentUserId && Number(review.user_id) === Number(currentUserId);
+        console.log('Review:', review.id, 'User ID:', review.user_id, 'Current user:', currentUserId, 'Is own:', isOwnReview);
+        
+        const actionButtons = isOwnReview ? `
+            <div class="d-flex gap-2">
+                <button class="btn btn-outline-primary btn-sm" onclick="editReview(${review.id})">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-1">
+                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                    </svg>
+                    Sửa
+                </button>
+                <button class="btn btn-outline-danger btn-sm" onclick="deleteReview(${review.id})">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-1">
+                        <path d="M3 6h18"></path>
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    </svg>
+                    Xóa
+                </button>
+            </div>
+        ` : '';
+        
         reviewsHTML += `
             <div class="border-bottom p-3">
                 <div class="d-flex justify-content-between align-items-start mb-2">
@@ -700,6 +724,7 @@ function renderReviews() {
                             </span>
                         </div>
                     </div>
+                    ${actionButtons}
                 </div>
                 <div class="text-muted">
                     ${review.comment || 'No comment provided'}
@@ -796,15 +821,46 @@ async function handleReviewSubmit(event) {
     };
     
     try {
-        const response = await window.apiService.createReview(reviewData);
+        let response;
+        if (isEditing && editingReviewId) {
+            response = await window.apiService.updateReview(editingReviewId, reviewData);
+            if (response.success) {
+                alert('Đánh giá đã được cập nhật thành công!');
+            }
+        } else {
+            response = await window.apiService.createReview(reviewData);
+            if (response.success) {
+                alert('Đánh giá của bạn đã được gửi thành công!');
+            }
+        }
+        
         if (response.success) {
-            alert('Đánh giá của bạn đã được gửi thành công!');
             event.target.reset();
             document.getElementById('writeReviewSection').style.display = 'none';
+            isEditing = false;
+            editingReviewId = null;
             
-            // Reload reviews
+            // Reset form title and submit button
+            const writeReviewSection = document.getElementById('writeReviewSection');
+            writeReviewSection.querySelector('.card-header h6').textContent = 'Viết đánh giá';
+            const submitButton = document.querySelector('#reviewForm button[type="submit"]');
+            submitButton.innerHTML = `
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-2">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                </svg>
+                Gửi đánh giá
+            `;
+            
+            // Reload reviews and update UI
             await loadProductReviews(currentProduct.id);
             await loadProductReviewStats(currentProduct.id);
+            updateRatingDisplay(); // Update the product rating display
+            
+            // Update reviews stats section too
+            const ratingStars = document.getElementById('ratingStars');
+            if (ratingStars) {
+                ratingStars.innerHTML = generateStarsHTML(reviewStats.average_rating || 0);
+            }
         }
     } catch (error) {
         console.error('Failed to submit review:', error);
@@ -918,10 +974,33 @@ function renderFilteredReviews(reviews) {
     
     if (noReviews) noReviews.style.display = 'none';
     
+    const currentUserId = window.apiService?.getCurrentUserId?.();
     let reviewsHTML = '';
+    
     reviews.forEach(review => {
+        const isOwnReview = currentUserId && review.user_id === currentUserId;
+        
+        const actionButtons = isOwnReview ? `
+            <div class="d-flex gap-2">
+                <button class="btn btn-outline-primary btn-sm" onclick="editReview(${review.id})">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-1">
+                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                    </svg>
+                    Sửa
+                </button>
+                <button class="btn btn-outline-danger btn-sm" onclick="deleteReview(${review.id})">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-1">
+                        <path d="M3 6h18"></path>
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    </svg>
+                    Xóa
+                </button>
+            </div>
+        ` : '';
+
         reviewsHTML += `
-            <div class="border-bottom p-3">
+            <div class="border-bottom p-3" data-review-id="${review.id}">
                 <div class="d-flex justify-content-between align-items-start mb-2">
                     <div>
                         <div class="fw-semibold">${review.user_full_name || review.username || 'Anonymous'}</div>
@@ -932,6 +1011,7 @@ function renderFilteredReviews(reviews) {
                             </span>
                         </div>
                     </div>
+                    ${actionButtons}
                 </div>
                 <div class="text-muted">
                     ${review.comment || 'No comment provided'}
@@ -943,8 +1023,87 @@ function renderFilteredReviews(reviews) {
     reviewsList.innerHTML = reviewsHTML;
 }
 
-// Cancel review
-function cancelReview() {
-    document.getElementById('reviewForm').reset();
-    document.getElementById('writeReviewSection').style.display = 'none';
+// Edit review
+async function editReview(reviewId) {
+    if (!window.apiService?.isAuthenticated()) {
+        alert('Bạn cần đăng nhập để sửa đánh giá');
+        return;
+    }
+
+    try {
+        const review = productReviews.find(r => r.id === reviewId);
+        if (!review) {
+            throw new Error('Review not found');
+        }
+
+        // Set form to edit mode
+        isEditing = true;
+        editingReviewId = reviewId;
+        
+        // Show the review form
+        const writeReviewSection = document.getElementById('writeReviewSection');
+        writeReviewSection.style.display = 'block';
+        
+        // Update form title
+        writeReviewSection.querySelector('.card-header h6').textContent = 'Sửa đánh giá';
+        
+        // Fill in existing review data
+        document.getElementById('selectedRating').value = review.rating;
+        document.getElementById('reviewComment').value = review.comment;
+        
+        // Update rating stars
+        selectRating(review.rating);
+        
+        // Scroll to form
+        writeReviewSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        
+        // Update submit button text
+        const submitButton = document.querySelector('#reviewForm button[type="submit"]');
+        submitButton.innerHTML = `
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-2">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+            </svg>
+            Cập nhật đánh giá
+        `;
+    } catch (error) {
+        console.error('Error preparing review edit:', error);
+        alert('Có lỗi xảy ra khi chuẩn bị sửa đánh giá');
+    }
+}
+
+// Delete review
+async function deleteReview(reviewId) {
+    if (!window.apiService?.isAuthenticated()) {
+        alert('Bạn cần đăng nhập để xóa đánh giá');
+        return;
+    }
+
+    if (!confirm('Bạn có chắc chắn muốn xóa đánh giá này không?')) {
+        return;
+    }
+
+    try {
+        const response = await window.apiService.deleteReview(reviewId);
+        if (response.success) {
+            // Remove from local array
+            productReviews = productReviews.filter(r => r.id !== reviewId);
+            // Update UI
+            renderReviews();
+            // Refresh stats and update displays
+            await loadProductReviewStats(currentProduct.id);
+            updateRatingDisplay();
+            
+            // Update reviews stats section
+            const ratingStars = document.getElementById('ratingStars');
+            if (ratingStars) {
+                ratingStars.innerHTML = generateStarsHTML(reviewStats.average_rating || 0);
+            }
+            
+            alert('Đã xóa đánh giá thành công');
+        }
+    } catch (error) {
+        console.error('Error deleting review:', error);
+        alert('Có lỗi xảy ra khi xóa đánh giá');
+    }
 }
