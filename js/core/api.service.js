@@ -55,6 +55,33 @@ class ApiService {
                 create: '/api/reviews',
                 update: '/api/reviews/:id',
                 delete: '/api/reviews/:id'
+            },
+            admin: {
+                // User Management
+                users: '/api/users',
+                userDetail: '/api/users/:id',
+                updateUser: '/api/users/:id',
+                deleteUser: '/api/users/:id',
+                
+                // Order Management
+                orders: '/api/admin/orders',
+                
+                // Payment Management
+                payments: '/api/admin/payments',
+                refund: '/api/payments/:id/refund',
+                
+                // Statistics & Analytics
+                dashboard: '/api/admin/stats/dashboard',
+                recentActivity: '/api/admin/stats/recent-activity',
+                revenue: '/api/admin/stats/revenue',
+                revenueCompare: '/api/admin/stats/revenue/compare',
+                paymentMethods: '/api/admin/stats/payment-methods',
+                productStats: '/api/admin/stats/products',
+                sellerStats: '/api/admin/stats/sellers',
+                orderStats: '/api/admin/stats/orders',
+                userGrowth: '/api/admin/stats/users/growth',
+                completeStats: '/api/admin/stats/complete',
+                summary: '/api/admin/stats/summary'
             }
         };
     }
@@ -506,6 +533,149 @@ class ApiService {
             console.error('Error getting current user ID:', error);
             return null;
         }
+    }
+
+    // ===== ADMIN METHODS =====
+
+    // User Management
+    async getAllUsers(queryParams = {}) {
+        const query = new URLSearchParams(queryParams).toString();
+        const endpoint = this.endpoints.admin.users + (query ? `?${query}` : '');
+        return this.request(endpoint, {
+            requireAuth: true
+        });
+    }
+
+    async getUserById(userId) {
+        return this.request(this.endpoints.admin.userDetail, {
+            params: { id: userId },
+            requireAuth: true
+        });
+    }
+
+    async updateUserById(userId, userData) {
+        return this.request(this.endpoints.admin.updateUser, {
+            method: 'PUT',
+            body: userData,
+            params: { id: userId },
+            requireAuth: true
+        });
+    }
+
+    async deleteUserById(userId) {
+        return this.request(this.endpoints.admin.deleteUser, {
+            method: 'DELETE',
+            params: { id: userId },
+            requireAuth: true
+        });
+    }
+
+    // Order Management
+    async getAdminOrders(queryParams = {}) {
+        const query = new URLSearchParams(queryParams).toString();
+        const endpoint = this.endpoints.admin.orders + (query ? `?${query}` : '');
+        return this.request(endpoint, {
+            requireAuth: true
+        });
+    }
+
+    // Payment Management
+    async getAdminPayments(queryParams = {}) {
+        const query = new URLSearchParams(queryParams).toString();
+        const endpoint = this.endpoints.admin.payments + (query ? `?${query}` : '');
+        return this.request(endpoint, {
+            requireAuth: true
+        });
+    }
+
+    async processRefund(paymentId, refundData) {
+        return this.request(this.endpoints.admin.refund, {
+            method: 'POST',
+            body: refundData,
+            params: { id: paymentId },
+            requireAuth: true
+        });
+    }
+
+    // Statistics & Analytics
+    async getDashboardStats() {
+        return this.request(this.endpoints.admin.dashboard, {
+            requireAuth: true
+        });
+    }
+
+    async getRecentActivity(limit = 20) {
+        const query = new URLSearchParams({ limit }).toString();
+        const endpoint = this.endpoints.admin.recentActivity + `?${query}`;
+        return this.request(endpoint, {
+            requireAuth: true
+        });
+    }
+
+    async getRevenueStats(queryParams = {}) {
+        const query = new URLSearchParams(queryParams).toString();
+        const endpoint = this.endpoints.admin.revenue + (query ? `?${query}` : '');
+        return this.request(endpoint, {
+            requireAuth: true
+        });
+    }
+
+    async getRevenueComparison(queryParams = {}) {
+        const query = new URLSearchParams(queryParams).toString();
+        const endpoint = this.endpoints.admin.revenueCompare + (query ? `?${query}` : '');
+        return this.request(endpoint, {
+            requireAuth: true
+        });
+    }
+
+    async getPaymentMethodStats() {
+        return this.request(this.endpoints.admin.paymentMethods, {
+            requireAuth: true
+        });
+    }
+
+    async getProductStats(queryParams = {}) {
+        const query = new URLSearchParams(queryParams).toString();
+        const endpoint = this.endpoints.admin.productStats + (query ? `?${query}` : '');
+        return this.request(endpoint, {
+            requireAuth: true
+        });
+    }
+
+    async getSellerStats(queryParams = {}) {
+        const query = new URLSearchParams(queryParams).toString();
+        const endpoint = this.endpoints.admin.sellerStats + (query ? `?${query}` : '');
+        return this.request(endpoint, {
+            requireAuth: true
+        });
+    }
+
+    async getOrderStats() {
+        return this.request(this.endpoints.admin.orderStats, {
+            requireAuth: true
+        });
+    }
+
+    async getUserGrowthStats(queryParams = {}) {
+        const query = new URLSearchParams(queryParams).toString();
+        const endpoint = this.endpoints.admin.userGrowth + (query ? `?${query}` : '');
+        return this.request(endpoint, {
+            requireAuth: true
+        });
+    }
+
+    async getCompleteStats(queryParams = {}) {
+        const query = new URLSearchParams(queryParams).toString();
+        const endpoint = this.endpoints.admin.completeStats + (query ? `?${query}` : '');
+        return this.request(endpoint, {
+            requireAuth: true
+        });
+    }
+
+    async getStatsSummary() {
+        return this.request(this.endpoints.admin.summary, {
+            requireAuth: true
+        });
     }
 }
 

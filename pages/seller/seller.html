@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trang Quản Trị - UEH Merch</title>
+    <title>Trang Quản Lý Người Bán - UEH Merch</title>
     
     <!-- Bootstrap 5.3 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -16,11 +16,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Admin CSS -->
-    <link rel="stylesheet" href="../../css/admin.css">
+    <!-- Seller CSS -->
+    <link rel="stylesheet" href="../../css/seller.css">
 </head>
 <body>
-
     <!-- Mobile Menu Toggle -->
     <button class="mobile-menu-toggle btn" onclick="toggleSidebar()">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -33,7 +32,7 @@
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
         <div class="sidebar-brand">
-            <h1>👨‍💼 Quản Trị Viên</h1>
+            <h1>🏪 Người Bán</h1>
             <p class="text-muted mb-0" style="font-size: 0.875rem;">UEH Merch</p>
         </div>
         
@@ -49,30 +48,21 @@
                     </svg>
                     Bảng Điều Khiển
                 </a>
-                <a href="#" class="nav-link" data-tab="analytics">
+                <a href="#" class="nav-link" data-tab="stats">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <polyline points="22,12 18,12 15,21 9,3 6,12 2,12"></polyline>
                     </svg>
-                    Phân Tích
+                    Thống Kê
                 </a>
             </div>
             
             <div class="nav-section">
                 <div class="nav-section-title">Quản Lý</div>
-                <a href="#" class="nav-link" data-tab="users">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                        <circle cx="9" cy="7" r="4"></circle>
-                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                    </svg>
-                    Người Dùng
-                </a>
                 <a href="#" class="nav-link" data-tab="products">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M20 7H4a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2zM4 7v11a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7"></path>
                     </svg>
-                    Sản Phẩm
+                    Sản Phẩm Của Tôi
                 </a>
                 <a href="#" class="nav-link" data-tab="orders">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -80,13 +70,6 @@
                         <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
                     </svg>
                     Đơn Hàng
-                </a>
-                <a href="#" class="nav-link" data-tab="payments">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
-                        <line x1="1" y1="10" x2="23" y2="10"></line>
-                    </svg>
-                    Thanh Toán
                 </a>
                 <a href="#" class="nav-link" data-tab="reviews">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -111,12 +94,12 @@
         <!-- User Profile in Sidebar -->
         <div class="sidebar-profile">
             <div class="d-flex align-items-center">
-                <div class="rounded-circle bg-primary d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
-                    <span class="text-white fw-bold">A</span>
+                <div class="rounded-circle bg-success d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                    <span class="text-white fw-bold" id="userInitial">S</span>
                 </div>
                 <div class="flex-grow-1">
-                    <div class="fw-semibold" style="font-size: 0.875rem;" id="adminName">Quản Trị Viên</div>
-                    <small class="text-muted" id="adminEmail">admin@ueh.edu.vn</small>
+                    <div class="fw-semibold" style="font-size: 0.875rem;" id="sellerName">Người Bán</div>
+                    <small class="text-muted" id="sellerEmail">seller@ueh.edu.vn</small>
                 </div>
                 <div class="dropdown">
                     <button class="btn btn-link p-0 text-muted" data-bs-toggle="dropdown">
@@ -127,7 +110,7 @@
                         </svg>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="../../index.html">Về Cửa Hàng</a></li>
+                        <li><a class="dropdown-item" href="../user/profile.html">Thông Tin Cá Nhân</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="#" id="logoutLink">Đăng Xuất</a></li>
                     </ul>
@@ -143,16 +126,23 @@
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <h1 class="header-title">Bảng Điều Khiển</h1>
-                    <p class="header-subtitle">Chào mừng trở lại! Đây là tổng quan hoạt động cửa hàng hôm nay.</p>
+                    <p class="header-subtitle">Chào mừng trở lại! Đây là tổng quan hoạt động của bạn hôm nay.</p>
                 </div>
                 <div class="d-flex align-items-center gap-3">
-                    <button class="btn btn-outline-primary" onclick="refreshDashboard()">
+                    <button class="btn btn-outline-primary" onclick="refreshData()">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-2">
                             <polyline points="23 4 23 10 17 10"></polyline>
                             <polyline points="1 20 1 14 7 14"></polyline>
                             <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
                         </svg>
                         Làm Mới
+                    </button>
+                    <button class="btn btn-primary" onclick="showAddProductModal()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-2">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        Thêm Sản Phẩm
                     </button>
                 </div>
             </div>
@@ -164,42 +154,64 @@
             <div class="row mb-4">
                 <div class="col-lg-3 col-md-6 mb-4">
                     <div class="stats-card revenue fade-in">
+                        <div class="stats-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="12" y1="1" x2="12" y2="23"></line>
+                                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                            </svg>
+                        </div>
                         <div class="stats-number" id="card_total_revenue">-</div>
                         <div class="stats-label">Tổng Doanh Thu</div>
                     </div>
                 </div>
                 
                 <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="stats-card orders fade-in" style="animation-delay: 0.1s;">
-                        <div class="stats-number" id="card_total_orders">-</div>
-                        <div class="stats-label">Tổng Đơn Hàng</div>
-                    </div>
-                </div>
-                
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="stats-card customers fade-in" style="animation-delay: 0.2s;">
-                        <div class="stats-number" id="card_total_users">-</div>
-                        <div class="stats-label">Tổng Người Dùng</div>
-                    </div>
-                </div>
-                
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="stats-card products fade-in" style="animation-delay: 0.3s;">
+                    <div class="stats-card products fade-in" style="animation-delay: 0.1s;">
+                        <div class="stats-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M20 7H4a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2zM4 7v11a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7"></path>
+                            </svg>
+                        </div>
                         <div class="stats-number" id="card_total_products">-</div>
                         <div class="stats-label">Sản Phẩm</div>
                     </div>
                 </div>
+                
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="stats-card orders fade-in" style="animation-delay: 0.2s;">
+                        <div class="stats-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                                <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                            </svg>
+                        </div>
+                        <div class="stats-number" id="card_total_orders">-</div>
+                        <div class="stats-label">Đơn Hàng</div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="stats-card reviews fade-in" style="animation-delay: 0.3s;">
+                        <div class="stats-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"></polygon>
+                            </svg>
+                        </div>
+                        <div class="stats-number" id="card_avg_rating">-</div>
+                        <div class="stats-label">Đánh Giá TB</div>
+                    </div>
+                </div>
             </div>
 
-            <!-- Charts Row -->
+            <!-- Charts and Tables Row -->
             <div class="row mb-4">
                 <div class="col-lg-8 mb-4">
                     <div class="card slide-up">
                         <div class="card-header">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
-                                    <h5 class="mb-1">Phân Tích Doanh Thu</h5>
-                                    <small class="text-muted">Doanh thu theo ngày trong kỳ đã chọn</small>
+                                    <h5 class="mb-1">Doanh Thu Theo Thời Gian</h5>
+                                    <small class="text-muted">Biểu đồ doanh thu 30 ngày gần nhất</small>
                                 </div>
                             </div>
                         </div>
@@ -214,37 +226,52 @@
                 <div class="col-lg-4 mb-4">
                     <div class="card slide-up" style="animation-delay: 0.1s;">
                         <div class="card-header">
-                            <h5 class="mb-1">Trạng Thái Đơn Hàng</h5>
-                            <small class="text-muted">Phân bố trạng thái đơn hàng</small>
+                            <h5 class="mb-1">Sản Phẩm Bán Chạy</h5>
+                            <small class="text-muted">Top 5 sản phẩm</small>
                         </div>
-                        <div class="card-body text-center">
-                            <canvas id="orderStatusChart" style="max-height: 250px;"></canvas>
+                        <div class="card-body p-0">
+                            <div class="list-group list-group-flush" id="topProductsList">
+                                <div class="list-group-item border-0 py-3 text-center">
+                                    <div class="spinner-border spinner-border-sm text-primary" role="status">
+                                        <span class="visually-hidden">Đang tải...</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Tables Row -->
+            <!-- Recent Orders -->
             <div class="row">
-                <div class="col-lg-6 mb-4">
+                <div class="col-12">
                     <div class="card slide-up" style="animation-delay: 0.2s;">
                         <div class="card-header">
-                            <h5 class="mb-1">Sản Phẩm Bán Chạy</h5>
-                            <small class="text-muted">Sản phẩm bán chạy nhất tháng này</small>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h5 class="mb-1">Đơn Hàng Gần Đây</h5>
+                                    <small class="text-muted">Các đơn hàng mới nhất</small>
+                                </div>
+                                <a href="#" class="btn btn-sm btn-outline-primary" onclick="switchTab('orders')">Xem Tất Cả</a>
+                            </div>
                         </div>
                         <div class="card-body p-0">
                             <div class="table-responsive">
-                                <table class="table mb-0">
+                                <table class="table table-hover mb-0" id="recentOrdersTable">
                                     <thead>
                                         <tr>
+                                            <th>Mã Đơn</th>
+                                            <th>Khách Hàng</th>
                                             <th>Sản Phẩm</th>
-                                            <th>Đã Bán</th>
-                                            <th>Doanh Thu</th>
+                                            <th>Số Lượng</th>
+                                            <th>Tổng Tiền</th>
+                                            <th>Trạng Thái</th>
+                                            <th>Ngày Đặt</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="topProductsTable">
+                                    <tbody>
                                         <tr>
-                                            <td colspan="3" class="text-center">
+                                            <td colspan="7" class="text-center">
                                                 <div class="spinner-border spinner-border-sm text-primary" role="status">
                                                     <span class="visually-hidden">Đang tải...</span>
                                                 </div>
@@ -256,49 +283,19 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="col-lg-6 mb-4">
-                    <div class="card slide-up" style="animation-delay: 0.3s;">
-                        <div class="card-header">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <h5 class="mb-1">Đơn Hàng Gần Đây</h5>
-                                    <small class="text-muted">Các đơn hàng mới nhất</small>
-                                </div>
-                                <a href="#" class="btn btn-sm btn-outline-primary" onclick="switchTab('orders')">Xem Tất Cả</a>
-                            </div>
-                        </div>
-                        <div class="card-body p-0" id="recentOrdersList">
-                            <div class="list-group list-group-flush">
-                                <div class="list-group-item border-0 py-3 text-center">
-                                    <div class="spinner-border spinner-border-sm text-primary" role="status">
-                                        <span class="visually-hidden">Đang tải...</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
 
-        <!-- Other tabs content -->
-        <div class="container-fluid p-4 d-none" id="analytics-tab">
+        <!-- Stats Tab -->
+        <div class="container-fluid p-4 d-none" id="stats-tab">
             <div class="card">
                 <div class="card-body text-center py-5">
-                    <p class="text-muted">Trang phân tích chi tiết sẽ được triển khai ở đây.</p>
+                    <p class="text-muted">Trang thống kê chi tiết sẽ được triển khai ở đây.</p>
                 </div>
             </div>
         </div>
 
-        <div class="container-fluid p-4 d-none" id="users-tab">
-            <div class="card">
-                <div class="card-body text-center py-5">
-                    <p class="text-muted">Trang quản lý người dùng sẽ được triển khai ở đây.</p>
-                </div>
-            </div>
-        </div>
-
+        <!-- Products Tab -->
         <div class="container-fluid p-4 d-none" id="products-tab">
             <div class="card">
                 <div class="card-body text-center py-5">
@@ -307,6 +304,7 @@
             </div>
         </div>
 
+        <!-- Orders Tab -->
         <div class="container-fluid p-4 d-none" id="orders-tab">
             <div class="card">
                 <div class="card-body text-center py-5">
@@ -315,14 +313,7 @@
             </div>
         </div>
 
-        <div class="container-fluid p-4 d-none" id="payments-tab">
-            <div class="card">
-                <div class="card-body text-center py-5">
-                    <p class="text-muted">Trang quản lý thanh toán sẽ được triển khai ở đây.</p>
-                </div>
-            </div>
-        </div>
-
+        <!-- Reviews Tab -->
         <div class="container-fluid p-4 d-none" id="reviews-tab">
             <div class="card">
                 <div class="card-body text-center py-5">
@@ -341,11 +332,12 @@
     <!-- Auth Protection -->
     <script src="../../js/features/auth/auth-protection.service.js"></script>
     <script>
-        // Protect this page - only admins can access
-        protectPage('admin');
+        // Protect this page - only sellers can access
+        protectPage('seller');
     </script>
     
-    <!-- Admin JavaScript -->
-    <script src="../../js/pages/admin/admin-dashboard.js"></script>
+    <!-- Seller JavaScript -->
+    <script src="../../js/pages/seller/seller-dashboard.js"></script>
 </body>
 </html>
+
