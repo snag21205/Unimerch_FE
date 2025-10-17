@@ -154,50 +154,8 @@ function openQuickView(productId) {
     alert('Quick view feature - Product ID: ' + productId);
 }
 
-// Authentication functions
-function checkAuthState() {
-    const notLoggedIn = document.getElementById('notLoggedIn');
-    const loggedIn = document.getElementById('loggedIn');
-    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-    
-    if (isLoggedIn) {
-        // User is logged in
-        notLoggedIn.classList.add('d-none');
-        loggedIn.classList.remove('d-none');
-        
-        // Update user info
-        updateUserDisplay();
-    } else {
-        // User is not logged in
-        notLoggedIn.classList.remove('d-none');
-        loggedIn.classList.add('d-none');
-    }
-}
-
-function updateUserDisplay() {
-    const username = localStorage.getItem('username');
-    const userEmail = localStorage.getItem('userEmail');
-    const userInfo = localStorage.getItem('userInfo');
-    
-    if (!username) return;
-    
-    // Update avatar
-    const userAvatar = document.getElementById('userAvatar');
-    const firstLetter = username.charAt(0).toUpperCase();
-    userAvatar.textContent = firstLetter;
-    
-    // Update username
-    const usernameElement = document.getElementById('username');
-    usernameElement.textContent = username;
-    
-    // Update full name and email in dropdown
-    const userFullName = document.getElementById('userFullName');
-    userFullName.textContent = username || 'Welcome back!';
-    
-    const userEmailElement = document.getElementById('userEmail');
-    userEmailElement.textContent = userEmail || username;
-}
-
+// Authentication functions are now handled by index-auth-v2.js
+// Removed duplicate checkAuthState() and updateUserDisplay() functions
 
 
 function showToast(message, type = 'info') {
@@ -242,5 +200,5 @@ window.addEventListener('storage', function(e) {
 window.addToCart = addToCart;
 window.openQuickView = openQuickView;
 window.selectColor = selectColor;
-window.logout = logout;
+// logout is handled by index-auth-v2.js
 window.showToast = showToast;

@@ -32,8 +32,25 @@ async function handleSignIn() {
             detail: data.data.user
         }));
         
-        alert('Đăng nhập thành công! Chào mừng trở lại!');
-        window.location.href = '../../index.html';
+        // Get user role and redirect accordingly
+        const userRole = data.data.user?.role || 'user';
+        let redirectUrl = '../../index.html';
+        
+        switch(userRole) {
+            case 'admin':
+                redirectUrl = '../admin/admin.html';
+                alert('Đăng nhập thành công! Chào mừng Admin!');
+                break;
+            case 'seller':
+                redirectUrl = '../seller/seller.html';
+                alert('Đăng nhập thành công! Chào mừng Người bán!');
+                break;
+            default:
+                redirectUrl = '../../index.html';
+                alert('Đăng nhập thành công! Chào mừng trở lại!');
+        }
+        
+        window.location.href = redirectUrl;
     } catch (error) {
         console.error('Error during login:', error);
         alert('Đăng nhập thất bại: ' + error.message);
