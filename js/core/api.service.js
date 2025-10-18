@@ -325,6 +325,39 @@ class ApiService {
         return this.request(endpoint);
     }
 
+    async createProduct(productData) {
+        return this.request(this.endpoints.products.list, {
+            method: 'POST',
+            body: productData,
+            requireAuth: true
+        });
+    }
+
+    async updateProduct(productId, productData) {
+        return this.request(this.endpoints.products.detail, {
+            method: 'PUT',
+            params: { id: productId },
+            body: productData,
+            requireAuth: true
+        });
+    }
+
+    async deleteProduct(productId) {
+        return this.request(this.endpoints.products.detail, {
+            method: 'DELETE',
+            params: { id: productId },
+            requireAuth: true
+        });
+    }
+
+    async getProductsBySeller(sellerId, queryParams = {}) {
+        const query = new URLSearchParams(queryParams).toString();
+        const endpoint = `/api/products/seller/${sellerId}` + (query ? `?${query}` : '');
+        return this.request(endpoint, {
+            requireAuth: true
+        });
+    }
+
     // Cart Methods
     async getCart() {
         return this.request(this.endpoints.cart.get, {
@@ -433,8 +466,40 @@ class ApiService {
         });
     }
 
-    async getOrderStats() {
-        return this.request(this.endpoints.orders.stats, {
+    async getUserById(userId) {
+        return this.request(`/api/users/${userId}`, {
+            requireAuth: true
+        });
+    }
+
+    // Admin User Management
+    async getUsers(queryParams = {}) {
+        const query = new URLSearchParams(queryParams).toString();
+        const endpoint = '/api/users' + (query ? `?${query}` : '');
+        return this.request(endpoint, {
+            requireAuth: true
+        });
+    }
+
+    async createUser(userData) {
+        return this.request('/api/users', {
+            method: 'POST',
+            body: userData,
+            requireAuth: true
+        });
+    }
+
+    async updateUser(userId, userData) {
+        return this.request(`/api/users/${userId}`, {
+            method: 'PUT',
+            body: userData,
+            requireAuth: true
+        });
+    }
+
+    async deleteUser(userId) {
+        return this.request(`/api/users/${userId}`, {
+            method: 'DELETE',
             requireAuth: true
         });
     }
