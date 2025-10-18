@@ -48,12 +48,6 @@
                     </svg>
                     Bảng Điều Khiển
                 </a>
-                <a href="#" class="nav-link" data-tab="stats">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polyline points="22,12 18,12 15,21 9,3 6,12 2,12"></polyline>
-                    </svg>
-                    Thống Kê
-                </a>
             </div>
             
             <div class="nav-section">
@@ -287,41 +281,538 @@
         </div>
 
         <!-- Stats Tab -->
-        <div class="container-fluid p-4 d-none" id="stats-tab">
-            <div class="card">
-                <div class="card-body text-center py-5">
-                    <p class="text-muted">Trang thống kê chi tiết sẽ được triển khai ở đây.</p>
-                </div>
-            </div>
-        </div>
 
         <!-- Products Tab -->
         <div class="container-fluid p-4 d-none" id="products-tab">
+            <!-- Header with Search and Add Button -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div class="flex-grow-1 me-3" style="max-width: 400px;">
+                    <div class="input-group">
+                        <span class="input-group-text bg-white border-end-0">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <path d="m21 21-4.35-4.35"></path>
+                            </svg>
+                        </span>
+                        <input type="text" class="form-control border-start-0" id="productSearchInput" placeholder="Tìm kiếm sản phẩm...">
+                    </div>
+                </div>
+                <button class="btn btn-success" onclick="showAddProductModal()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-1">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    Thêm Sản Phẩm
+                </button>
+            </div>
+
+            <!-- Products Table Card -->
             <div class="card">
-                <div class="card-body text-center py-5">
-                    <p class="text-muted">Trang quản lý sản phẩm sẽ được triển khai ở đây.</p>
+                <div class="card-header bg-white py-3">
+                    <h5 class="mb-0">Danh Sách Sản Phẩm</h5>
+                </div>
+                <div class="card-body p-0">
+                    <!-- Loading Spinner -->
+                    <div id="productsLoading" class="text-center py-5">
+                        <div class="spinner-border text-success" role="status">
+                            <span class="visually-hidden">Đang tải...</span>
+                        </div>
+                    </div>
+
+                    <!-- Products Table -->
+                    <div class="table-responsive d-none" id="productsTableContainer">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th style="width: 60px;">#</th>
+                                    <th style="width: 80px;">Hình ảnh</th>
+                                    <th>Tên sản phẩm</th>
+                                    <th style="width: 120px;">Giá</th>
+                                    <th style="width: 100px;">Số lượng</th>
+                                    <th style="width: 120px;">Trạng thái</th>
+                                    <th style="width: 150px;" class="text-center">Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody id="productsTableBody">
+                                <!-- Products will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Empty State -->
+                    <div id="productsEmptyState" class="text-center py-5 d-none">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="text-muted mb-3">
+                            <path d="M20 7H4a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2zM4 7v11a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7"></path>
+                        </svg>
+                        <p class="text-muted mb-3">Chưa có sản phẩm nào</p>
+                        <button class="btn btn-success" onclick="showAddProductModal()">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-1">
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                            Thêm Sản Phẩm Đầu Tiên
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Pagination -->
+                <div class="card-footer d-none" id="productsPagination">
+                    <nav aria-label="Products pagination">
+                        <ul class="pagination pagination-sm justify-content-center mb-0" id="productsPaginationList">
+                            <!-- Pagination items will be loaded here -->
+                        </ul>
+                    </nav>
                 </div>
             </div>
         </div>
 
         <!-- Orders Tab -->
         <div class="container-fluid p-4 d-none" id="orders-tab">
+            <!-- Header with Search and Filter -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div class="flex-grow-1 me-3" style="max-width: 400px;">
+                    <div class="input-group">
+                        <span class="input-group-text bg-white border-end-0">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <path d="m21 21-4.35-4.35"></path>
+                            </svg>
+                        </span>
+                        <input type="text" class="form-control border-start-0" id="orderSearchInput" placeholder="Tìm kiếm đơn hàng...">
+                    </div>
+                </div>
+                <div class="d-flex gap-2">
+                    <select class="form-select" id="orderStatusFilter" style="width: auto;">
+                        <option value="">Tất cả trạng thái</option>
+                        <option value="pending">Chờ xử lý</option>
+                        <option value="processing">Đang xử lý</option>
+                        <option value="shipped">Đã gửi</option>
+                        <option value="delivered">Đã giao</option>
+                        <option value="cancelled">Đã hủy</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Orders Table Card -->
             <div class="card">
-                <div class="card-body text-center py-5">
-                    <p class="text-muted">Trang quản lý đơn hàng sẽ được triển khai ở đây.</p>
+                <div class="card-header bg-white py-3">
+                    <h5 class="mb-0">Đơn Hàng Có Sản Phẩm Của Tôi</h5>
+                </div>
+                <div class="card-body p-0">
+                    <!-- Loading Spinner -->
+                    <div id="ordersLoading" class="text-center py-5">
+                        <div class="spinner-border text-success" role="status">
+                            <span class="visually-hidden">Đang tải...</span>
+                        </div>
+                    </div>
+
+                    <!-- Orders Table -->
+                    <div class="table-responsive d-none" id="ordersTableContainer">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th style="width: 60px;">#</th>
+                                    <th style="width: 100px;">Mã đơn</th>
+                                    <th style="width: 120px;">Khách hàng</th>
+                                    <th style="width: 100px;">Tổng tiền</th>
+                                    <th style="width: 120px;">Trạng thái</th>
+                                    <th style="width: 120px;">Ngày tạo</th>
+                                    <th style="width: 150px;" class="text-center">Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ordersTableBody">
+                                <!-- Orders will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Empty State -->
+                    <div id="ordersEmptyState" class="text-center py-5 d-none">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="text-muted mb-3">
+                            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                            <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                        </svg>
+                        <p class="text-muted mb-3">Chưa có đơn hàng nào</p>
+                    </div>
+                </div>
+
+                <!-- Pagination -->
+                <div class="card-footer d-none" id="ordersPagination">
+                    <nav aria-label="Orders pagination">
+                        <ul class="pagination pagination-sm justify-content-center mb-0" id="ordersPaginationList">
+                            <!-- Pagination items will be loaded here -->
+                        </ul>
+                    </nav>
                 </div>
             </div>
         </div>
 
         <!-- Reviews Tab -->
         <div class="container-fluid p-4 d-none" id="reviews-tab">
+            <!-- Reviews Header -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 class="mb-0">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-2">
+                        <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"></polygon>
+                    </svg>
+                    Đánh Giá Sản Phẩm
+                </h4>
+            </div>
+
+            <!-- Reviews Filters -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="11" cy="11" r="8"></circle>
+                                        <path d="m21 21-4.35-4.35"></path>
+                                    </svg>
+                                </span>
+                                <input type="text" class="form-control border-start-0" id="sellerReviewSearchInput" placeholder="Tìm kiếm đánh giá...">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <select class="form-select" id="sellerReviewRatingFilter" style="min-width: 150px;">
+                                <option value="">Tất cả rating</option>
+                                <option value="5">5 sao</option>
+                                <option value="4">4 sao</option>
+                                <option value="3">3 sao</option>
+                                <option value="2">2 sao</option>
+                                <option value="1">1 sao</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <select class="form-select" id="sellerReviewProductFilter" style="min-width: 150px;">
+                                <option value="">Tất cả sản phẩm</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn btn-outline-secondary w-100" onclick="loadSellerReviews()">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-1">
+                                    <path d="M3 12a9 9 0 0 1 9-9 9 9 0 0 1 9 9 9 9 0 0 1-9 9 9 9 0 0 1-9-9"></path>
+                                    <path d="M21 12a9 9 0 0 1-9 9 9 9 0 0 1-9-9 9 9 0 0 1 9-9 9 9 0 0 1 9 9"></path>
+                                </svg>
+                                Làm mới
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reviews Table -->
             <div class="card">
-                <div class="card-body text-center py-5">
-                    <p class="text-muted">Trang quản lý đánh giá sẽ được triển khai ở đây.</p>
+                <div class="card-body p-0">
+                    <!-- Loading Spinner -->
+                    <div id="sellerReviewsLoading" class="text-center py-5 d-none">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Đang tải...</span>
+                        </div>
+                        <p class="mt-2 text-muted">Đang tải danh sách đánh giá...</p>
+                    </div>
+
+                    <!-- Reviews Table Container -->
+                    <div id="sellerReviewsTableContainer" class="d-none">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th style="width: 5%">#</th>
+                                        <th style="width: 20%">Sản phẩm</th>
+                                        <th style="width: 15%">Người đánh giá</th>
+                                        <th style="width: 10%">Rating</th>
+                                        <th style="width: 30%">Nội dung</th>
+                                        <th style="width: 10%">Ngày tạo</th>
+                                        <th style="width: 10%" class="text-center">Thao tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="sellerReviewsTableBody">
+                                    <!-- Reviews will be loaded here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Empty State -->
+                    <div id="sellerReviewsEmptyState" class="text-center py-5 d-none">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" class="text-muted mb-3">
+                            <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"></polygon>
+                        </svg>
+                        <h5 class="text-muted">Chưa có đánh giá nào</h5>
+                        <p class="text-muted">Chưa có đánh giá nào cho sản phẩm của bạn.</p>
+                    </div>
+                </div>
+
+                <!-- Pagination -->
+                <div id="sellerReviewsPagination" class="card-footer d-none">
+                    <nav aria-label="Reviews pagination">
+                        <ul id="sellerReviewsPaginationList" class="pagination pagination-sm justify-content-center mb-0">
+                            <!-- Pagination will be generated here -->
+                        </ul>
+                    </nav>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Add/Edit Product Modal -->
+    <div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title" id="productModalLabel">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-2">
+                            <path d="M20 7H4a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2zM4 7v11a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7"></path>
+                        </svg>
+                        <span id="productModalTitle">Thêm Sản Phẩm Mới</span>
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="productForm">
+                        <input type="hidden" id="productId" name="productId">
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="productName" class="form-label">Tên sản phẩm <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="productName" name="name" required>
+                                <div class="invalid-feedback">Vui lòng nhập tên sản phẩm</div>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label for="productCategory" class="form-label">Danh mục <span class="text-danger">*</span></label>
+                                <select class="form-select" id="productCategory" name="category_id" required>
+                                    <option value="">Chọn danh mục...</option>
+                                    <option value="1">Áo</option>
+                                    <option value="2">Quần</option>
+                                    <option value="3">Phụ kiện</option>
+                                    <option value="4">Giày dép</option>
+                                    <option value="5">Túi xách</option>
+                                </select>
+                                <div class="invalid-feedback">Vui lòng chọn danh mục</div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="productDescription" class="form-label">Mô tả</label>
+                            <textarea class="form-control" id="productDescription" name="description" rows="3" placeholder="Mô tả chi tiết về sản phẩm..."></textarea>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="productPrice" class="form-label">Giá gốc (₫) <span class="text-danger">*</span></label>
+                                <input type="number" class="form-control" id="productPrice" name="price" min="0" step="1000" required>
+                                <div class="invalid-feedback">Vui lòng nhập giá sản phẩm</div>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label for="productDiscountPrice" class="form-label">Giá khuyến mãi (₫)</label>
+                                <input type="number" class="form-control" id="productDiscountPrice" name="discount_price" min="0" step="1000">
+                                <small class="text-muted">Để trống nếu không có khuyến mãi</small>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <label for="productQuantity" class="form-label">Số lượng <span class="text-danger">*</span></label>
+                                <input type="number" class="form-control" id="productQuantity" name="quantity" min="0" required>
+                                <div class="invalid-feedback">Vui lòng nhập số lượng</div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="productImageUrl" class="form-label">URL hình ảnh <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="productImageUrl" name="image_url" placeholder="https://example.com/image.jpg" required>
+                            <div class="invalid-feedback">Vui lòng nhập URL hình ảnh</div>
+                            <small class="text-muted">Nhập đường dẫn URL đến hình ảnh sản phẩm</small>
+                        </div>
+
+                        <div class="mb-3" id="productImagePreviewContainer" style="display: none;">
+                            <label class="form-label">Xem trước hình ảnh</label>
+                            <div class="border rounded p-2 text-center">
+                                <img id="productImagePreview" src="" alt="Preview" style="max-width: 200px; max-height: 200px;" class="img-fluid">
+                            </div>
+                        </div>
+
+                        <div class="mb-3" id="editProductStatus" style="display: none;">
+                            <label for="productStatus" class="form-label">Trạng thái</label>
+                            <select class="form-select" id="productStatus" name="status">
+                                <option value="available">Còn hàng</option>
+                                <option value="out_of_stock">Hết hàng</option>
+                                <option value="discontinued">Ngừng kinh doanh</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-success" onclick="saveProduct()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-1">
+                            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                            <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                            <polyline points="7 3 7 8 15 8"></polyline>
+                        </svg>
+                        Lưu
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirm Modal -->
+    <div class="modal fade" id="deleteProductModal" tabindex="-1" aria-labelledby="deleteProductModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="deleteProductModalLabel">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-2">
+                            <polyline points="3 6 5 6 21 6"></polyline>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                        </svg>
+                        Xác nhận xóa
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Bạn có chắc chắn muốn xóa sản phẩm <strong id="deleteProductName"></strong> không?</p>
+                    <p class="text-danger mb-0">
+                        <small>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-1">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="8" x2="12" y2="12"></line>
+                                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                            </svg>
+                            Hành động này không thể hoàn tác!
+                        </small>
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-danger" onclick="confirmDeleteProduct()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-1">
+                            <polyline points="3 6 5 6 21 6"></polyline>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                        </svg>
+                        Xóa
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Detail Modal -->
+    <div class="modal fade" id="orderDetailModal" tabindex="-1" aria-labelledby="orderDetailModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-info text-white">
+                    <h5 class="modal-title" id="orderDetailModalLabel">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-2">
+                            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                            <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                        </svg>
+                        Chi Tiết Đơn Hàng
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Order Info -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h6 class="fw-semibold">Thông tin đơn hàng</h6>
+                            <p class="mb-1"><strong>Mã đơn:</strong> <span id="orderDetailId">-</span></p>
+                            <p class="mb-1"><strong>Trạng thái:</strong> <span id="orderDetailStatus">-</span></p>
+                            <p class="mb-1"><strong>Ngày tạo:</strong> <span id="orderDetailDate">-</span></p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="fw-semibold">Thông tin khách hàng</h6>
+                            <p class="mb-1"><strong>Tên:</strong> <span id="orderDetailCustomer">-</span></p>
+                            <p class="mb-1"><strong>Email:</strong> <span id="orderDetailEmail">-</span></p>
+                            <p class="mb-1"><strong>SĐT:</strong> <span id="orderDetailPhone">-</span></p>
+                        </div>
+                    </div>
+
+                    <!-- Order Items -->
+                    <h6 class="fw-semibold mb-3">Sản phẩm trong đơn hàng</h6>
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Sản phẩm</th>
+                                    <th>Số lượng</th>
+                                    <th>Giá</th>
+                                    <th>Thành tiền</th>
+                                </tr>
+                            </thead>
+                            <tbody id="orderItemsTableBody">
+                                <!-- Order items will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Order Total -->
+                    <div class="row mt-3">
+                        <div class="col-md-6"></div>
+                        <div class="col-md-6">
+                            <div class="d-flex justify-content-between">
+                                <strong>Tổng cộng:</strong>
+                                <strong id="orderDetailTotal">-</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <div id="orderStatusActions">
+                        <!-- Status update buttons will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Update Order Status Modal -->
+    <div class="modal fade" id="updateOrderStatusModal" tabindex="-1" aria-labelledby="updateOrderStatusModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-warning text-dark">
+                    <h5 class="modal-title" id="updateOrderStatusModalLabel">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-2">
+                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                        </svg>
+                        Cập Nhật Trạng Thái
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Cập nhật trạng thái đơn hàng <strong id="updateOrderId"></strong></p>
+                    <div class="mb-3">
+                        <label for="newOrderStatus" class="form-label">Trạng thái mới</label>
+                        <select class="form-select" id="newOrderStatus">
+                            <option value="pending">Chờ xử lý</option>
+                            <option value="processing">Đang xử lý</option>
+                            <option value="shipped">Đã gửi</option>
+                            <option value="delivered">Đã giao</option>
+                            <option value="cancelled">Đã hủy</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-warning" onclick="confirmUpdateOrderStatus()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-1">
+                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                        </svg>
+                        Cập Nhật
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container position-fixed top-0 end-0 p-3" id="toastContainer"></div>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -336,6 +827,63 @@
         protectPage('seller');
     </script>
     
+    <!-- Review Detail Modal -->
+    <div class="modal fade" id="sellerReviewDetailModal" tabindex="-1" aria-labelledby="sellerReviewDetailModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="sellerReviewDetailModalLabel">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-2">
+                            <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"></polygon>
+                        </svg>
+                        Chi Tiết Đánh Giá
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6 class="text-muted mb-2">Sản phẩm</h6>
+                            <div class="mb-3">
+                                <div id="sellerReviewProductName" class="fw-semibold"></div>
+                                <small id="sellerReviewProductPrice" class="text-muted"></small>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="text-muted mb-2">Người đánh giá</h6>
+                            <div class="d-flex align-items-center mb-3">
+                                <img id="sellerReviewUserAvatar" src="" alt="User" class="rounded-circle me-3" style="width: 50px; height: 50px; object-fit: cover;">
+                                <div>
+                                    <div id="sellerReviewUserName" class="fw-semibold"></div>
+                                    <small id="sellerReviewUserEmail" class="text-muted"></small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6 class="text-muted mb-2">Rating</h6>
+                            <div id="sellerReviewRating" class="mb-3"></div>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="text-muted mb-2">Ngày tạo</h6>
+                            <div id="sellerReviewCreatedAt" class="mb-3"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <h6 class="text-muted mb-2">Nội dung đánh giá</h6>
+                        <div id="sellerReviewComment" class="border rounded p-3 bg-light"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Seller JavaScript -->
     <script src="../../js/pages/seller/seller-dashboard.js"></script>
 </body>
