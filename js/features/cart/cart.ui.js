@@ -162,7 +162,6 @@ class CartUI {
                 const buyNowColor = sessionStorage.getItem('buyNowColor') || '';
                 
                 if (buyNowProductId) {
-                    console.log('🎯 Looking for buy now product in cart UI:', { buyNowProductId, buyNowSize, buyNowColor });
                     
                     // Find item with matching product_id and optional size/color
                     targetItem = cartItems.find(item => {
@@ -193,7 +192,6 @@ class CartUI {
                     const checkbox = document.querySelector(`input[data-item-id="${targetItem.id}"]`);
                     if (checkbox) {
                         checkbox.checked = true;
-                        console.log('✅ Auto-selected cart item:', targetItem.id);
                     }
                     
                     // Update select all checkbox state
@@ -239,7 +237,21 @@ class CartUI {
         if (imageUrl && !imageUrl.startsWith('http') && !imageUrl.startsWith('assets')) {
             // Remove any leading path separators and construct proper path
             const filename = imageUrl.replace(/^.*[\\\/]/, ''); // Get just filename
-            imageUrl = `assets/images/products/${filename}`;
+            if (filename === 'demo.png') {
+                // Always use correct path for demo.png based on current page context
+                if (window.location.pathname.includes('all-products.html')) {
+                    imageUrl = '../../assets/images/products/demo.png';
+                } else {
+                    imageUrl = 'assets/images/products/demo.png';
+                }
+            } else {
+                imageUrl = `assets/images/products/${filename}`;
+            }
+        }
+        
+        // Clean up any double path issues
+        if (imageUrl.includes('/pages/products/')) {
+            imageUrl = imageUrl.replace('/pages/products/', '');
         }
 
         // Check if we have a valid discount
@@ -261,7 +273,7 @@ class CartUI {
                              alt="${item.product_name || item.name}" 
                              class="rounded" 
                              style="width: 64px; height: 64px; object-fit: cover;"
-                             onerror="this.src='assets/images/products/demo.png'">
+                             onerror="this.src=window.location.pathname.includes('all-products.html') ? '../../assets/images/products/demo.png' : 'assets/images/products/demo.png'">
                     </div>
                     <div class="cart-item-details flex-grow-1" style="padding-right: 30px;">
                         <h6 class="mb-1 fw-semibold">${item.product_name || item.name}</h6>
@@ -469,7 +481,7 @@ class CartUI {
                 await cartService.updateCartItem(itemId, newQuantity);
             }
         } catch (error) {
-            console.error('Error updating quantity:', error);
+            // Silent fail
         }
     }
 
@@ -482,7 +494,7 @@ class CartUI {
                 await cartService.removeFromCart(itemId);
             }
         } catch (error) {
-            console.error('Error removing item:', error);
+            // Silent fail
         }
     }
 
@@ -496,7 +508,7 @@ class CartUI {
                     await cartService.clearCart();
                 }
             } catch (error) {
-                console.error('Error clearing cart:', error);
+                // Silent fail
             }
         }
     }
@@ -590,7 +602,7 @@ async function addToCart(productId, quantity = 1, productData = null) {
             }
         }
     } catch (error) {
-        console.error('Error adding to cart:', error);
+        // Silent fail
     }
 }
 

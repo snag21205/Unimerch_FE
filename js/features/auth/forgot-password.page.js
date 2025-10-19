@@ -46,7 +46,6 @@ document.getElementById('forgotPasswordForm').addEventListener('submit', async f
         }
         
     } catch (error) {
-        console.error('Forgot password error:', error);
         
         // Handle specific error messages
         let errorMessage = error.message;

@@ -39,7 +39,6 @@ class OrderService {
                 throw new Error(response.message || 'Failed to fetch orders');
             }
         } catch (error) {
-            console.error('Failed to fetch orders:', error);
             
             // Return mock data for development/fallback
             const mockData = this.getMockOrders();
@@ -62,7 +61,6 @@ class OrderService {
                 throw new Error(response.message || 'Failed to fetch order details');
             }
         } catch (error) {
-            console.error('Failed to fetch order details:', error);
             
             // Return mock data for development
             return this.getMockOrderDetail(orderId);
@@ -74,7 +72,6 @@ class OrderService {
      */
     async createOrder(orderData) {
         try {
-            console.log('📦 Creating order with data:', orderData);
             
             // Validate required fields before calling API
             if (!orderData.shipping_address || orderData.shipping_address.trim() === '') {
@@ -95,13 +92,12 @@ class OrderService {
             
             if (response.success && response.data) {
                 // Refresh orders list
-                this.getUserOrders().catch(err => console.warn('Failed to refresh orders:', err));
+                this.getUserOrders().catch(err => {});
                 return response.data;
             } else {
                 throw new Error(response.message || 'Không thể tạo đơn hàng');
             }
         } catch (error) {
-            console.error('❌ Failed to create order:', error);
             
             // If it's a validation error, throw it directly
             if (error.message.includes('hợp lệ') || error.message.includes('bắt buộc')) {
@@ -141,7 +137,6 @@ class OrderService {
             from_cart: true
         };
 
-        console.log('🛒 Creating order from cart with data:', JSON.stringify(orderData, null, 2));
         return await this.createOrder(orderData);
     }
 
@@ -186,7 +181,6 @@ class OrderService {
             payment_method: paymentMethod
         };
 
-        console.log('🛒 Creating direct order with data:', JSON.stringify(orderData, null, 2));
         return await this.createOrder(orderData);
     }
 
@@ -205,7 +199,6 @@ class OrderService {
                 throw new Error(response.message || 'Failed to cancel order');
             }
         } catch (error) {
-            console.error('Failed to cancel order:', error);
             throw error;
         }
     }
@@ -216,13 +209,11 @@ class OrderService {
     async updateOrderStatus(orderId, status) {
         try {
             // This would call admin/seller API in real implementation
-            console.log(`Updating order ${orderId} status to ${status}`);
             
             // For now, just refresh the orders
             await this.getUserOrders();
             return { success: true };
         } catch (error) {
-            console.error('Failed to update order status:', error);
             throw error;
         }
     }

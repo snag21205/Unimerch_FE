@@ -69,7 +69,7 @@ function initializeSellerInfo() {
             document.getElementById('userInitial').textContent = initial;
         }
     } catch (error) {
-        console.error('Error initializing seller info:', error);
+('Error initializing seller info:', error);
     }
 }
 
@@ -188,7 +188,7 @@ async function handleLogout() {
         localStorage.clear();
         window.location.href = '../auth/login.html';
     } catch (error) {
-        console.error('Logout error:', error);
+('Logout error:', error);
         localStorage.clear();
         window.location.href = '../auth/login.html';
     }
@@ -277,7 +277,7 @@ async function loadDashboard() {
         
         hideLoading();
     } catch (error) {
-        console.error('Error loading dashboard:', error);
+('Error loading dashboard:', error);
         showToast('Không thể tải dữ liệu dashboard', 'error');
         hideLoading();
     }
@@ -327,7 +327,7 @@ async function loadSellerStats() {
         document.getElementById('card_avg_rating').textContent = `⭐ ${avgRating.toFixed(1)}`;
         
     } catch (error) {
-        console.error('Error loading seller stats:', error);
+('Error loading seller stats:', error);
         // Set default values
         document.getElementById('card_total_revenue').textContent = '0 ₫';
         document.getElementById('card_total_products').textContent = '0';
@@ -363,7 +363,7 @@ async function loadRevenueChart() {
         
         updateRevenueChart(labels, data);
     } catch (error) {
-        console.error('Error loading revenue chart:', error);
+('Error loading revenue chart:', error);
         // Fallback to sample data
         const labels = [];
         const data = [];
@@ -468,7 +468,7 @@ async function loadTopSellingProducts() {
         `).join('');
         
     } catch (error) {
-        console.error('Error loading top products:', error);
+('Error loading top products:', error);
         container.innerHTML = '<div class="list-group-item border-0 py-3 text-center text-danger">Không thể tải dữ liệu</div>';
     }
 }
@@ -490,7 +490,7 @@ async function loadRecentOrders() {
         `;
         
     } catch (error) {
-        console.error('Error loading recent orders:', error);
+('Error loading recent orders:', error);
         tbody.innerHTML = `
             <tr>
                 <td colspan="7" class="text-center text-danger">
@@ -532,7 +532,7 @@ async function loadMyProducts() {
         }
         
     } catch (error) {
-        console.error('Error loading products:', error);
+('Error loading products:', error);
         loading.classList.add('d-none');
         showToast('Không thể tải danh sách sản phẩm', 'error');
     }
@@ -736,7 +736,7 @@ window.showEditProductModal = async function(productId) {
         modal.show();
         
     } catch (error) {
-        console.error('Error showing edit modal:', error);
+('Error showing edit modal:', error);
         showToast('Không thể tải thông tin sản phẩm', 'error');
     }
 };
@@ -797,7 +797,7 @@ window.saveProduct = async function() {
         saveButton.innerHTML = originalText;
         
     } catch (error) {
-        console.error('Error saving product:', error);
+('Error saving product:', error);
         showToast(error.message || 'Không thể lưu sản phẩm', 'error');
         
         // Restore button
@@ -844,7 +844,7 @@ window.confirmDeleteProduct = async function() {
         deleteButton.innerHTML = originalText;
         
     } catch (error) {
-        console.error('Error deleting product:', error);
+('Error deleting product:', error);
         showToast(error.message || 'Không thể xóa sản phẩm', 'error');
         
         // Restore button
@@ -909,7 +909,7 @@ async function loadMyOrders() {
         }
         
     } catch (error) {
-        console.error('Error loading orders:', error);
+('Error loading orders:', error);
         loading.classList.add('d-none');
         showToast('Không thể tải danh sách đơn hàng', 'error');
     }
@@ -1087,7 +1087,7 @@ window.showOrderDetail = async function(orderId) {
         modal.show();
         
     } catch (error) {
-        console.error('Error loading order details:', error);
+('Error loading order details:', error);
         showToast('Không thể tải chi tiết đơn hàng', 'error');
     }
 };
@@ -1138,7 +1138,7 @@ window.confirmUpdateOrderStatus = async function() {
         updateButton.innerHTML = originalText;
         
     } catch (error) {
-        console.error('Error updating order status:', error);
+('Error updating order status:', error);
         showToast(error.message || 'Không thể cập nhật trạng thái đơn hàng', 'error');
         
         // Restore button
@@ -1181,7 +1181,7 @@ async function enrichOrderDetailWithUserInfo(order) {
             }
         }
     } catch (error) {
-        console.warn(`Failed to get user info for order detail ${order.id}:`, error);
+(`Failed to get user info for order detail ${order.id}:`, error);
     }
 }
 
@@ -1316,7 +1316,7 @@ async function loadSellerReviews() {
         }
         
     } catch (error) {
-        console.error('Error loading seller reviews:', error);
+('Error loading seller reviews:', error);
         loading.classList.add('d-none');
         showToast('Không thể tải danh sách đánh giá', 'error');
     }
@@ -1474,7 +1474,7 @@ window.showSellerReviewDetail = async function(reviewId) {
         modal.show();
         
     } catch (error) {
-        console.error('Error loading seller review detail:', error);
+('Error loading seller review detail:', error);
         showToast('Không thể tải chi tiết đánh giá', 'error');
     }
 };
@@ -1523,7 +1523,7 @@ async function loadSellerProductsForReviewFilter() {
             });
         }
     } catch (error) {
-        console.error('Error loading seller products for filter:', error);
+('Error loading seller products for filter:', error);
     }
 }
 

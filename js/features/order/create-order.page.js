@@ -43,7 +43,6 @@ async function loadOrderData() {
             await loadFromCart(isBuyNow);
         } else {
             // Fallback - redirect to cart if not from cart
-            console.log('Not from cart, redirecting to cart page');
             window.location.href = 'cart.html';
             return;
         }
@@ -53,7 +52,6 @@ async function loadOrderData() {
         calculateTotal();
 
     } catch (error) {
-        console.error('❌ Failed to load order data:', error);
         showErrorState(error.message);
     }
 }
@@ -79,7 +77,6 @@ async function loadFromCart(isBuyNow = false) {
     try {
         if (window.cartService) {
             const cartData = cartService.getCart();
-            console.log('🛒 Local cart data:', JSON.stringify(cartData, null, 2));
             
             if (!cartData.items || cartData.items.length === 0) {
                 throw new Error('Giỏ hàng của bạn đang trống');
@@ -87,7 +84,6 @@ async function loadFromCart(isBuyNow = false) {
 
             // Get selected items from sessionStorage (if coming from cart with selections)
             const selectedItemIds = JSON.parse(sessionStorage.getItem('selectedCartItems') || '[]');
-            console.log('🎯 Selected item IDs:', selectedItemIds);
 
             let itemsToOrder;
             if (selectedItemIds.length > 0) {
@@ -101,7 +97,6 @@ async function loadFromCart(isBuyNow = false) {
                 const buyNowSize = sessionStorage.getItem('buyNowSize') || '';
                 const buyNowColor = sessionStorage.getItem('buyNowColor') || '';
                 
-                console.log('🎯 Looking for buy now product:', { buyNowProductId, buyNowSize, buyNowColor });
                 
                 // Find the matching item in cart
                 let targetItem = null;
@@ -127,13 +122,11 @@ async function loadFromCart(isBuyNow = false) {
                 // If still not found, use the last item as fallback
                 if (!targetItem) {
                     targetItem = cartData.items[cartData.items.length - 1];
-                    console.warn('⚠️ Could not find exact buy now product, using last item');
                 }
                 
                 if (targetItem) {
                     itemsToOrder = [targetItem];
                     orderData.selectedItemIds = [targetItem.id];
-                    console.log('✅ Auto-selected buy now item:', targetItem);
                 } else {
                     throw new Error('Không tìm thấy sản phẩm vừa thêm vào giỏ hàng');
                 }
@@ -155,9 +148,7 @@ async function loadFromCart(isBuyNow = false) {
             if (window.apiService && window.apiService.isAuthenticated()) {
                 try {
                     const serverCart = await apiService.getCart();
-                    console.log('🛒 Server cart data:', JSON.stringify(serverCart, null, 2));
                 } catch (error) {
-                    console.warn('⚠️ Could not fetch server cart:', error);
                 }
             }
 
@@ -244,7 +235,6 @@ async function loadUserProfile() {
             }
         }
     } catch (error) {
-        console.warn('Could not load user profile:', error);
     }
 }
 
@@ -360,7 +350,6 @@ async function handleCreateOrder() {
             paymentMethod: document.querySelector('input[name="paymentMethod"]:checked').value
         };
 
-        console.log('🔍 Form data collected:', JSON.stringify(formData, null, 2));
 
         let tempRemovedItems = []; // Track temporarily removed items
 
@@ -387,7 +376,6 @@ async function handleCreateOrder() {
                             color: item.color
                         });
                     } catch (error) {
-                        console.warn('Failed to remove item temporarily:', error);
                     }
                 }
             }
@@ -402,7 +390,7 @@ async function handleCreateOrder() {
             if (orderData.fromCart) {
                 // From cart - use from_cart approach (cart now contains only selected items)
                 orderPayload.from_cart = true;
-                console.log('� Using from_cart approach');
+('� Using from_cart approach');
             } else {
                 // From product detail - use direct order
                 orderPayload.items = orderData.items.map(item => {
@@ -422,7 +410,6 @@ async function handleCreateOrder() {
                 });
             }
 
-            console.log('🔍 Order payload prepared:', JSON.stringify(orderPayload, null, 2));
 
             // Create order
             let response;
@@ -467,7 +454,6 @@ async function handleCreateOrder() {
                     try {
                         await apiService.addToCart(item.product_id, item.quantity);
                     } catch (error) {
-                        console.warn('Failed to restore item:', error);
                     }
                 }
                 // Sync cart after restoration
@@ -476,7 +462,6 @@ async function handleCreateOrder() {
         }
 
     } catch (error) {
-        console.error('❌ Failed to create order:', error);
         UiUtils.showToast(error.message || 'Có lỗi xảy ra khi tạo đơn hàng', 'error');
 
         // Restore button

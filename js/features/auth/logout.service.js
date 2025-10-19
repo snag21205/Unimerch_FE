@@ -15,12 +15,11 @@ async function logout() {
             localStorage.removeItem('authToken');
             alert('Đăng xuất thành công!');
         }
-    } catch (error) {
-        console.warn('Logout failed:', error);
-        // Still clear local data even if API fails
-        localStorage.removeItem('authToken');
-        alert('Đăng xuất thành công!');
-    }
+        } catch (error) {
+            // Still clear local data even if API fails
+            localStorage.removeItem('authToken');
+            alert('Đăng xuất thành công!');
+        }
 
     // Clear all local data (apiService.logout() already removes token)
     localStorage.removeItem('isLoggedIn');

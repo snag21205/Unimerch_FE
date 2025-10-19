@@ -46,7 +46,6 @@ async function loadOrderDetail(orderId) {
         showLoadingState();
 
         if (window.orderService) {
-            console.log('🔍 Loading order detail from API:', orderId);
             const orderData = await orderService.getOrderDetail(orderId);
             
             if (orderData) {
@@ -61,7 +60,6 @@ async function loadOrderDetail(orderId) {
         }
         
     } catch (error) {
-        console.error('❌ Failed to load order detail:', error);
         hideLoadingState();
         showErrorState(error.message || 'Có lỗi xảy ra khi tải chi tiết đơn hàng');
     }
@@ -312,7 +310,6 @@ async function cancelOrder(orderId) {
                 alert('Chức năng hủy đơn hàng tạm thời không khả dụng');
             }
         } catch (error) {
-            console.error('Failed to cancel order:', error);
             UiUtils.showToast('Có lỗi xảy ra khi hủy đơn hàng', 'error');
         }
     }
