@@ -67,7 +67,7 @@ class CartService {
                 this.cart = JSON.parse(storedCart);
             }
         } catch (error) {
-            console.error('Error loading cart from localStorage:', error);
+            // Silent fail
         }
     }
 
@@ -78,7 +78,7 @@ class CartService {
         try {
             localStorage.setItem('unimerch-cart', JSON.stringify(this.cart));
         } catch (error) {
-            console.error('Error saving cart to localStorage:', error);
+            // Silent fail
         }
     }
 
@@ -99,7 +99,6 @@ class CartService {
                 this.notifyListeners();
             }
         } catch (error) {
-            console.error('Error syncing cart with server:', error);
             // Continue with local cart if server sync fails
         }
     }
@@ -124,7 +123,6 @@ class CartService {
                 this.showToast('Đã thêm sản phẩm vào giỏ hàng', 'success');
             }
         } catch (error) {
-            console.error('Error adding to cart:', error);
             this.showToast('Lỗi khi thêm vào giỏ hàng', 'error');
             throw error;
         }
@@ -172,7 +170,6 @@ class CartService {
                 this.showToast('Đã cập nhật số lượng', 'success');
             }
         } catch (error) {
-            console.error('Error updating cart item:', error);
             this.showToast('Lỗi khi cập nhật giỏ hàng', 'error');
             throw error;
         }
@@ -212,7 +209,6 @@ class CartService {
                 this.showToast('Đã xóa sản phẩm khỏi giỏ hàng', 'success');
             }
         } catch (error) {
-            console.error('Error removing from cart:', error);
             this.showToast('Lỗi khi xóa khỏi giỏ hàng', 'error');
             throw error;
         }
@@ -228,9 +224,9 @@ class CartService {
                 for (const itemId of itemIds) {
                     try {
                         await apiService.removeFromCart(itemId);
-                    } catch (error) {
-                        console.warn(`Failed to remove item ${itemId} from server:`, error);
-                    }
+                        } catch (error) {
+                            // Silent fail for individual items
+                        }
                 }
                 // Sync with server after all removals
                 await this.syncWithServer();
@@ -244,7 +240,6 @@ class CartService {
                 this.showToast(`Đã xóa ${itemIds.length} sản phẩm khỏi giỏ hàng`, 'success');
             }
         } catch (error) {
-            console.error('Error removing multiple items from cart:', error);
             this.showToast('Lỗi khi xóa sản phẩm khỏi giỏ hàng', 'error');
             throw error;
         }
@@ -281,7 +276,6 @@ class CartService {
                 this.showToast('Đã xóa toàn bộ giỏ hàng', 'success');
             }
         } catch (error) {
-            console.error('Error clearing cart:', error);
             this.showToast('Lỗi khi xóa giỏ hàng', 'error');
             throw error;
         }
@@ -355,7 +349,7 @@ class CartService {
         } else if (window.showToast) {
             window.showToast(message, type);
         } else {
-            console.log(`${type.toUpperCase()}: ${message}`);
+(`${type.toUpperCase()}: ${message}`);
         }
     }
 
@@ -369,9 +363,9 @@ class CartService {
                 for (const item of this.cart.items) {
                     await apiService.addToCart(item.product_id, item.quantity);
                 }
-            } catch (error) {
-                console.error('Error merging local cart with server:', error);
-            }
+                } catch (error) {
+                    // Silent fail
+                }
         }
         
         // Sync with server cart

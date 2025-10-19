@@ -177,17 +177,15 @@ class ApiService {
                 throw new Error('Không tìm thấy dữ liệu yêu cầu.');
             }
             
-            if (response.status === 400) {
-                console.error('🔍 400 Bad Request details:', JSON.stringify(data, null, 2));
-                const errorMessage = data?.errors ? data.errors.join(', ') : data?.message;
-                throw new Error(errorMessage || 'Dữ liệu không hợp lệ.');
-            }
-            
-            if (response.status === 422) {
-                console.error('🔍 422 Validation Error details:', JSON.stringify(data, null, 2));
-                const errorMessage = data?.errors ? data.errors.join(', ') : data?.message;
-                throw new Error(errorMessage || 'Dữ liệu không hợp lệ.');
-            }
+        if (response.status === 400) {
+            const errorMessage = data?.errors ? data.errors.join(', ') : data?.message;
+            throw new Error(errorMessage || 'Dữ liệu không hợp lệ.');
+        }
+        
+        if (response.status === 422) {
+            const errorMessage = data?.errors ? data.errors.join(', ') : data?.message;
+            throw new Error(errorMessage || 'Dữ liệu không hợp lệ.');
+        }
             
             if (response.status >= 500) {
                 throw new Error('Lỗi server. Vui lòng thử lại sau.');
@@ -223,13 +221,9 @@ class ApiService {
         }
 
         try {
-            console.log('🌐 Making request to:', url);
-            console.log('🌐 Request config:', JSON.stringify(config, null, 2));
             const response = await fetch(url, config);
-            console.log('🌐 Response status:', response.status);
             return await this.handleResponse(response);
         } catch (error) {
-            console.error('API Request failed:', error);
             throw error;
         }
     }
@@ -278,7 +272,6 @@ class ApiService {
             // Return the actual server response
             return response;
         } catch (error) {
-            console.warn('Logout API call failed:', error);
             // Still remove token locally even if API fails
             this.removeToken();
             
@@ -428,9 +421,6 @@ class ApiService {
     }
 
     async createOrder(orderData) {
-        console.log('🔍 API createOrder called with data:', JSON.stringify(orderData, null, 2));
-        console.log('🔍 Is authenticated:', this.isAuthenticated());
-        console.log('🔍 Token exists:', !!this.getToken());
         return this.request(this.endpoints.orders.create, {
             method: 'POST',
             body: orderData,
@@ -602,11 +592,9 @@ class ApiService {
             const base64Url = token.split('.')[1];
             const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
             const payload = JSON.parse(atob(base64));
-            console.log('Token payload:', payload);
             
             return payload.id;
         } catch (error) {
-            console.error('Error getting current user ID:', error);
             return null;
         }
     }

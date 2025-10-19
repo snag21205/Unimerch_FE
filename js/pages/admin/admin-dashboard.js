@@ -81,7 +81,6 @@ function initializeAdminInfo() {
             document.getElementById('adminEmail').textContent = adminEmail;
         }
     } catch (error) {
-        console.error('Error initializing admin info:', error);
     }
 }
 
@@ -221,7 +220,7 @@ async function handleLogout() {
         localStorage.clear();
         window.location.href = '../auth/login.html';
     } catch (error) {
-        console.error('Logout error:', error);
+('Logout error:', error);
         localStorage.clear();
         window.location.href = '../auth/login.html';
     }
@@ -291,7 +290,7 @@ async function loadDashboardFromAPI() {
         showToast('Đã tải dữ liệu dashboard từ API', 'success');
 
     } catch (err) {
-        console.error('Dashboard API Error:', err);
+('Dashboard API Error:', err);
         if (err.message && (err.message.includes('401') || err.message.includes('403'))) {
             showToast('Bạn cần đăng nhập với tài khoản Admin để xem dashboard.', 'error');
         } else {
@@ -403,7 +402,7 @@ async function loadRecentActivity() {
             `).join('');
         }
     } catch (error) {
-        console.error('Error loading recent activity:', error);
+('Error loading recent activity:', error);
     }
 }
 
@@ -437,7 +436,7 @@ async function loadFeaturedProducts() {
             `).join('');
         }
     } catch (error) {
-        console.error('Error loading featured products:', error);
+('Error loading featured products:', error);
     }
 }
 
@@ -473,7 +472,7 @@ async function loadTopProducts() {
             `).join('');
         }
     } catch (error) {
-        console.error('Error loading top products:', error);
+('Error loading top products:', error);
         const tbody = document.getElementById('topProductsTable');
         if (tbody) {
             tbody.innerHTML = '<tr><td colspan="3" class="text-center text-danger">Không thể tải dữ liệu sản phẩm</td></tr>';
@@ -511,7 +510,7 @@ async function loadRecentOrders() {
             '</div>';
         }
     } catch (error) {
-        console.error('Error loading recent orders:', error);
+('Error loading recent orders:', error);
         const container = document.getElementById('recentOrdersList');
         if (container) {
             container.innerHTML = '<div class="list-group list-group-flush"><div class="list-group-item border-0 py-3 text-center text-danger">Không thể tải dữ liệu đơn hàng</div></div>';
@@ -674,7 +673,7 @@ async function loadAdminProducts() {
         }
         
     } catch (error) {
-        console.error('Error loading products:', error);
+('Error loading products:', error);
         loading.classList.add('d-none');
         showToast('Không thể tải danh sách sản phẩm', 'error');
     }
@@ -874,7 +873,7 @@ window.showAdminEditProductModal = async function(productId) {
         modal.show();
         
     } catch (error) {
-        console.error('Error showing edit modal:', error);
+('Error showing edit modal:', error);
         showToast('Không thể tải thông tin sản phẩm', 'error');
     }
 };
@@ -931,7 +930,7 @@ window.saveAdminProduct = async function() {
         saveButton.innerHTML = originalText;
         
     } catch (error) {
-        console.error('Error saving product:', error);
+('Error saving product:', error);
         showToast(error.message || 'Không thể lưu sản phẩm', 'error');
         
         // Restore button
@@ -978,7 +977,7 @@ window.confirmAdminDeleteProduct = async function() {
         deleteButton.innerHTML = originalText;
         
     } catch (error) {
-        console.error('Error deleting product:', error);
+('Error deleting product:', error);
         showToast(error.message || 'Không thể xóa sản phẩm', 'error');
         
         // Restore button
@@ -1043,7 +1042,7 @@ async function loadAdminOrders() {
         }
         
     } catch (error) {
-        console.error('Error loading orders:', error);
+('Error loading orders:', error);
         loading.classList.add('d-none');
         showToast('Không thể tải danh sách đơn hàng', 'error');
     }
@@ -1224,7 +1223,7 @@ window.showAdminOrderDetail = async function(orderId) {
         modal.show();
         
     } catch (error) {
-        console.error('Error loading order details:', error);
+('Error loading order details:', error);
         showToast('Không thể tải chi tiết đơn hàng', 'error');
     }
 };
@@ -1275,7 +1274,7 @@ window.confirmAdminUpdateOrderStatus = async function() {
         updateButton.innerHTML = originalText;
         
     } catch (error) {
-        console.error('Error updating order status:', error);
+('Error updating order status:', error);
         showToast(error.message || 'Không thể cập nhật trạng thái đơn hàng', 'error');
         
         // Restore button
@@ -1322,7 +1321,7 @@ async function enrichOrderDetailWithUserInfo(order) {
             }
         }
     } catch (error) {
-        console.warn(`Failed to get user info for order detail ${order.id}:`, error);
+(`Failed to get user info for order detail ${order.id}:`, error);
     }
 }
 
@@ -1367,7 +1366,7 @@ async function loadAdminUsers() {
         }
         
     } catch (error) {
-        console.error('Error loading users:', error);
+('Error loading users:', error);
         loading.classList.add('d-none');
         showToast('Không thể tải danh sách người dùng', 'error');
     }
@@ -1552,7 +1551,7 @@ window.showAdminEditUserModal = async function(userId) {
         modal.show();
         
     } catch (error) {
-        console.error('Error loading user details:', error);
+('Error loading user details:', error);
         showToast('Không thể tải thông tin người dùng', 'error');
     }
 };
@@ -1621,7 +1620,7 @@ window.saveAdminUser = async function() {
         saveButton.innerHTML = originalText;
         
     } catch (error) {
-        console.error('Error saving user:', error);
+('Error saving user:', error);
         showToast(error.message || 'Không thể lưu người dùng', 'error');
         
         // Restore button
@@ -1668,7 +1667,7 @@ window.confirmAdminDeleteUser = async function() {
         deleteButton.innerHTML = originalText;
         
     } catch (error) {
-        console.error('Error deleting user:', error);
+('Error deleting user:', error);
         showToast(error.message || 'Không thể xóa người dùng', 'error');
         
         // Restore button
@@ -1738,7 +1737,7 @@ async function loadAdminReviews() {
         }
         
     } catch (error) {
-        console.error('Error loading reviews:', error);
+('Error loading reviews:', error);
         loading.classList.add('d-none');
         showToast('Không thể tải danh sách đánh giá', 'error');
     }
@@ -1905,7 +1904,7 @@ window.showAdminReviewDetail = async function(reviewId) {
         modal.show();
         
     } catch (error) {
-        console.error('Error loading review detail:', error);
+('Error loading review detail:', error);
         showToast('Không thể tải chi tiết đánh giá', 'error');
     }
 };
@@ -1944,7 +1943,7 @@ window.confirmAdminDeleteReview = async function() {
         adminReviewToDelete = null;
         
     } catch (error) {
-        console.error('Error deleting review:', error);
+('Error deleting review:', error);
         showToast('Không thể xóa đánh giá', 'error');
     } finally {
         // Restore button
@@ -1998,7 +1997,7 @@ async function loadProductsForReviewFilter() {
             });
         }
     } catch (error) {
-        console.error('Error loading products for filter:', error);
+('Error loading products for filter:', error);
     }
 }
 

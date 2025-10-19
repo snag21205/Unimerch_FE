@@ -27,7 +27,7 @@ function loadHeaderComponent() {
     fetch(headerPath)
         .then(response => response.text())
         .then(html => {
-            console.log('Loading header component...');
+('Loading header component...');
             
             // Adjust paths based on current location
             if (!currentPath.includes('/pages/')) {
@@ -39,19 +39,19 @@ function loadHeaderComponent() {
             
             // Insert header at the beginning of body
             document.body.insertAdjacentHTML('afterbegin', html);
-            console.log('Header component loaded successfully');
+('Header component loaded successfully');
             
             // Initialize header functionality
             initializeHeader();
         })
         .catch(error => {
-            console.error('Error loading header component:', error);
+('Error loading header component:', error);
         });
 }
 
 // Initialize header functionality
 function initializeHeader() {
-    console.log('Initializing simple header...');
+('Initializing simple header...');
     
     // Setup navigation scroll effect
     setupScrollEffect();
@@ -59,7 +59,7 @@ function initializeHeader() {
     // Setup responsive navigation
     setupMobileNav();
     
-    console.log('Header initialization complete');
+('Header initialization complete');
 }
 
 // Handle scroll effect for navbar

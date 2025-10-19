@@ -51,10 +51,9 @@ async function handleSignIn() {
         }
         
         window.location.href = redirectUrl;
-    } catch (error) {
-        console.error('Error during login:', error);
-        alert('Đăng nhập thất bại: ' + error.message);
-    }
+        } catch (error) {
+            alert('Đăng nhập thất bại: ' + error.message);
+        }
 }
 
 // Form validation and submission

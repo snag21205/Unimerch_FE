@@ -24,8 +24,6 @@ const content = {
 
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM loaded, initializing...');
-    console.log('Featured products will be loaded from API');
     
     // Check authentication state
     checkAuthState();
@@ -35,7 +33,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (window.loadProductsFromAPI) {
             loadFeaturedProducts();
         } else {
-            console.log('Waiting for main-products.js to load...');
             setTimeout(() => loadFeaturedProducts(), 500);
         }
     }, 300);
@@ -47,7 +44,6 @@ document.addEventListener('DOMContentLoaded', function() {
 // Main render function - Now handled by main-products.js
 function renderProducts(productsToRender = []) {
     // This function is disabled - main-products.js handles all product rendering via API
-    console.log('app.js renderProducts() has been disabled - main-products.js handles product rendering');
     return;
 }
 
@@ -102,7 +98,6 @@ function handleScroll() {
 }
 
 function filterProducts(category) {
-    console.log('Filtering by category:', category);
     // Products filtering is now handled by main-products.js
     // Trigger the filter in main-products.js if it has filterProducts function
     if (window.filterProducts) {
@@ -120,7 +115,6 @@ function updateActiveTab(activeTab) {
 // Load featured products for index page
 async function loadFeaturedProducts() {
     try {
-        console.log('Loading featured products...');
         
         // Check if API service is available
         if (typeof window.apiService === 'undefined') {
@@ -131,7 +125,6 @@ async function loadFeaturedProducts() {
         const response = await window.apiService.getProducts({ limit: 6 });
         
         if (response.success && response.data && response.data.products) {
-            console.log('Featured products loaded:', response.data.products);
             
             // Transform products using main-products.js logic if available
             let products = response.data.products;
@@ -141,11 +134,9 @@ async function loadFeaturedProducts() {
             
             renderFeaturedProducts(products);
         } else {
-            console.error('Failed to load featured products:', response);
             showFeaturedProductsError();
         }
     } catch (error) {
-        console.error('Error loading featured products:', error);
         showFeaturedProductsError();
     }
 }
@@ -155,7 +146,6 @@ function renderFeaturedProducts(products) {
     const container = document.getElementById('featuredProductsGrid');
     
     if (!container) {
-        console.error('Featured products container not found');
         return;
     }
     
@@ -255,7 +245,6 @@ function showFeaturedProductsError() {
 
 // Cart functions (simplified)
 function addToCart(productId) {
-    console.log('Adding product to cart:', productId);
     
     // Get product data from API through main-products.js
     if (window.apiService) {
@@ -278,7 +267,6 @@ function addToCart(productId) {
         updateCartUI();
         showToast('Product added to cart!', 'success');
     } else {
-        console.error('API service not available');
         showToast('Unable to add to cart. Please try again.', 'error');
     }
 }
@@ -296,7 +284,6 @@ function updateCartUI() {
 }
 
 function openQuickView(productId) {
-    console.log('Opening quick view for product:', productId);
     alert('Quick view feature - Product ID: ' + productId);
 }
 

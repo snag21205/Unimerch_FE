@@ -11,10 +11,9 @@ function parseJWTToken(token) {
         const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
         const payload = JSON.parse(atob(base64));
         return payload;
-    } catch (error) {
-        console.error('Error parsing JWT token:', error);
-        return null;
-    }
+        } catch (error) {
+            return null;
+        }
 }
 
 /**

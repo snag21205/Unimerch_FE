@@ -249,7 +249,6 @@ class StorageUtils {
             localStorage.setItem(key, serializedValue);
             return true;
         } catch (error) {
-            console.error('Error saving to localStorage:', error);
             return false;
         }
     }
@@ -269,7 +268,6 @@ class StorageUtils {
                 return item;
             }
         } catch (error) {
-            console.error('Error reading from localStorage:', error);
             return defaultValue;
         }
     }
@@ -282,7 +280,6 @@ class StorageUtils {
             localStorage.removeItem(key);
             return true;
         } catch (error) {
-            console.error('Error removing from localStorage:', error);
             return false;
         }
     }
@@ -295,7 +292,6 @@ class StorageUtils {
             localStorage.clear();
             return true;
         } catch (error) {
-            console.error('Error clearing localStorage:', error);
             return false;
         }
     }
@@ -329,7 +325,7 @@ class AuthUtils {
                 localStorage.removeItem('isLoggedIn');
             }
         } catch (error) {
-            console.warn('Logout API call failed:', error);
+            // Silent fail
         } finally {
             window.location.href = redirectUrl;
         }

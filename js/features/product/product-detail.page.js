@@ -269,7 +269,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Load product data from API
 async function loadProductFromAPI(productId) {
-    console.log('🔍 Loading product ID from API:', productId);
     
     try {
         // Check if apiService is available
@@ -282,12 +281,10 @@ async function loadProductFromAPI(productId) {
         
         // Call API to get product detail
         const response = await window.apiService.getProductDetail(productId);
-        console.log('📦 API Response:', response);
         
         if (response.success && response.data) {
             // Transform API data to match UI expectations
             currentProduct = transformProductData(response.data);
-            console.log('✅ Current product loaded from API:', currentProduct);
             
     // Update basic DOM elements first
     updateBasicProductUI();
@@ -305,10 +302,8 @@ async function loadProductFromAPI(productId) {
         }
         
     } catch (error) {
-        console.error('❌ Failed to load product from API:', error);
         
         // Fallback to sample data
-        console.log('🔄 Using fallback sample data...');
         loadProduct(productId);
         
         // Show user-friendly error message
@@ -377,13 +372,10 @@ function updateBasicProductUI() {
         
         // Add error handling for image loading
         productImage.onerror = function() {
-            console.warn('Failed to load image:', currentProduct.image_url);
-            console.log('Falling back to demo.png');
             this.src = '../../assets/images/products/demo.png';
         };
         
         productImage.onload = function() {
-            console.log('✅ Product image loaded successfully');
         };
     }
     
@@ -392,7 +384,6 @@ function updateBasicProductUI() {
     if (productDescription) productDescription.textContent = currentProduct.description;
     if (totalPrice) totalPrice.textContent = `$${currentProduct.price}`;
     
-    console.log('✅ Basic elements updated');
     
     // Update price UI
     updateTotalPrice();
@@ -406,9 +397,7 @@ function updateRatingDisplay() {
     const ratingContainer = document.getElementById('productRating');
     if (ratingContainer && reviewStats.average_rating) {
         ratingContainer.innerHTML = generateStarsHTML(reviewStats.average_rating);
-        console.log('Updated product rating with average:', reviewStats.average_rating);
     } else {
-        console.log('No rating stats available');
     }
 }
 
@@ -436,9 +425,7 @@ function hideLoadingState() {
 
 // Legacy load product function (fallback)
 function loadProduct(productId) {
-    console.log('🔍 Loading product ID (fallback):', productId);
     currentProduct = productData[productId] || productData[1];
-    console.log('📦 Current product (fallback):', currentProduct);
     
     updateProductUI();
 }
@@ -448,7 +435,6 @@ function generateRatingStars() {
     const ratingContainer = document.getElementById('productRating');
     if (ratingContainer) {
         ratingContainer.innerHTML = generateStarsHTML(currentProduct.rating || 0);
-        console.log('Generating stars for product rating:', currentProduct.rating);
     }
 }
 
@@ -505,7 +491,6 @@ function addToCart() {
             image: currentProduct.image_url
         };
         
-        console.log('Adding to cart:', cartItem);
         
         // Create display message
         const message = `Added ${cartItem.name} x${cartItem.quantity} to cart!`;
@@ -560,7 +545,6 @@ async function buyNow() {
         window.location.href = '../user/create-order.html?from=cart&buyNow=true';
 
     } catch (error) {
-        console.error('❌ Error during buy now process:', error);
         alert('Có lỗi xảy ra khi thêm sản phẩm vào giỏ hàng. Vui lòng thử lại.');
         
         // Restore button
@@ -594,16 +578,13 @@ document.addEventListener('DOMContentLoaded', function() {
 // Load product reviews
 async function loadProductReviews(productId) {
     try {
-        console.log('🔄 Loading product reviews...');
         const response = await window.apiService.getProductReviews(productId, { page: 1, limit: 20 });
         
         if (response.success && response.data) {
             productReviews = response.data.reviews || [];
-            console.log('✅ Product reviews loaded:', productReviews.length);
             renderReviews();
         }
     } catch (error) {
-        console.warn('Failed to load product reviews:', error);
         productReviews = [];
     }
 }
@@ -611,16 +592,13 @@ async function loadProductReviews(productId) {
 // Load product review stats
 async function loadProductReviewStats(productId) {
     try {
-        console.log('🔄 Loading product review stats...');
         const response = await window.apiService.getProductReviewStats(productId);
         
         if (response.success && response.data) {
             reviewStats = response.data;
-            console.log('✅ Product review stats loaded:', reviewStats);
             renderReviewStats();
         }
     } catch (error) {
-        console.warn('Failed to load product review stats:', error);
         reviewStats = {};
     }
 }
@@ -685,13 +663,10 @@ function renderReviews() {
     if (noReviews) noReviews.style.display = 'none';
     
     const currentUserId = window.apiService?.getCurrentUserId?.();
-    console.log('Current user ID:', currentUserId);
-    console.log('Is authenticated:', window.apiService?.isAuthenticated());
     
     let reviewsHTML = '';
     productReviews.forEach(review => {
         const isOwnReview = currentUserId && Number(review.user_id) === Number(currentUserId);
-        console.log('Review:', review.id, 'User ID:', review.user_id, 'Current user:', currentUserId, 'Is own:', isOwnReview);
         
         const actionButtons = isOwnReview ? `
             <div class="d-flex gap-2">
@@ -755,7 +730,6 @@ function generateStarsHTML(rating) {
 
 // Initialize review functionality
 function initializeReviewFunctionality() {
-    console.log('Initializing review functionality');
     
     // Rating input handlers
     document.querySelectorAll('.rating-input button').forEach(button => {
@@ -863,7 +837,6 @@ async function handleReviewSubmit(event) {
             }
         }
     } catch (error) {
-        console.error('Failed to submit review:', error);
         alert('Có lỗi xảy ra khi gửi đánh giá. Vui lòng thử lại.');
     }
 }
@@ -903,20 +876,16 @@ async function checkUserReviewStatus() {
     }
     
     try {
-        console.log('Checking review status for product:', currentProduct.id);
         const response = await window.apiService.checkProductReview(currentProduct.id);
         
         if (response.success) {
             if (!response.data.has_reviewed) {
-                console.log('User can write a review');
                 writeReviewSection.style.display = 'block';
                 writeReviewSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
             } else {
-                console.log('User has already reviewed');
             }
         }
     } catch (error) {
-        console.warn('Failed to check review status:', error);
     }
 }
 
@@ -1067,7 +1036,6 @@ async function editReview(reviewId) {
             Cập nhật đánh giá
         `;
     } catch (error) {
-        console.error('Error preparing review edit:', error);
         alert('Có lỗi xảy ra khi chuẩn bị sửa đánh giá');
     }
 }
@@ -1103,7 +1071,6 @@ async function deleteReview(reviewId) {
             alert('Đã xóa đánh giá thành công');
         }
     } catch (error) {
-        console.error('Error deleting review:', error);
         alert('Có lỗi xảy ra khi xóa đánh giá');
     }
 }

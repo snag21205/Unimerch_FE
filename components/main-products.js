@@ -10,7 +10,7 @@
     async function loadProductsFromAPI() {
         if (isLoading) return;
         
-        console.log('🔄 Loading products from API...');
+('🔄 Loading products from API...');
         isLoading = true;
         
         try {
@@ -24,20 +24,20 @@
             
             // Use API service to get products
             const response = await window.apiService.getProducts();
-            console.log('📦 API Response:', response);
+('📦 API Response:', response);
             
             if (response.success && response.data && Array.isArray(response.data.products)) {
                 products = response.data.products.map(transformProductData);
-                console.log('✅ Products loaded from API:', products.length, 'products');
+('✅ Products loaded from API:', products.length, 'products');
             } else {
                 throw new Error('Invalid API response format: expected data.products array');
             }
             
         } catch (error) {
-            console.error('❌ Failed to load products from API:', error);
+('❌ Failed to load products from API:', error);
             
             // Fallback to sample data for development
-            console.log('🔄 Using fallback sample data...');
+('🔄 Using fallback sample data...');
             products = getSampleProducts();
             
             // Show user-friendly error message
@@ -52,8 +52,10 @@
             // Load ratings for all products
             await loadProductRatings();
             
-            // Render products after loading (only if not on all-products page)
-            if (!window.location.pathname.includes('all-products.html')) {
+            // Render products after loading (only if not on all-products page or index page)
+            if (!window.location.pathname.includes('all-products.html') && 
+                !window.location.pathname.endsWith('index.html') && 
+                window.location.pathname !== '/') {
                 renderProducts();
             }
         }
@@ -64,7 +66,7 @@
         if (!products || products.length === 0) return;
         
         try {
-            console.log('🔄 Loading product ratings...');
+('🔄 Loading product ratings...');
             
             // Load ratings for each product
             const ratingPromises = products.map(async (product) => {
@@ -75,16 +77,16 @@
                         product.reviews = response.data.total_reviews || 0;
                     }
                 } catch (error) {
-                    console.warn(`Failed to load rating for product ${product.id}:`, error);
+(`Failed to load rating for product ${product.id}:`, error);
                     // Keep default values
                 }
             });
             
             await Promise.all(ratingPromises);
-            console.log('✅ Product ratings loaded');
+('✅ Product ratings loaded');
             
         } catch (error) {
-            console.warn('Failed to load product ratings:', error);
+('Failed to load product ratings:', error);
         }
     }
     
@@ -107,7 +109,12 @@
             } else {
                 // Remove any leading path separators and construct proper path
                 const filename = imageUrl.replace(/^.*[\\\/]/, ''); // Get just filename
-                imageUrl = filename ? `assets/images/products/${filename}` : 'assets/images/products/demo.png';
+                if (filename === 'demo.png') {
+                    // Always use correct path for demo.png
+                    imageUrl = 'assets/images/products/demo.png';
+                } else {
+                    imageUrl = filename ? `assets/images/products/${filename}` : 'assets/images/products/demo.png';
+                }
             }
         } else {
             // No image URL provided
@@ -593,11 +600,13 @@
     
     // ===== MAIN RENDER FUNCTION =====
     function renderProducts() {
-        console.log('🚀 Rendering products with Bootstrap cards...');
+('🚀 Rendering products with Bootstrap cards...');
         
-        // Check if we're on all-products page and prevent rendering
-        if (window.location.pathname.includes('all-products.html')) {
-            console.log('⏸️ Skipping renderProducts() on all-products page');
+        // Check if we're on all-products page or index page and prevent rendering
+        if (window.location.pathname.includes('all-products.html') || 
+            window.location.pathname.endsWith('index.html') || 
+            window.location.pathname === '/') {
+('⏸️ Skipping renderProducts() on all-products or index page');
             return;
         }
         
@@ -608,7 +617,7 @@
         }
         
         if (!grid) {
-            console.error('❌ Grid element #productsGrid or #featuredProductsGrid not found!');
+('❌ Grid element #productsGrid or #featuredProductsGrid not found!');
             return;
         }
         
@@ -638,7 +647,7 @@
         // Setup image error handling after DOM is updated
         setupImageErrorHandling();
         
-        console.log('✅ Products rendered with Bootstrap design:', products.length, 'products');
+('✅ Products rendered with Bootstrap design:', products.length, 'products');
     }
 
     // Setup image error handling with better performance
@@ -688,7 +697,7 @@
         event.stopPropagation();
         const product = products.find(p => p.id === productId);
         if (product) {
-            console.log('Quick view:', product.name);
+('Quick view:', product.name);
             showToast(`Opening quick view for "${product.name}"`, 'info');
             // Có thể mở modal hoặc offcanvas ở đây
         }
@@ -700,7 +709,7 @@
         
         const product = products.find(p => p.id === productId);
         if (product) {
-            console.log('Adding to cart:', product.name);
+('Adding to cart:', product.name);
             
             // Check if cart service is available
             if (window.cartService) {
@@ -772,7 +781,7 @@
         });
         
         grid.innerHTML = html;
-        console.log('✅ Filtered products:', filter, '|', filteredProducts.length, 'products');
+('✅ Filtered products:', filter, '|', filteredProducts.length, 'products');
     }
     
     // ===== GLOBAL FUNCTIONS =====
@@ -788,22 +797,18 @@
     
     // ===== INITIALIZATION =====
     function initialize() {
-        console.log('🚀 Main Products Script - Initializing...');
+('🚀 Main Products Script - Initializing...');
         
         // Check if auto-rendering should be prevented
         if (window.preventAutoRender) {
-            console.log('⏸️ Auto-rendering prevented for this page');
+('⏸️ Auto-rendering prevented for this page');
             return;
         }
         
-        // Check if we're on index page but should use featured products logic instead
+        // Check if we're on index page - always skip main-products.js initialization
         if (window.location.pathname === '/' || window.location.pathname.endsWith('index.html')) {
-            // Check if featured products are being handled by index.js
-            const featuredGrid = document.getElementById('featuredProductsGrid');
-            if (featuredGrid && window.loadFeaturedProducts) {
-                console.log('⏸️ Skipping main-products.js initialization - featured products handled by index.js');
-                return;
-            }
+('⏸️ Skipping main-products.js initialization on index page - featured products handled by index.js');
+            return;
         }
         
         if (document.readyState === 'loading') {
@@ -834,11 +839,11 @@
         if (typeof window.apiService !== 'undefined') {
             loadProductsFromAPI();
         } else {
-            console.log('⏳ Waiting for API Service to load...');
+('⏳ Waiting for API Service to load...');
             setTimeout(waitForApiServiceAndLoad, 100);
         }
     }
     
     initialize();
-    console.log('📦 Main Products Script loaded successfully');
+('📦 Main Products Script loaded successfully');
 })();

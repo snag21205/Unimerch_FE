@@ -34,7 +34,6 @@ async function loadOrders() {
 
         // Check if order service is available
         if (window.orderService) {
-            console.log('🔄 Loading orders from API...');
             const ordersData = await orderService.getUserOrders();
             
             if (ordersData && ordersData.orders) {
@@ -50,17 +49,14 @@ async function loadOrders() {
                 // Render current status
                 renderOrders(currentStatus);
                 
-                console.log('✅ Orders loaded successfully:', allOrders);
             }
         } else {
             throw new Error('Order service not available');
         }
         
     } catch (error) {
-        console.error('❌ Failed to load orders:', error);
         
         // Fallback to mock data
-        console.log('🔄 Using fallback mock data...');
         loadMockOrders();
     } finally {
         hideLoadingState();
@@ -363,7 +359,6 @@ async function cancelOrder(orderId) {
                 alert('Chức năng hủy đơn hàng tạm thời không khả dụng');
             }
         } catch (error) {
-            console.error('Failed to cancel order:', error);
             alert('Có lỗi xảy ra khi hủy đơn hàng. Vui lòng thử lại!');
         }
     }

@@ -18,7 +18,6 @@ let totalPages = 0;
 
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('All Products Page: DOM loaded, initializing...');
     
     // Check authentication state
     checkAuthState();
@@ -35,7 +34,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Initialize page components
 function initializePage() {
-    console.log('Initializing all products page...');
     
     // Parse URL parameters
     parseURLParameters();
@@ -91,7 +89,6 @@ function parseURLParameters() {
         }
     }
     
-    console.log('Applied URL parameters:', currentFilters);
 }
 
 // Setup event listeners
@@ -143,7 +140,6 @@ function setupEventListeners() {
 // Load products from API
 async function loadProducts() {
     try {
-        console.log('Loading products with filters:', currentFilters);
         
         // Build query parameters
         const params = new URLSearchParams({
@@ -173,7 +169,6 @@ async function loadProducts() {
         const response = await window.apiService.getProducts(params);
         
         if (response.success && response.data) {
-            console.log('Products loaded successfully:', response.data);
             
             allProducts = response.data.products || response.data;
             totalProducts = response.data.total || allProducts.length;
@@ -192,12 +187,10 @@ async function loadProducts() {
             updateResultsInfo();
             
         } else {
-            console.error('Failed to load products:', response);
             showError('Không thể tải sản phẩm. Vui lòng thử lại sau.');
         }
         
     } catch (error) {
-        console.error('Error loading products:', error);
         showError('Có lỗi xảy ra khi tải sản phẩm.');
     } finally {
         showLoading(false);
@@ -209,7 +202,6 @@ function handleSearch() {
     const searchInput = document.getElementById('searchInput');
     const searchTerm = searchInput ? searchInput.value.trim() : '';
     
-    console.log('Search term:', searchTerm);
     
     currentFilters.search = searchTerm;
     currentPage = 1; // Reset to first page
@@ -222,7 +214,6 @@ function handleSearch() {
 
 // Handle category filter
 function handleCategoryFilter(category) {
-    console.log('Category filter:', category);
     
     currentFilters.category = category;
     currentPage = 1; // Reset to first page
@@ -235,7 +226,6 @@ function handleCategoryFilter(category) {
 
 // Handle sort
 function handleSort(sortValue) {
-    console.log('Sort by:', sortValue);
     
     currentFilters.sort = sortValue;
     applySorting();
@@ -284,7 +274,6 @@ function renderProducts() {
     const noResults = document.getElementById('noResults');
     
     if (!container) {
-        console.error('Products container not found');
         return;
     }
     
@@ -481,7 +470,6 @@ function updateClearFiltersButton() {
 
 // Clear all filters
 function clearAllFilters() {
-    console.log('Clearing all filters');
     
     // Reset filters
     currentFilters = {
@@ -598,12 +586,26 @@ function getProductImageUrl(product) {
         return imageUrl;
     }
     
-    // If it's just a filename, construct the full path
+    // If it's just a filename, construct the correct path based on current page
     if (!imageUrl.includes('/')) {
+        // For demo.png and other default images, always use the correct path for all-products page
+        if (imageUrl === 'demo.png') {
+            return '../../assets/images/products/demo.png';
+        }
+        // For other filenames, use relative path from all-products page
         return `../../assets/images/products/${imageUrl}`;
     }
     
-    // If it already has path, use as is
+    // If it already has path, clean it up to avoid double paths
+    if (imageUrl.includes('/pages/products/')) {
+        return imageUrl.replace('/pages/products/', '');
+    }
+    
+    // If it's a relative path starting with assets, make it relative to all-products page
+    if (imageUrl.startsWith('assets/')) {
+        return `../../${imageUrl}`;
+    }
+    
     return imageUrl;
 }
 
@@ -629,11 +631,9 @@ function addToCart(productId, event) {
     // Find product data
     const product = allProducts.find(p => p.id === productId);
     if (!product) {
-        console.error('Product not found:', productId);
         return;
     }
     
-    console.log('Adding to cart:', product.name);
     
     // Use cart service if available
     if (window.cartService) {
@@ -641,19 +641,14 @@ function addToCart(productId, event) {
             product_name: product.name,
             product_price: product.price,
             discount_price: product.discount_price,
-            image: product.image_url,
+            image: getProductImageUrl(product),
             name: product.name,
             price: product.discount_price || product.price
         };
         
         cartService.addToCart(productId, 1, productData);
         
-        // Show success message using showToast from main-products.js
-        if (window.showToast) {
-            window.showToast(`Đã thêm "${product.name}" vào giỏ hàng!`, 'success');
-        }
     } else {
-        console.error('Cart service not available');
         if (window.showToast) {
             window.showToast('Không thể thêm vào giỏ hàng. Vui lòng thử lại.', 'error');
         }
