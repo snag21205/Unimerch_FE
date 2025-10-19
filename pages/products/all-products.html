@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Unimerch - University of Economics Ho Chi Minh City</title>
+    <title>Tất cả sản phẩm - Unimerch</title>
     
     <!-- Bootstrap 5.3 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     
-    <!-- Minimal custom styles -->
-    <link rel="stylesheet" href="css/styles.css">
+    <!-- Custom styles -->
+    <link rel="stylesheet" href="../../css/styles.css">
     
     <!-- Preconnect for performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,7 +21,7 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top" id="mainNav">
         <div class="container-fluid px-3 px-lg-5">
             <!-- Brand -->
-            <a class="navbar-brand fw-semibold fs-4" href="#" style="color: #111;">Unimerch</a>
+            <a class="navbar-brand fw-semibold fs-4" href="../../index.html" style="color: #111;">Unimerch</a>
             
             <!-- Toggle button for mobile -->
             <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -32,10 +32,10 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mx-auto d-none d-lg-flex">
                     <li class="nav-item mx-3">
-                        <a class="nav-link" href="#featured">Trang chủ</a>
+                        <a class="nav-link" href="../../index.html#featured">Trang chủ</a>
                     </li>
                     <li class="nav-item mx-3">
-                        <a class="nav-link" href="pages/products/all-products.html">Tất cả sản phẩm</a>
+                        <a class="nav-link active" href="all-products.html">Tất cả sản phẩm</a>
                     </li>
                 </ul>
                 
@@ -61,16 +61,16 @@
                     <div id="authSection">
                         <!-- Not logged in state -->
                         <div id="notLoggedIn" class="d-flex align-items-center gap-2">
-                            <a href="pages/user/profile.html" class="btn btn-link p-0 border-0" title="Profile">
+                            <a href="../user/profile.html" class="btn btn-link p-0 border-0" title="Profile">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                                     <circle cx="12" cy="7" r="4"></circle>
                                 </svg>
                             </a>
-                            <a href="pages/auth/login.html" class="btn btn-outline-dark btn-sm rounded-pill px-3" style="font-size: 14px; font-weight: 500;">
+                            <a href="../auth/login.html" class="btn btn-outline-dark btn-sm rounded-pill px-3" style="font-size: 14px; font-weight: 500;">
                                 Đăng nhập
                             </a>
-                            <a href="pages/auth/register.html" class="btn btn-dark btn-sm rounded-pill px-3" style="
+                            <a href="../auth/register.html" class="btn btn-dark btn-sm rounded-pill px-3" style="
                                 font-size: 14px; 
                                 font-weight: 500;
                                 background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
@@ -118,7 +118,7 @@
                                     </li>
                                     <li id="dashboardDivider" class="d-none"><hr class="dropdown-divider"></li>
                                     <li>
-                                        <a class="dropdown-item d-flex align-items-center gap-2" href="pages/user/profile.html" style="padding: 0.5rem 1rem; font-size: 14px;">
+                                        <a class="dropdown-item d-flex align-items-center gap-2" href="../user/profile.html" style="padding: 0.5rem 1rem; font-size: 14px;">
                                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                                                 <circle cx="12" cy="7" r="4"></circle>
@@ -127,7 +127,7 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item d-flex align-items-center gap-2" href="pages/user/orders.html" style="padding: 0.5rem 1rem; font-size: 14px;">
+                                        <a class="dropdown-item d-flex align-items-center gap-2" href="../user/orders.html" style="padding: 0.5rem 1rem; font-size: 14px;">
                                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                                 <circle cx="8" cy="21" r="1"></circle>
                                                 <circle cx="19" cy="21" r="1"></circle>
@@ -151,217 +151,138 @@
                             </div>
                         </div>
                     </div>
-                    
                 </div>
             </div>
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section class="hero-section position-relative overflow-hidden" style="min-height: 90vh;">
-        <!-- Background Image -->
-        <div class="hero-background position-absolute w-100 h-100" style="
-            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.1)), url('assets/images/hero/hero.jpg');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            z-index: 1;
-        "></div>
-        
-        <!-- Content Container -->
-        <div class="container-fluid position-relative" style="z-index: 2; min-height: 90vh;">
-            <div class="row align-items-center min-vh-100">
-                <!-- Left Content -->
-                <div class="col-lg-6 col-md-7">
-                    <div class="hero-content ps-lg-5 py-5">
-                        <div class="badge bg-white text-dark rounded-pill px-3 py-2 mb-4 fade-in" style="font-size: 0.8rem; font-weight: 500;">
-                            ✨ Bộ sưu tập mới đã có mặt
-                        </div>
-                        
-                        <h1 class="display-2 fw-light text-white mb-4 fade-in" style="
-                            line-height: 1.1; 
-                            letter-spacing: -0.03em;
-                            font-size: clamp(2.5rem, 8vw, 5rem);
-                        ">
-                            Sống khác biệt<br>
-                            <span class="wear-ueh-highlight">Mặc UEH!</span>
-                        </h1>
-                        
-                        <p class="lead text-white mb-5 slide-up" style="
-                            font-size: 1.25rem; 
-                            font-weight: 300; 
-                            max-width: 500px;
-                            opacity: 0.95;
-                        ">
-                            Khám phá sản phẩm UEH chính hãng: phong cách trẻ trung, chất lượng vượt trội, tinh thần tiên phong.
-                        </p>
-                        
-                        <div class="hero-actions d-flex flex-column flex-sm-row gap-3 slide-up-delayed">
-                            <a href="#products" class="btn btn-light btn-lg px-5 py-3 rounded-pill" style="
-                                font-weight: 500;
-                                backdrop-filter: blur(10px);
-                                background: rgba(255,255,255,0.95);
-                                border: none;
-                                box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-                            ">
-                                Bộ sưu tập
-                            </a>
-                            
-                            <a href="#featured" class="btn btn-outline-light btn-lg px-5 py-3 rounded-pill" style="
-                                font-weight: 400;
-                                backdrop-filter: blur(10px);
-                                background: rgba(255,255,255,0.1);
-                                border: 1px solid rgba(255,255,255,0.3);
-                                color: white;
-                            ">
-                                Tìm hiểu thêm
-                            </a>
-                        </div>
-                        
-                        <!-- Stats -->
-                        <div class="hero-stats d-flex gap-4 mt-5 slide-up-delayed">
-                            <div class="stat-item">
-                                <div class="h3 fw-semibold text-white mb-0">10K+</div>
-                                <small class="text-white-50">Sinh viên hài lòng</small>
-                            </div>
-                            <div class="stat-item">
-                                <div class="h3 fw-semibold text-white mb-0">50+</div>
-                                <small class="text-white-50">Mẫu thiết kế sản phẩm</small>
-                            </div>
-                            <div class="stat-item">
-                                <div class="h3 fw-semibold text-white mb-0">5★</div>
-                                <small class="text-white-50">Đánh giá từ sinh viên</small>
-                            </div>
-                        </div>
+    <!-- Page Header -->
+    <section class="py-5" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
+        <div class="container-fluid px-3 px-lg-5">
+            <div class="text-center mb-5">
+                <h1 class="display-4 fw-light mb-3" style="color: #111;">Tất cả sản phẩm</h1>
+                <p class="text-muted lead">Khám phá toàn bộ bộ sưu tập sản phẩm UEH chính hãng</p>
+            </div>
+            
+            <!-- Search and Filter Section -->
+            <div class="row justify-content-center mb-4">
+                <div class="col-lg-8">
+                    <!-- Search Bar -->
+                    <div class="input-group mb-3">
+                        <span class="input-group-text bg-white border-end-0">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <path d="m21 21-4.35-4.35"></path>
+                            </svg>
+                        </span>
+                        <input type="text" class="form-control border-start-0" id="searchInput" placeholder="Tìm kiếm sản phẩm..." style="box-shadow: none;">
+                        <button class="btn btn-dark px-4" type="button" id="searchBtn">
+                            Tìm kiếm
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Filter and Sort Controls -->
+            <div class="row justify-content-between align-items-center mb-4">
+                <div class="col-md-6">
+                    <!-- Category Filter -->
+                    <div class="d-flex flex-wrap gap-2">
+                        <button class="btn btn-outline-dark rounded-pill px-3 py-2 filter-btn active" data-filter="all">
+                            Tất cả
+                        </button>
+                        <button class="btn btn-outline-dark rounded-pill px-3 py-2 filter-btn" data-filter="1">
+                            Áo
+                        </button>
+                        <button class="btn btn-outline-dark rounded-pill px-3 py-2 filter-btn" data-filter="2">
+                            Quần
+                        </button>
+                        <button class="btn btn-outline-dark rounded-pill px-3 py-2 filter-btn" data-filter="3">
+                            Phụ kiện
+                        </button>
+                        <button class="btn btn-outline-dark rounded-pill px-3 py-2 filter-btn" data-filter="4">
+                            Giày dép
+                        </button>
+                        <button class="btn btn-outline-dark rounded-pill px-3 py-2 filter-btn" data-filter="5">
+                            Túi sách
+                        </button>
                     </div>
                 </div>
                 
-                <!-- Right Product Showcase -->
-                <div class="col-lg-6 col-md-5 d-none d-md-block">
-                    <div class="hero-product text-center py-5">
-                        <div class="product-showcase position-relative">
-                            <!-- Floating Product Card -->
-                            <div class="floating-product" style="
-                                animation: float 6s ease-in-out infinite;
-                                filter: drop-shadow(0 20px 40px rgba(0,0,0,0.3));
-                            ">
-                                <img src="assets/images/products/SP-04.png" alt="Featured UEH Product" class="img-fluid" style="
-                                    max-width: 400px;
-                                    width: 100%;
-                                    border-radius: 20px;
-                                    background: rgba(255,255,255,0.95);
-                                    padding: 2rem;
-                                    backdrop-filter: blur(20px);
-                                ">
-                            </div>
+                <div class="col-md-6 text-md-end mt-3 mt-md-0">
+                    <!-- Sort Dropdown -->
+                    <div class="d-flex align-items-center gap-3">
+                        <span class="text-muted small">Sắp xếp theo:</span>
+                        <select class="form-select" id="sortSelect" style="width: auto; min-width: 150px;">
+                            <option value="newest">Mới nhất</option>
+                            <option value="oldest">Cũ nhất</option>
+                            <option value="price_low">Giá thấp đến cao</option>
+                            <option value="price_high">Giá cao đến thấp</option>
+                            <option value="name_asc">Tên A-Z</option>
+                            <option value="name_desc">Tên Z-A</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Results Info -->
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <span class="text-muted" id="resultsInfo">Đang tải...</span>
+                        </div>
+                        <div>
+                            <button class="btn btn-outline-secondary btn-sm" id="clearFiltersBtn" style="display: none;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 4px;">
+                                    <path d="M3 6h18"></path>
+                                    <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+                                    <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+                                </svg>
+                                Xóa bộ lọc
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        
-        <!-- Scroll Indicator -->
-        <div class="position-absolute bottom-0 start-50 translate-middle-x mb-4" style="z-index: 2;">
-            <div class="scroll-indicator" style="
-                width: 24px;
-                height: 40px;
-                border: 2px solid rgba(255,255,255,0.5);
-                border-radius: 12px;
-                position: relative;
-            ">
-                <div style="
-                    width: 4px;
-                    height: 8px;
-                    background: rgba(255,255,255,0.8);
-                    border-radius: 2px;
-                    position: absolute;
-                    top: 6px;
-                    left: 50%;
-                    transform: translateX(-50%);
-                    animation: scroll 2s infinite;
-                "></div>
-            </div>
-        </div>
     </section>
 
-    <!-- Featured Products Section -->
-    <section class="py-5" id="featured">
+    <!-- Products Grid -->
+    <section class="py-5">
         <div class="container-fluid px-3 px-lg-5">
-            <div class="text-center mb-5">
-                <h2 class="display-5 fw-light mb-3" style="color: #111;">Sản phẩm nổi bật</h2>
-                <p class="text-muted">Khám phá những sản phẩm được yêu thích nhất từ bộ sưu tập UEH</p>
+            <!-- Loading Spinner -->
+            <div id="loadingSpinner" class="text-center py-5">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Đang tải...</span>
+                </div>
+                <p class="text-muted mt-3">Đang tải sản phẩm...</p>
             </div>
             
-            <!-- Featured Products grid -->
-            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-2 justify-content-center" id="featuredProductsGrid" style="row-gap: 1rem !important; margin-bottom: 0 !important;">
-                <!-- Featured products will be populated by JavaScript -->
+            <!-- Products Grid -->
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-3" id="productsGrid" style="display: none;">
+                <!-- Products will be populated by JavaScript -->
             </div>
             
-            <!-- View All Products Button -->
-            <div class="text-center mt-5">
-                <a href="pages/products/all-products.html" class="btn btn-dark btn-lg px-5 py-3 rounded-pill" style="
-                    font-weight: 500;
-                    background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
-                    border: none;
-                    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-                    transition: all 0.3s ease;
-                " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 12px 40px rgba(0,0,0,0.15)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 32px rgba(0,0,0,0.1)'">
-                    Xem tất cả sản phẩm
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left: 8px;">
-                        <path d="M7 17L17 7"></path>
-                        <path d="M7 7h10v10"></path>
-                    </svg>
-                </a>
+            <!-- No Results Message -->
+            <div id="noResults" class="text-center py-5" style="display: none;">
+                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" class="text-muted mb-3">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.35-4.35"></path>
+                </svg>
+                <h4 class="text-muted mb-2">Không tìm thấy sản phẩm nào</h4>
+                <p class="text-muted">Hãy thử thay đổi từ khóa tìm kiếm hoặc bộ lọc của bạn.</p>
+                <button class="btn btn-outline-primary" onclick="clearAllFilters()">
+                    Xóa bộ lọc
+                </button>
             </div>
-        </div>
-    </section>
-
-    <!-- Quality Strip -->
-    <section class="py-5" style="background-color: #f8f9fa;">
-        <div class="container">
-            <div class="row text-center g-4">
-                <div class="col-md-4">
-                    <div class="quality-item">
-                        <div class="mb-3">
-                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#0F766E" stroke-width="1.5">
-                                <path d="M9 12l2 2 4-4"></path>
-                                <path d="M21 12c-1 0-3-1-3-3s2-3 3-3 3 1 3 3-2 3-3 3"></path>
-                                <path d="M3 12c1 0 3-1 3-3s-2-3-3-3-3 1-3 3 2 3 3 3"></path>
-                                <path d="M12 3c0 1-1 3-3 3s-3-2-3-3 1-3 3-3 3 2 3 3"></path>
-                                <path d="M12 21c0-1 1-3 3-3s3 2 3 3-1 3-3 3-3-2-3-3"></path>
-                            </svg>
-                        </div>
-                        <h5 class="fw-semibold mb-2">Chất lượng đạt chuẩn</h5>
-                        <p class="text-muted small">Bền bỉ xuyên suốt mọi học kỳ</p>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="quality-item">
-                        <div class="mb-3">
-                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#0F766E" stroke-width="1.5">
-                                <path d="M3 3h18l-2 13H5L3 3z"></path>
-                                <path d="M16 16a2 2 0 1 1-4 0"></path>
-                                <path d="M8 16a2 2 0 1 1-4 0"></path>
-                            </svg>
-                        </div>
-                        <h5 class="fw-semibold mb-2">Giao hàng nhanh chóng</h5>
-                        <p class="text-muted small">Miễn phí giao hàng tại TP.HCM trong 2-3 ngày</p>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="quality-item">
-                        <div class="mb-3">
-                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#0F766E" stroke-width="1.5">
-                                <path d="M3 7v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2z"></path>
-                                <line x1="8" y1="21" x2="16" y2="21"></line>
-                                <line x1="12" y1="17" x2="12" y2="21"></line>
-                            </svg>
-                        </div>
-                        <h5 class="fw-semibold mb-2">Đổi trả dễ dàng</h5>
-                        <p class="text-muted small">Chính sách đổi trả trong 30 ngày, không cần lý do</p>
-                    </div>
-                </div>
-            </div>
+            
+            <!-- Pagination -->
+            <nav aria-label="Products pagination" class="mt-5">
+                <ul class="pagination justify-content-center" id="pagination">
+                    <!-- Pagination will be populated by JavaScript -->
+                </ul>
+            </nav>
         </div>
     </section>
 
@@ -404,11 +325,13 @@
                         <div class="col-md-3">
                             <h6 class="fw-semibold mb-3" style="color: #fff; font-size: 1.1rem; letter-spacing: 0.5px;">Cửa hàng</h6>
                             <ul class="list-unstyled">
-                                <li class="mb-2"><a href="#featured" class="text-light text-decoration-none" style="font-size: 0.95rem; opacity: 0.8; transition: all 0.3s ease;" onmouseover="this.style.opacity='1'; this.style.color='#0F766E'" onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">Sản phẩm nổi bật</a></li>
-                                <li class="mb-2"><a href="pages/products/all-products.html" class="text-light text-decoration-none" style="font-size: 0.95rem; opacity: 0.8; transition: all 0.3s ease;" onmouseover="this.style.opacity='1'; this.style.color='#0F766E'" onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">Tất cả sản phẩm</a></li>
-                                <li class="mb-2"><a href="pages/products/all-products.html?category=1" class="text-light text-decoration-none" style="font-size: 0.95rem; opacity: 0.8; transition: all 0.3s ease;" onmouseover="this.style.opacity='1'; this.style.color='#0F766E'" onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">Áo Hoodie</a></li>
-                                <li class="mb-2"><a href="pages/products/all-products.html?category=2" class="text-light text-decoration-none" style="font-size: 0.95rem; opacity: 0.8; transition: all 0.3s ease;" onmouseover="this.style.opacity='1'; this.style.color='#0F766E'" onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">Áo Thun</a></li>
-                                <li class="mb-2"><a href="pages/products/all-products.html?category=3" class="text-light text-decoration-none" style="font-size: 0.95rem; opacity: 0.8; transition: all 0.3s ease;" onmouseover="this.style.opacity='1'; this.style.color='#0F766E'" onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">Phụ kiện</a></li>
+                                <li class="mb-2"><a href="../../index.html#featured" class="text-light text-decoration-none" style="font-size: 0.95rem; opacity: 0.8; transition: all 0.3s ease;" onmouseover="this.style.opacity='1'; this.style.color='#0F766E'" onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">Sản phẩm nổi bật</a></li>
+                                <li class="mb-2"><a href="all-products.html" class="text-light text-decoration-none" style="font-size: 0.95rem; opacity: 0.8; transition: all 0.3s ease;" onmouseover="this.style.opacity='1'; this.style.color='#0F766E'" onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">Tất cả sản phẩm</a></li>
+                                <li class="mb-2"><a href="all-products.html?category=1" class="text-light text-decoration-none" style="font-size: 0.95rem; opacity: 0.8; transition: all 0.3s ease;" onmouseover="this.style.opacity='1'; this.style.color='#0F766E'" onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">Áo</a></li>
+                                <li class="mb-2"><a href="all-products.html?category=2" class="text-light text-decoration-none" style="font-size: 0.95rem; opacity: 0.8; transition: all 0.3s ease;" onmouseover="this.style.opacity='1'; this.style.color='#0F766E'" onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">Quần</a></li>
+                                <li class="mb-2"><a href="all-products.html?category=3" class="text-light text-decoration-none" style="font-size: 0.95rem; opacity: 0.8; transition: all 0.3s ease;" onmouseover="this.style.opacity='1'; this.style.color='#0F766E'" onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">Phụ kiện</a></li>
+                                <li class="mb-2"><a href="all-products.html?category=4" class="text-light text-decoration-none" style="font-size: 0.95rem; opacity: 0.8; transition: all 0.3s ease;" onmouseover="this.style.opacity='1'; this.style.color='#0F766E'" onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">Giày dép</a></li>
+                                <li class="mb-2"><a href="all-products.html?category=5" class="text-light text-decoration-none" style="font-size: 0.95rem; opacity: 0.8; transition: all 0.3s ease;" onmouseover="this.style.opacity='1'; this.style.color='#0F766E'" onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">Túi sách</a></li>
                             </ul>
                         </div>
                         <div class="col-md-3">
@@ -465,26 +388,6 @@
         </div>
     </footer>
 
-    <!-- Search Modal -->
-    <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header border-0">
-                    <h5 class="modal-title" id="searchModalLabel">Tìm kiếm sản phẩm</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <input type="text" class="form-control form-control-lg" id="searchInput" placeholder="Tìm kiếm sản phẩm..." autofocus>
-                    </div>
-                    <div id="searchResults">
-                        <p class="text-muted">Bắt đầu nhập để tìm kiếm sản phẩm...</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Quick View Modal -->
     <div class="modal fade" id="quickViewModal" tabindex="-1" aria-labelledby="quickViewModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -538,22 +441,26 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- API Service and Utils - MUST BE LOADED FIRST -->
-    <script src="js/core/utils.js"></script>
-    <script src="js/core/api.service.js"></script>
+    <script src="../../js/core/utils.js"></script>
+    <script src="../../js/core/api.service.js"></script>
     
     <!-- Cart Services -->
-    <script src="js/features/cart/cart.service.js"></script>
-    <script src="js/features/cart/cart.ui.js"></script>
+    <script src="../../js/features/cart/cart.service.js"></script>
+    <script src="../../js/features/cart/cart.ui.js"></script>
 
-    <!-- Auth logic for index page -->
-    <script src="js/features/auth/index-auth.js"></script>
+    <!-- Main Products Script - for showToast function -->
+    <script>
+        // Load main-products.js but prevent auto-rendering
+        window.preventAutoRender = true;
+    </script>
+    <script src="../../components/main-products.js"></script>
 
-    <!-- Main Products Script - SCRIPT TỔNG DUY NHẤT -->
-    <script src="components/main-products.js"></script>
-    
-    <!-- Custom JavaScript cho các tính năng khác -->
-    <script src="js/pages/home/index.js"></script>
+    <!-- Auth logic -->
+    <script src="../../js/features/auth/index-auth.js"></script>
 
-    <script src="js/features/auth/logout.service.js"></script>
+    <!-- All Products Page Script -->
+    <script src="../../js/features/product/all-products.page.js"></script>
+
+    <script src="../../js/features/auth/logout.service.js"></script>
 </body>
 </html>
