@@ -276,11 +276,17 @@ async function loadDashboardFromAPI() {
         
         updateOrderStatusChart(breakdown);
 
-        // 5) Load top products
+        // 5) Load top products using dedicated API
         await loadTopProducts();
 
         // 6) Load recent orders
         await loadRecentOrders();
+
+        // 7) Load recent activity
+        await loadRecentActivity();
+
+        // 8) Load featured products
+        await loadFeaturedProducts();
 
         showToast('Đã tải dữ liệu dashboard từ API', 'success');
 
@@ -366,6 +372,72 @@ function updateOrderStatusChart(breakdown) {
             orderStatusChart.data.datasets[0].data = breakdown.map(b => b.value);
             orderStatusChart.update();
         }
+    }
+}
+
+async function loadRecentActivity() {
+    try {
+        const response = await apiService.getRecentActivity(5);
+        const activities = response?.data?.activities || [];
+        
+        const container = document.getElementById('recentActivityList');
+        if (container) {
+            if (activities.length === 0) {
+                container.innerHTML = '<p class="text-muted text-center">Không có hoạt động gần đây</p>';
+                return;
+            }
+            
+            container.innerHTML = activities.map(activity => `
+                <div class="d-flex align-items-center mb-3">
+                    <div class="activity-icon me-3">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12,6 12,12 16,14"></polyline>
+                        </svg>
+                    </div>
+                    <div class="flex-grow-1">
+                        <div class="fw-semibold">${activity.description || 'Hoạt động'}</div>
+                        <small class="text-muted">${formatDate(activity.created_at)}</small>
+                    </div>
+                </div>
+            `).join('');
+        }
+    } catch (error) {
+        console.error('Error loading recent activity:', error);
+    }
+}
+
+async function loadFeaturedProducts() {
+    try {
+        const response = await apiService.getFeaturedProducts(5);
+        const featuredProducts = response?.data?.products || [];
+        
+        const container = document.getElementById('featuredProductsList');
+        if (container) {
+            if (featuredProducts.length === 0) {
+                container.innerHTML = '<p class="text-muted text-center">Không có sản phẩm nổi bật</p>';
+                return;
+            }
+            
+            container.innerHTML = featuredProducts.map((product, index) => `
+                <div class="d-flex align-items-center mb-3">
+                    <div class="me-3">
+                        <span class="badge bg-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 30px; height: 30px;">
+                            ${index + 1}
+                        </span>
+                    </div>
+                    <div class="flex-grow-1">
+                        <div class="fw-semibold">${product.name || 'N/A'}</div>
+                        <small class="text-muted">${formatMoney(product.price || 0)} ₫</small>
+                    </div>
+                    <div class="text-end">
+                        <small class="text-success">⭐ ${product.avg_rating || '0.0'}</small>
+                    </div>
+                </div>
+            `).join('');
+        }
+    } catch (error) {
+        console.error('Error loading featured products:', error);
     }
 }
 
@@ -587,7 +659,7 @@ async function loadAdminProducts() {
         emptyState.classList.add('d-none');
         
         // Get ALL products from API
-        const response = await apiService.getProducts({ limit: 1000 });
+        const response = await apiService.getProducts({ limit: 100 });
         
         adminProducts = response?.data?.products || [];
         
@@ -1909,7 +1981,7 @@ function getRatingStars(rating) {
 // Load products for filter dropdown
 async function loadProductsForReviewFilter() {
     try {
-        const response = await apiService.getProducts({ limit: 1000 }); // Get all products
+        const response = await apiService.getProducts({ limit: 100 }); // Get products with pagination
         const products = response?.data?.products || [];
         
         const productFilter = document.getElementById('adminReviewProductFilter');

@@ -41,12 +41,28 @@ function updateDashboardLink() {
     if (userRole === 'admin') {
         dashboardMenuItem.classList.remove('d-none');
         if (dashboardDivider) dashboardDivider.classList.remove('d-none');
-        dashboardLink.href = 'pages/admin/admin.html';
+        
+        // Check if we're in all-products page and adjust path accordingly
+        const currentPath = window.location.pathname;
+        if (currentPath.includes('all-products.html')) {
+            dashboardLink.href = '../../pages/admin/admin.html';
+        } else {
+            dashboardLink.href = 'pages/admin/admin.html';
+        }
+        
         if (dashboardLinkText) dashboardLinkText.textContent = '👨‍💼 Trang Quản Trị';
     } else if (userRole === 'seller') {
         dashboardMenuItem.classList.remove('d-none');
         if (dashboardDivider) dashboardDivider.classList.remove('d-none');
-        dashboardLink.href = 'pages/seller/seller.html';
+        
+        // Check if we're in all-products page and adjust path accordingly
+        const currentPath = window.location.pathname;
+        if (currentPath.includes('all-products.html')) {
+            dashboardLink.href = '../../pages/seller/seller.html';
+        } else {
+            dashboardLink.href = 'pages/seller/seller.html';
+        }
+        
         if (dashboardLinkText) dashboardLinkText.textContent = '🏪 Trang Người Bán';
     } else {
         // Hide for regular users

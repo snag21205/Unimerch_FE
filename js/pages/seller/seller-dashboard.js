@@ -285,10 +285,10 @@ async function loadDashboard() {
 
 async function loadSellerStats() {
     try {
-        // Get products by seller
+        // Get products by seller using getProducts API (getProductsBySeller returns 404)
         const productsResponse = await apiService.getProducts({ 
             seller_id: currentSellerId,
-            limit: 1000 
+            limit: 100 
         });
         
         const products = productsResponse?.data?.products || [];
@@ -296,7 +296,7 @@ async function loadSellerStats() {
         const activeProducts = products.filter(p => p.status === 'available').length;
         
         // Get seller orders to calculate real stats
-        const ordersResponse = await apiService.getSellerOrders({ limit: 1000 });
+        const ordersResponse = await apiService.getSellerOrders({ limit: 100 });
         const orders = ordersResponse?.data?.orders || [];
         
         // Calculate real revenue and orders
@@ -339,7 +339,7 @@ async function loadSellerStats() {
 async function loadRevenueChart() {
     try {
         // Get seller orders to calculate real revenue data
-        const ordersResponse = await apiService.getSellerOrders({ limit: 1000 });
+        const ordersResponse = await apiService.getSellerOrders({ limit: 100 });
         const orders = ordersResponse?.data?.orders || [];
         
         // Group orders by date for last 30 days
@@ -436,7 +436,7 @@ async function loadTopSellingProducts() {
     const container = document.getElementById('topProductsList');
     
     try {
-        // Get seller's products
+        // Get seller's products using getProducts API (getProductsBySeller returns 404)
         const response = await apiService.getProducts({ 
             seller_id: currentSellerId,
             limit: 5
@@ -513,10 +513,10 @@ async function loadMyProducts() {
         tableContainer.classList.add('d-none');
         emptyState.classList.add('d-none');
         
-        // Get seller's products from API
+        // Get seller's products using getProducts API (getProductsBySeller returns 404)
         const response = await apiService.getProducts({ 
             seller_id: currentSellerId,
-            limit: 1000 // Get all products for now
+            limit: 100 
         });
         
         myProducts = response?.data?.products || [];

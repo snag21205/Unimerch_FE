@@ -82,6 +82,11 @@ class ApiService {
                 userGrowth: '/api/admin/stats/users/growth',
                 completeStats: '/api/admin/stats/complete',
                 summary: '/api/admin/stats/summary'
+            },
+            
+            seller: {
+                // Order Management
+                orders: '/api/seller/orders'
             }
         };
     }
@@ -350,12 +355,10 @@ class ApiService {
         });
     }
 
-    async getProductsBySeller(sellerId, queryParams = {}) {
-        const query = new URLSearchParams(queryParams).toString();
-        const endpoint = `/api/products/seller/${sellerId}` + (query ? `?${query}` : '');
-        return this.request(endpoint, {
-            requireAuth: true
-        });
+    async getFeaturedProducts(limit = 10) {
+        const query = new URLSearchParams({ limit }).toString();
+        const endpoint = '/api/products/featured' + `?${query}`;
+        return this.request(endpoint);
     }
 
     // Cart Methods
@@ -438,6 +441,14 @@ class ApiService {
     async getOrderDetail(orderId) {
         return this.request(this.endpoints.orders.detail, {
             params: { id: orderId },
+            requireAuth: true
+        });
+    }
+
+    async getSellerOrders(queryParams = {}) {
+        const query = new URLSearchParams(queryParams).toString();
+        const endpoint = this.endpoints.seller.orders + (query ? `?${query}` : '');
+        return this.request(endpoint, {
             requireAuth: true
         });
     }
@@ -717,6 +728,22 @@ class ApiService {
 
     async getOrderStats() {
         return this.request(this.endpoints.admin.orderStats, {
+            requireAuth: true
+        });
+    }
+
+    async getRecentActivity(limit = 10) {
+        const query = new URLSearchParams({ limit }).toString();
+        const endpoint = this.endpoints.admin.recentActivity + `?${query}`;
+        return this.request(endpoint, {
+            requireAuth: true
+        });
+    }
+
+    async getSellerStats(queryParams = {}) {
+        const query = new URLSearchParams(queryParams).toString();
+        const endpoint = this.endpoints.admin.sellerStats + (query ? `?${query}` : '');
+        return this.request(endpoint, {
             requireAuth: true
         });
     }

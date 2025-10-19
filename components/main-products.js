@@ -52,8 +52,10 @@
             // Load ratings for all products
             await loadProductRatings();
             
-            // Render products after loading
-            renderProducts();
+            // Render products after loading (only if not on all-products page)
+            if (!window.location.pathname.includes('all-products.html')) {
+                renderProducts();
+            }
         }
     }
     
@@ -593,9 +595,20 @@
     function renderProducts() {
         console.log('🚀 Rendering products with Bootstrap cards...');
         
-        const grid = document.getElementById('productsGrid');
+        // Check if we're on all-products page and prevent rendering
+        if (window.location.pathname.includes('all-products.html')) {
+            console.log('⏸️ Skipping renderProducts() on all-products page');
+            return;
+        }
+        
+        // Try to find products grid - check both possible IDs
+        let grid = document.getElementById('productsGrid');
         if (!grid) {
-            console.error('❌ Grid element #productsGrid not found!');
+            grid = document.getElementById('featuredProductsGrid');
+        }
+        
+        if (!grid) {
+            console.error('❌ Grid element #productsGrid or #featuredProductsGrid not found!');
             return;
         }
         
@@ -769,10 +782,29 @@
     window.renderProducts = renderProducts;
     window.quickView = quickView;
     window.filterProducts = filterProducts; // Export filter function for app.js
+    window.transformProductData = transformProductData; // Export transform function
+    window.loadProductsFromAPI = loadProductsFromAPI; // Export load function
+    window.createProductCard = createProductCard; // Export card creation function
     
     // ===== INITIALIZATION =====
     function initialize() {
         console.log('🚀 Main Products Script - Initializing...');
+        
+        // Check if auto-rendering should be prevented
+        if (window.preventAutoRender) {
+            console.log('⏸️ Auto-rendering prevented for this page');
+            return;
+        }
+        
+        // Check if we're on index page but should use featured products logic instead
+        if (window.location.pathname === '/' || window.location.pathname.endsWith('index.html')) {
+            // Check if featured products are being handled by index.js
+            const featuredGrid = document.getElementById('featuredProductsGrid');
+            if (featuredGrid && window.loadFeaturedProducts) {
+                console.log('⏸️ Skipping main-products.js initialization - featured products handled by index.js');
+                return;
+            }
+        }
         
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', function() {
