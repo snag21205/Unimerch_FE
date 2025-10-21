@@ -1,9 +1,12 @@
 // All Products Page JavaScript
 // Handles product listing, search, filtering, sorting, and pagination
 
+
 // Global variables
 let currentPage = 1;
-let currentLimit = 12;
+let currentLimit = 12; // For API pagination
+let displayLimit = 10; // Initial display limit
+let displayedCount = 0; // Number of products currently displayed
 let currentFilters = {
     search: '',
     category: 'all',
@@ -15,6 +18,7 @@ let allProducts = [];
 let filteredProducts = [];
 let totalProducts = 0;
 let totalPages = 0;
+
 
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
@@ -32,6 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
     loadProducts();
 });
 
+
 // Initialize page components
 function initializePage() {
     
@@ -48,6 +53,7 @@ function initializePage() {
         window.cartService.updateCartDisplay();
     }
 }
+
 
 // Parse URL parameters and apply initial filters
 function parseURLParameters() {
@@ -91,6 +97,7 @@ function parseURLParameters() {
     
 }
 
+
 // Setup event listeners
 function setupEventListeners() {
     // Search functionality
@@ -133,9 +140,16 @@ function setupEventListeners() {
         clearFiltersBtn.addEventListener('click', clearAllFilters);
     }
     
+    // Load More button
+    const loadMoreBtn = document.getElementById('loadMoreBtn');
+    if (loadMoreBtn) {
+        loadMoreBtn.addEventListener('click', loadMoreProducts);
+    }
+    
     // Navigation scroll effect
     window.addEventListener('scroll', handleScroll);
 }
+
 
 // Load products from API
 async function loadProducts() {
@@ -177,7 +191,10 @@ async function loadProducts() {
             // Apply sorting
             applySorting();
             
-            // Render products
+            // Reset displayed count
+            displayedCount = 0;
+            
+            // Render products (initially 10)
             renderProducts();
             
             // Update pagination
@@ -185,6 +202,9 @@ async function loadProducts() {
             
             // Update results info
             updateResultsInfo();
+            
+            // Update Load More button
+            updateLoadMoreButton();
             
         } else {
             showError('Không thể tải sản phẩm. Vui lòng thử lại sau.');
@@ -197,6 +217,71 @@ async function loadProducts() {
     }
 }
 
+
+// Load more products
+function loadMoreProducts() {
+    const loadMoreBtn = document.getElementById('loadMoreBtn');
+    const loadMoreSpinner = document.getElementById('loadMoreSpinner');
+    const loadMoreText = document.getElementById('loadMoreText');
+    
+    // Show loading state
+    if (loadMoreBtn) {
+        loadMoreBtn.disabled = true;
+    }
+    if (loadMoreSpinner) {
+        loadMoreSpinner.style.display = 'inline-block';
+    }
+    if (loadMoreText) {
+        loadMoreText.textContent = 'Đang tải...';
+    }
+    
+    // Simulate loading delay for better UX
+    setTimeout(() => {
+        // Increase displayed count
+        displayedCount += displayLimit;
+        
+        // Render more products
+        renderProducts(false);
+        
+        // Update Load More button
+        updateLoadMoreButton();
+        
+        // Reset button state
+        if (loadMoreBtn) {
+            loadMoreBtn.disabled = false;
+        }
+        if (loadMoreSpinner) {
+            loadMoreSpinner.style.display = 'none';
+        }
+        if (loadMoreText) {
+            loadMoreText.textContent = 'Xem thêm sản phẩm';
+        }
+    }, 300);
+}
+
+
+// Update Load More button visibility
+function updateLoadMoreButton() {
+    const loadMoreContainer = document.getElementById('loadMoreContainer');
+    
+    if (!loadMoreContainer) return;
+    
+    // Show button if there are more products to display
+    if (displayedCount < allProducts.length) {
+        loadMoreContainer.style.display = 'block';
+        
+        // Update button text with remaining count
+        const loadMoreText = document.getElementById('loadMoreText');
+        const remaining = allProducts.length - displayedCount;
+        if (loadMoreText) {
+            loadMoreText.textContent = `Xem thêm sản phẩm (${remaining})`;
+        }
+    } else {
+        loadMoreContainer.style.display = 'none';
+    }
+}
+
+
 // Handle search
 function handleSearch() {
     const searchInput = document.getElementById('searchInput');
@@ -205,6 +290,7 @@ function handleSearch() {
     
     currentFilters.search = searchTerm;
     currentPage = 1; // Reset to first page
+    displayedCount = 0; // Reset displayed count
     
     // Show clear filters button if search term exists
     updateClearFiltersButton();
@@ -212,11 +298,13 @@ function handleSearch() {
     loadProducts();
 }
 
+
 // Handle category filter
 function handleCategoryFilter(category) {
     
     currentFilters.category = category;
     currentPage = 1; // Reset to first page
+    displayedCount = 0; // Reset displayed count
     
     // Show clear filters button if not showing all
     updateClearFiltersButton();
@@ -224,12 +312,15 @@ function handleCategoryFilter(category) {
     loadProducts();
 }
 
+
 // Handle sort
 function handleSort(sortValue) {
     
     currentFilters.sort = sortValue;
+    displayedCount = 0; // Reset displayed count
     applySorting();
     renderProducts();
+    updateLoadMoreButton();
     
     // Scroll to top of products section
     const productsSection = document.querySelector('section.py-5');
@@ -237,6 +328,7 @@ function handleSort(sortValue) {
         productsSection.scrollIntoView({ behavior: 'smooth' });
     }
 }
+
 
 // Apply sorting to products
 function applySorting() {
@@ -267,8 +359,9 @@ function applySorting() {
     }
 }
 
+
 // Render products
-function renderProducts() {
+function renderProducts(resetDisplay = true) {
     const container = document.getElementById('productsGrid');
     const loadingSpinner = document.getElementById('loadingSpinner');
     const noResults = document.getElementById('noResults');
@@ -297,65 +390,176 @@ function renderProducts() {
         noResults.style.display = 'none';
     }
     
-    // Render product cards - always use consistent design
-    container.innerHTML = allProducts.map(product => `
-        <div class="col">
-            <div class="card h-100 border-0 shadow-sm" style="transition: all 0.3s ease; cursor: pointer;" 
-                 onclick="goToProductDetail(${product.id})" 
-                 onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 12px 40px rgba(0,0,0,0.15)'" 
-                 onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px rgba(0,0,0,0.1)'">
-                
-                <!-- Product Image -->
-                <div class="position-relative overflow-hidden" style="height: 250px;">
-                    <img src="${getProductImageUrl(product)}" 
-                         class="card-img-top w-100 h-100" 
-                         style="object-fit: cover; transition: transform 0.3s ease;"
-                         alt="${product.name}"
-                         onmouseover="this.style.transform='scale(1.05)'"
-                         onmouseout="this.style.transform='scale(1)'"
-                         onerror="this.src='../../assets/images/products/demo.png'; this.onerror=null;">
-                </div>
-                
-                <!-- Product Info -->
-                <div class="card-body p-3">
-                    <h6 class="card-title fw-semibold mb-2" style="color: #111; font-size: 1rem; line-height: 1.3;">
-                        ${product.name}
-                    </h6>
-                    <p class="card-text text-muted small mb-3" style="font-size: 0.8rem; line-height: 1.4; height: 2.4em; overflow: hidden;">
-                        ${product.description ? product.description.substring(0, 60) + '...' : 'Sản phẩm chất lượng cao từ UEH'}
-                    </p>
-                    
-                    <!-- Price -->
-                    <div class="d-flex align-items-center justify-content-between mb-3">
-                        <div class="price-info">
-                            <span class="h6 fw-bold text-dark mb-0">${formatPrice(product.discount_price || product.price)}</span>
-                            ${product.discount_price && product.discount_price < product.price ? 
-                                `<small class="text-muted text-decoration-line-through ms-2">${formatPrice(product.price)}</small>` : ''
-                            }
-                        </div>
-                        ${product.discount_price && product.discount_price < product.price ? 
-                            `<span class="badge bg-danger rounded-pill" style="font-size: 0.7rem;">-${Math.round(((product.price - product.discount_price) / product.price) * 100)}%</span>` : ''
-                        }
-                    </div>
-                    
-                    <!-- Action Button -->
-                    <button class="btn btn-dark w-100 rounded-pill py-2" 
-                            onclick="addToCart(${product.id}, event)"
-                            style="font-weight: 500; transition: all 0.3s ease; font-size: 0.9rem;"
-                            onmouseover="this.style.transform='translateY(-1px)'"
-                            onmouseout="this.style.transform='translateY(0)'">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 6px;">
-                            <circle cx="8" cy="21" r="1"></circle>
-                            <circle cx="19" cy="21" r="1"></circle>
-                            <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57L20.5 9H5.12"></path>
-                        </svg>
-                        Thêm vào giỏ
-                    </button>
-                </div>
-            </div>
-        </div>
-    `).join('');
+    // Calculate how many products to show
+    if (resetDisplay) {
+        displayedCount = Math.min(displayLimit, allProducts.length);
+    }
+    
+    const productsToShow = allProducts.slice(0, displayedCount);
+    
+    // Render product cards with modern design
+    container.innerHTML = productsToShow.map(product => createProductCard(product)).join('');
 }
+
+
+// Create modern product card
+function createProductCard(product) {
+    // Tính giá hiển thị (discount nếu có)
+    const displayPrice = product.discount_price || product.price;
+    const hasDiscount = product.discount_price !== null && product.discount_price < product.price;
+    const discountPercent = hasDiscount
+      ? Math.round(((product.price - product.discount_price) / product.price) * 100)
+      : 0;
+    
+    // Check stock status
+    const isOutOfStock = product.quantity === 0 || product.status === 'out_of_stock';
+    const stockLeft = product.quantity || 0;
+  
+    return `
+      <div class="col">
+        <div class="product-card-modern position-relative overflow-hidden" onclick="goToProductDetail(${product.id})" style="
+          cursor: pointer; 
+          border-radius: 24px; 
+          background: white;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+          border: 1px solid rgba(0, 0, 0, 0.05);
+          max-width: 350px;
+          margin: 0 auto;
+        " onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 12px 40px rgba(0,0,0,0.15)'" 
+           onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px rgba(0, 0, 0, 0.08)'">
+          
+          <!-- Discount Badge -->
+          ${hasDiscount ? `
+            <div class="position-absolute" style="top: 16px; left: 16px; z-index: 10;">
+              <div class="badge bg-danger text-white px-3 py-2 rounded-pill" style="font-size: 0.75rem; font-weight: 600; box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);">
+                -${discountPercent}%
+              </div>
+            </div>
+          ` : ''}
+    
+          <!-- Product Image Section -->
+          <div class="position-relative overflow-hidden" style="
+            background: #e3f2fd;
+            height: 280px;
+            padding: 0;
+            border-top-left-radius: 24px;
+            border-top-right-radius: 24px;
+          ">
+            <img src="${getProductImageUrl(product)}" alt="${product.name}"
+              style="
+                position: absolute;
+                inset: 0;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                object-position: center;
+                display: block;
+                transition: transform 0.4s ease;
+              "
+              onerror="this.src='../../assets/images/products/demo.png'; this.onerror=null;"
+              onmouseover="this.style.transform='scale(1.03)'"
+              onmouseout="this.style.transform='scale(1)'" />
+          </div>
+    
+          <!-- Product Content -->
+          <div class="p-4" style="background: white; min-height: 200px; display: flex; flex-direction: column;">
+            <!-- Category Badge -->
+            <div class="mb-2">
+              <span class="badge text-muted px-3 py-1 rounded-pill" style="
+                background: rgba(107, 114, 128, 0.1);
+                font-size: 0.7rem;
+                font-weight: 500;
+                letter-spacing: 0.5px;
+              ">${product.category || 'Sản phẩm'}</span>
+            </div>
+    
+            <!-- Product Title -->
+            <h5 class="fw-bold mb-2 product-title" style="
+              font-size: 1.25rem;
+              line-height: 1.3;
+              color: #1f2937;
+              font-family: 'Inter', sans-serif;
+              transition: all 0.3s ease;
+            ">${product.name}</h5>
+    
+            <!-- Stock Info -->
+            <div class="d-flex align-items-center mb-3">
+              <div class="ms-auto">
+                ${!isOutOfStock ? `
+                  <span class="badge bg-success bg-opacity-10 text-success px-2 py-1 rounded-pill" style="font-size: 0.7rem;">
+                    ${stockLeft > 0 ? `${stockLeft} sản phẩm` : 'Còn hàng'}
+                  </span>
+                ` : `
+                  <span class="badge bg-danger bg-opacity-10 text-danger px-2 py-1 rounded-pill" style="font-size: 0.7rem;">
+                    Hết hàng
+                  </span>
+                `}
+              </div>
+            </div>
+    
+            <!-- Price Section -->
+            <div class="d-flex align-items-baseline mb-3">
+              <div class="me-auto">
+                ${hasDiscount ? `
+                  <div class="d-flex align-items-baseline gap-2">
+                    <span class="h5 fw-bold text-danger mb-0" style="font-size: 1.5rem;">${formatPrice(displayPrice)}</span>
+                    <span class="text-muted text-decoration-line-through" style="font-size: 1rem;">${formatPrice(product.price)}</span>
+                  </div>
+                ` : `
+                  <span class="h5 fw-bold mb-0" style="font-size: 1.5rem; color: #1f2937;">${formatPrice(displayPrice)}</span>
+                `}
+              </div>
+            </div>
+    
+            <!-- Action Button -->
+            <div class="mt-auto">
+              <button class="btn btn-dark w-100 rounded-pill" 
+                onclick="addToCart(${product.id}, event)" 
+                ${isOutOfStock ? 'disabled' : ''}
+                style="
+                  font-size: 0.9rem; 
+                  font-weight: 600; 
+                  padding: 14px 24px;
+                  background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
+                  border: none;
+                  transition: all 0.3s ease;
+                  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                  ${isOutOfStock ? 'opacity: 0.5; cursor: not-allowed;' : ''}
+                " 
+                onmouseover="if(!this.disabled) this.style.transform='translateY(-2px)'" 
+                onmouseout="if(!this.disabled) this.style.transform='translateY(0)'">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-2" style="display: inline-block; vertical-align: middle;">
+                  <circle cx="8" cy="21" r="1"></circle>
+                  <circle cx="19" cy="21" r="1"></circle>
+                  <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57L20.5 9H5.12"></path>
+                </svg>
+                ${isOutOfStock ? 'Hết hàng' : 'Thêm vào giỏ'}
+              </button>
+            </div>
+          </div>
+    
+          <!-- Stock Status Overlay -->
+          ${isOutOfStock ? `
+            <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center" style="
+              background: rgba(255, 255, 255, 0.95); 
+              z-index: 15;
+              backdrop-filter: blur(4px);
+              border-radius: 24px;
+            ">
+              <div class="text-center">
+                <div class="badge bg-white text-dark px-4 py-2 rounded-pill mb-2" style="font-size: 0.9rem; border: 1px solid #e5e7eb; font-weight: 600;">
+                  Hết hàng
+                </div>
+                <p class="text-muted mb-0" style="font-size: 0.8rem;">Sẽ cập nhật sớm</p>
+              </div>
+            </div>
+          ` : ''}
+        </div>
+      </div>
+    `;
+}
+
 
 // Update pagination
 function updatePagination() {
@@ -403,9 +607,11 @@ function updatePagination() {
     pagination.innerHTML = paginationHTML;
 }
 
+
 // Go to specific page
 function goToPage(page) {
     currentPage = page;
+    displayedCount = 0; // Reset displayed count
     loadProducts();
     
     // Scroll to top of products section
@@ -415,16 +621,14 @@ function goToPage(page) {
     }
 }
 
+
 // Update results info
 function updateResultsInfo() {
     const resultsInfo = document.getElementById('resultsInfo');
     
     if (!resultsInfo) return;
     
-    const startItem = (currentPage - 1) * currentLimit + 1;
-    const endItem = Math.min(currentPage * currentLimit, totalProducts);
-    
-    let infoText = `Hiển thị ${startItem}-${endItem} trong tổng số ${totalProducts} sản phẩm`;
+    let infoText = `Hiển thị ${displayedCount} trong tổng số ${allProducts.length} sản phẩm`;
     
     // Add filter info
     if (currentFilters.search) {
@@ -445,6 +649,7 @@ function updateResultsInfo() {
     resultsInfo.textContent = infoText;
 }
 
+
 // Update active filter button
 function updateActiveFilter(activeButton) {
     document.querySelectorAll('.filter-btn').forEach(btn => {
@@ -455,6 +660,7 @@ function updateActiveFilter(activeButton) {
     activeButton.classList.remove('btn-outline-dark');
     activeButton.classList.add('active', 'btn-dark');
 }
+
 
 // Update clear filters button visibility
 function updateClearFiltersButton() {
@@ -468,6 +674,7 @@ function updateClearFiltersButton() {
     clearBtn.style.display = hasActiveFilters ? 'inline-block' : 'none';
 }
 
+
 // Clear all filters
 function clearAllFilters() {
     
@@ -480,8 +687,9 @@ function clearAllFilters() {
         maxPrice: null
     };
     
-    // Reset page
+    // Reset page and display
     currentPage = 1;
+    displayedCount = 0;
     
     // Clear search input
     const searchInput = document.getElementById('searchInput');
@@ -514,6 +722,7 @@ function clearAllFilters() {
     loadProducts();
 }
 
+
 // Show/hide loading spinner
 function showLoading(show) {
     const loadingSpinner = document.getElementById('loadingSpinner');
@@ -527,6 +736,7 @@ function showLoading(show) {
         productsGrid.style.display = show ? 'none' : 'flex';
     }
 }
+
 
 // Show error message
 function showError(message) {
@@ -557,6 +767,7 @@ function showError(message) {
     }
 }
 
+
 // Handle scroll for navbar
 function handleScroll() {
     const navbar = document.getElementById('mainNav');
@@ -567,6 +778,7 @@ function handleScroll() {
     }
 }
 
+
 // Format price
 function formatPrice(price) {
     return new Intl.NumberFormat('vi-VN', {
@@ -576,6 +788,7 @@ function formatPrice(price) {
         maximumFractionDigits: 0
     }).format(price);
 }
+
 
 // Get product image URL with correct path
 function getProductImageUrl(product) {
@@ -609,6 +822,7 @@ function getProductImageUrl(product) {
     return imageUrl;
 }
 
+
 // Debounce function
 function debounce(func, wait) {
     let timeout;
@@ -621,6 +835,7 @@ function debounce(func, wait) {
         timeout = setTimeout(later, wait);
     };
 }
+
 
 // Add to cart function using cart.service
 function addToCart(productId, event) {
@@ -655,13 +870,16 @@ function addToCart(productId, event) {
     }
 }
 
+
 // Go to product detail function
 function goToProductDetail(productId) {
     window.location.href = `product-detail.html?id=${productId}`;
 }
+
 
 // Global functions for onclick handlers
 window.goToPage = goToPage;
 window.clearAllFilters = clearAllFilters;
 window.addToCart = addToCart;
 window.goToProductDetail = goToProductDetail;
+window.loadMoreProducts = loadMoreProducts;
