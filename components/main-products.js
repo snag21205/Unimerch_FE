@@ -723,6 +723,8 @@ function createProductCard(product) {
                 // Fallback to simple toast
                 showToast(`Added "${product.name}" to cart!`, 'success');
             }
+        } else {
+            showToast('Không tìm thấy sản phẩm', 'error');
         }
     }
 

@@ -74,14 +74,8 @@ class ApiService {
                 dashboard: '/api/admin/stats/dashboard',
                 recentActivity: '/api/admin/stats/recent-activity',
                 revenue: '/api/admin/stats/revenue',
-                revenueCompare: '/api/admin/stats/revenue/compare',
-                paymentMethods: '/api/admin/stats/payment-methods',
                 productStats: '/api/admin/stats/products',
-                sellerStats: '/api/admin/stats/sellers',
-                orderStats: '/api/admin/stats/orders',
-                userGrowth: '/api/admin/stats/users/growth',
-                completeStats: '/api/admin/stats/complete',
-                summary: '/api/admin/stats/summary'
+                orderStats: '/api/admin/stats/orders'
             },
             
             seller: {
@@ -581,6 +575,30 @@ class ApiService {
     }
 
     /**
+     * Get current user info from JWT token
+     */
+    getCurrentUser() {
+        try {
+            const token = this.getToken();
+            if (!token) return null;
+
+            // Parse JWT token
+            const base64Url = token.split('.')[1];
+            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            const payload = JSON.parse(atob(base64));
+            
+            return {
+                id: payload.id,
+                role: payload.role,
+                email: payload.email,
+                name: payload.name
+            };
+        } catch (error) {
+            return null;
+        }
+    }
+
+    /**
      * Get current user ID
      */
     getCurrentUserId() {
@@ -684,20 +702,6 @@ class ApiService {
         });
     }
 
-    async getRevenueComparison(queryParams = {}) {
-        const query = new URLSearchParams(queryParams).toString();
-        const endpoint = this.endpoints.admin.revenueCompare + (query ? `?${query}` : '');
-        return this.request(endpoint, {
-            requireAuth: true
-        });
-    }
-
-    async getPaymentMethodStats() {
-        return this.request(this.endpoints.admin.paymentMethods, {
-            requireAuth: true
-        });
-    }
-
     async getProductStats(queryParams = {}) {
         const query = new URLSearchParams(queryParams).toString();
         const endpoint = this.endpoints.admin.productStats + (query ? `?${query}` : '');
@@ -706,54 +710,8 @@ class ApiService {
         });
     }
 
-    async getSellerStats(queryParams = {}) {
-        const query = new URLSearchParams(queryParams).toString();
-        const endpoint = this.endpoints.admin.sellerStats + (query ? `?${query}` : '');
-        return this.request(endpoint, {
-            requireAuth: true
-        });
-    }
-
     async getOrderStats() {
         return this.request(this.endpoints.admin.orderStats, {
-            requireAuth: true
-        });
-    }
-
-    async getRecentActivity(limit = 10) {
-        const query = new URLSearchParams({ limit }).toString();
-        const endpoint = this.endpoints.admin.recentActivity + `?${query}`;
-        return this.request(endpoint, {
-            requireAuth: true
-        });
-    }
-
-    async getSellerStats(queryParams = {}) {
-        const query = new URLSearchParams(queryParams).toString();
-        const endpoint = this.endpoints.admin.sellerStats + (query ? `?${query}` : '');
-        return this.request(endpoint, {
-            requireAuth: true
-        });
-    }
-
-    async getUserGrowthStats(queryParams = {}) {
-        const query = new URLSearchParams(queryParams).toString();
-        const endpoint = this.endpoints.admin.userGrowth + (query ? `?${query}` : '');
-        return this.request(endpoint, {
-            requireAuth: true
-        });
-    }
-
-    async getCompleteStats(queryParams = {}) {
-        const query = new URLSearchParams(queryParams).toString();
-        const endpoint = this.endpoints.admin.completeStats + (query ? `?${query}` : '');
-        return this.request(endpoint, {
-            requireAuth: true
-        });
-    }
-
-    async getStatsSummary() {
-        return this.request(this.endpoints.admin.summary, {
             requireAuth: true
         });
     }
