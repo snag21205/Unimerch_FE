@@ -707,9 +707,45 @@
     function addProductToCart(productId, event) {
         event.stopPropagation();
         
-        const product = products.find(p => p.id === productId);
+        // First try to find product in local products array
+        let product = products.find(p => p.id === productId);
+        
+        // If not found locally, try to get from API
+        if (!product && window.apiService) {
+            // Use async function to get product from API
+            apiService.getProductDetail(productId)
+                .then(response => {
+                    const apiProduct = response?.data;
+                    if (apiProduct) {
+                        // Use cart service if available
+                        if (window.cartService) {
+                            const productData = {
+                                product_name: apiProduct.name,
+                                product_price: apiProduct.price,
+                                discount_price: apiProduct.discount_price,
+                                image: apiProduct.image_url,
+                                name: apiProduct.name,
+                                price: apiProduct.discount_price || apiProduct.price
+                            };
+                            cartService.addToCart(productId, 1, productData);
+                        } else {
+                            // Fallback to simple toast
+                            showToast(`"${apiProduct.name}" đã được thêm vào giỏ hàng!`, 'success');
+                        }
+                    } else {
+                        showToast('Không tìm thấy thông tin sản phẩm', 'error');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error getting product details:', error);
+                    showToast('Có lỗi xảy ra khi thêm vào giỏ hàng', 'error');
+                });
+            return; // Exit early for API call
+        }
+        
+        // Handle local product
         if (product) {
-('Adding to cart:', product.name);
+            console.log('Adding to cart:', product.name);
             
             // Check if cart service is available
             if (window.cartService) {
@@ -729,6 +765,8 @@
                 // Fallback to simple toast
                 showToast(`Added "${product.name}" to cart!`, 'success');
             }
+        } else {
+            showToast('Không tìm thấy sản phẩm', 'error');
         }
     }
     

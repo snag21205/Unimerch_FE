@@ -38,21 +38,8 @@
         
         <nav class="sidebar-nav">
             <div class="nav-section">
-                <div class="nav-section-title">Tổng Quan</div>
-                <a href="#" class="nav-link active" data-tab="dashboard">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <rect x="3" y="3" width="7" height="7"></rect>
-                        <rect x="14" y="3" width="7" height="7"></rect>
-                        <rect x="14" y="14" width="7" height="7"></rect>
-                        <rect x="3" y="14" width="7" height="7"></rect>
-                    </svg>
-                    Bảng Điều Khiển
-                </a>
-            </div>
-            
-            <div class="nav-section">
                 <div class="nav-section-title">Quản Lý</div>
-                <a href="#" class="nav-link" data-tab="products">
+                <a href="#" class="nav-link active" data-tab="products">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M20 7H4a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2zM4 7v11a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7"></path>
                     </svg>
@@ -143,147 +130,9 @@
         </div>
 
         <!-- Dashboard Content -->
-        <div class="container-fluid p-4" id="dashboard-tab">
-            <!-- Stats Cards -->
-            <div class="row mb-4">
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="stats-card revenue fade-in">
-                        <div class="stats-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <line x1="12" y1="1" x2="12" y2="23"></line>
-                                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
-                            </svg>
-                        </div>
-                        <div class="stats-number" id="card_total_revenue">-</div>
-                        <div class="stats-label">Tổng Doanh Thu</div>
-                    </div>
-                </div>
-                
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="stats-card products fade-in" style="animation-delay: 0.1s;">
-                        <div class="stats-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M20 7H4a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2zM4 7v11a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7"></path>
-                            </svg>
-                        </div>
-                        <div class="stats-number" id="card_total_products">-</div>
-                        <div class="stats-label">Sản Phẩm</div>
-                    </div>
-                </div>
-                
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="stats-card orders fade-in" style="animation-delay: 0.2s;">
-                        <div class="stats-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
-                                <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
-                            </svg>
-                        </div>
-                        <div class="stats-number" id="card_total_orders">-</div>
-                        <div class="stats-label">Đơn Hàng</div>
-                    </div>
-                </div>
-                
-                <div class="col-lg-3 col-md-6 mb-4">
-                    <div class="stats-card reviews fade-in" style="animation-delay: 0.3s;">
-                        <div class="stats-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"></polygon>
-                            </svg>
-                        </div>
-                        <div class="stats-number" id="card_avg_rating">-</div>
-                        <div class="stats-label">Đánh Giá TB</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Charts and Tables Row -->
-            <div class="row mb-4">
-                <div class="col-lg-8 mb-4">
-                    <div class="card slide-up">
-                        <div class="card-header">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <h5 class="mb-1">Doanh Thu Theo Thời Gian</h5>
-                                    <small class="text-muted">Biểu đồ doanh thu 30 ngày gần nhất</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="chart-container">
-                                <canvas id="revenueChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-lg-4 mb-4">
-                    <div class="card slide-up" style="animation-delay: 0.1s;">
-                        <div class="card-header">
-                            <h5 class="mb-1">Sản Phẩm Bán Chạy</h5>
-                            <small class="text-muted">Top 5 sản phẩm</small>
-                        </div>
-                        <div class="card-body p-0">
-                            <div class="list-group list-group-flush" id="topProductsList">
-                                <div class="list-group-item border-0 py-3 text-center">
-                                    <div class="spinner-border spinner-border-sm text-primary" role="status">
-                                        <span class="visually-hidden">Đang tải...</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Recent Orders -->
-            <div class="row">
-                <div class="col-12">
-                    <div class="card slide-up" style="animation-delay: 0.2s;">
-                        <div class="card-header">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    <h5 class="mb-1">Đơn Hàng Gần Đây</h5>
-                                    <small class="text-muted">Các đơn hàng mới nhất</small>
-                                </div>
-                                <a href="#" class="btn btn-sm btn-outline-primary" onclick="switchTab('orders')">Xem Tất Cả</a>
-                            </div>
-                        </div>
-                        <div class="card-body p-0">
-                            <div class="table-responsive">
-                                <table class="table table-hover mb-0" id="recentOrdersTable">
-                                    <thead>
-                                        <tr>
-                                            <th>Mã Đơn</th>
-                                            <th>Khách Hàng</th>
-                                            <th>Sản Phẩm</th>
-                                            <th>Số Lượng</th>
-                                            <th>Tổng Tiền</th>
-                                            <th>Trạng Thái</th>
-                                            <th>Ngày Đặt</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td colspan="7" class="text-center">
-                                                <div class="spinner-border spinner-border-sm text-primary" role="status">
-                                                    <span class="visually-hidden">Đang tải...</span>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Stats Tab -->
-
+        
         <!-- Products Tab -->
-        <div class="container-fluid p-4 d-none" id="products-tab">
+        <div class="container-fluid p-4" id="products-tab">
             <!-- Header with Search and Add Button -->
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div class="flex-grow-1 me-3" style="max-width: 400px;">
@@ -646,7 +495,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                    <button type="button" class="btn btn-success" onclick="saveProduct()">
+                    <button type="button" class="btn btn-success" onclick="saveProduct(event)">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-1">
                             <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
                             <polyline points="17 21 17 13 7 13 7 21"></polyline>
@@ -688,7 +537,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                    <button type="button" class="btn btn-danger" onclick="confirmDeleteProduct()">
+                    <button type="button" class="btn btn-danger" onclick="confirmDeleteProduct(event)">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-1">
                             <polyline points="3 6 5 6 21 6"></polyline>
                             <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
@@ -799,7 +648,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                    <button type="button" class="btn btn-warning" onclick="confirmUpdateOrderStatus()">
+                    <button type="button" class="btn btn-warning" onclick="confirmUpdateOrderStatus(event)">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-1">
                             <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
                             <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
@@ -818,7 +667,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
     <!-- API Service -->
-    <script src="../../js/core/api.service.js"></script>
+    <script src="../../js/shared/api.service.js"></script>
     
     <!-- Auth Protection -->
     <script src="../../js/features/auth/auth-protection.service.js"></script>
@@ -884,8 +733,11 @@
         </div>
     </div>
 
-    <!-- Seller JavaScript -->
-    <script src="../../js/pages/seller/seller-dashboard.js"></script>
+    <!-- Seller JavaScript Modules -->
+    <script src="../../js/seller/seller-products.js"></script>
+    <script src="../../js/seller/seller-orders.js"></script>
+    <script src="../../js/seller/seller-reviews.js"></script>
+    <script src="../../js/seller/seller-dashboard.js"></script>
 </body>
 </html>
 
