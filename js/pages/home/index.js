@@ -112,23 +112,6 @@ function updateActiveTab(activeTab) {
     activeTab.classList.add('active');
 }
 
-// Generate stars HTML for rating display
-function generateStars(rating) {
-    let stars = '';
-    for (let i = 1; i <= 5; i++) {
-        if (i <= rating) {
-            stars += `<svg class="me-1" style="width: 16px; height: 16px; color: #ffc107;" viewBox="0 0 24 24" fill="currentColor">
-                        <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"></polygon>
-                      </svg>`;
-        } else {
-            stars += `<svg class="me-1" style="width: 16px; height: 16px; color: #e5e7eb;" viewBox="0 0 24 24" fill="currentColor">
-                        <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"></polygon>
-                      </svg>`;
-        }
-    }
-    return stars;
-}
-
 // Load featured products for index page
 async function loadFeaturedProducts() {
     try {
@@ -149,45 +132,12 @@ async function loadFeaturedProducts() {
                 products = response.data.products.map(window.transformProductData);
             }
             
-            // Load ratings for featured products
-            await loadFeaturedProductRatings(products);
-            
             renderFeaturedProducts(products);
         } else {
             showFeaturedProductsError();
         }
     } catch (error) {
         showFeaturedProductsError();
-    }
-}
-
-// Load ratings for featured products
-async function loadFeaturedProductRatings(products) {
-    if (!products || products.length === 0) return;
-    
-    try {
-        // Load ratings for each product
-        const ratingPromises = products.map(async (product) => {
-            try {
-                const response = await window.apiService.getProductReviewStats(product.id);
-                if (response.success && response.data) {
-                    product.rating = response.data.average_rating || 0;
-                    product.reviews = response.data.total_reviews || 0;
-                }
-            } catch (error) {
-                // Keep default values if rating load fails
-                product.rating = product.rating || 0;
-                product.reviews = product.reviews || 0;
-            }
-        });
-        
-        await Promise.all(ratingPromises);
-    } catch (error) {
-        // If rating loading fails, set default values
-        products.forEach(product => {
-            product.rating = product.rating || 0;
-            product.reviews = product.reviews || 0;
-        });
     }
 }
 
@@ -294,6 +244,33 @@ function showFeaturedProductsError() {
 }
 
 // Cart functions (simplified)
+function addToCart(productId) {
+    
+    // Get product data from API through main-products.js
+    if (window.apiService) {
+        // For now, just add a generic item - this should be enhanced later
+        const existingItem = cart.find(item => item.id === productId);
+        
+        if (existingItem) {
+            existingItem.quantity += 1;
+        } else {
+            cart.push({
+                id: productId,
+                name: `Product ${productId}`, // Will be enhanced with real API data
+                price: 0, // Will be fetched from API
+                image: 'demo.png',
+                quantity: 1
+            });
+        }
+        
+        localStorage.setItem('ueh-cart', JSON.stringify(cart));
+        updateCartUI();
+        showToast('Product added to cart!', 'success');
+    } else {
+        showToast('Unable to add to cart. Please try again.', 'error');
+    }
+}
+
 function updateCartUI() {
     const cartCount = document.getElementById('cartCount');
     const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
