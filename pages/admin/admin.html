@@ -372,13 +372,21 @@
                         <input type="text" class="form-control border-start-0" id="adminProductSearchInput" placeholder="Tìm kiếm sản phẩm...">
                     </div>
                 </div>
-                <button class="btn btn-primary" onclick="showAdminAddProductModal()">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-1">
-                        <line x1="12" y1="5" x2="12" y2="19"></line>
-                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                    </svg>
-                    Thêm Sản Phẩm
-                </button>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-outline-primary" onclick="showAdminCategoriesModal()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-1">
+                            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                        Quản lý danh mục
+                    </button>
+                    <button class="btn btn-primary" onclick="showAdminAddProductModal()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-1">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        Thêm Sản Phẩm
+                    </button>
+                </div>
             </div>
             
             <!-- Products Table Card -->
@@ -661,11 +669,7 @@
                                 <label for="adminProductCategory" class="form-label">Danh mục <span class="text-danger">*</span></label>
                                 <select class="form-select" id="adminProductCategory" name="category_id" required>
                                     <option value="">Chọn danh mục...</option>
-                                    <option value="1">Áo</option>
-                                    <option value="2">Quần</option>
-                                    <option value="3">Phụ kiện</option>
-                                    <option value="4">Giày dép</option>
-                                    <option value="5">Túi xách</option>
+                                    <!-- Categories will be loaded dynamically -->
                                 </select>
                                 <div class="invalid-feedback">Vui lòng chọn danh mục</div>
                             </div>
@@ -1037,6 +1041,126 @@
         protectPage('admin');
     </script>
     
+    <!-- Categories Management Modal -->
+    <div class="modal fade" id="adminCategoriesModal" tabindex="-1" aria-labelledby="adminCategoriesModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="adminCategoriesModalLabel">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-2">
+                            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                        Quản lý danh mục sản phẩm
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Header with Add Button -->
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div>
+                            <p class="mb-0 text-muted">Quản lý danh mục sản phẩm của cửa hàng</p>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-sm btn-outline-primary" onclick="refreshAdminCategories()">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-1">
+                                    <polyline points="23 4 23 10 17 10"></polyline>
+                                    <polyline points="1 20 1 14 7 14"></polyline>
+                                    <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                                </svg>
+                                Làm mới
+                            </button>
+                            <button class="btn btn-sm btn-primary" onclick="showAddCategoryModal()">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-1">
+                                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                                </svg>
+                                Thêm danh mục
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Loading -->
+                    <div id="adminCategoriesLoading" class="text-center py-5">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Đang tải...</span>
+                        </div>
+                        <p class="mt-2 text-muted">Đang tải danh sách danh mục...</p>
+                    </div>
+
+                    <!-- Categories Table -->
+                    <div class="table-responsive d-none" id="adminCategoriesTableContainer">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th style="width: 50px;">#</th>
+                                    <th>Tên danh mục</th>
+                                    <th style="width: 120px;">Số sản phẩm</th>
+                                    <th style="width: 150px;" class="text-center">Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminCategoriesTableBody">
+                                <!-- Categories will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Empty State -->
+                    <div id="adminCategoriesEmptyState" class="text-center py-5 d-none">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="text-muted mb-3">
+                            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                        <p class="text-muted mb-0">Chưa có danh mục nào</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Category Modal -->
+    <div class="modal fade" id="adminCategoryFormModal" tabindex="-1" aria-labelledby="adminCategoryFormModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="adminCategoryFormModalLabel">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-2">
+                            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                        <span id="adminCategoryFormTitle">Thêm danh mục mới</span>
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="adminCategoryForm">
+                        <input type="hidden" id="adminCategoryId">
+                        <div class="mb-3">
+                            <label for="adminCategoryName" class="form-label">Tên danh mục <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="adminCategoryName" required>
+                            <div class="invalid-feedback">Vui lòng nhập tên danh mục</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="adminCategoryDescription" class="form-label">Mô tả</label>
+                            <textarea class="form-control" id="adminCategoryDescription" rows="3" placeholder="Mô tả về danh mục (tùy chọn)"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                    <button type="button" class="btn btn-primary" onclick="saveCategoryForm()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-1">
+                            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                            <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                            <polyline points="7 3 7 8 15 8"></polyline>
+                        </svg>
+                        Lưu
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Review Detail Modal -->
     <div class="modal fade" id="adminReviewDetailModal" tabindex="-1" aria-labelledby="adminReviewDetailModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -1143,6 +1267,7 @@
     
     <!-- Admin JavaScript Modules -->
     <script src="../../js/admin/admin-analytics.js"></script>
+    <script src="../../js/admin/admin-categories.js"></script>
     <script src="../../js/admin/admin-products.js"></script>
     <script src="../../js/admin/admin-orders.js"></script>
     <script src="../../js/admin/admin-users.js"></script>

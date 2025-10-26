@@ -78,6 +78,14 @@ class ApiService {
                 orderStats: '/api/admin/stats/orders'
             },
             
+            categories: {
+                list: '/api/categories',
+                detail: '/api/categories/:id',
+                create: '/api/categories',
+                update: '/api/categories/:id',
+                delete: '/api/categories/:id'
+            },
+            
             seller: {
                 // Order Management
                 orders: '/api/seller/orders'
@@ -714,6 +722,101 @@ class ApiService {
         return this.request(this.endpoints.admin.orderStats, {
             requireAuth: true
         });
+    }
+
+    // ===== CATEGORY METHODS =====
+    
+    // Get all categories (public)
+    async getAllCategories() {
+        return this.request(this.endpoints.categories.list, {
+            requireAuth: false
+        });
+    }
+
+    // Get category by ID (public)
+    async getCategoryById(categoryId) {
+        return this.request(this.endpoints.categories.detail, {
+            params: { id: categoryId },
+            requireAuth: false
+        });
+    }
+
+    // Create category (admin only)
+    async createCategory(categoryData) {
+        return this.request(this.endpoints.categories.create, {
+            method: 'POST',
+            body: categoryData,
+            requireAuth: true
+        });
+    }
+
+    // Update category (admin only)
+    async updateCategory(categoryId, categoryData) {
+        return this.request(this.endpoints.categories.update, {
+            method: 'PUT',
+            body: categoryData,
+            params: { id: categoryId },
+            requireAuth: true
+        });
+    }
+
+    // Delete category (admin only)
+    async deleteCategory(categoryId) {
+        return this.request(this.endpoints.categories.delete, {
+            method: 'DELETE',
+            params: { id: categoryId },
+            requireAuth: true
+        });
+    }
+
+    // Get categories with fallback (for all pages)
+    async getCategories() {
+        try {
+            // Try to get from dedicated categories endpoint first
+            const response = await this.getAllCategories();
+            
+            // Backend returns: { success: true, data: [...array...], message: "..." }
+            let categories = [];
+            if (response.data) {
+                // If data is already an array, use it directly
+                if (Array.isArray(response.data)) {
+                    categories = response.data;
+                }
+                // If data has a categories property, use that
+                else if (response.data.categories && Array.isArray(response.data.categories)) {
+                    categories = response.data.categories;
+                }
+                // If data is an object with category properties
+                else if (typeof response.data === 'object') {
+                    categories = [response.data];
+                }
+            }
+            
+            return {
+                success: true,
+                data: categories,
+                total: categories.length
+            };
+        } catch (error) {
+            // Fallback to stats endpoint (requires auth)
+            try {
+                const statsResponse = await this.getProductStats();
+                const fallbackCategories = statsResponse.data.category_analysis || [];
+                
+                return {
+                    success: true,
+                    data: fallbackCategories,
+                    total: statsResponse.data.summary?.total_categories || fallbackCategories.length
+                };
+            } catch (statsError) {
+                // Return empty array instead of throwing to prevent UI break
+                return {
+                    success: false,
+                    data: [],
+                    total: 0
+                };
+            }
+        }
     }
 }
 

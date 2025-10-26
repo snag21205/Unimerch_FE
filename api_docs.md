@@ -487,6 +487,181 @@ Authorization: Bearer <ADMIN_JWT_TOKEN>
 
 ---
 
+## 📁 Category APIs
+
+### Get All Categories
+
+**Endpoint:** `GET /api/category`  
+**Description:** Get list of all product categories  
+**Authentication:** None required  
+
+**Response (200 OK):**
+```json
+{
+  "success": true,
+  "message": "Lấy danh sách danh mục thành công",
+  "data": {
+    "categories": [
+      {
+        "id": 1,
+        "name": "Áo",
+        "description": "Các loại áo thời trang",
+        "product_count": 25,
+        "created_at": "2024-01-01T00:00:00.000Z",
+        "updated_at": "2024-01-01T00:00:00.000Z"
+      },
+      {
+        "id": 2,
+        "name": "Quần",
+        "description": "Các loại quần",
+        "product_count": 18,
+        "created_at": "2024-01-01T00:00:00.000Z",
+        "updated_at": "2024-01-01T00:00:00.000Z"
+      }
+    ],
+    "total": 12
+  }
+}
+```
+
+### Get Category Details
+
+**Endpoint:** `GET /api/category/:id`  
+**Description:** Get details of a specific category  
+**Authentication:** None required  
+
+**Response (200 OK):**
+```json
+{
+  "success": true,
+  "message": "Lấy thông tin danh mục thành công",
+  "data": {
+    "id": 1,
+    "name": "Áo",
+    "description": "Các loại áo thời trang",
+    "product_count": 25,
+    "created_at": "2024-01-01T00:00:00.000Z",
+    "updated_at": "2024-01-01T00:00:00.000Z"
+  }
+}
+```
+
+---
+
+### 🔒 Admin Category Management APIs
+
+> **Authentication Required:** Admin role + Bearer token
+
+#### Create Category
+
+**Endpoint:** `POST /api/category`  
+**Description:** Create a new category (Admin only)  
+
+**Headers:**
+```
+Authorization: Bearer <ADMIN_JWT_TOKEN>
+Content-Type: application/json
+```
+
+**Request Body:**
+```json
+{
+  "name": "Phụ kiện",
+  "description": "Các loại phụ kiện thời trang"
+}
+```
+
+**Response (201 Created):**
+```json
+{
+  "success": true,
+  "message": "Tạo danh mục thành công",
+  "data": {
+    "id": 13,
+    "name": "Phụ kiện",
+    "description": "Các loại phụ kiện thời trang",
+    "product_count": 0,
+    "created_at": "2024-01-15T10:30:00.000Z",
+    "updated_at": "2024-01-15T10:30:00.000Z"
+  }
+}
+```
+
+#### Update Category
+
+**Endpoint:** `PUT /api/category/:id`  
+**Description:** Update category information (Admin only)  
+
+**Headers:**
+```
+Authorization: Bearer <ADMIN_JWT_TOKEN>
+Content-Type: application/json
+```
+
+**Request Body:**
+```json
+{
+  "name": "Phụ kiện thời trang",
+  "description": "Các loại phụ kiện thời trang cao cấp"
+}
+```
+
+**Response (200 OK):**
+```json
+{
+  "success": true,
+  "message": "Cập nhật danh mục thành công",
+  "data": {
+    "id": 13,
+    "name": "Phụ kiện thời trang",
+    "description": "Các loại phụ kiện thời trang cao cấp",
+    "product_count": 0,
+    "created_at": "2024-01-15T10:30:00.000Z",
+    "updated_at": "2024-01-15T10:35:00.000Z"
+  }
+}
+```
+
+#### Delete Category
+
+**Endpoint:** `DELETE /api/category/:id`  
+**Description:** Delete a category (Admin only)  
+
+**Headers:**
+```
+Authorization: Bearer <ADMIN_JWT_TOKEN>
+```
+
+**Response (200 OK):**
+```json
+{
+  "success": true,
+  "message": "Xóa danh mục thành công"
+}
+```
+
+**Error Responses:**
+
+**400 Bad Request** - Category has products:
+```json
+{
+  "success": false,
+  "message": "Không thể xóa danh mục có sản phẩm. Vui lòng xóa hoặc chuyển sản phẩm sang danh mục khác trước.",
+  "errors": ["Category has 25 products"]
+}
+```
+
+**404 Not Found** - Category not found:
+```json
+{
+  "success": false,
+  "message": "Không tìm thấy danh mục",
+  "errors": ["Category not found"]
+}
+```
+
+---
+
 ### 🛍️ Seller/Admin Product APIs
 
 > **Authentication Required:** Seller/Admin role + Bearer token

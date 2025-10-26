@@ -15,6 +15,7 @@ let allProducts = [];
 let filteredProducts = [];
 let totalProducts = 0;
 let totalPages = 0;
+let allCategories = [];
 
 // Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
@@ -25,12 +26,82 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize page
     initializePage();
     
-    // Setup event listeners
-    setupEventListeners();
-    
-    // Load initial products
-    loadProducts();
+    // Load categories first, then setup and load products
+    loadCategories().then(() => {
+        setupEventListeners();
+        loadProducts();
+    });
 });
+
+// Load categories from API
+async function loadCategories() {
+    try {
+        const response = await window.apiService.getCategories();
+        allCategories = response?.data || [];
+        
+        // Render category filter buttons
+        renderCategoryFilters();
+        
+        // Render footer category links
+        renderFooterCategoryLinks();
+    } catch (error) {
+        console.error('Error loading categories:', error);
+        // Use empty array if API fails
+        allCategories = [];
+    }
+}
+
+// Render category filter buttons
+function renderCategoryFilters() {
+    const filterContainer = document.querySelector('.d-flex.flex-wrap.gap-2');
+    if (!filterContainer) return;
+    
+    // Clear existing filters
+    filterContainer.innerHTML = '';
+    
+    // Add "All" button
+    const allButton = document.createElement('button');
+    allButton.className = 'btn btn-outline-dark rounded-pill px-3 py-2 filter-btn active';
+    allButton.setAttribute('data-filter', 'all');
+    allButton.textContent = 'Tất cả';
+    filterContainer.appendChild(allButton);
+    
+    // Add category buttons
+    allCategories.forEach(category => {
+        const button = document.createElement('button');
+        button.className = 'btn btn-outline-dark rounded-pill px-3 py-2 filter-btn';
+        button.setAttribute('data-filter', category.id || category.category_id);
+        button.textContent = category.name || category.category_name;
+        filterContainer.appendChild(button);
+    });
+}
+
+// Render footer category links
+function renderFooterCategoryLinks() {
+    // Find the footer "Cửa hàng" section
+    const footerShopSection = document.querySelector('footer .col-md-3:first-child ul');
+    if (!footerShopSection) return;
+    
+    // Get existing links to preserve
+    const existingLinks = footerShopSection.innerHTML;
+    
+    // Clear and rebuild with dynamic categories
+    footerShopSection.innerHTML = '';
+    
+    // Add featured and all products links
+    footerShopSection.innerHTML = `
+        <li class="mb-2"><a href="../../index.html#featured" class="text-light text-decoration-none" style="font-size: 0.95rem; opacity: 0.8; transition: all 0.3s ease;" onmouseover="this.style.opacity='1'; this.style.color='#0F766E'" onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">Sản phẩm nổi bật</a></li>
+        <li class="mb-2"><a href="all-products.html" class="text-light text-decoration-none" style="font-size: 0.95rem; opacity: 0.8; transition: all 0.3s ease;" onmouseover="this.style.opacity='1'; this.style.color='#0F766E'" onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">Tất cả sản phẩm</a></li>
+    `;
+    
+    // Add category links dynamically
+    allCategories.forEach(category => {
+        const li = document.createElement('li');
+        li.className = 'mb-2';
+        li.innerHTML = `<a href="all-products.html?category=${category.id || category.category_id}" class="text-light text-decoration-none" style="font-size: 0.95rem; opacity: 0.8; transition: all 0.3s ease;" onmouseover="this.style.opacity='1'; this.style.color='#0F766E'" onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">${category.name || category.category_name}</a>`;
+        footerShopSection.appendChild(li);
+    });
+}
 
 // Initialize page components
 function initializePage() {
@@ -432,14 +503,10 @@ function updateResultsInfo() {
     }
     
     if (currentFilters.category && currentFilters.category !== 'all') {
-        const categoryNames = {
-            '1': 'Áo',
-            '2': 'Quần', 
-            '3': 'Phụ kiện',
-            '4': 'Giày dép',
-            '5': 'Túi sách'
-        };
-        infoText += ` trong danh mục ${categoryNames[currentFilters.category] || currentFilters.category}`;
+        // Find category name from loaded categories
+        const category = allCategories.find(c => (c.id || c.category_id) == currentFilters.category);
+        const categoryName = category ? (category.name || category.category_name) : currentFilters.category;
+        infoText += ` trong danh mục ${categoryName}`;
     }
     
     resultsInfo.textContent = infoText;

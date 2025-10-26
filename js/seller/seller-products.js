@@ -8,8 +8,41 @@ let sellerTotalPages = 1;
 let sellerProductsPerPage = 10;
 let sellerSearchQuery = '';
 let sellerProductToDelete = null;
+let sellerCategories = [];
 
 // ===== PRODUCTS FUNCTIONS =====
+async function loadSellerCategories() {
+    try {
+        const response = await apiService.getCategories();
+        sellerCategories = response?.data || [];
+        updateSellerProductCategoryDropdown();
+    } catch (error) {
+        console.error('Error loading categories:', error);
+        // Use fallback categories if API fails
+        sellerCategories = [];
+    }
+}
+
+function updateSellerProductCategoryDropdown() {
+    const dropdown = document.getElementById('productCategory');
+    if (!dropdown) return;
+    
+    // Keep the first option (placeholder)
+    const firstOption = dropdown.querySelector('option[value=""]');
+    dropdown.innerHTML = '';
+    if (firstOption) {
+        dropdown.appendChild(firstOption);
+    }
+    
+    // Add categories from API
+    sellerCategories.forEach(category => {
+        const option = document.createElement('option');
+        option.value = category.id || category.category_id;
+        option.textContent = category.name || category.category_name;
+        dropdown.appendChild(option);
+    });
+}
+
 async function loadMyProducts() {
     const loading = document.getElementById('productsLoading');
     const tableContainer = document.getElementById('productsTableContainer');
@@ -189,6 +222,11 @@ window.changeSellerPage = function(page) {
 };
 
 window.showAddProductModal = function() {
+    // Load categories if not already loaded
+    if (sellerCategories.length === 0) {
+        loadSellerCategories();
+    }
+    
     // Reset form
     document.getElementById('productForm').reset();
     document.getElementById('productId').value = '';
@@ -386,3 +424,10 @@ function getProductStatusBadge(status) {
 
 // Export functions for use in main dashboard
 window.loadMyProducts = loadMyProducts;
+
+// Load categories on page load
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', loadSellerCategories);
+} else {
+    loadSellerCategories();
+}
