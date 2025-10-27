@@ -8,7 +8,7 @@ let adminCategoriesLoaded = false;
 // ===== CATEGORIES FUNCTIONS =====
 
 /**
- * Load categories from API
+ * Load categories from API with product counts
  */
 async function loadAdminCategories() {
     const loading = document.getElementById('adminCategoriesLoading');
@@ -24,6 +24,34 @@ async function loadAdminCategories() {
         // Get categories from API
         const response = await apiService.getCategories();
         adminCategories = response.data || [];
+        
+        // Try to get product counts from stats API
+        try {
+            const statsResponse = await apiService.getProductStats();
+            const categoryAnalysis = statsResponse.data?.category_analysis || [];
+            
+            // Merge product counts into categories
+            adminCategories = adminCategories.map(category => {
+                // Find matching category in stats by id or name
+                const stats = categoryAnalysis.find(stat => 
+                    stat.category_id === category.id || 
+                    stat.category_name === category.name ||
+                    stat.id === category.id
+                );
+                
+                return {
+                    ...category,
+                    product_count: stats ? (stats.product_count || stats.total_products || 0) : 0
+                };
+            });
+        } catch (statsError) {
+            console.warn('Could not load product counts from stats API:', statsError);
+            // Continue with categories but without product counts
+            adminCategories = adminCategories.map(category => ({
+                ...category,
+                product_count: 0
+            }));
+        }
         
         // Hide loading
         if (loading) loading.classList.add('d-none');

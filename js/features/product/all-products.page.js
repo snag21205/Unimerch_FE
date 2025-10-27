@@ -354,7 +354,8 @@ function renderProducts() {
     }
     
     if (!allProducts || allProducts.length === 0) {
-        // Show no results message
+        // Clear old products and show no results message
+        container.innerHTML = '';
         container.style.display = 'none';
         if (noResults) {
             noResults.style.display = 'block';
@@ -362,7 +363,7 @@ function renderProducts() {
         return;
     }
     
-    // Show products grid
+    // Show products grid and hide no results
     container.style.display = 'flex';
     if (noResults) {
         noResults.style.display = 'none';
