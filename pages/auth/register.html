@@ -42,7 +42,7 @@
                             <input type="text" class="form-control form-control-lg rounded-3" id="fullName" required 
                                    style="border: 2px solid #e5e7eb; padding: 0.875rem 1rem; background: #fafafa;" 
                                    placeholder="Nhập họ và tên của bạn" minlength="2" maxlength="50">
-                            <div class="invalid-feedback">Vui lòng nhập họ tên đầy đủ (2-50 ký tự).</div>
+                            <div class="invalid-feedback" style="display: none;"></div>
                         </div>
 
                         <!-- Username Field -->
@@ -51,7 +51,7 @@
                             <input type="text" class="form-control form-control-lg rounded-3" id="username" required 
                                    style="border: 2px solid #e5e7eb; padding: 0.875rem 1rem; background: #fafafa;" 
                                    placeholder="Chọn tên đăng nhập" minlength="3" maxlength="20">
-                            <div class="invalid-feedback">Vui lòng chọn tên đăng nhập (3-20 ký tự).</div>
+                            <div class="invalid-feedback" style="display: none;"></div>
                             <div class="form-text">Phải có độ dài từ 3-20 ký tự</div>
                         </div>
 
@@ -61,7 +61,7 @@
                             <input type="email" class="form-control form-control-lg rounded-3" id="email" required 
                                    style="border: 2px solid #e5e7eb; padding: 0.875rem 1rem; background: #fafafa;" 
                                    placeholder="Nhập địa chỉ email của bạn">
-                            <div class="invalid-feedback">Vui lòng nhập một địa chỉ email hợp lệ.</div>
+                            <div class="invalid-feedback" style="display: none;"></div>
                         </div>
                         
                         <!-- Password Field -->
@@ -79,15 +79,15 @@
                                     </svg>
                                 </button>
                             </div>
-                            <div class="invalid-feedback">Mật khẩu không đáp ứng các yêu cầu.</div>
-                            <div class="form-text">
-                                Mật khẩu phải có:
-                                <ul class="mb-0 mt-1" style="font-size: 0.75rem; list-style: none; padding-left: 0;">
-                                    <li id="length-req" class="text-muted" style="padding: 2px 0;">• Ít nhất 8 ký tự</li>
-                                    <li id="uppercase-req" class="text-muted" style="padding: 2px 0;">• Ít nhất 1 chữ cái in hoa (A-Z)</li>
-                                    <li id="number-req" class="text-muted" style="padding: 2px 0;">• Ít nhất 1 số (0-9)</li>
-                                    <li id="special-req" class="text-muted" style="padding: 2px 0;">• Ít nhất 1 ký tự đặc biệt (!@#$%^&*)</li>
-                                </ul>
+                            <div class="invalid-feedback" style="display: none;"></div>
+                            <!-- Password Requirements Container -->
+                            <div id="passwordRequirementsContainer" class="mt-2 mb-2" style="display: none;">
+                                <small class="d-block" style="font-size: 0.75rem;">
+                                    <span id="password-length-req" class="requirement text-danger fw-medium" style="display: block; padding: 2px 0;">✗ Ít nhất 8 ký tự</span>
+                                    <span id="password-uppercase-req" class="requirement text-danger fw-medium" style="display: block; padding: 2px 0;">✗ Ít nhất 1 chữ cái in hoa (A-Z)</span>
+                                    <span id="password-number-req" class="requirement text-danger fw-medium" style="display: block; padding: 2px 0;">✗ Ít nhất 1 số (0-9)</span>
+                                    <span id="password-special-req" class="requirement text-danger fw-medium" style="display: block; padding: 2px 0;">✗ Ít nhất 1 ký tự đặc biệt (!@#$%^&*)</span>
+                                </small>
                             </div>
                         </div>
                         
@@ -106,7 +106,7 @@
                                     </svg>
                                 </button>
                             </div>
-                            <div class="invalid-feedback">Passwords do not match.</div>
+                            <div class="invalid-feedback" style="display: none;"></div>
                         </div>
 
                         <!-- Optional Fields Collapsible Section -->
@@ -117,36 +117,36 @@
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-1">
                                         <polyline points="6,9 12,15 18,9"></polyline>
                                     </svg>
-                                    Add Optional Information (Student ID, Phone, Address)
+                                    Thêm thông tin tùy chọn (MSSV, Điện thoại, Địa chỉ)
                                 </button>
                             </div>
                             <div class="collapse mt-3" id="optionalFields">
                                 <div class="card card-body bg-light border-0">
                                     <!-- Student ID Field -->
                                     <div class="mb-3">
-                                        <label for="studentId" class="form-label fw-medium" style="color: #374151;">Student ID (Optional)</label>
+                                        <label for="studentId" class="form-label fw-medium" style="color: #374151;">MSSV (Tùy chọn)</label>
                                         <input type="text" class="form-control rounded-3" id="studentId" 
                                                style="border: 2px solid #e5e7eb; padding: 0.75rem 1rem;" 
-                                               placeholder="e.g., SV2024001">
-                                        <div class="form-text">Enter your university student ID if applicable</div>
+                                               placeholder="ví dụ: SV2024001">
+                                        <div class="form-text">Nhập mã số sinh viên của trường đại học (nếu có)</div>
                                     </div>
 
                                     <!-- Phone Field -->
                                     <div class="mb-3">
-                                        <label for="phone" class="form-label fw-medium" style="color: #374151;">Phone Number (Optional)</label>
+                                        <label for="phone" class="form-label fw-medium" style="color: #374151;">Số điện thoại (Tùy chọn)</label>
                                         <input type="tel" class="form-control rounded-3" id="phone" 
                                                style="border: 2px solid #e5e7eb; padding: 0.75rem 1rem;" 
-                                               placeholder="e.g., 0987654321">
-                                        <div class="form-text">Enter your phone number for order updates</div>
+                                               placeholder="ví dụ: 0987654321">
+                                        <div class="form-text">Nhập số điện thoại để nhận thông báo đơn hàng</div>
                                     </div>
 
                                     <!-- Address Field -->
                                     <div class="mb-0">
-                                        <label for="address" class="form-label fw-medium" style="color: #374151;">Address (Optional)</label>
+                                        <label for="address" class="form-label fw-medium" style="color: #374151;">Địa chỉ (Tùy chọn)</label>
                                         <textarea class="form-control rounded-3" id="address" rows="2" 
                                                   style="border: 2px solid #e5e7eb; padding: 0.75rem 1rem;" 
-                                                  placeholder="Enter your address for delivery"></textarea>
-                                        <div class="form-text">Full address for product delivery</div>
+                                                  placeholder="Nhập địa chỉ của bạn để giao hàng"></textarea>
+                                        <div class="form-text">Địa chỉ đầy đủ để giao sản phẩm</div>
                                     </div>
                                 </div>
                             </div>
@@ -157,10 +157,23 @@
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" id="agreeTerms" required>
                                 <label class="form-check-label text-muted" for="agreeTerms">
-                                    I agree to the <a href="#" class="text-decoration-none" style="color: #2563eb;">Terms of Service</a> 
-                                    and <a href="#" class="text-decoration-none" style="color: #2563eb;">Privacy Policy</a>
+                                    Tôi đồng ý với <a href="#" class="text-decoration-none" style="color: #2563eb;">Điều khoản dịch vụ</a> 
+                                    và <a href="#" class="text-decoration-none" style="color: #2563eb;">Chính sách bảo mật</a>
                                 </label>
-                                <div class="invalid-feedback">You must agree to the terms.</div>
+                                <div class="invalid-feedback" style="display: none;">Bạn phải đồng ý với các điều khoản.</div>
+                            </div>
+                        </div>
+
+                        <!-- Success Message -->
+                        <div id="successMessage" class="alert alert-success rounded-3 d-none" role="alert" style="display: none;">
+                            <div class="d-flex align-items-start">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-3 mt-1 flex-shrink-0">
+                                    <polyline points="20,6 9,17 4,12"></polyline>
+                                </svg>
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-1 fw-semibold">Đăng ký thành công!</h6>
+                                    <p class="mb-0 small">Tài khoản của bạn đã được tạo. Bạn sẽ được chuyển đến trang đăng nhập...</p>
+                                </div>
                             </div>
                         </div>
                         
@@ -173,16 +186,16 @@
                                 border: none;
                                 letter-spacing: -0.01em;
                             ">
-                                Create Account
+                                Tạo tài khoản
                             </button>
                         </div>
                         
                         <!-- Login Link -->
                         <div class="text-center">
                             <p class="text-muted mb-0">
-                                Already have an account? 
+                                Đã có tài khoản? 
                                 <a href="login.html" class="text-decoration-none fw-medium" style="color: #2563eb;">
-                                    Sign in here
+                                    Đăng nhập tại đây
                                 </a>
                             </p>
                         </div>
