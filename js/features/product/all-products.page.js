@@ -419,7 +419,7 @@ function createProductCard(product) {
       <div class="col">
         <div class="product-card-modern position-relative overflow-hidden" onclick="goToProductDetail(${product.id})" style="
           cursor: pointer; 
-          border-radius: 24px; 
+          border-radius: 0px; 
           background: white;
           box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
           transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);

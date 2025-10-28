@@ -63,7 +63,7 @@ function formatPrice(price) {
         currency: 'VND',
         minimumFractionDigits: 0,
         maximumFractionDigits: 0
-    }).format(price * 25000); // Convert USD to VND approx
+    }).format(price); // Convert USD to VND approx
 }
 
 function selectColor(element) {
@@ -122,7 +122,7 @@ async function loadFeaturedProducts() {
         }
         
         // Use API service to get featured products
-        const response = await window.apiService.getProducts({ limit: 6 });
+        const response = await window.apiService.getProducts({ limit: 8 });
         
         if (response.success && response.data && response.data.products) {
             

@@ -15,7 +15,6 @@
 }
 
 body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     color: var(--text-light);
     background: var(--bg-dark);
     overflow-x: hidden;
@@ -133,7 +132,9 @@ html {
 .cta-card {
     position: absolute;
     bottom: 2rem;
-    right: 2rem;
+    left: 50%;                 /* Thêm - bắt đầu từ giữa */
+    transform: translateX(-50%); 
+    z-index: 1000;
     background: var(--accent);
     color: var(--bg-dark);
     padding: 1.5rem 2rem;
@@ -144,11 +145,11 @@ html {
     display: flex;
     align-items: center;
     gap: 1rem;
+    color: var(--text-light);
     box-shadow: 0 10px 40px rgba(246, 167, 193, 0.3);
 }
 
 .cta-card:hover {
-    transform: translateY(-4px);
     box-shadow: 0 20px 50px rgba(246, 167, 193, 0.5);
     color: var(--bg-dark);
 }
@@ -190,141 +191,6 @@ html {
     letter-spacing: 0.5px;
 }
 
-/* Product Cards */
-.product-card {
-    background: var(--card-dark);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 16px;
-    overflow: hidden;
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
-    height: 100%;
-}
-
-.product-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
-    border-color: rgba(246, 167, 193, 0.3);
-}
-
-.product-card:focus-within {
-    outline: 2px solid var(--ueh-blue);
-    outline-offset: 2px;
-}
-
-.product-image-wrapper {
-    position: relative;
-    padding-top: 125%;
-    overflow: hidden;
-    background: rgba(0, 0, 0, 0.3);
-}
-
-.product-image {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.product-card:hover .product-image {
-    transform: scale(1.02) translateX(2%);
-}
-
-.product-badge {
-    position: absolute;
-    top: 1rem;
-    left: 1rem;
-    background: white;
-    padding: 0.4rem 0.8rem;
-    border-radius: 6px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    z-index: 5;
-}
-
-.badge-new {
-    background: var(--accent);
-    color: var(--bg-dark);
-}
-
-.badge-bestseller {
-    background: var(--ueh-blue);
-    color: white;
-}
-
-.product-info {
-    padding: 1.5rem;
-}
-
-.product-name {
-    font-weight: 600;
-    font-size: 1.1rem;
-    margin-bottom: 0.5rem;
-    color: var(--text-light);
-}
-
-.product-rating {
-    color: #FFB800;
-    font-size: 0.9rem;
-    margin-bottom: 0.75rem;
-}
-
-.product-price {
-    font-size: 1.3rem;
-    font-weight: 700;
-    color: var(--text-light);
-}
-
-.product-price-old {
-    font-size: 1rem;
-    color: var(--text-muted);
-    text-decoration: line-through;
-    margin-left: 0.5rem;
-}
-
-.btn-add-cart {
-    width: 100%;
-    margin-top: 1rem;
-    padding: 0.75rem;
-    border-radius: 10px;
-    font-weight: 600;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: var(--text-light);
-    transition: all 0.3s ease;
-}
-
-.btn-add-cart:hover {
-    background: var(--accent);
-    color: var(--bg-dark);
-    border-color: var(--accent);
-    transform: translateY(-2px);
-}
-
-/* Typographic Section */
-.typo-section {
-    position: relative;
-    padding: 8rem 0;
-    overflow: hidden;
-    background: var(--bg-dark);
-}
-
-.typo-bg-text {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(8rem, 15vw, 18rem);
-    color: rgba(255, 255, 255, 0.02);
-    white-space: nowrap;
-    letter-spacing: 20px;
-    z-index: 1;
-    pointer-events: none;
-}
 
 /* Collection Bands */
 .collection-band {

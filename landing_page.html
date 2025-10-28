@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UniMerch — Official UEH Drop 2025</title>
+    <title>UniMerch — Bộ Sưu Tập UEH Chính Thức 2025</title>
     
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -11,17 +11,34 @@
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     
-    <!-- Google Fonts -->
+    <!-- Google Fonts - Be Vietnam Pro cho tiếng Việt + Bebas Neue cho tiêu đề -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/landing-page.css">
-  
+    <link rel="stylesheet" href="css/navbar.css">
+    
+    <style>
+        /* Override font cho toàn trang - sử dụng Be Vietnam Pro */
+        body {
+            font-family: 'Be Vietnam Pro', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        
+        /* Giữ Bebas Neue cho các heading lớn */
+        h1, h2, h3, .mega-text, .collection-title, .email-title {
+            font-family: 'Bebas Neue', sans-serif;
+        }
+        
+        /* Các text nhỏ hơn dùng Be Vietnam Pro */
+        p, span, a, button, .hero-tagline, .collection-desc, .product-name, 
+        .email-subtitle, .value-pill, .product-info, .nav-link {
+            font-family: 'Be Vietnam Pro', sans-serif;
+        }
+    </style>
 </head>
 <body>
     <!-- Navbar Container -->
     <div id="navbar-container"></div>
-
 
     <!-- Hero Section -->
     <section class="hero-section" id="hero">
@@ -40,24 +57,24 @@
                 <div class="hero-center parallax-mid">
                     <h1 class="mega-text">UNI</h1>
                     <h1 class="mega-text">MERCH</h1>
-                    <h1 class="mega-text mega-text-accent">FOR UEH</h1>
-                    <p class="hero-tagline">Look Sharp. Study Smart.</p>
+                    <h1 class="mega-text mega-text-accent">CHO UEH</h1>
+                    <p class="hero-tagline">Mặc Đẹp. Học Giỏi.</p>
                 </div>
                 
                 <!-- Right: Vertical Text -->
                 <div class="hero-right parallax-fast">
-                    <div class="vertical-text">2025</div>
-                    <div class="vertical-text vertical-text-muted">LIMITED</div>
-                    <div class="vertical-text">CAMPUS</div>
-                    <div class="vertical-text">COLLECTION</div>
-                    <div class="vertical-text vertical-text-accent mt-3">DROP—2025</div>
+                    <div class="vertical-text" >2025</div>
+                    <div class="vertical-text vertical-text-muted">GIỚI HẠN</div>
+                    <div class="vertical-text ">CAMPUS</div>
+                    <div class="vertical-text">BỘ SƯU TẬP</div>
+                    <div class="vertical-text vertical-text-accent mt-3">RA MẮT — 2025</div>
                 </div>
             </div>
         </div>
         
         <!-- CTA Card -->
         <a href="#shop" class="cta-card">
-            <div class="cta-card-text">Get Stickers</div>
+            <div class="cta-card-text">XEM SẢN PHẨM</div>
             <i class="bi bi-arrow-right cta-card-icon"></i>
         </a>
     </section>
@@ -66,161 +83,24 @@
     <section class="value-pills">
         <div class="container text-center">
             <span class="value-pill">Giá sinh viên</span>
-            <span class="value-pill">Cotton premium</span>
+            <span class="value-pill">Cotton cao cấp</span>
             <span class="value-pill">Giao nhanh 2-3 ngày</span>
-            <span class="value-pill">Đổi trả 14 ngày</span>
+            <span class="value-pill">Đổi trả trong 14 ngày</span>
         </div>
     </section>
 
+
     <!-- Bestsellers Grid -->
     <section class="py-5" id="shop">
-        <div class="container py-5">
+        <div class="container-fluid">
             <div class="text-center mb-5 reveal">
-                <h2 class="display-4 fw-bold mb-3" style="font-family: 'Bebas Neue', sans-serif; letter-spacing: 2px;">BESTSELLERS</h2>
-                <p class="text-muted fs-5">The gear everyone's talking about</p>
+                <h2 class="display-4 fw-bold mb-3" style="font-family: 'Bebas Neue', sans-serif; letter-spacing: 2px;">SẢN PHẨM BÁN CHẠY</h2>
+                <p class="text-light fs-5">Những sản phẩm được yêu thích nhất</p>
             </div>
-            
-            <div class="row g-4">
-                <!-- Product 1 -->
-                <div class="col-lg-3 col-md-4 col-sm-6 reveal">
-                    <div class="card product-card">
-                        <div class="product-image-wrapper">
-                            <span class="product-badge badge-bestseller">Bestseller</span>
-                            <img src="https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=400&h=500&fit=crop" alt="UEH Hoodie" class="product-image">
-                        </div>
-                        <div class="product-info">
-                            <h5 class="product-name">UEH Classic Hoodie</h5>
-                            <div class="product-rating">★★★★★ (128)</div>
-                            <div>
-                                <span class="product-price">450.000₫</span>
-                            </div>
-                            <button class="btn btn-add-cart">Thêm vào giỏ</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product 2 -->
-                <div class="col-lg-3 col-md-4 col-sm-6 reveal">
-                    <div class="card product-card">
-                        <div class="product-image-wrapper">
-                            <span class="product-badge badge-new">New</span>
-                            <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=500&fit=crop" alt="UEH Tee" class="product-image">
-                        </div>
-                        <div class="product-info">
-                            <h5 class="product-name">Essential Tee White</h5>
-                            <div class="product-rating">★★★★★ (94)</div>
-                            <div>
-                                <span class="product-price">250.000₫</span>
-                            </div>
-                            <button class="btn btn-add-cart">Thêm vào giỏ</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product 3 -->
-                <div class="col-lg-3 col-md-4 col-sm-6 reveal">
-                    <div class="card product-card">
-                        <div class="product-image-wrapper">
-                            <img src="https://images.unsplash.com/photo-1622445275576-721325763afe?w=400&h=500&fit=crop" alt="UEH Tote" class="product-image">
-                        </div>
-                        <div class="product-info">
-                            <h5 class="product-name">Canvas Tote Bag</h5>
-                            <div class="product-rating">★★★★☆ (67)</div>
-                            <div>
-                                <span class="product-price">120.000₫</span>
-                                <span class="product-price-old">150.000₫</span>
-                            </div>
-                            <button class="btn btn-add-cart">Thêm vào giỏ</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product 4 -->
-                <div class="col-lg-3 col-md-4 col-sm-6 reveal">
-                    <div class="card product-card">
-                        <div class="product-image-wrapper">
-                            <span class="product-badge badge-bestseller">Bestseller</span>
-                            <img src="https://images.unsplash.com/photo-1588117305388-c2631a279f82?w=400&h=500&fit=crop" alt="UEH Cap" class="product-image">
-                        </div>
-                        <div class="product-info">
-                            <h5 class="product-name">UEH Baseball Cap</h5>
-                            <div class="product-rating">★★★★★ (156)</div>
-                            <div>
-                                <span class="product-price">180.000₫</span>
-                            </div>
-                            <button class="btn btn-add-cart">Thêm vào giỏ</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product 5 -->
-                <div class="col-lg-3 col-md-4 col-sm-6 reveal">
-                    <div class="card product-card">
-                        <div class="product-image-wrapper">
-                            <img src="https://images.unsplash.com/photo-1603252109303-2751441dd157?w=400&h=500&fit=crop" alt="UEH Sweatshirt" class="product-image">
-                        </div>
-                        <div class="product-info">
-                            <h5 class="product-name">Crewneck Sweatshirt</h5>
-                            <div class="product-rating">★★★★★ (89)</div>
-                            <div>
-                                <span class="product-price">380.000₫</span>
-                            </div>
-                            <button class="btn btn-add-cart">Thêm vào giỏ</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product 6 -->
-                <div class="col-lg-3 col-md-4 col-sm-6 reveal">
-                    <div class="card product-card">
-                        <div class="product-image-wrapper">
-                            <span class="product-badge badge-new">New</span>
-                            <img src="https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=400&h=500&fit=crop" alt="UEH Backpack" class="product-image">
-                        </div>
-                        <div class="product-info">
-                            <h5 class="product-name">Study Backpack</h5>
-                            <div class="product-rating">★★★★☆ (43)</div>
-                            <div>
-                                <span class="product-price">550.000₫</span>
-                            </div>
-                            <button class="btn btn-add-cart">Thêm vào giỏ</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product 7 -->
-                <div class="col-lg-3 col-md-4 col-sm-6 reveal">
-                    <div class="card product-card">
-                        <div class="product-image-wrapper">
-                            <img src="https://images.unsplash.com/photo-1622519407650-3df9883f76a5?w=400&h=500&fit=crop" alt="UEH Notebook" class="product-image">
-                        </div>
-                        <div class="product-info">
-                            <h5 class="product-name">Premium Notebook</h5>
-                            <div class="product-rating">★★★★★ (102)</div>
-                            <div>
-                                <span class="product-price">80.000₫</span>
-                            </div>
-                            <button class="btn btn-add-cart">Thêm vào giỏ</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product 8 -->
-                <div class="col-lg-3 col-md-4 col-sm-6 reveal">
-                    <div class="card product-card">
-                        <div class="product-image-wrapper">
-                            <img src="https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=400&h=500&fit=crop" alt="UEH Mug" class="product-image">
-                        </div>
-                        <div class="product-info">
-                            <h5 class="product-name">Ceramic Coffee Mug</h5>
-                            <div class="product-rating">★★★★☆ (71)</div>
-                            <div>
-                                <span class="product-price">95.000₫</span>
-                            </div>
-                            <button class="btn btn-add-cart">Thêm vào giỏ</button>
-                        </div>
-                    </div>
-                </div>
+            <!--Featured products-->
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 " id="featuredProductsGrid" style="row-gap: 1rem !important; margin-bottom: 0 !important;">
+                <!-- Featured products will be populated by JavaScript -->
+            </div>
             </div>
         </div>
     </section>
@@ -230,8 +110,8 @@
         <div class="typo-bg-text parallax-slow">UNIMERCH · UNIMERCH · UNIMERCH</div>
         <div class="container">
             <div class="text-center py-5 reveal">
-                <h2 class="display-3 fw-bold" style="font-family: 'Bebas Neue', sans-serif; letter-spacing: 3px;">CAMPUS CULTURE</h2>
-                <p class="text-muted fs-5 mt-3">Designed for students who think different</p>
+                <h2 class="display-3 fw-bold" style="font-family: 'Bebas Neue', sans-serif; letter-spacing: 3px;">VĂN HÓA SINH VIÊN</h2>
+                <p class="text-light fs-5 mt-3">Thiết kế dành cho những sinh viên khác biệt</p>
             </div>
         </div>
     </section>
@@ -240,14 +120,14 @@
     <section id="collections">
         <!-- Hoodies Band -->
         <div class="collection-band">
-            <div class="collection-bg collection-bg-right" style="background-image: url('https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=800&h=1000&fit=crop');" data-speed="0.4"></div>
+            <div class="collection-bg collection-bg-right" style="background-image: url('https://shop.ueh.edu.vn/ueh-souvenir/wp-content/uploads/2022/05/SP-24-1.png');" data-speed="0.4"></div>
             <div class="container">
                 <div class="row">
                     <div class="col-lg-6 collection-content reveal">
-                        <h2 class="collection-title">Hoodies</h2>
-                        <p class="collection-desc">Premium fleece hoodies designed for comfort and style. Perfect for those late-night study sessions.</p>
+                        <h2 class="collection-title">Logo UEH</h2>
+                        <p class="collection-desc">Logo UEH được chế tác tinh xảo từ inox phủ vàng cao cấp, với khuy cài mặt sau chắc chắn và tiện dụng. </p>
                         <a href="#" class="btn-collection">
-                            Shop Hoodies
+                            Xem Logo UEH
                             <i class="bi bi-arrow-right"></i>
                         </a>
                     </div>
@@ -257,14 +137,14 @@
 
         <!-- Tees Band -->
         <div class="collection-band">
-            <div class="collection-bg collection-bg-left" style="background-image: url('https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&h=1000&fit=crop');" data-speed="0.4"></div>
+            <div class="collection-bg collection-bg-left" style="background-image: url('https://shop.ueh.edu.vn/wp-content/uploads/2022/05/800x600-30.png');" data-speed="0.4"></div>
             <div class="container">
                 <div class="row justify-content-end">
                     <div class="col-lg-6 collection-content reveal">
-                        <h2 class="collection-title">Essential Tees</h2>
-                        <p class="collection-desc">Classic cotton tees that never go out of style. Breathable, durable, and made to last.</p>
+                        <h2 class="collection-title">Áo Thun UEH</h2>
+                        <p class="collection-desc">Áo thun cotton kinh điển không bao giờ lỗi mốt. Thoáng mát, bền bỉ và được làm để trường tồn.</p>
                         <a href="#" class="btn-collection">
-                            Shop Tees
+                            Xem Áo Thun UEH
                             <i class="bi bi-arrow-right"></i>
                         </a>
                     </div>
@@ -274,14 +154,14 @@
 
         <!-- Accessories Band -->
         <div class="collection-band">
-            <div class="collection-bg collection-bg-right" style="background-image: url('https://images.unsplash.com/photo-1622445275576-721325763afe?w=800&h=1000&fit=crop');" data-speed="0.4"></div>
+            <div class="collection-bg collection-bg-right" style="background-image: url('https://shop.ueh.edu.vn/ueh-souvenir/wp-content/uploads/2022/05/SP-17.png');" data-speed="0.4"></div>
             <div class="container">
                 <div class="row">
                     <div class="col-lg-6 collection-content reveal">
-                        <h2 class="collection-title">Accessories</h2>
-                        <p class="collection-desc">Complete your look with caps, bags, and more. Small details that make a big difference.</p>
+                        <h2 class="collection-title">Ly UEH</h2>
+                        <p class="collection-desc">Ly UEH được thiết kế tiện lợi và tỉ mỉ từng chi tiết, có khả năng giữ nhiệt lâu.</p>
                         <a href="#" class="btn-collection">
-                            Shop Accessories
+                            Xem Ly UEH
                             <i class="bi bi-arrow-right"></i>
                         </a>
                     </div>
@@ -291,14 +171,14 @@
 
         <!-- Study Essentials Band -->
         <div class="collection-band">
-            <div class="collection-bg collection-bg-left" style="background-image: url('https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=800&h=1000&fit=crop');" data-speed="0.4"></div>
+            <div class="collection-bg collection-bg-left" style="background-image: url('https://shop.ueh.edu.vn/ueh-souvenir/wp-content/uploads/2022/05/SP-23.png');" data-speed="0.4"></div>
             <div class="container">
                 <div class="row justify-content-end">
                     <div class="col-lg-6 collection-content reveal">
-                        <h2 class="collection-title">Study Essentials</h2>
-                        <p class="collection-desc">Notebooks, mugs, and backpacks to fuel your academic journey. Study smart, live better.</p>
+                        <h2 class="collection-title">ĐỒ DÙNG HỌC TẬP</h2>
+                        <p class="collection-desc">Sổ tay, bút viết để tiếp thêm năng lượng cho hành trình học tập. Học thông minh, sống tốt hơn.</p>
                         <a href="#" class="btn-collection">
-                            Shop Essentials
+                            Xem Đồ Học Tập
                             <i class="bi bi-arrow-right"></i>
                         </a>
                     </div>
@@ -311,79 +191,126 @@
     <section class="lookbook-section" id="lookbook">
         <div class="container mb-5">
             <div class="text-center reveal">
-                <h2 class="display-4 fw-bold mb-3" style="font-family: 'Bebas Neue', sans-serif; letter-spacing: 2px;">CAMPUS LOOKBOOK</h2>
-                <p class="text-muted fs-5">Real students, real style</p>
+                <h2 class="display-4 fw-bold mb-3" style="font-family: 'Bebas Neue', sans-serif; letter-spacing: 2px;">BỘ SƯU TẬP CAMPUS</h2>
+                <p class="text-light fs-5">Sinh viên thật, phong cách thật</p>
             </div>
         </div>
         
         <div class="marquee">
             <div class="marquee-content">
                 <div class="lookbook-item">
-                    <img src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=300&h=400&fit=crop" alt="Lookbook 1">
+                    <img src="https://shop.ueh.edu.vn/ueh-souvenir/wp-content/uploads/2022/05/SP-25.png" alt="Lookbook 1">
                 </div>
                 <div class="lookbook-item">
-                    <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?w=300&h=400&fit=crop" alt="Lookbook 2">
+                    <img src="https://shop.ueh.edu.vn/ueh-souvenir/wp-content/uploads/2022/05/SP-24-1.png" alt="Lookbook 2">
                 </div>
                 <div class="lookbook-item">
-                    <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=300&h=400&fit=crop" alt="Lookbook 3">
+                    <img src="https://shop.ueh.edu.vn/ueh-souvenir/wp-content/uploads/2023/09/SP-211-510x610-1.png" alt="Lookbook 3">
                 </div>
                 <div class="lookbook-item">
-                    <img src="https://images.unsplash.com/photo-1529374255404-311a2a4f1fd9?w=300&h=400&fit=crop" alt="Lookbook 4">
+                    <img src="https://shop.ueh.edu.vn/ueh-souvenir/wp-content/uploads/2022/05/SP-207-510x610-2.png" alt="Lookbook 4">
                 </div>
                 <div class="lookbook-item">
-                    <img src="https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=300&h=400&fit=crop" alt="Lookbook 5">
+                    <img src="https://shop.ueh.edu.vn/ueh-souvenir/wp-content/uploads/2023/09/SP-500-510x610-1.png" alt="Lookbook 5">
                 </div>
                 <div class="lookbook-item">
-                    <img src="https://images.unsplash.com/photo-1516762689617-e1cffcef479d?w=300&h=400&fit=crop" alt="Lookbook 6">
+                    <img src="https://shop.ueh.edu.vn/ueh-souvenir/wp-content/uploads/2022/05/SP-10.png" alt="Lookbook 6">
                 </div>
                 <!-- Duplicate for seamless loop -->
                 <div class="lookbook-item">
-                    <img src="https://images.unsplash.com/photo-1523381210434-271e8be1f52b?w=300&h=400&fit=crop" alt="Lookbook 1">
+                    <img src="https://shop.ueh.edu.vn/ueh-souvenir/wp-content/uploads/2022/05/SP-25.png" alt="Lookbook 1">
                 </div>
                 <div class="lookbook-item">
-                    <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?w=300&h=400&fit=crop" alt="Lookbook 2">
+                    <img src="https://shop.ueh.edu.vn/ueh-souvenir/wp-content/uploads/2022/05/SP-24-1.png" alt="Lookbook 2">
                 </div>
                 <div class="lookbook-item">
-                    <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=300&h=400&fit=crop" alt="Lookbook 3">
+                    <img src="https://shop.ueh.edu.vn/ueh-souvenir/wp-content/uploads/2023/09/SP-211-510x610-1.png" alt="Lookbook 3">
                 </div>
                 <div class="lookbook-item">
-                    <img src="https://images.unsplash.com/photo-1529374255404-311a2a4f1fd9?w=300&h=400&fit=crop" alt="Lookbook 4">
+                    <img src="https://shop.ueh.edu.vn/ueh-souvenir/wp-content/uploads/2022/05/SP-207-510x610-2.png" alt="Lookbook 4">
                 </div>
                 <div class="lookbook-item">
-                    <img src="https://images.unsplash.com/photo-1539109136881-3be0616acf4b?w=300&h=400&fit=crop" alt="Lookbook 5">
+                    <img src="https://shop.ueh.edu.vn/ueh-souvenir/wp-content/uploads/2023/09/SP-500-510x610-1.png" alt="Lookbook 5">
                 </div>
                 <div class="lookbook-item">
-                    <img src="https://images.unsplash.com/photo-1516762689617-e1cffcef479d?w=300&h=400&fit=crop" alt="Lookbook 6">
+                    <img src="https://shop.ueh.edu.vn/ueh-souvenir/wp-content/uploads/2022/05/SP-10.png" alt="Lookbook 6">
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- USP Banner -->
-    <section class="usp-banner">
-        <div class="container">
-            <div class="usp-text">
-                LIMITED UEH DROP · FREE STICKERS OVER 399K · 10% STUDENT DISCOUNT
+ <!-- Search Modal -->
+ <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h5 class="modal-title" id="searchModalLabel">Tìm kiếm sản phẩm</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <input type="text" class="form-control form-control-lg" id="searchInput" placeholder="Tìm kiếm sản phẩm..." autofocus>
+                </div>
+                <div id="searchResults">
+                    <p class="text-muted">Bắt đầu nhập để tìm kiếm sản phẩm...</p>
+                </div>
             </div>
         </div>
-    </section>
+    </div>
+</div>
 
-    <!-- Email Capture -->
-    <section class="email-section" id="about">
-        <div class="container">
-            <div class="reveal">
-                <h2 class="email-title">UNLOCK 10% OFF YOUR FIRST ORDER</h2>
-                <p class="email-subtitle">Join the UniMerch community and get exclusive deals</p>
-                <form class="email-form" id="emailForm">
-                    <div class="input-group mb-3">
-                        <input type="email" class="form-control email-input" placeholder="Enter your email" required id="emailInput">
-                        <button class="btn btn-submit" type="submit">Subscribe</button>
-                    </div>
-                    <small class="text-muted d-block text-center">We respect your privacy. Unsubscribe anytime.</small>
-                </form>
+
+<!-- Quick View Modal -->
+<div class="modal fade" id="quickViewModal" tabindex="-1" aria-labelledby="quickViewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <h5 class="modal-title" id="quickViewModalLabel">Xem nhanh</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="quickViewContent">
+                <!-- Content will be populated by JavaScript -->
             </div>
         </div>
-    </section>
+    </div>
+</div>
+
+
+<!-- Cart Offcanvas -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="cartOffcanvas" aria-labelledby="cartOffcanvasLabel">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="cartOffcanvasLabel">Giỏ hàng</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <div id="cartItems">
+            <p class="text-muted text-center">Giỏ hàng của bạn đang trống</p>
+        </div>
+        <div id="cartFooter" class="d-none">
+            <hr>
+            <div class="d-flex justify-content-between align-items-center mb-2">
+                <button class="btn btn-link text-danger btn-sm p-0" onclick="cartUI.clearCart()">
+                    Xóa tất cả
+                </button>
+                <small class="text-muted selected-count">0 sản phẩm được chọn</small>
+            </div>
+            <div class="d-flex justify-content-between mb-3">
+                <strong>Tổng thanh toán:</strong>
+                <strong id="cartSubtotal">0₫</strong>
+            </div>
+            <button class="btn btn-dark w-100 rounded-pill" onclick="createOrderFromCart()">
+                Tạo đơn hàng (<span class="selected-items-count">0</span>)
+            </button>
+        </div>
+    </div>
+</div>
+
+
+<!-- Toast Container -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3" id="toastContainer">
+    <!-- Toasts will be inserted here -->
+</div>
+
 
     <!-- Footer -->
     <footer class="footer">
@@ -391,7 +318,7 @@
             <div class="row">
                 <div class="col-lg-4 mb-4">
                     <h3 class="fw-bold mb-3" style="font-family: 'Bebas Neue', sans-serif; letter-spacing: 2px; color: var(--text-light);">UNIMERCH</h3>
-                    <p class="mb-4">Official UEH merchandise designed for students who want to look good and feel great.</p>
+                    <p class="mb-4">Sản phẩm chính thức của UEH được thiết kế cho sinh viên muốn trông thật đẹp và cảm thấy tuyệt vời.</p>
                     <div class="social-links">
                         <a href="#" class="social-link"><i class="bi bi-facebook"></i></a>
                         <a href="#" class="social-link"><i class="bi bi-instagram"></i></a>
@@ -400,53 +327,68 @@
                     </div>
                 </div>
                 <div class="col-lg-2 col-md-3 col-6 mb-4">
-                    <h6>Shop</h6>
-                    <a href="#">Hoodies</a>
-                    <a href="#">T-Shirts</a>
-                    <a href="#">Accessories</a>
-                    <a href="#">Essentials</a>
+                    <h6>Mua Sắm</h6>
+                    <a href="#">Áo Hoodie</a>
+                    <a href="#">Áo Thun</a>
+                    <a href="#">Phụ Kiện</a>
+                    <a href="#">Đồ Học Tập</a>
                 </div>
                 <div class="col-lg-2 col-md-3 col-6 mb-4">
-                    <h6>Help</h6>
-                    <a href="#">Contact Us</a>
-                    <a href="#">Shipping Info</a>
-                    <a href="#">Returns</a>
-                    <a href="#">Size Guide</a>
+                    <h6>Hỗ Trợ</h6>
+                    <a href="#">Liên Hệ</a>
+                    <a href="#">Thông Tin Giao Hàng</a>
+                    <a href="#">Đổi Trả</a>
+                    <a href="#">Bảng Size</a>
                 </div>
                 <div class="col-lg-2 col-md-3 col-6 mb-4">
-                    <h6>About</h6>
-                    <a href="#">Our Story</a>
-                    <a href="#">UEH Partnership</a>
-                    <a href="#">Sustainability</a>
-                    <a href="#">Careers</a>
+                    <h6>Về Chúng Tôi</h6>
+                    <a href="#">Câu Chuyện</a>
+                    <a href="#">Hợp Tác UEH</a>
+                    <a href="#">Phát Triển Bền Vững</a>
+                    <a href="#">Tuyển Dụng</a>
                 </div>
                 <div class="col-lg-2 col-md-3 col-6 mb-4">
-                    <h6>Legal</h6>
-                    <a href="#">Privacy Policy</a>
-                    <a href="#">Terms of Service</a>
-                    <a href="#">Cookie Policy</a>
+                    <h6>Pháp Lý</h6>
+                    <a href="#">Chính Sách Bảo Mật</a>
+                    <a href="#">Điều Khoản Dịch Vụ</a>
+                    <a href="#">Chính Sách Cookie</a>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2025 UniMerch. All rights reserved. Made for UEH students who think different.</p>
+                <p>&copy; 2025 UniMerch. Bảo lưu mọi quyền. Được tạo ra cho sinh viên UEH khác biệt.</p>
             </div>
         </div>
     </footer>
 
+
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
+
     <!-- Navbar Component -->
     <script src="components/navbar.js"></script>
-    
+
     <!-- API Service and Utils - MUST BE LOADED FIRST -->
     <script src="js/core/utils.js"></script>
     <script src="js/core/api.service.js"></script>
     
-    <!-- Auth Services -->
+    <!-- Cart Services -->
+    <script src="js/features/cart/cart.service.js"></script>
+    <script src="js/features/cart/cart.ui.js"></script>
+
+    <!-- Auth logic for index page -->
     <script src="js/features/auth/index-auth.js"></script>
-    <script src="js/features/auth/logout.service.js"></script>
+
+
+    <!-- Main Products Script - SCRIPT TỔNG DUY NHẤT -->
+    <script src="components/main-products.js"></script>
     
+    <!-- Custom JavaScript cho các tính năng khác -->
+    <script src="js/pages/home/index.js"></script>
+
+
+
+    <script src="js/features/auth/logout.service.js"></script>
     <script>
         // Check for reduced motion preference
         const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -549,10 +491,10 @@
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             
             if (emailRegex.test(email)) {
-                alert('Thank you for subscribing! Check your email for your 10% discount code.');
+                alert('Cảm ơn bạn đã đăng ký! Kiểm tra email để nhận mã giảm giá 10%.');
                 emailInput.value = '';
             } else {
-                alert('Please enter a valid email address.');
+                alert('Vui lòng nhập địa chỉ email hợp lệ.');
             }
         });
 
@@ -562,7 +504,7 @@
         addToCartButtons.forEach(button => {
             button.addEventListener('click', () => {
                 const productName = button.closest('.product-card').querySelector('.product-name').textContent;
-                button.textContent = 'Added!';
+                button.textContent = 'Đã thêm!';
                 button.style.background = 'var(--ueh-teal)';
                 
                 setTimeout(() => {
