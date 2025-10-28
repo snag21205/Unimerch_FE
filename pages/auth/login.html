@@ -60,13 +60,41 @@
                     </div>
                     
                     <form id="loginForm" class="needs-validation" novalidate>
+                        <!-- Success Message -->
+                        <div id="successMessage" class="alert alert-success rounded-3 d-none" role="alert" style="display: none;">
+                            <div class="d-flex align-items-start">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-3 mt-1 flex-shrink-0">
+                                    <polyline points="20,6 9,17 4,12"></polyline>
+                                </svg>
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-1 fw-semibold">Đăng nhập thành công!</h6>
+                                    <p class="mb-0 small">Bạn sẽ được chuyển hướng tới trang chủ...</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Error Message -->
+                        <div id="errorMessage" class="alert alert-danger rounded-3 d-none" role="alert" style="display: none;">
+                            <div class="d-flex align-items-start">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-3 mt-1 flex-shrink-0">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="15" y1="9" x2="9" y2="15"></line>
+                                    <line x1="9" y1="9" x2="15" y2="15"></line>
+                                </svg>
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-1 fw-semibold">Đăng nhập thất bại!</h6>
+                                    <p class="mb-0 small" id="errorMessageText">Vui lòng kiểm tra lại tên đăng nhập và mật khẩu.</p>
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- Username Field -->
                         <div class="mb-4">
                             <label for="username" class="form-label fw-medium" style="color: #374151;">Tên đăng nhập</label>
                             <input type="text" class="form-control form-control-lg rounded-3" id="username" required 
                                    style="border: 2px solid #e5e7eb; padding: 0.875rem 1rem; background: #fafafa;" 
                                    placeholder="Nhập tên đăng nhập của bạn">
-                            <div class="invalid-feedback">Vui lòng nhập tên đăng nhập.</div>
+                            <div class="invalid-feedback" style="display: none;"></div>
                         </div>
                         
                         <!-- Password Field -->
@@ -84,7 +112,7 @@
                                     </svg>
                                 </button>
                             </div>
-                            <div class="invalid-feedback">Vui lòng nhập mật khẩu.</div>
+                            <div class="invalid-feedback" style="display: none;"></div>
                         </div>
                         
                         <!-- Remember Me & Forgot Password -->
@@ -104,23 +132,23 @@
                         
                         <!-- Login Button -->
                         <div class="d-grid gap-2 mb-4">
-                            <button type="button" class="btn btn-dark btn-lg rounded-3" onclick="handleSignIn()" style="
+                            <button type="submit" class="btn btn-dark btn-lg rounded-3" style="
                                 font-weight: 600; 
                                 padding: 0.875rem;
                                 background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
                                 border: none;
                                 letter-spacing: -0.01em;
                             ">
-                                Sign In
+                                Đăng nhập
                             </button>
                         </div>
                         
                         <!-- Register Link -->
                         <div class="text-center">
                             <p class="text-muted mb-0">
-                                Don't have an account? 
+                                Chưa có tài khoản? 
                                 <a href="register.html" class="text-decoration-none fw-medium" style="color: #2563eb;">
-                                    Create one here
+                                    Tạo tài khoản ngay
                                 </a>
                             </p>
                         </div>

@@ -165,10 +165,13 @@ class ApiService {
         if (!response.ok) {
             // Handle different error types
             if (response.status === 401) {
-                this.removeToken();
-                localStorage.setItem('isLoggedIn', 'false');
-                window.location.href = '/pages/auth/login.html';
-                throw new Error('Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.');
+                // Don't auto-redirect on login page - let the form handle it
+                if (!window.location.pathname.includes('/auth/login')) {
+                    this.removeToken();
+                    localStorage.setItem('isLoggedIn', 'false');
+                    window.location.href = '/pages/auth/login.html';
+                }
+                throw new Error('Tên đăng nhập hoặc mật khẩu không đúng.');
             }
             
             if (response.status === 403) {
