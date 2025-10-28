@@ -1,33 +1,151 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tất cả sản phẩm - Unimerch</title>
-    
+    <title>Tất cả sản phẩm - UEH Merchandise</title>
+
     <!-- Bootstrap 5.3 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-    <!-- Custom styles -->
-    <link rel="stylesheet" href="../../css/styles.css">
-    
-    <!-- Preconnect for performance -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- SF Pro Display Font (Apple's font) -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        * {
+            font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', 'Roboto', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            background: #fbfbfd;
+            color: #1d1d1f;
+        }
+
+        /* Filter Buttons */
+        .filter-btn {
+            padding: 10px 22px;
+            border-radius: 980px;
+            border: 1px solid #d2d2d7;
+            background: transparent;
+            color: #1d1d1f;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            letter-spacing: -0.01em;
+        }
+
+        .filter-btn:hover:not(.active) {
+            background: #f5f5f7;
+        }
+
+        .filter-btn.active {
+            background: #1d1d1f !important;
+            color: #fff !important;
+            border-color: #1d1d1f !important;
+        }
+
+        /* Search Input Focus */
+        #searchInput:focus {
+            outline: none;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12) !important;
+            transform: translateY(-2px);
+        }
+
+        /* Select Styling */
+        #sortSelect {
+            border: 1px solid #d2d2d7;
+            border-radius: 10px;
+            padding: 10px 40px 10px 16px;
+            font-size: 14px;
+            color: #1d1d1f;
+            background: #fff;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        #sortSelect:focus {
+            outline: none;
+            border-color: #0071e3;
+            box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.1);
+        }
+
+        /* Pagination */
+        .pagination {
+            --bs-pagination-border-width: 0;
+            --bs-pagination-border-radius: 10px;
+            --bs-pagination-padding-x: 16px;
+            --bs-pagination-padding-y: 10px;
+            --bs-pagination-color: #1d1d1f;
+            --bs-pagination-bg: #fff;
+            --bs-pagination-hover-color: #1d1d1f;
+            --bs-pagination-hover-bg: #f5f5f7;
+            --bs-pagination-focus-color: #1d1d1f;
+            --bs-pagination-focus-bg: #f5f5f7;
+            --bs-pagination-active-color: #fff;
+            --bs-pagination-active-bg: #1d1d1f;
+            --bs-pagination-disabled-color: #86868b;
+            --bs-pagination-disabled-bg: #fff;
+            gap: 6px;
+        }
+
+        .pagination .page-link {
+            font-size: 14px;
+            font-weight: 500;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        /* Modal */
+        .modal-content {
+            border-radius: 20px;
+            border: none;
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Offcanvas */
+        .offcanvas-header {
+            border-bottom: 1px solid #d2d2d7;
+            padding: 20px 24px;
+        }
+
+        .offcanvas-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1d1d1f;
+        }
+
+        /* Smooth Scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Toast */
+        .toast {
+            border-radius: 12px;
+            border: none;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+        }
+    </style>
 </head>
+
 <body>
+
+    <!-- Navigation would go here -->
     <!-- Sticky Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top" id="mainNav">
         <div class="container-fluid px-3 px-lg-5">
             <!-- Brand -->
             <a class="navbar-brand fw-semibold fs-4" href="../../index.html" style="color: #111;">Unimerch</a>
-            
+
             <!-- Toggle button for mobile -->
             <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            
+
             <!-- Navigation items -->
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mx-auto d-none d-lg-flex">
@@ -38,76 +156,95 @@
                         <a class="nav-link active" href="all-products.html">Tất cả sản phẩm</a>
                     </li>
                 </ul>
-                
+
                 <!-- Right side controls -->
                 <div class="d-flex align-items-center gap-3">
-                    <button class="btn btn-link p-0 border-0" id="searchBtn" data-bs-toggle="modal" data-bs-target="#searchModal">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <button class="btn btn-link p-0 border-0" id="searchBtn" data-bs-toggle="modal"
+                        data-bs-target="#searchModal">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
                             <circle cx="11" cy="11" r="8"></circle>
                             <path d="m21 21-4.35-4.35"></path>
                         </svg>
                     </button>
-                    
-                    <button class="btn btn-link p-0 border-0 position-relative" id="cartBtn" data-bs-toggle="offcanvas" data-bs-target="#cartOffcanvas">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+
+                    <button class="btn btn-link p-0 border-0 position-relative" id="cartBtn" data-bs-toggle="offcanvas"
+                        data-bs-target="#cartOffcanvas">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
                             <circle cx="8" cy="21" r="1"></circle>
                             <circle cx="19" cy="21" r="1"></circle>
-                            <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57L20.5 9H5.12"></path>
+                            <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57L20.5 9H5.12">
+                            </path>
                         </svg>
-                        <span class="badge bg-white text-dark rounded-pill position-absolute top-0 start-100 translate-middle d-none" id="cartCount" style="border: 1px solid #e5e7eb; font-weight: 600;">0</span>
+                        <span
+                            class="badge bg-white text-dark rounded-pill position-absolute top-0 start-100 translate-middle d-none"
+                            id="cartCount" style="border: 1px solid #e5e7eb; font-weight: 600;">0</span>
                     </button>
-                    
+
                     <!-- Auth Section -->
                     <div id="authSection">
                         <!-- Not logged in state -->
                         <div id="notLoggedIn" class="d-flex align-items-center gap-2">
                             <a href="../user/profile.html" class="btn btn-link p-0 border-0" title="Profile">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
                                     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                                     <circle cx="12" cy="7" r="4"></circle>
                                 </svg>
                             </a>
-                            <a href="../auth/login.html" class="btn btn-outline-dark btn-sm rounded-pill px-3" style="font-size: 14px; font-weight: 500;">
+                            <a href="../auth/login.html" class="btn btn-outline-dark btn-sm rounded-pill px-3"
+                                style="font-size: 14px; font-weight: 500;">
                                 Đăng nhập
                             </a>
                             <a href="../auth/register.html" class="btn btn-dark btn-sm rounded-pill px-3" style="
-                                font-size: 14px; 
-                                font-weight: 500;
-                                background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
-                                border: none;
-                            ">
+                            font-size: 14px;
+                            font-weight: 500;
+                            background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
+                            border: none;
+                        ">
                                 Đăng ký
                             </a>
                         </div>
-                        
+
                         <!-- Logged in state -->
                         <div id="loggedIn" class="d-none">
                             <div class="dropdown">
-                                <button class="btn btn-link dropdown-toggle p-0 border-0 d-flex align-items-center gap-2" type="button" data-bs-toggle="dropdown" style="color: #374151;">
+                                <button
+                                    class="btn btn-link dropdown-toggle p-0 border-0 d-flex align-items-center gap-2"
+                                    type="button" data-bs-toggle="dropdown" style="color: #374151;">
                                     <div class="d-flex align-items-center justify-content-center rounded-circle" style="
-                                        width: 32px; 
-                                        height: 32px; 
-                                        background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
-                                        color: white;
-                                        font-size: 14px;
-                                        font-weight: 600;
-                                    " id="userAvatar">
+                                    width: 32px;
+                                    height: 32px;
+                                    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+                                    color: white;
+                                    font-size: 14px;
+                                    font-weight: 600;
+                                " id="userAvatar">
                                         U
                                     </div>
-                                    <span class="fw-medium d-none d-lg-inline" id="username" style="font-size: 14px;">User</span>
+                                    <span class="fw-medium d-none d-lg-inline" id="username"
+                                        style="font-size: 14px;">User</span>
                                 </button>
-                                <ul class="dropdown-menu dropdown-menu-end shadow" style="min-width: 200px; border: none; box-shadow: 0 8px 32px rgba(0,0,0,0.12) !important;">
+                                <ul class="dropdown-menu dropdown-menu-end shadow"
+                                    style="min-width: 200px; border: none; box-shadow: 0 8px 32px rgba(0,0,0,0.12) !important;">
                                     <li>
                                         <div class="dropdown-header">
-                                            <div class="fw-semibold" style="color: #111; font-size: 14px;" id="userFullName">Chào mừng trở lại!</div>
+                                            <div class="fw-semibold" style="color: #111; font-size: 14px;"
+                                                id="userFullName">Chào mừng trở lại!</div>
                                             <small class="text-muted" id="userEmail">user@ueh.edu.vn</small>
                                         </div>
                                     </li>
-                                    <li><hr class="dropdown-divider"></li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
                                     <!-- Dashboard link (shown for admin/seller only) -->
                                     <li id="dashboardMenuItem" class="d-none">
-                                        <a class="dropdown-item d-flex align-items-center gap-2" href="#" id="dashboardLink" style="padding: 0.5rem 1rem; font-size: 14px; background: linear-gradient(135deg, #2563eb10 0%, #1d4ed810 100%);">
-                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <a class="dropdown-item d-flex align-items-center gap-2" href="#"
+                                            id="dashboardLink"
+                                            style="padding: 0.5rem 1rem; font-size: 14px; background: linear-gradient(135deg, #2563eb10 0%, #1d4ed810 100%);">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="2">
                                                 <rect x="3" y="3" width="7" height="7"></rect>
                                                 <rect x="14" y="3" width="7" height="7"></rect>
                                                 <rect x="14" y="14" width="7" height="7"></rect>
@@ -116,10 +253,14 @@
                                             <span id="dashboardLinkText">Dashboard</span>
                                         </a>
                                     </li>
-                                    <li id="dashboardDivider" class="d-none"><hr class="dropdown-divider"></li>
+                                    <li id="dashboardDivider" class="d-none">
+                                        <hr class="dropdown-divider">
+                                    </li>
                                     <li>
-                                        <a class="dropdown-item d-flex align-items-center gap-2" href="../user/profile.html" style="padding: 0.5rem 1rem; font-size: 14px;">
-                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <a class="dropdown-item d-flex align-items-center gap-2"
+                                            href="../user/profile.html" style="padding: 0.5rem 1rem; font-size: 14px;">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="2">
                                                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                                                 <circle cx="12" cy="7" r="4"></circle>
                                             </svg>
@@ -127,19 +268,28 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item d-flex align-items-center gap-2" href="../user/orders.html" style="padding: 0.5rem 1rem; font-size: 14px;">
-                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <a class="dropdown-item d-flex align-items-center gap-2"
+                                            href="../user/orders.html" style="padding: 0.5rem 1rem; font-size: 14px;">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="2">
                                                 <circle cx="8" cy="21" r="1"></circle>
                                                 <circle cx="19" cy="21" r="1"></circle>
-                                                <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57L20.5 9H5.12"></path>
+                                                <path
+                                                    d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57L20.5 9H5.12">
+                                                </path>
                                             </svg>
                                             Đơn hàng của tôi
                                         </a>
                                     </li>
-                                    <li><hr class="dropdown-divider"></li>
                                     <li>
-                                        <button class="dropdown-item d-flex align-items-center gap-2 text-secondary" onclick="logout()" style="padding: 0.5rem 1rem; font-size: 14px; border: none; background: none; width: 100%; text-align: left; color: #6b7280;">
-                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <hr class="dropdown-divider">
+                                    </li>
+                                    <li>
+                                        <button class="dropdown-item d-flex align-items-center gap-2 text-secondary"
+                                            onclick="logout()"
+                                            style="padding: 0.5rem 1rem; font-size: 14px; border: none; background: none; width: 100%; text-align: left; color: #6b7280;">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="2">
                                                 <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
                                                 <polyline points="16,17 21,12 16,7"></polyline>
                                                 <line x1="21" y1="12" x2="9" y2="12"></line>
@@ -156,28 +306,75 @@
         </div>
     </nav>
 
-    <!-- Page Header -->
-    <section class="py-5" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
-        <div class="container-fluid px-3 px-lg-5">
-            <div class="text-center mb-5">
-                <h1 class="display-4 fw-light mb-3" style="color: #111;">Tất cả sản phẩm</h1>
-                <p class="text-muted lead">Khám phá toàn bộ bộ sưu tập sản phẩm UEH chính hãng</p>
+
+
+
+    <!-- Page Header - Apple Style -->
+    <section class="py-5" style="background: #fbfbfd;">
+        <div class="container-fluid px-3 px-lg-5" style="max-width: 1400px; margin: 0 auto;">
+            <!-- Hero Title -->
+            <div class="text-center mb-5 pt-3">
+                <h1 class="mb-3" style="
+                    font-size: clamp(2.5rem, 5vw, 3.5rem); 
+                    font-weight: 600; 
+                    color: #1d1d1f;
+                    letter-spacing: -0.02em;
+                    line-height: 1.05;
+                ">Tất cả sản phẩm</h1>
+                <p class="mb-0" style="
+                    font-size: 1.25rem; 
+                    color: #86868b;
+                    font-weight: 400;
+                ">Khám phá bộ sưu tập sản phẩm UEH chính hãng</p>
             </div>
-            
-            <!-- Search and Filter Section -->
-            <div class="row justify-content-center mb-4">
-                <div class="col-lg-8">
-                    <!-- Search Bar -->
-                    <div class="input-group mb-3">
-                        <span class="input-group-text bg-white border-end-0">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <circle cx="11" cy="11" r="8"></circle>
-                                <path d="m21 21-4.35-4.35"></path>
+
+            <!-- Search Bar - Apple Style -->
+            <div class="row justify-content-center mb-5">
+                <div class="col-lg-8 col-xl-7">
+                    <div class="position-relative">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#86868b" stroke-width="2"
+                            style="
+                            position: absolute;
+                            left: 20px;
+                            top: 50%;
+                            transform: translateY(-50%);
+                            z-index: 2;
+                            pointer-events: none;
+                        ">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.35-4.35"></path>
+                        </svg>
+                        <input type="text" class="form-control" id="searchInput" placeholder="Tìm kiếm sản phẩm" style="
+                            height: 56px;
+                            padding: 0 70px 0 56px;
+                            border: none;
+                            border-radius: 980px;
+                            background: #fff;
+                            font-size: 17px;
+                            color: #1d1d1f;
+                            box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+                            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                        ">
+                        <button class="btn" type="button" id="searchBtn" style="
+                            position: absolute;
+                            right: 8px;
+                            top: 50%;
+                            transform: translateY(-50%);
+                            width: 40px;
+                            height: 40px;
+                            border-radius: 50%;
+                            background: #0071e3;
+                            border: none;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            transition: all 0.2s ease;
+                            padding: 0;
+                        " onmouseover="this.style.background='#0077ED'" onmouseout="this.style.background='#0071e3'">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff"
+                                stroke-width="2.5">
+                                <polyline points="9 18 15 12 9 6"></polyline>
                             </svg>
-                        </span>
-                        <input type="text" class="form-control border-start-0" id="searchInput" placeholder="Tìm kiếm sản phẩm..." style="box-shadow: none;">
-                        <button class="btn btn-dark px-4" type="button" id="searchBtn">
-                            Tìm kiếm
                         </button>
                     </div>
                 </div>
@@ -231,35 +428,82 @@
         </div>
     </section>
 
+
     <!-- Products Grid -->
-    <section class="py-5">
-        <div class="container-fluid px-3 px-lg-5">
-            <!-- Loading Spinner -->
+    <section class="" style="background: #fbfbfd;">
+        <div class="container-fluid px-3 px-lg-5" style="max-width: 1400px; margin: 0 auto;">
+            <!-- Loading Spinner - Apple Style -->
             <div id="loadingSpinner" class="text-center py-5">
-                <div class="spinner-border text-primary" role="status">
+                <div class="spinner-border" role="status" style="
+                    width: 3rem; 
+                    height: 3rem; 
+                    color: #0071e3; 
+                    border-width: 3px;
+                ">
                     <span class="visually-hidden">Đang tải...</span>
                 </div>
-                <p class="text-muted mt-3">Đang tải sản phẩm...</p>
+                <p class="mt-4 mb-0" style="color: #86868b; font-size: 17px;">Đang tải sản phẩm...</p>
             </div>
-            
+
             <!-- Products Grid -->
-            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-3" id="productsGrid" style="display: none;">
-                <!-- Products will be populated by JavaScript -->
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 " id="productsGrid"
+                style="row-gap: 1rem !important; margin-bottom: 0 !important;">
+                <!-- Products will be populated by JavaScript using createProductCard() -->
+
             </div>
-            
-            <!-- No Results Message -->
+            <!-- Load More Button Container -->
+            <div id="loadMoreContainer" class="text-center my-5" style="display: none;" aria-live="polite">
+                <button id="loadMoreBtn" class="btn btn-outline-dark btn-lg rounded-pill px-5 py-3" style="
+        font-weight: 600;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        border-width: 2px;
+    " onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 20px rgba(0,0,0,0.15)'"
+                    onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                    <span id="loadMoreSpinner" class="spinner-border spinner-border-sm me-2"
+                        style="display: none;"></span>
+                    <span id="loadMoreText">Xem thêm sản phẩm</span>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        class="ms-2" style="display: inline-block; vertical-align: middle;">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </button>
+            </div>
+
+
+            <!-- No Results -->
             <div id="noResults" class="text-center py-5" style="display: none;">
-                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" class="text-muted mb-3">
+                <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#d2d2d7" stroke-width="1.5"
+                    class="mb-4" style="opacity: 0.6;">
                     <circle cx="11" cy="11" r="8"></circle>
                     <path d="m21 21-4.35-4.35"></path>
                 </svg>
-                <h4 class="text-muted mb-2">Không tìm thấy sản phẩm nào</h4>
-                <p class="text-muted">Hãy thử thay đổi từ khóa tìm kiếm hoặc bộ lọc của bạn.</p>
-                <button class="btn btn-outline-primary" onclick="clearAllFilters()">
+                <h4 class="mb-3" style="
+                    font-size: 28px; 
+                    font-weight: 600; 
+                    color: #1d1d1f; 
+                    letter-spacing: -0.01em;
+                ">Không tìm thấy sản phẩm</h4>
+                <p class="mb-4" style="
+                    font-size: 17px; 
+                    color: #86868b; 
+                    max-width: 400px; 
+                    margin: 0 auto 32px;
+                ">Hãy thử thay đổi từ khóa tìm kiếm hoặc bộ lọc của bạn.</p>
+                <button class="btn" onclick="clearAllFilters()" style="
+                    padding: 12px 32px;
+                    border-radius: 980px;
+                    border: none;
+                    background: #0071e3;
+                    color: #fff;
+                    font-size: 15px;
+                    font-weight: 500;
+                    transition: all 0.2s ease;
+                " onmouseover="this.style.background='#0077ED'" onmouseout="this.style.background='#0071e3'">
                     Xóa bộ lọc
                 </button>
             </div>
-            
+
             <!-- Pagination -->
             <nav aria-label="Products pagination" class="mt-5">
                 <ul class="pagination justify-content-center" id="pagination">
@@ -269,6 +513,7 @@
         </div>
     </section>
 
+
     <!-- Footer -->
     <footer class="py-5" style="background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); color: #fff;">
         <div class="container">
@@ -277,28 +522,40 @@
                 <div class="col-lg-4 mb-4">
                     <h4 class="fw-bold mb-3" style="color: #fff; font-size: 1.5rem;">Unimerch</h4>
                     <p class="text-light opacity-75 mb-4" style="line-height: 1.6;">
-                        Sản phẩm cao cấp được thiết kế dành cho thế hệ lãnh đạo tương lai. 
+                        Sản phẩm cao cấp được thiết kế dành cho thế hệ lãnh đạo tương lai.
                         Tự hào đại diện cho trường đại học của bạn với phong cách riêng.
                     </p>
                     <div class="d-flex gap-3">
-                        <a href="#" class="text-light" style="transition: all 0.3s ease; opacity: 0.8;" onmouseover="this.style.opacity='1'; this.style.color='#0F766E'" onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">
+                        <a href="#" class="text-light" style="transition: all 0.3s ease; opacity: 0.8;"
+                            onmouseover="this.style.opacity='1'; this.style.color='#0F766E'"
+                            onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
+                                <path
+                                    d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z" />
                             </svg>
                         </a>
-                        <a href="#" class="text-light" style="transition: all 0.3s ease; opacity: 0.8;" onmouseover="this.style.opacity='1'; this.style.color='#0F766E'" onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">
+                        <a href="#" class="text-light" style="transition: all 0.3s ease; opacity: 0.8;"
+                            onmouseover="this.style.opacity='1'; this.style.color='#0F766E'"
+                            onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M22.46 6c-.77.35-1.6.58-2.46.69.88-.53 1.56-1.37 1.88-2.38-.83.5-1.75.85-2.72 1.05C18.37 4.5 17.26 4 16 4c-2.35 0-4.27 1.92-4.27 4.29 0 .34.04.67.11.98C8.28 9.09 5.11 7.38 3 4.79c-.37.63-.58 1.37-.58 2.15 0 1.49.75 2.81 1.91 3.56-.71 0-1.37-.2-1.95-.5v.03c0 2.08 1.48 3.82 3.44 4.21a4.22 4.22 0 0 1-1.93.07 4.28 4.28 0 0 0 4 2.98 8.521 8.521 0 0 1-5.33 1.84c-.34 0-.68-.02-1.02-.06C3.44 20.29 5.7 21 8.12 21 16 21 20.33 14.46 20.33 8.79c0-.19 0-.37-.01-.56.84-.6 1.56-1.36 2.14-2.23z"/>
+                                <path
+                                    d="M22.46 6c-.77.35-1.6.58-2.46.69.88-.53 1.56-1.37 1.88-2.38-.83.5-1.75.85-2.72 1.05C18.37 4.5 17.26 4 16 4c-2.35 0-4.27 1.92-4.27 4.29 0 .34.04.67.11.98C8.28 9.09 5.11 7.38 3 4.79c-.37.63-.58 1.37-.58 2.15 0 1.49.75 2.81 1.91 3.56-.71 0-1.37-.2-1.95-.5v.03c0 2.08 1.48 3.82 3.44 4.21a4.22 4.22 0 0 1-1.93.07 4.28 4.28 0 0 0 4 2.98 8.521 8.521 0 0 1-5.33 1.84c-.34 0-.68-.02-1.02-.06C3.44 20.29 5.7 21 8.12 21 16 21 20.33 14.46 20.33 8.79c0-.19 0-.37-.01-.56.84-.6 1.56-1.36 2.14-2.23z" />
                             </svg>
                         </a>
-                        <a href="#" class="text-light" style="transition: all 0.3s ease; opacity: 0.8;" onmouseover="this.style.opacity='1'; this.style.color='#0F766E'" onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">
+                        <a href="#" class="text-light" style="transition: all 0.3s ease; opacity: 0.8;"
+                            onmouseover="this.style.opacity='1'; this.style.color='#0F766E'"
+                            onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.174-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.097.118.112.222.085.343-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.402.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.357-.629-2.746-1.378l-.747 2.848c-.269 1.045-1.004 2.352-1.498 3.146 1.123.345 2.306.535 3.55.535 6.624 0 11.99-5.367 11.99-11.99C24.007 5.367 18.641.001 12.017.001z"/>
+                                <path
+                                    d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.174-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.097.118.112.222.085.343-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.402.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.357-.629-2.746-1.378l-.747 2.848c-.269 1.045-1.004 2.352-1.498 3.146 1.123.345 2.306.535 3.55.535 6.624 0 11.99-5.367 11.99-11.99C24.007 5.367 18.641.001 12.017.001z" />
                             </svg>
                         </a>
-                        <a href="#" class="text-light" style="transition: all 0.3s ease; opacity: 0.8;" onmouseover="this.style.opacity='1'; this.style.color='#0F766E'" onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">
+                        <a href="#" class="text-light" style="transition: all 0.3s ease; opacity: 0.8;"
+                            onmouseover="this.style.opacity='1'; this.style.color='#0F766E'"
+                            onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.174-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.097.118.112.222.085.343-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.402.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.357-.629-2.746-1.378l-.747 2.848c-.269 1.045-1.004 2.352-1.498 3.146 1.123.345 2.306.535 3.55.535 6.624 0 11.99-5.367 11.99-11.99C24.007 5.367 18.641.001 12.017.001z"/>
+                                <path
+                                    d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.174-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.097.118.112.222.085.343-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.402.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.357-.629-2.746-1.378l-.747 2.848c-.269 1.045-1.004 2.352-1.498 3.146 1.123.345 2.306.535 3.55.535 6.624 0 11.99-5.367 11.99-11.99C24.007 5.367 18.641.001 12.017.001z" />
                             </svg>
                         </a>
                     </div>
@@ -306,38 +563,81 @@
                 <div class="col-lg-8">
                     <div class="row g-4">
                         <div class="col-md-3">
-                            <h6 class="fw-semibold mb-3" style="color: #fff; font-size: 1.1rem; letter-spacing: 0.5px;">Cửa hàng</h6>
+                            <h6 class="fw-semibold mb-3" style="color: #fff; font-size: 1.1rem; letter-spacing: 0.5px;">
+                                Cửa hàng</h6>
                             <ul class="list-unstyled">
                                 <!-- Category links will be populated dynamically by JavaScript -->
                             </ul>
                         </div>
                         <div class="col-md-3">
-                            <h6 class="fw-semibold mb-3" style="color: #fff; font-size: 1.1rem; letter-spacing: 0.5px;">Hỗ trợ</h6>
+                            <h6 class="fw-semibold mb-3" style="color: #fff; font-size: 1.1rem; letter-spacing: 0.5px;">
+                                Hỗ trợ</h6>
                             <ul class="list-unstyled">
-                                <li class="mb-2"><a href="#" class="text-light text-decoration-none" style="font-size: 0.95rem; opacity: 0.8; transition: all 0.3s ease;" onmouseover="this.style.opacity='1'; this.style.color='#0F766E'" onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">Liên hệ</a></li>
-                                <li class="mb-2"><a href="#" class="text-light text-decoration-none" style="font-size: 0.95rem; opacity: 0.8; transition: all 0.3s ease;" onmouseover="this.style.opacity='1'; this.style.color='#0F766E'" onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">Hướng dẫn chọn size</a></li>
-                                <li class="mb-2"><a href="#" class="text-light text-decoration-none" style="font-size: 0.95rem; opacity: 0.8; transition: all 0.3s ease;" onmouseover="this.style.opacity='1'; this.style.color='#0F766E'" onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">Thông tin vận chuyển</a></li>
-                                <li class="mb-2"><a href="#" class="text-light text-decoration-none" style="font-size: 0.95rem; opacity: 0.8; transition: all 0.3s ease;" onmouseover="this.style.opacity='1'; this.style.color='#0F766E'" onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">Đổi trả</a></li>
+                                <li class="mb-2"><a href="#" class="text-light text-decoration-none"
+                                        style="font-size: 0.95rem; opacity: 0.8; transition: all 0.3s ease;"
+                                        onmouseover="this.style.opacity='1'; this.style.color='#0F766E'"
+                                        onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">Liên hệ</a>
+                                </li>
+                                <li class="mb-2"><a href="#" class="text-light text-decoration-none"
+                                        style="font-size: 0.95rem; opacity: 0.8; transition: all 0.3s ease;"
+                                        onmouseover="this.style.opacity='1'; this.style.color='#0F766E'"
+                                        onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">Hướng dẫn chọn
+                                        size</a></li>
+                                <li class="mb-2"><a href="#" class="text-light text-decoration-none"
+                                        style="font-size: 0.95rem; opacity: 0.8; transition: all 0.3s ease;"
+                                        onmouseover="this.style.opacity='1'; this.style.color='#0F766E'"
+                                        onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">Thông tin vận
+                                        chuyển</a></li>
+                                <li class="mb-2"><a href="#" class="text-light text-decoration-none"
+                                        style="font-size: 0.95rem; opacity: 0.8; transition: all 0.3s ease;"
+                                        onmouseover="this.style.opacity='1'; this.style.color='#0F766E'"
+                                        onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">Đổi trả</a>
+                                </li>
                             </ul>
                         </div>
                         <div class="col-md-3">
-                            <h6 class="fw-semibold mb-3" style="color: #fff; font-size: 1.1rem; letter-spacing: 0.5px;">Về chúng tôi</h6>
+                            <h6 class="fw-semibold mb-3" style="color: #fff; font-size: 1.1rem; letter-spacing: 0.5px;">
+                                Về chúng tôi</h6>
                             <ul class="list-unstyled">
-                                <li class="mb-2"><a href="#" class="text-light text-decoration-none" style="font-size: 0.95rem; opacity: 0.8; transition: all 0.3s ease;" onmouseover="this.style.opacity='1'; this.style.color='#0F766E'" onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">Câu chuyện của chúng tôi</a></li>
-                                <li class="mb-2"><a href="#" class="text-light text-decoration-none" style="font-size: 0.95rem; opacity: 0.8; transition: all 0.3s ease;" onmouseover="this.style.opacity='1'; this.style.color='#0F766E'" onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">Đại học UEH</a></li>
-                                <li class="mb-2"><a href="#" class="text-light text-decoration-none" style="font-size: 0.95rem; opacity: 0.8; transition: all 0.3s ease;" onmouseover="this.style.opacity='1'; this.style.color='#0F766E'" onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">Phát triển bền vững</a></li>
-                                <li class="mb-2"><a href="#" class="text-light text-decoration-none" style="font-size: 0.95rem; opacity: 0.8; transition: all 0.3s ease;" onmouseover="this.style.opacity='1'; this.style.color='#0F766E'" onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">Cơ hội việc làm</a></li>
+                                <li class="mb-2"><a href="#" class="text-light text-decoration-none"
+                                        style="font-size: 0.95rem; opacity: 0.8; transition: all 0.3s ease;"
+                                        onmouseover="this.style.opacity='1'; this.style.color='#0F766E'"
+                                        onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">Câu chuyện của
+                                        chúng tôi</a></li>
+                                <li class="mb-2"><a href="#" class="text-light text-decoration-none"
+                                        style="font-size: 0.95rem; opacity: 0.8; transition: all 0.3s ease;"
+                                        onmouseover="this.style.opacity='1'; this.style.color='#0F766E'"
+                                        onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">Đại học
+                                        UEH</a></li>
+                                <li class="mb-2"><a href="#" class="text-light text-decoration-none"
+                                        style="font-size: 0.95rem; opacity: 0.8; transition: all 0.3s ease;"
+                                        onmouseover="this.style.opacity='1'; this.style.color='#0F766E'"
+                                        onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">Phát triển bền
+                                        vững</a></li>
+                                <li class="mb-2"><a href="#" class="text-light text-decoration-none"
+                                        style="font-size: 0.95rem; opacity: 0.8; transition: all 0.3s ease;"
+                                        onmouseover="this.style.opacity='1'; this.style.color='#0F766E'"
+                                        onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">Cơ hội việc
+                                        làm</a></li>
                             </ul>
                         </div>
                         <div class="col-md-3">
-                            <h6 class="fw-semibold mb-3" style="color: #fff; font-size: 1.1rem; letter-spacing: 0.5px;">Bản tin</h6>
+                            <h6 class="fw-semibold mb-3" style="color: #fff; font-size: 1.1rem; letter-spacing: 0.5px;">
+                                Bản tin</h6>
                             <p class="text-light opacity-75 mb-3" style="font-size: 0.9rem;">
                                 Nhận thông tin cập nhật về sản phẩm mới và ưu đãi đặc biệt.
                             </p>
                             <div class="input-group mb-3">
-                                <input type="email" class="form-control" placeholder="Email của bạn" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff;" onfocus="this.style.background='rgba(255,255,255,0.15)'" onblur="this.style.background='rgba(255,255,255,0.1)'">
-                                <button class="btn" type="button" style="background: #0F766E; border: 1px solid #0F766E; color: white; transition: all 0.3s ease;" onmouseover="this.style.background='#065f56'" onmouseout="this.style.background='#0F766E'">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <input type="email" class="form-control" placeholder="Email của bạn"
+                                    style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff;"
+                                    onfocus="this.style.background='rgba(255,255,255,0.15)'"
+                                    onblur="this.style.background='rgba(255,255,255,0.1)'">
+                                <button class="btn" type="button"
+                                    style="background: #0F766E; border: 1px solid #0F766E; color: white; transition: all 0.3s ease;"
+                                    onmouseover="this.style.background='#065f56'"
+                                    onmouseout="this.style.background='#0F766E'">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
                                         <line x1="22" y1="2" x2="11" y2="13"></line>
                                         <polygon points="22,2 15,22 11,13 2,9"></polygon>
                                     </svg>
@@ -347,7 +647,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- Bottom section -->
             <div class="border-top pt-4" style="border-color: rgba(255,255,255,0.1) !important;">
                 <div class="row align-items-center">
@@ -357,77 +657,109 @@
                         </p>
                     </div>
                     <div class="col-md-6 text-md-end mt-3 mt-md-0">
-                        <a href="#" class="text-light text-decoration-none me-4" style="font-size: 0.9rem; opacity: 0.8; transition: all 0.3s ease;" onmouseover="this.style.opacity='1'; this.style.color='#0F766E'" onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">Chính sách bảo mật</a>
-                        <a href="#" class="text-light text-decoration-none" style="font-size: 0.9rem; opacity: 0.8; transition: all 0.3s ease;" onmouseover="this.style.opacity='1'; this.style.color='#0F766E'" onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">Điều khoản dịch vụ</a>
+                        <a href="#" class="text-light text-decoration-none me-4"
+                            style="font-size: 0.9rem; opacity: 0.8; transition: all 0.3s ease;"
+                            onmouseover="this.style.opacity='1'; this.style.color='#0F766E'"
+                            onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">Chính sách bảo mật</a>
+                        <a href="#" class="text-light text-decoration-none"
+                            style="font-size: 0.9rem; opacity: 0.8; transition: all 0.3s ease;"
+                            onmouseover="this.style.opacity='1'; this.style.color='#0F766E'"
+                            onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">Điều khoản dịch vụ</a>
                     </div>
                 </div>
             </div>
         </div>
     </footer>
 
+
     <!-- Quick View Modal -->
     <div class="modal fade" id="quickViewModal" tabindex="-1" aria-labelledby="quickViewModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header border-0">
-                    <h5 class="modal-title" id="quickViewModalLabel">Xem nhanh</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-header border-0 pb-0">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        style="opacity: 0.5;"></button>
                 </div>
-                <div class="modal-body" id="quickViewContent">
+                <div class="modal-body px-4 pb-4" id="quickViewContent">
                     <!-- Content will be populated by JavaScript -->
                 </div>
             </div>
         </div>
     </div>
 
+
     <!-- Cart Offcanvas -->
-    <div class="offcanvas offcanvas-end" tabindex="-1" id="cartOffcanvas" aria-labelledby="cartOffcanvasLabel">
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="cartOffcanvas" aria-labelledby="cartOffcanvasLabel"
+        style="width: 420px; max-width: 90vw;">
         <div class="offcanvas-header">
             <h5 class="offcanvas-title" id="cartOffcanvasLabel">Giỏ hàng</h5>
-            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"
+                style="opacity: 0.5;"></button>
         </div>
-        <div class="offcanvas-body">
-            <div id="cartItems">
-                <p class="text-muted text-center">Giỏ hàng của bạn đang trống</p>
+        <div class="offcanvas-body d-flex flex-column">
+            <div id="cartItems" class="flex-grow-1">
+                <div class="text-center py-5">
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#d2d2d7" stroke-width="1.5"
+                        class="mb-3">
+                        <circle cx="8" cy="21" r="1"></circle>
+                        <circle cx="19" cy="21" r="1"></circle>
+                        <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57L20.5 9H5.12"></path>
+                    </svg>
+                    <p class="mb-0" style="color: #86868b; font-size: 15px;">Giỏ hàng trống</p>
+                </div>
             </div>
-            <div id="cartFooter" class="d-none">
-                <hr>
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                    <button class="btn btn-link text-danger btn-sm p-0" onclick="cartUI.clearCart()">
+            <div id="cartFooter" class="d-none mt-auto">
+                <hr style="border-color: #d2d2d7; margin: 0 -16px 16px;">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <button class="btn btn-link text-danger p-0" onclick="cartUI.clearCart()" style="
+                        font-size: 14px; 
+                        font-weight: 500;
+                        text-decoration: none;
+                    ">
                         Xóa tất cả
                     </button>
-                    <small class="text-muted selected-count">0 sản phẩm được chọn</small>
+                    <small class="selected-count" style="color: #86868b; font-size: 13px;">0 sản phẩm</small>
                 </div>
-                <div class="d-flex justify-content-between mb-3">
-                    <strong>Tổng thanh toán:</strong>
-                    <strong id="cartSubtotal">0₫</strong>
+                <div class="d-flex justify-content-between mb-4">
+                    <strong style="font-size: 17px; color: #1d1d1f;">Tổng:</strong>
+                    <strong id="cartSubtotal" style="font-size: 17px; color: #1d1d1f;">0₫</strong>
                 </div>
-                <button class="btn btn-dark w-100 rounded-pill" onclick="createOrderFromCart()">
+                <button class="btn w-100" onclick="createOrderFromCart()" style="
+                    padding: 14px;
+                    border-radius: 12px;
+                    border: none;
+                    background: #0071e3;
+                    color: #fff;
+                    font-size: 15px;
+                    font-weight: 500;
+                    transition: all 0.2s ease;
+                " onmouseover="this.style.background='#0077ED'" onmouseout="this.style.background='#0071e3'">
                     Tạo đơn hàng (<span class="selected-items-count">0</span>)
                 </button>
             </div>
         </div>
     </div>
 
+
     <!-- Toast Container -->
     <div class="toast-container position-fixed bottom-0 end-0 p-3" id="toastContainer">
         <!-- Toasts will be inserted here -->
     </div>
 
+
     <!-- Bootstrap 5.3 JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- API Service and Utils - MUST BE LOADED FIRST -->
-    <script src="../../js/shared/utils.js"></script>
-    <script src="../../js/shared/api.service.js"></script>
-    
+    <!-- API Service and Utils -->
+    <script src="../../js/core/utils.js"></script>
+    <script src="../../js/core/api.service.js"></script>
+
     <!-- Cart Services -->
     <script src="../../js/features/cart/cart.service.js"></script>
     <script src="../../js/features/cart/cart.ui.js"></script>
 
-    <!-- Main Products Script - for showToast function -->
+    <!-- Main Products Script -->
     <script>
-        // Load main-products.js but prevent auto-rendering
         window.preventAutoRender = true;
     </script>
     <script src="../../components/main-products.js"></script>
@@ -438,6 +770,9 @@
     <!-- All Products Page Script -->
     <script src="../../js/features/product/all-products.page.js"></script>
 
+    <!-- Logout Service -->
     <script src="../../js/features/auth/logout.service.js"></script>
+
 </body>
+
 </html>
