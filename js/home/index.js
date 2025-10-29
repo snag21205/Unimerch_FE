@@ -39,7 +39,171 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Setup event listeners
     setupEventListeners();
+    
+    // Initialize animations and effects
+    initializeParallaxEffects();
+    initializeRevealAnimations();
+    initializeScrollAnimations();
+    initializeEmailForm();
+    initializeAddToCartButtons();
+    initializeSmoothScroll();
 });
+
+// Initialize parallax effects
+function initializeParallaxEffects() {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isMobile = window.innerWidth <= 768;
+    
+    if (isMobile || prefersReducedMotion) {
+        return;
+    }
+    
+    let ticking = false;
+    
+    const parallaxSlowElements = document.querySelectorAll('.parallax-slow');
+    const parallaxMidElements = document.querySelectorAll('.parallax-mid');
+    const parallaxFastElements = document.querySelectorAll('.parallax-fast');
+    const collectionBgs = document.querySelectorAll('.collection-bg');
+    const typoBgText = document.querySelector('.typo-bg-text');
+    
+    function updateParallax() {
+        const scrolled = window.pageYOffset;
+        
+        // Hero parallax layers
+        parallaxSlowElements.forEach(el => {
+            const yPos = scrolled * 0.3;
+            el.style.transform = `translateY(${yPos}px)`;
+        });
+        
+        parallaxMidElements.forEach(el => {
+            const yPos = scrolled * 0.5;
+            el.style.transform = `translateY(${yPos}px)`;
+        });
+        
+        parallaxFastElements.forEach(el => {
+            const yPos = scrolled * 0.7;
+            el.style.transform = `translateY(${yPos}px)`;
+        });
+        
+        // Typographic background (reverse parallax)
+        if (typoBgText) {
+            const yPos = -(scrolled * 0.2);
+            typoBgText.style.transform = `translate(-50%, -50%) translateY(${yPos}px)`;
+        }
+        
+        // Collection bands parallax
+        collectionBgs.forEach(bg => {
+            const rect = bg.getBoundingClientRect();
+            if (rect.top < window.innerHeight && rect.bottom > 0) {
+                const speed = 0.4;
+                const yPos = (window.innerHeight - rect.top) * speed;
+                bg.style.transform = `translateY(${yPos}px)`;
+            }
+        });
+        
+        ticking = false;
+    }
+    
+    function requestTick() {
+        if (!ticking) {
+            requestAnimationFrame(updateParallax);
+            ticking = true;
+        }
+    }
+    
+    window.addEventListener('scroll', requestTick);
+}
+
+// Initialize reveal animations
+function initializeRevealAnimations() {
+    const revealElements = document.querySelectorAll('.reveal');
+    
+    const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('in');
+            }
+        });
+    }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    });
+
+    revealElements.forEach(el => {
+        revealObserver.observe(el);
+    });
+}
+
+// Initialize scroll animations for navbar
+function initializeScrollAnimations() {
+    const navbar = document.getElementById('mainNav');
+    if (navbar) {
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+    }
+}
+
+// Initialize email form validation
+function initializeEmailForm() {
+    const emailForm = document.getElementById('emailForm');
+    const emailInput = document.getElementById('emailInput');
+    
+    if (emailForm && emailInput) {
+        emailForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const email = emailInput.value.trim();
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            
+            if (emailRegex.test(email)) {
+                alert('Cảm ơn bạn đã đăng ký! Kiểm tra email để nhận mã giảm giá 10%.');
+                emailInput.value = '';
+            } else {
+                alert('Vui lòng nhập địa chỉ email hợp lệ.');
+            }
+        });
+    }
+}
+
+// Initialize add to cart buttons
+function initializeAddToCartButtons() {
+    const addToCartButtons = document.querySelectorAll('.btn-add-cart');
+    
+    addToCartButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const productName = button.closest('.product-card').querySelector('.product-name').textContent;
+            button.textContent = 'Đã thêm!';
+            button.style.background = 'var(--ueh-teal)';
+            
+            setTimeout(() => {
+                button.textContent = 'Thêm vào giỏ';
+                button.style.background = '';
+            }, 2000);
+        });
+    });
+}
+
+// Initialize smooth scroll for nav links
+function initializeSmoothScroll() {
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                const offsetTop = target.offsetTop - 80;
+                window.scrollTo({
+                    top: offsetTop,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+}
 
 // Main render function - Now handled by main-products.js
 function renderProducts(productsToRender = []) {
