@@ -56,7 +56,7 @@
             if (!window.location.pathname.includes('all-products.html') && 
                 !window.location.pathname.endsWith('index.html') && 
                 window.location.pathname !== '/') {
-                renderProducts();
+                //renderProducts();
             }
         }
     }
@@ -448,154 +448,118 @@
         return stars;
     }
     
-    // ===== MODERN PRODUCT CARD COMPONENT - REDESIGNED =====
-    function createProductCard(product) {
-        // Tính giá hiển thị (discount nếu có)
-        const displayPrice = product.discount_price || product.price;
-        const hasDiscount = product.discount_price !== null;
-        const discountPercent = hasDiscount ? Math.round(((product.price - product.discount_price) / product.price) * 100) : 0;
-        
-        return `
-            <div class="product-card-modern position-relative overflow-hidden" onclick="goToProductDetail(${product.id})" style="
-                cursor: pointer; 
-                border-radius: 24px; 
-                background: white;
-                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-                border: 1px solid rgba(0, 0, 0, 0.05);
-                max-width: 380px;
-                margin: 0 auto;
+// ===== SIMPLE PRODUCT CARD - CLEAN DESIGN =====
+function createProductCard(product) {
+    // Tính giá hiển thị (discount nếu có)
+    const displayPrice = product.discount_price || product.price;
+    const hasDiscount = product.discount_price !== null;
+    const discountPercent = hasDiscount ? Math.round(((product.price - product.discount_price) / product.price) * 100) : 0;
+    const isOutOfStock = product.quantity === 0 || product.status === 'out_of_stock';
+    
+    return `
+        <div class="product-card-simple" onclick="goToProductDetail(${product.id})" style="
+            cursor: pointer; 
+ border: 1px solid #444;
+            border-radius: 18px;
+            background: #1a1a1a;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            max-width: 315px;
+            margin: 0 auto;
+        " onmouseover="this.style.transform='translateY(-5px)'" 
+           onmouseout="this.style.transform='translateY(0)'">
+            
+            <!-- Product Image Section -->
+            <div class="position-relative overflow-hidden" style="
+                background: #1a1a1a;
+                height: 400px;
             ">
-                <!-- Discount Badge -->
                 ${hasDiscount ? `
-                    <div class="position-absolute" style="top: 16px; left: 16px; z-index: 10;">
-                        <div class="badge bg-danger text-white px-3 py-2 rounded-pill" style="font-size: 0.75rem; font-weight: 600; box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);">
+                    <div class="position-absolute" style="top: 16px; right: 16px; z-index: 10;">
+                        <div class="badge bg-danger text-white px-3 py-2 rounded-pill" style="font-size: 0.75rem; font-weight: 600;">
                             -${discountPercent}%
                         </div>
                     </div>
                 ` : ''}
                 
-                
-                <!-- Product Image Section -->
-                <div class="position-relative overflow-hidden" style="
-                    background: #e3f2fd;
-                    padding: 2rem;
-                    height: 280px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                ">
-                    <!-- Product Image -->
-                    <div class="product-image-container position-relative" style="
-                        width: 200px;
-                        height: 200px;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
+                <img src="${product.image_url}" 
+                     alt="${product.name}" 
+                     class="product-image" 
+                     onerror="this.src='../../assets/images/products/demo.png'; this.onerror=null;"
+                     style="
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                        object-position: center;
                         transition: transform 0.4s ease;
-                        background: transparent;
-                    ">
-                        <img src="${product.image_url}" alt="${product.name}" class="img-fluid product-image" 
-                             style="
-                            max-width: 100%;
-                            max-height: 100%;
-                            object-fit: contain;
-                            filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.12));
-                            transition: all 0.4s ease;
-                        ">
-                    </div>
-                </div>
-                
-                <!-- Product Content -->
-                <div class="p-4" style="background: white; min-height: 300px; display: flex; flex-direction: column;">
-                    <!-- Category Badge -->
-                    <div class="mb-2">
-                        <span class="badge text-muted px-3 py-1 rounded-pill" style="
-                            background: rgba(107, 114, 128, 0.1);
-                            font-size: 0.7rem;
-                            font-weight: 500;
-                            letter-spacing: 0.5px;
-                        ">${product.category}</span>
-                    </div>
-                    
-                    <!-- Product Title -->
-                    <h5 class="fw-bold mb-2 product-title" style="
-                        font-size: 1.25rem;
-                        line-height: 1.3;
-                        color: #1f2937;
-                        font-family: 'Inter', sans-serif;
-                        transition: all 0.3s ease;
-                    ">${product.name}</h5>
-                    
-                    <!-- Rating -->
-                    <div class="d-flex align-items-center mb-3">
-                        <div class="d-flex me-2">
-                            ${generateStars(product.rating)}
-                        </div>
-                        <span class="text-muted" style="font-size: 0.8rem;">(${product.reviews})</span>
-                        <div class="ms-auto">
-                            <span class="badge bg-success bg-opacity-10 text-success px-2 py-1 rounded-pill" style="font-size: 0.7rem;">
-                                ${product.quantity > 0 ? `${product.quantity} left` : 'Out of stock'}
-                            </span>
-                        </div>
-                    </div>
-                    
-                    <!-- Price Section -->
-                    <div class="d-flex align-items-baseline mb-3">
-                        <div class="me-auto">
-                            ${hasDiscount ? `
-                                <div class="d-flex align-items-baseline gap-2">
-                                    <span class="h5 fw-bold text-danger mb-0" style="font-size: 1.5rem;">$${displayPrice}</span>
-                                    <span class="text-muted text-decoration-line-through" style="font-size: 1rem;">$${product.price}</span>
-                                </div>
-                            ` : `
-                                <span class="h5 fw-bold mb-0" style="font-size: 1.5rem; color: #1f2937;">$${displayPrice}</span>
-                            `}
-                        </div>
-                    </div>
-                    
-                    
-                    <!-- Action Button -->
-                    <div class="mt-auto">
-                        <button class="btn btn-dark w-100 rounded-pill" 
-                                onclick="addProductToCart(${product.id}, event)" 
-                                style="
-                                    font-size: 0.9rem; 
-                                    font-weight: 600; 
-                                    padding: 14px 24px;
-                                    background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
-                                    border: none;
-                                    transition: all 0.3s ease;
-                                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-                                " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-2">
-                                <circle cx="8" cy="21" r="1"></circle>
-                                <circle cx="19" cy="21" r="1"></circle>
-                                <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57L20.5 9H5.12"></path>
-                            </svg>
-                            Thêm vào giỏ
-                        </button>
-                    </div>
-                </div>
-                
-                <!-- Stock Status Overlay -->
-                ${product.status === 'out_of_stock' ? `
-                    <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center" style="
-                        background: rgba(255, 255, 255, 0.95); 
-                        z-index: 15;
-                        backdrop-filter: blur(4px);
-                    ">
-                        <div class="text-center">
-                            <div class="badge bg-white text-dark px-4 py-2 rounded-pill mb-2" style="font-size: 0.9rem; border: 1px solid #e5e7eb; font-weight: 600;">
-                                Out of Stock
-                            </div>
-                            <p class="text-muted mb-0" style="font-size: 0.8rem;">Notify when available</p>
-                        </div>
-                    </div>
-                ` : ''}
+                " onmouseover="this.style.transform='scale(1.05)'"
+                   onmouseout="this.style.transform='scale(1)'">
             </div>
-        `;
-    }
+
+            <!-- Product Content -->
+            <div class="p-4" style="background: #16181d; color: white;">
+                
+                <!-- Product Title -->
+                <h5 class="fw-bold mb-3" style="
+                    font-size: 1.3rem;
+                    line-height: 1.4;
+                    color: white;
+                ">${product.name}</h5>
+                
+             
+                
+                <!-- Price Section -->
+                <div class="mb-3">
+                    ${hasDiscount ? `
+                        <div class="d-flex align-items-baseline gap-2">
+                            <span class="fw-bold" style="font-size: 1.5rem; color: white;">${formatPrice(displayPrice)}</span>
+                            <span class="text-decoration-line-through" style="font-size: 1rem; color: #666;">${formatPrice(product.price)}</span>
+                        </div>
+                    ` : `
+                        <span class="fw-bold" style="font-size: 1.5rem; color: white;">${formatPrice(displayPrice)}</span>
+                    `}
+                </div>
+                
+                <!-- Action Button -->
+                <button class="btn w-100" 
+                        onclick="addProductToCart(${product.id}, event)" 
+                        ${isOutOfStock ? 'disabled' : ''}
+                        style="
+                            font-size: 1rem; 
+                            font-weight: 600; 
+                            padding: 14px;
+                            background: #2a2a2a;
+                            color: white;
+                            border: 1px solid #444;
+                            border-radius: 12px;
+                            transition: all 0.3s ease;
+                            ${isOutOfStock ? 'opacity: 0.5; cursor: not-allowed;' : ''}
+                        " 
+                        onmouseover="if(!this.disabled) this.style.background='#18b0b4'" 
+                        onmouseout="if(!this.disabled) this.style.background='#2a2a2a'">
+                    ${isOutOfStock ? 'Hết hàng' : 'Thêm vào giỏ'}
+                </button>
+            </div>
+            
+            <!-- Stock Status Overlay -->
+            ${isOutOfStock ? `
+                <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center" style="
+                    background: rgba(0, 0, 0, 0.8); 
+                    z-index: 15;
+                    backdrop-filter: blur(4px);
+                ">
+                    <div class="text-center">
+                        <div class="badge bg-white text-dark px-4 py-2 rounded-pill mb-2" style="font-size: 0.9rem; font-weight: 600;">
+                            Hết hàng
+                        </div>
+                        <p class="text-white mb-0" style="font-size: 0.8rem;">Sẽ cập nhật sớm</p>
+                    </div>
+                </div>
+            ` : ''}
+        </div>
+    `;
+}
+
 
     
     // ===== MAIN RENDER FUNCTION =====
@@ -605,6 +569,7 @@
         // Check if we're on all-products page or index page and prevent rendering
         if (window.location.pathname.includes('all-products.html') || 
             window.location.pathname.endsWith('index.html') || 
+            window.location.pathname.endsWith('landing-page.html') || 
             window.location.pathname === '/') {
 ('⏸️ Skipping renderProducts() on all-products or index page');
             return;
@@ -622,7 +587,7 @@
         }
         
         // Khôi phục Bootstrap classes với khoảng cách nhỏ
-        grid.className = 'row row-cols-1 row-cols-md-2 row-cols-lg-3 g-2 justify-content-center';
+        grid.className = 'row row-cols-1 row-cols-md-2 row-cols-lg-4 g-2 justify-content-center';
         
         // Render products với Bootstrap cols
         let html = '';
@@ -844,7 +809,7 @@
         }
         
         // Check if we're on index page - always skip main-products.js initialization
-        if (window.location.pathname === '/' || window.location.pathname.endsWith('index.html')) {
+        if (window.location.pathname === '/' || window.location.pathname.endsWith('index.html') || window.location.pathname.endsWith('landing-page.html')) {
 ('⏸️ Skipping main-products.js initialization on index page - featured products handled by index.js');
             return;
         }
