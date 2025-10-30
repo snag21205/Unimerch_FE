@@ -3,21 +3,259 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quản lý đơn hàng - Fashion Store</title>
+    <title>Quản lý đơn hàng - Unimerch</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../../css/styles.css">
+    <link rel="stylesheet" href="../../css/navbar.css">
     <link rel="stylesheet" href="../../css/orders.css">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --accent: #18b0b4;
+            --ueh-blue: rgb(78, 160, 255);
+            --bg-dark: #0d0f12;
+            --text-light: #f1f3f5;
+            --text-muted: #a8a8a8;
+            --card-dark: #16181d;
+        }
+        
+        body {
+            background: var(--bg-dark) !important;
+            color: var(--text-light) !important;
+            font-family: 'Be Vietnam Pro', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        
+        /* Cards */
+        .card {
+            background: var(--card-dark) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            color: var(--text-light) !important;
+        }
+        
+        /* Order tabs */
+        .order-tabs-container {
+            background: var(--card-dark);
+            border-radius: 12px;
+            padding: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .order-tab {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        
+        .order-tab:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--accent);
+        }
+        
+        .order-tab.active {
+            background: var(--accent);
+            color: white;
+        }
+        
+        .order-count {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.25rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            margin-left: 0.5rem;
+        }
+        
+        .order-tab.active .order-count {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        /* Badges */
+        .badge {
+            font-weight: 500;
+        }
+        
+        .badge.bg-warning {
+            background: #f59e0b !important;
+        }
+        
+        .badge.bg-info {
+            background: var(--ueh-blue) !important;
+        }
+        
+        .badge.bg-primary {
+            background: var(--accent) !important;
+        }
+        
+        .badge.bg-success {
+            background: #10b981 !important;
+        }
+        
+        .badge.bg-danger {
+            background: #ef4444 !important;
+        }
+        
+        /* Buttons */
+        .btn-primary {
+            background: var(--accent);
+            border-color: var(--accent);
+        }
+        
+        .btn-primary:hover {
+            background: #149b9f;
+            border-color: #149b9f;
+        }
+        
+        .btn-outline-primary {
+            color: var(--accent);
+            border-color: var(--accent);
+        }
+        
+        .btn-outline-primary:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+        }
+        
+        /* Text colors */
+        h1, h2, h3, h4, h5, h6 {
+            color: var(--text-light) !important;
+        }
+        
+        .text-muted {
+            color: var(--text-muted) !important;
+        }
+        
+        /* Empty state */
+        #emptyState svg {
+            stroke: var(--text-muted);
+        }
+        
+        /* Override ALL orders.css light theme - FORCE DARK EVERYWHERE */
+        .order-card,
+        .order-card-header,
+        .order-card-body,
+        .order-card-footer,
+        .order-header,
+        .order-footer,
+        .card-header,
+        .card-body,
+        .card-footer,
+        [class*="order"][class*="header"],
+        [class*="order"][class*="footer"],
+        .order-card > div,
+        .order-card > div:first-child,
+        .order-card > div:last-child {
+            background: var(--card-dark) !important;
+            background-color: var(--card-dark) !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
+        }
+        
+        .order-card {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3) !important;
+        }
+        
+        .order-card:hover {
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4) !important;
+            border-color: rgba(24, 176, 180, 0.3) !important;
+        }
+        
+        .order-card-header,
+        .card-header {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+            padding: 1rem !important;
+        }
+        
+        .order-card-footer,
+        .card-footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+            padding: 1rem !important;
+        }
+        
+        .order-item {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+            background: transparent !important;
+        }
+        
+        .order-item:last-child {
+            border-bottom: none !important;
+        }
+        
+        /* ALL text colors - only use base palette */
+        .order-card *,
+        .order-card h1, .order-card h2, .order-card h3, 
+        .order-card h4, .order-card h5, .order-card h6,
+        .product-name,
+        .order-id,
+        .order-date,
+        strong {
+            color: var(--text-light) !important;
+        }
+        
+        /* Muted text */
+        .product-info,
+        .order-meta,
+        .text-secondary,
+        small,
+        .order-card small {
+            color: var(--text-muted) !important;
+        }
+        
+        /* Prices - use accent teal only */
+        .price,
+        .total-price,
+        .order-total,
+        .product-price {
+            color: var(--accent) !important;
+        }
+        
+        /* Remove ALL blue colors from orders.css */
+        .order-tab.active {
+            background: var(--accent) !important;
+            color: white !important;
+            border-bottom-color: var(--accent) !important;
+        }
+        
+        .order-tab:hover {
+            background: rgba(24, 176, 180, 0.1) !important;
+            color: var(--accent) !important;
+        }
+        
+        .order-count {
+            background: var(--accent) !important;
+            color: white !important;
+        }
+        
+        .order-tab:not(.active) .order-count {
+            background: rgba(255, 255, 255, 0.2) !important;
+            color: var(--text-muted) !important;
+        }
+        
+        /* Status badges */
+        .status-badge,
+        .order-status-badge {
+            font-weight: 500 !important;
+            padding: 0.25rem 0.75rem !important;
+            border-radius: 12px !important;
+        }
+    </style>
 </head>
-<body class="bg-light">
-    <!-- Header component will be loaded here by JavaScript -->
+<body>
+    <!-- Navbar Container -->
+    <div id="navbar-container"></div>
 
     <!-- Add top padding to account for fixed navbar -->
-    <div>
+    <div style="padding-top: 90px;">
         <!-- Main Content -->
         <div class="container py-4">
             <!-- Page Header -->
             <div class="mb-4">
-                <h1 class="h3 fw-bold mb-1" style="color: #333;">Đơn hàng của tôi</h1>
+                <h1 class="h3 fw-bold mb-1">Đơn hàng của tôi</h1>
                 <p class="text-muted mb-0">Quản lý và theo dõi tất cả đơn hàng của bạn</p>
             </div>
 
@@ -73,10 +311,21 @@
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Navbar Component -->
+    <script src="../../components/navbar.js"></script>
+    
     <script src="../../js/shared/utils.js"></script>
     <script src="../../js/shared/api.service.js"></script>
+    
+    <!-- Auth logic -->
+    <script src="../../js/features/auth/index-auth.js"></script>
+    <script src="../../js/features/auth/logout.service.js"></script>
+    
+    <!-- Cart Services -->
+    <script src="../../js/features/cart/cart.service.js"></script>
+    
     <script src="../../js/features/order/order.service.js"></script>
-    <script src="../../components/header.js"></script>
     <script src="../../js/features/order/orders-list.page.js"></script>
 </body>
 </html>

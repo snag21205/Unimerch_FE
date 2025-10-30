@@ -5,14 +5,214 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tạo đơn hàng - Unimerch</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../../css/styles.css">
+    <link rel="stylesheet" href="../../css/navbar.css">
     <link rel="stylesheet" href="../../css/orders.css">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --accent: #18b0b4;
+            --ueh-blue: rgb(78, 160, 255);
+            --bg-dark: #0d0f12;
+            --text-light: #f1f3f5;
+            --text-muted: #a8a8a8;
+            --card-dark: #16181d;
+        }
+        
+        body {
+            background: var(--bg-dark) !important;
+            color: var(--text-light) !important;
+            font-family: 'Be Vietnam Pro', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        
+        .card {
+            background: var(--card-dark) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            color: var(--text-light) !important;
+        }
+        
+        .card-title {
+            color: var(--text-light) !important;
+        }
+        
+        /* Form controls */
+        .form-control, .form-select, textarea.form-control {
+            background: rgba(255, 255, 255, 0.05) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            color: var(--text-light) !important;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            background: rgba(255, 255, 255, 0.08) !important;
+            border-color: var(--accent) !important;
+            color: var(--text-light) !important;
+            box-shadow: 0 0 0 0.2rem rgba(24, 176, 180, 0.25) !important;
+        }
+        
+        .form-control::placeholder {
+            color: var(--text-muted) !important;
+        }
+        
+        .form-label {
+            color: var(--text-light) !important;
+        }
+        
+        /* Payment options */
+        .payment-option {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .payment-option:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--accent);
+        }
+        
+        .payment-option:has(.form-check-input:checked) {
+            background: rgba(24, 176, 180, 0.1);
+            border-color: var(--accent);
+        }
+        
+        .form-check-input {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .form-check-input:checked {
+            background-color: var(--accent);
+            border-color: var(--accent);
+        }
+        
+        .form-check-label {
+            color: var(--text-light);
+        }
+        
+        .payment-icon {
+            font-size: 2rem;
+        }
+        
+        /* Buttons */
+        .btn-primary {
+            background: var(--accent);
+            border-color: var(--accent);
+        }
+        
+        .btn-primary:hover {
+            background: #149b9f;
+            border-color: #149b9f;
+        }
+        
+        .btn-lg {
+            padding: 0.875rem 1.5rem;
+        }
+        
+        /* Text colors */
+        h1, h2, h3, h4, h5, h6 {
+            color: var(--text-light) !important;
+        }
+        
+        .text-muted {
+            color: var(--text-muted) !important;
+        }
+        
+        .text-primary {
+            color: var(--accent) !important;
+        }
+        
+        .text-danger {
+            color: #ef4444 !important;
+        }
+        
+        small {
+            color: var(--text-muted);
+        }
+        
+        small a {
+            color: var(--accent) !important;
+        }
+        
+        .spinner-border {
+            color: var(--accent) !important;
+        }
+        
+        .border-top {
+            border-color: rgba(255, 255, 255, 0.1) !important;
+        }
+        
+        /* Override ALL light backgrounds */
+        #orderItems,
+        .order-item,
+        .order-summary,
+        .summary-card {
+            background: transparent !important;
+        }
+        
+        /* Order items in summary */
+        .order-item {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+            padding: 1rem 0;
+        }
+        
+        .order-item:last-child {
+            border-bottom: none !important;
+        }
+        
+        .order-item img {
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.02);
+        }
+        
+        /* ALL text - base palette only */
+        .product-name,
+        .item-name,
+        #orderItems *,
+        .summary-label,
+        strong {
+            color: var(--text-light) !important;
+        }
+        
+        /* Muted text */
+        .item-quantity,
+        .item-size,
+        small {
+            color: var(--text-muted) !important;
+        }
+        
+        /* Prices - teal accent only */
+        .product-price,
+        .item-price,
+        #subtotal,
+        #shippingFee,
+        #totalAmount {
+            color: var(--accent) !important;
+            font-weight: 600;
+        }
+        
+        /* Summary totals */
+        .border-top {
+            border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+        }
+        
+        /* Position sticky card */
+        .position-sticky {
+            top: 100px;
+        }
+    </style>
 </head>
-<body class="bg-light">
-    <!-- Header component will be loaded here by JavaScript -->
+<body>
+    <!-- Navbar Container -->
+    <div id="navbar-container"></div>
 
     <!-- Add top padding to account for fixed navbar -->
-    <div style="padding-top: 100px;">
+    <div style="padding-top: 90px;">
         <!-- Main Content -->
         <div class="container py-4">
             <!-- Loading State -->
@@ -27,7 +227,7 @@
             <div id="createOrderContent" class="d-none">
                 <!-- Page Header -->
                 <div class="mb-4">
-                    <h2 class="h3 fw-bold mb-1" style="color: #333;">Tạo đơn hàng</h2>
+                    <h2 class="h3 fw-bold mb-1">Tạo đơn hàng</h2>
                     <p class="text-muted mb-0">Xác nhận thông tin và hoàn tất đơn hàng của bạn</p>
                 </div>
 
@@ -190,11 +390,21 @@
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Navbar Component -->
+    <script src="../../components/navbar.js"></script>
+    
     <script src="../../js/shared/utils.js"></script>
     <script src="../../js/shared/api.service.js"></script>
-    <script src="../../js/features/order/order.service.js"></script>
+    
+    <!-- Auth logic -->
+    <script src="../../js/features/auth/index-auth.js"></script>
+    <script src="../../js/features/auth/logout.service.js"></script>
+    
+    <!-- Cart Services -->
     <script src="../../js/features/cart/cart.service.js"></script>
-    <script src="../../components/header.js"></script>
+    
+    <script src="../../js/features/order/order.service.js"></script>
     <script src="../../js/features/order/create-order.page.js"></script>
 </body>
 </html>

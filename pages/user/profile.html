@@ -14,11 +14,170 @@
     <!-- Auth protection script -->
     <script src="../../js/features/auth/auth-protection.service.js"></script>
     
-    <link rel="stylesheet" href="../../css/styles.css">
+    <link rel="stylesheet" href="../../css/navbar.css">
     <link rel="stylesheet" href="../../css/profile.css">
     
-    <!-- Custom CSS to hide validation icons but keep colors -->
+    <!-- Custom CSS to match dark theme -->
     <style>
+        :root {
+            --accent: #18b0b4;
+            --ueh-blue: rgb(78, 160, 255);
+            --bg-dark: #0d0f12;
+            --text-light: #f1f3f5;
+            --text-muted: #a8a8a8;
+            --card-dark: #16181d;
+        }
+        
+        body {
+            background: var(--bg-dark) !important;
+            color: var(--text-light) !important;
+            font-family: 'Be Vietnam Pro', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        
+        /* Cards */
+        .profile-card, .card {
+            background: var(--card-dark) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            color: var(--text-light) !important;
+        }
+        
+        /* Form controls */
+        .form-control, .form-select {
+            background: rgba(255, 255, 255, 0.05) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            color: var(--text-light) !important;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            background: rgba(255, 255, 255, 0.08) !important;
+            border-color: var(--accent) !important;
+            color: var(--text-light) !important;
+            box-shadow: 0 0 0 0.2rem rgba(24, 176, 180, 0.25) !important;
+        }
+        
+        .form-control::placeholder {
+            color: var(--text-muted) !important;
+        }
+        
+        .form-control[readonly] {
+            background: rgba(255, 255, 255, 0.02) !important;
+            border-color: rgba(255, 255, 255, 0.05) !important;
+        }
+        
+        .form-label {
+            color: var(--text-light) !important;
+        }
+        
+        .form-text {
+            color: var(--text-muted) !important;
+        }
+        
+        /* Tabs */
+        .nav-tabs {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+        }
+        
+        .nav-tabs .nav-link {
+            color: var(--text-muted) !important;
+            border: none !important;
+            background: transparent !important;
+        }
+        
+        .nav-tabs .nav-link:hover {
+            color: var(--accent) !important;
+            border: none !important;
+        }
+        
+        .nav-tabs .nav-link.active {
+            color: var(--accent) !important;
+            background: transparent !important;
+            border-bottom: 2px solid var(--accent) !important;
+        }
+        
+        /* Buttons */
+        .btn-save {
+            background: var(--accent) !important;
+            border: none !important;
+            color: white !important;
+        }
+        
+        .btn-save:hover {
+            background: #149b9f !important;
+            transform: translateY(-2px);
+        }
+        
+        .btn-outline-danger {
+            border-color: #dc3545 !important;
+            color: #dc3545 !important;
+        }
+        
+        .btn-outline-danger:hover {
+            background: #dc3545 !important;
+            color: white !important;
+        }
+        
+        /* Profile header */
+        .profile-header {
+            background: linear-gradient(135deg, rgba(24, 176, 180, 0.1), rgba(78, 160, 255, 0.1));
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 3rem 0;
+        }
+        
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            background: var(--accent);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 600;
+            margin: 0 auto 1rem;
+        }
+        
+        /* Card titles */
+        .card-title {
+            color: var(--text-light) !important;
+        }
+        
+        .card-text {
+            color: var(--text-muted) !important;
+        }
+        
+        /* Text colors */
+        .text-muted {
+            color: var(--text-muted) !important;
+        }
+        
+        .text-danger {
+            color: #ff6b6b !important;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            color: var(--text-light) !important;
+        }
+        
+        /* Form check */
+        .form-check-input {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .form-check-input:checked {
+            background-color: var(--accent);
+            border-color: var(--accent);
+        }
+        
+        .form-check-label {
+            color: var(--text-light);
+        }
+        
+        /* Invalid feedback */
+        .invalid-feedback {
+            color: #ff6b6b !important;
+        }
         /* Hide Bootstrap validation icons to prevent overlap with toggle buttons */
         .form-control.is-valid {
             background-image: none !important;
@@ -51,36 +210,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top shadow-sm">
-        <div class="container-fluid px-3 px-lg-5">
-            <a class="navbar-brand fw-semibold fs-4" href="../../index.html" style="color: #111;">Unimerch</a>
-            
-            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav mx-auto d-none d-lg-flex">
-                    <li class="nav-item mx-3">
-                        <a class="nav-link" href="../../index.html">Trang chủ</a>
-                    </li>
-                    <li class="nav-item mx-3">
-                        <a class="nav-link" href="../../index.html#products">Sản phẩm</a>
-                    </li>
-                </ul>
-                
-                <div class="d-flex align-items-center gap-3">
-                    <a href="../../index.html" class="btn btn-outline-dark btn-sm rounded-pill px-3">
-                        ← Quay lại cửa hàng
-                    </a>
-                </div>
-            </div>
-        </div>
-    </nav>
+    <!-- Navbar Container -->
+    <div id="navbar-container"></div>
 
     <!-- Profile Header -->
-    <section class="profile-header">
+    <section class="profile-header" style="margin-top: 80px;">
         <div class="container">
             <div class="text-center">
                 <div class="profile-avatar" id="profileAvatar">U</div>
@@ -304,9 +438,19 @@
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
+    <!-- Navbar Component -->
+    <script src="../../components/navbar.js"></script>
+    
     <!-- Utils and API Service -->
     <script src="../../js/shared/utils.js"></script>
     <script src="../../js/shared/api.service.js"></script>
+    
+    <!-- Auth logic -->
+    <script src="../../js/features/auth/index-auth.js"></script>
+    <script src="../../js/features/auth/logout.service.js"></script>
+    
+    <!-- Cart Services -->
+    <script src="../../js/features/cart/cart.service.js"></script>
     
     <!-- Profile JavaScript -->
     <script src="../../js/features/user/profile.page.js"></script>
