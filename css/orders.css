@@ -140,12 +140,12 @@
     letter-spacing: 0.5px;
 }
 
-.status-pending { background: #fff3e0; color: #f57c00; }
-.status-shipping { background: #e3f2fd; color: #1976d2; }
-.status-ready { background: #f3e5f5; color: #7b1fa2; }
-.status-completed { background: #e8f5e8; color: #388e3c; }
-.status-cancelled { background: #ffebee; color: #d32f2f; }
-.status-refund { background: #fff8e1; color: #f9a825; }
+.status-pending { background: #ffffff; color: #000000; }
+.status-shipping { background: #ffffff; color: #000000; }
+.status-ready { background: #ffffff; color: #000000; }
+.status-completed { background: #ffffff; color: #000000; }
+.status-cancelled { background: #ffffff; color: #000000; }
+.status-refund { background: #ffffff; color: #000000; }
 
 /* Order Items */
 .order-items {

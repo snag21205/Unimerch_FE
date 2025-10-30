@@ -316,28 +316,28 @@ body {
 }
 
 .badge.status-pending { 
-    background-color: #fef3c7;
-    color: #92400e;
+    background-color: #ffffff;
+    color: #000000;
 }
 
 .badge.status-processing { 
-    background-color: #dbeafe;
-    color: #1e40af;
+    background-color: #ffffff;
+    color: #000000;
 }
 
 .badge.status-shipped { 
-    background-color: #e0e7ff;
-    color: #3730a3;
+    background-color: #ffffff;
+    color: #000000;
 }
 
 .badge.status-delivered { 
-    background-color: #d1fae5;
-    color: #065f46;
+    background-color: #ffffff;
+    color: #000000;
 }
 
 .badge.status-cancelled { 
-    background-color: #fee2e2;
-    color: #991b1b;
+    background-color: #ffffff;
+    color: #000000;
 }
 
 /* Forms */

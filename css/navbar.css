@@ -107,3 +107,172 @@
     align-items: center;
     white-space: nowrap;
 }
+
+/* Dropdown Menu Styles */
+.dropdown-menu {
+    background: rgba(20, 22, 25, 0.98);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 0.5rem;
+    margin-top: 0.5rem !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    animation: dropdownFadeIn 0.2s ease;
+    z-index: 9999 !important;
+    min-width: 250px !important;
+    max-height: none !important;
+    overflow: visible !important;
+}
+
+@keyframes dropdownFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.dropdown-item {
+    color: var(--text-light) !important;
+    border-radius: 8px;
+    padding: 0.65rem 1rem;
+    margin: 0.15rem 0;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+    background: rgba(246, 167, 193, 0.15) !important;
+    color: var(--accent) !important;
+}
+
+.dropdown-item svg {
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+}
+
+.dropdown-item:hover svg {
+    opacity: 1;
+}
+
+.dropdown-header {
+    color: var(--text-light) !important;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 0.5rem;
+}
+
+.dropdown-header .fw-semibold,
+.dropdown-header #userFullName {
+    color: var(--text-light) !important;
+    font-weight: 600 !important;
+}
+
+.dropdown-header .text-muted,
+.dropdown-header small {
+    color: rgba(255, 255, 255, 0.6) !important;
+}
+
+.dropdown-header #userEmail {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.dropdown-divider {
+    border-color: rgba(255, 255, 255, 0.1);
+    margin: 0.5rem 0;
+}
+
+/* User avatar in dropdown toggle */
+#userAvatar {
+    width: 32px;
+    height: 32px;
+    background: var(--accent);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+/* Dropdown toggle button */
+.dropdown-toggle::after {
+    margin-left: 0.5rem;
+    vertical-align: middle;
+}
+
+/* Make sure dropdown is visible */
+.dropdown-menu.show {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Ensure proper z-index hierarchy */
+.navbar-custom {
+    z-index: 1030;
+}
+
+.navbar-custom .dropdown {
+    z-index: 1031;
+    position: relative;
+}
+
+.navbar-custom .dropdown-menu {
+    z-index: 9999;
+    position: absolute !important;
+    display: none;
+    top: 100%;
+    right: 0;
+    left: auto;
+}
+
+.navbar-custom .dropdown-menu.show {
+    display: block !important;
+}
+
+/* Debug: Ensure all dropdown items are visible */
+.dropdown-menu li {
+    display: list-item !important;
+    list-style: none !important;
+}
+
+.dropdown-menu .dropdown-item {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Force show all dropdown children */
+.dropdown-menu > li {
+    display: list-item !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    max-height: none !important;
+    height: auto !important;
+}
+
+/* Explicitly show profile and orders items */
+.dropdown-menu li:not(.d-none) {
+    display: list-item !important;
+}
+
+/* Dashboard menu item - override d-none when needed */
+#dashboardMenuItem.d-none,
+#dashboardDivider.d-none {
+    /* Keep hidden as controlled by JS */
+}
+
+/* Make sure buttons in dropdown are styled properly */
+.dropdown-menu button.dropdown-item {
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+}

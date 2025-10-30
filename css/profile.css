@@ -77,18 +77,18 @@ body {
 }
 
 .status-completed {
-    background-color: #d1fae5;
-    color: #065f46;
+    background-color: #ffffff;
+    color: #000000;
 }
 
 .status-pending {
-    background-color: #fef3c7;
-    color: #92400e;
+    background-color: #ffffff;
+    color: #000000;
 }
 
 .status-shipping {
-    background-color: #dbeafe;
-    color: #1e40af;
+    background-color: #ffffff;
+    color: #000000;
 }
 
 .btn-save {
