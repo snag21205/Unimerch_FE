@@ -91,12 +91,13 @@ html {
 }
 
 .mega-text {
-    font-family: 'Bebas Neue', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: clamp(4rem, 12vw, 11rem);
     line-height: 0.85;
-    letter-spacing: -3px;
+    letter-spacing: -2px;
     margin: 0;
     text-transform: uppercase;
+    font-weight: 900;
 }
 
 .mega-text-accent {
@@ -112,12 +113,13 @@ html {
 }
 
 .vertical-text {
-    font-family: 'Bebas Neue', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: clamp(1.5rem, 3vw, 2.5rem);
     line-height: 1.1;
-    letter-spacing: 2px;
+    letter-spacing: 1px;
     text-align: right;
     color: var(--text-light);
+    font-weight: 800;
 }
 
 .vertical-text-muted {
@@ -155,10 +157,11 @@ html {
 }
 
 .cta-card-text {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.8rem;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.5rem;
     line-height: 1;
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
+    font-weight: 800;
 }
 
 .cta-card-icon {
@@ -229,11 +232,12 @@ html {
 }
 
 .collection-title {
-    font-family: 'Bebas Neue', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: clamp(3rem, 6vw, 6rem);
-    letter-spacing: -2px;
+    letter-spacing: -1px;
     margin-bottom: 1.5rem;
     line-height: 0.9;
+    font-weight: 900;
 }
 
 .collection-desc {
@@ -325,11 +329,12 @@ html {
 }
 
 .usp-text {
-    font-family: 'Bebas Neue', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: clamp(2rem, 4vw, 3.5rem);
     position: relative;
     display: inline-block;
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
+    font-weight: 800;
 }
 
 .usp-text::after {
@@ -354,11 +359,12 @@ html {
 }
 
 .email-title {
-    font-family: 'Bebas Neue', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: clamp(2.5rem, 5vw, 4rem);
     margin-bottom: 1rem;
     text-align: center;
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
+    font-weight: 900;
 }
 
 .email-subtitle {

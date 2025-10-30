@@ -44,8 +44,20 @@ class NavbarComponent {
      */
     async loadNavbarHTML(containerId) {
         try {
-            const response = await fetch('components/navbar.html');
-            const html = await response.text();
+            // Determine the correct path based on current location
+            const currentPath = window.location.pathname;
+            let navbarPath = 'components/navbar.html';
+            
+            // If we're in a subdirectory, adjust the path
+            if (currentPath.includes('/pages/')) {
+                navbarPath = '../../components/navbar.html';
+            }
+            
+            const response = await fetch(navbarPath);
+            let html = await response.text();
+            
+            // Fix navigation links based on current path
+            html = this.fixNavigationLinks(html);
             
             // Insert navbar HTML
             const container = document.getElementById(containerId);
@@ -61,6 +73,32 @@ class NavbarComponent {
             console.error('Failed to load navbar HTML:', error);
             throw error;
         }
+    }
+    
+    /**
+     * Fix navigation links based on current page location
+     */
+    fixNavigationLinks(html) {
+        const currentPath = window.location.pathname;
+        const isInSubfolder = currentPath.includes('/pages/');
+        
+        if (isInSubfolder) {
+            // Determine depth - how many levels deep are we?
+            const pathParts = currentPath.split('/').filter(p => p);
+            const depth = pathParts.indexOf('pages');
+            const prefix = depth >= 0 ? '../../' : '';
+            
+            // Fix all navigation links
+            html = html.replace(/href="pages\//g, `href="${prefix}pages/`);
+            html = html.replace(/href="#featured"/g, `href="${prefix}index.html#featured"`);
+            html = html.replace(/href="#about"/g, `href="${prefix}index.html#about"`);
+            html = html.replace(/href="#"/g, `href="${prefix}index.html"`);
+            
+            // Fix brand link (without hash)
+            html = html.replace(/<a class="navbar-brand" href="#">/g, `<a class="navbar-brand" href="${prefix}index.html">`);
+        }
+        
+        return html;
     }
 
     /**

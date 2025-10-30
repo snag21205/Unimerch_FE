@@ -18,13 +18,14 @@
 }
 
 .navbar-brand {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.8rem;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.5rem;
     color: var(--text-light) !important;
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
     display: flex;
     align-items: center;
     line-height: 1;
+    font-weight: 800;
 }
 
 .nav-link {
