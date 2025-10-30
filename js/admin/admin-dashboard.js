@@ -246,7 +246,6 @@ window.switchTab = switchTab;
 
 // ===== UTILITY FUNCTIONS =====
 function showToast(message, type = 'info') {
-    // Create toast container if it doesn't exist
     let toastContainer = document.getElementById('toastContainer');
     if (!toastContainer) {
         toastContainer = document.createElement('div');
@@ -255,29 +254,33 @@ function showToast(message, type = 'info') {
         toastContainer.style.zIndex = '1080';
         document.body.appendChild(toastContainer);
     }
-    
     const toastId = 'toast-' + Date.now();
+    const icons = {
+      success: `<i class="bi bi-check-circle-fill toast-icon" style="color:#10b981;"></i>`,
+      danger: `<i class="bi bi-x-circle-fill toast-icon" style="color:#ef4444;"></i>`,
+      warning: `<i class="bi bi-exclamation-circle-fill toast-icon" style="color:#f59e0b;"></i>`,
+      info: `<i class="bi bi-info-circle-fill toast-icon" style="color:#18b0b4;"></i>`
+    };
+    const titles = {
+      success: 'Thành công', danger: 'Lỗi', warning: 'Cảnh báo', info: 'Thông báo'
+    };
     const toastHTML = `
-        <div id="${toastId}" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="toast-header">
-                <div class="rounded me-2" style="width: 12px; height: 12px; background-color: ${getToastColor(type)};"></div>
-                <strong class="me-auto">Thông Báo</strong>
-                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
-            <div class="toast-body">
-                ${message}
-            </div>
-        </div>
-    `;
-    
+    <div id="${toastId}" class="toast fade show" role="alert" aria-live="assertive" aria-atomic="true" style="min-width:280px;max-width:370px;">
+      <div class="toast-header">
+        ${icons[type] || ''}
+        <strong class="me-auto" style="color: var(--accent); font-size:1rem; font-family:'Montserrat',sans-serif;">${titles[type] || 'Thông báo'}</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+      <div class="toast-body" style="font-family:'Be Vietnam Pro',sans-serif;">
+        ${message}
+      </div>
+    </div>`;
     toastContainer.insertAdjacentHTML('beforeend', toastHTML);
-    
-    const toastElement = document.getElementById(toastId);
-    const toast = new bootstrap.Toast(toastElement);
-    toast.show();
-    
-    toastElement.addEventListener('hidden.bs.toast', () => {
-        toastElement.remove();
+    const toastElem = document.getElementById(toastId);
+    const bsToast = new bootstrap.Toast(toastElem, { delay: 3000 });
+    bsToast.show();
+    toastElem.addEventListener('hidden.bs.toast', function() {
+      toastElem.remove();
     });
 }
 

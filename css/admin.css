@@ -5,7 +5,7 @@
     --ueh-blue: rgb(78, 160, 255);
     --bg-dark: #0d0f12;
     --text-light: #f1f3f5;
-    --text-muted: #8e9199;
+    --text-muted: #bfc4cc;  /* trắng nhàn nhạt cho dark theme */
     --card-dark: #16181d;
     
     --success-color: #10b981;
@@ -160,7 +160,7 @@ body {
 }
 
 .card-header {
-    background: rgba(255, 255, 255, 0.02);
+    background: rgba(255, 255, 255, 0);
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     padding: 1.5rem;
     font-weight: 600;
@@ -513,3 +513,137 @@ body {
     }
 }
 
+/* ===== FIX INCONSISTENT WHITE AREAS (ADMIN WRAPPERS) ===== */
+.card, .table-responsive, .admin-section, .main-content, .custom-table-container {
+  background: var(--card-dark) !important;
+  border-radius: 18px;
+  border: 1px solid rgba(255,255,255,0.05);
+  box-shadow: var(--shadow);
+}
+
+.table, .table thead th, .table tbody td {
+  background: transparent !important;
+}
+
+/* End admin card/table wrapper override */
+
+/* ===== FIX WHITE SECTION/TABLE HEADER (caption) IN ADMIN ===== */
+.card-header, 
+.admin-section-header, 
+.section-header, 
+.table-title,
+.table-responsive > .card-header,
+.table-responsive > .section-header,
+.table-responsive > .table-title {
+    background: var(--card-dark) !important;
+    color: var(--text-light) !important;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+}
+
+.bg-white, 
+.bg-light, 
+.table thead th,
+.table thead {
+    background: var(--card-dark) !important;
+    color: var(--text-light) !important;
+}
+/* End header override */
+
+/* ===== DARK THEME PAGINATION FOR ADMIN ===== */
+.pagination {
+    --bs-pagination-bg: var(--card-dark);
+    --bs-pagination-border-color: rgba(255,255,255,0.08);
+    --bs-pagination-hover-bg: var(--accent);
+    --bs-pagination-hover-color: var(--bg-dark);
+    --bs-pagination-active-bg: var(--accent);
+    --bs-pagination-active-border-color: var(--accent);
+    --bs-pagination-color: var(--text-light);
+    --bs-pagination-hover-border-color: var(--accent);
+    --bs-pagination-focus-bg: var(--accent);
+    --bs-pagination-focus-color: var(--bg-dark);
+    --bs-pagination-focus-box-shadow: 0 0 0 0.25rem rgba(24, 176, 180, 0.2);
+    --bs-pagination-disabled-bg: rgba(255,255,255,0.06);
+    --bs-pagination-disabled-border-color: rgba(255,255,255,0.10);
+    --bs-pagination-disabled-color: var(--text-muted);
+    margin-bottom: 2rem;
+  }
+  
+  .page-link {
+    background: var(--card-dark) !important;
+    color: var(--text-light) !important;
+    border: 1.5px solid rgba(255,255,255,0.08) !important;
+    border-radius: 10px !important;
+    box-shadow: none !important;
+    font-weight: 600;
+    transition: all 0.17s;
+  }
+  
+  .page-link:hover, .page-link:focus {
+    background: var(--accent) !important;
+    color: var(--bg-dark) !important;
+    border-color: var(--accent) !important;
+  }
+  
+  .page-item.active .page-link {
+    background: var(--accent) !important;
+    color: var(--bg-dark) !important;
+    border-color: var(--accent) !important;
+  }
+  
+  .page-item.disabled .page-link {
+    background: rgba(255,255,255,0.06) !important;
+    color: var(--text-muted) !important;
+    border-color: rgba(255,255,255,0.10) !important;
+  }
+
+/* ===== ADMIN TOAST DARK THEME ===== */
+.toast {
+    background: var(--card-dark) !important;
+    color: var(--text-light) !important;
+    border-radius: 12px;
+    border: 1.5px solid var(--accent);
+    box-shadow: 0 8px 24px rgba(24, 176, 180, 0.12), 0 1px 2px #0003;
+    font-family: 'Be Vietnam Pro', sans-serif;
+}
+.toast-header {
+    background: var(--card-dark) !important;
+    color: var(--text-light) !important;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    border-radius: 10px 10px 0 0;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+}
+.toast .btn-close {
+    filter: invert(1) grayscale(1) brightness(1.3);
+}
+.toast-body {
+    color: var(--text-light) !important;
+    font-size: 0.98rem;
+}
+.toast .toast-icon {
+    width: 14px; height: 14px; min-width: 14px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+/* ===== FIX MUTED/SECONDARY TEXT COLOR FOR DARK THEME ===== */
+:root {
+  --text-muted: #bfc4cc;  /* trắng nhàn nhạt cho dark theme */
+}
+.text-muted,
+.text-secondary,
+.form-label,
+.table-secondary,
+.table .text-muted,
+.table .text-secondary,
+label,
+th[scope="col"],
+option:disabled {
+  color: var(--text-muted) !important;
+  opacity: 0.82 !important;
+}
+input::placeholder,
+.form-control::placeholder {
+  color: var(--text-muted) !important;
+  opacity: 0.6 !important;
+}

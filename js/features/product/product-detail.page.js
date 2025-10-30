@@ -439,6 +439,11 @@ function generateRatingStars() {
     }
 }
 
+function formatPrice(price) {
+    // Support for both number and string
+    let n = typeof price === 'number' ? price : parseFloat(price);
+    return n.toLocaleString('vi-VN') + 'đ';
+}
 
 // Change quantity
 function changeQuantity(change) {
@@ -456,7 +461,7 @@ function changeQuantity(change) {
 // Update total price
 function updateTotalPrice() {
     const total = currentProduct.price * quantity;
-    document.getElementById('totalPrice').textContent = `$${total}`;
+    document.getElementById('totalPrice').textContent = formatPrice(total);
 }
 
 // Add to cart
