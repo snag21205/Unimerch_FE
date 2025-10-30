@@ -11,10 +11,10 @@
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     
-    <!-- Google Fonts - Be Vietnam Pro cho tiếng Việt + Bebas Neue cho tiêu đề -->
+    <!-- Google Fonts - Be Vietnam Pro + Montserrat cho tiêu đề -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/home.css">
     <link rel="stylesheet" href="css/navbar.css">
     
@@ -24,9 +24,10 @@
             font-family: 'Be Vietnam Pro', -apple-system, BlinkMacSystemFont, sans-serif;
         }
         
-        /* Giữ Bebas Neue cho các heading lớn */
+        /* Dùng Montserrat cho các heading lớn - đẹp hơn cho tiếng Việt */
         h1, h2, h3, .mega-text, .collection-title, .email-title {
-            font-family: 'Bebas Neue', sans-serif;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
         }
         
         /* Các text nhỏ hơn dùng Be Vietnam Pro */
@@ -313,49 +314,101 @@
 
 
     <!-- Footer -->
-    <footer class="footer">
+    <footer class="py-5" style="background: rgba(0,0,0,0.5); color: var(--text-light); border-top: 1px solid rgba(255,255,255,0.05);">
         <div class="container">
-            <div class="row">
+            <!-- Top section với branding -->
+            <div class="row mb-5">
                 <div class="col-lg-4 mb-4">
-                    <h3 class="fw-bold mb-3" style="font-family: 'Bebas Neue', sans-serif; letter-spacing: 2px; color: var(--text-light);">UNIMERCH</h3>
-                    <p class="mb-4">Sản phẩm chính thức của UEH được thiết kế cho sinh viên muốn trông thật đẹp và cảm thấy tuyệt vời.</p>
-                    <div class="social-links">
-                        <a href="#" class="social-link"><i class="bi bi-facebook"></i></a>
-                        <a href="#" class="social-link"><i class="bi bi-instagram"></i></a>
-                        <a href="#" class="social-link"><i class="bi bi-tiktok"></i></a>
-                        <a href="#" class="social-link"><i class="bi bi-twitter"></i></a>
+                    <h4 class="fw-bold mb-3" style="color: var(--text-light); font-size: 1.5rem;">Unimerch</h4>
+                    <p class="text-light opacity-75 mb-4" style="line-height: 1.6;">
+                        Sản phẩm cao cấp được thiết kế dành cho thế hệ lãnh đạo tương lai. 
+                        Tự hào đại diện cho trường đại học của bạn với phong cách riêng.
+                    </p>
+                    <div class="d-flex gap-3">
+                        <a href="#" class="text-light" style="transition: all 0.3s ease; opacity: 0.8;" onmouseover="this.style.opacity='1'; this.style.color='#0F766E'" onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="text-light" style="transition: all 0.3s ease; opacity: 0.8;" onmouseover="this.style.opacity='1'; this.style.color='#0F766E'" onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M22.46 6c-.77.35-1.6.58-2.46.69.88-.53 1.56-1.37 1.88-2.38-.83.5-1.75.85-2.72 1.05C18.37 4.5 17.26 4 16 4c-2.35 0-4.27 1.92-4.27 4.29 0 .34.04.67.11.98C8.28 9.09 5.11 7.38 3 4.79c-.37.63-.58 1.37-.58 2.15 0 1.49.75 2.81 1.91 3.56-.71 0-1.37-.2-1.95-.5v.03c0 2.08 1.48 3.82 3.44 4.21a4.22 4.22 0 0 1-1.93.07 4.28 4.28 0 0 0 4 2.98 8.521 8.521 0 0 1-5.33 1.84c-.34 0-.68-.02-1.02-.06C3.44 20.29 5.7 21 8.12 21 16 21 20.33 14.46 20.33 8.79c0-.19 0-.37-.01-.56.84-.6 1.56-1.36 2.14-2.23z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="text-light" style="transition: all 0.3s ease; opacity: 0.8;" onmouseover="this.style.opacity='1'; this.style.color='#0F766E'" onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.174-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.097.118.112.222.085.343-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.402.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.357-.629-2.746-1.378l-.747 2.848c-.269 1.045-1.004 2.352-1.498 3.146 1.123.345 2.306.535 3.55.535 6.624 0 11.99-5.367 11.99-11.99C24.007 5.367 18.641.001 12.017.001z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="text-light" style="transition: all 0.3s ease; opacity: 0.8;" onmouseover="this.style.opacity='1'; this.style.color='#0F766E'" onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.174-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.097.118.112.222.085.343-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.402.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.357-.629-2.746-1.378l-.747 2.848c-.269 1.045-1.004 2.352-1.498 3.146 1.123.345 2.306.535 3.55.535 6.624 0 11.99-5.367 11.99-11.99C24.007 5.367 18.641.001 12.017.001z"/>
+                            </svg>
+                        </a>
                     </div>
                 </div>
-                <div class="col-lg-2 col-md-3 col-6 mb-4">
-                    <h6>Mua Sắm</h6>
-                    <a href="#">Áo Hoodie</a>
-                    <a href="#">Áo Thun</a>
-                    <a href="#">Phụ Kiện</a>
-                    <a href="#">Đồ Học Tập</a>
-                </div>
-                <div class="col-lg-2 col-md-3 col-6 mb-4">
-                    <h6>Hỗ Trợ</h6>
-                    <a href="#">Liên Hệ</a>
-                    <a href="#">Thông Tin Giao Hàng</a>
-                    <a href="#">Đổi Trả</a>
-                    <a href="#">Bảng Size</a>
-                </div>
-                <div class="col-lg-2 col-md-3 col-6 mb-4">
-                    <h6>Về Chúng Tôi</h6>
-                    <a href="#">Câu Chuyện</a>
-                    <a href="#">Hợp Tác UEH</a>
-                    <a href="#">Phát Triển Bền Vững</a>
-                    <a href="#">Tuyển Dụng</a>
-                </div>
-                <div class="col-lg-2 col-md-3 col-6 mb-4">
-                    <h6>Pháp Lý</h6>
-                    <a href="#">Chính Sách Bảo Mật</a>
-                    <a href="#">Điều Khoản Dịch Vụ</a>
-                    <a href="#">Chính Sách Cookie</a>
+                <div class="col-lg-8">
+                    <div class="row g-4">
+                        <div class="col-md-3">
+                            <h6 class="fw-semibold mb-3" style="color: var(--text-light); font-size: 1.1rem; letter-spacing: 0.5px;">Cửa hàng</h6>
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><a href="pages/products/all-products.html" class="text-light text-decoration-none" style="font-size: 0.95rem; opacity: 0.8; transition: all 0.3s ease;" onmouseover="this.style.opacity='1'; this.style.color='#0F766E'" onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">Sản phẩm nổi bật</a></li>
+                                <li class="mb-2"><a href="pages/products/all-products.html" class="text-light text-decoration-none" style="font-size: 0.95rem; opacity: 0.8; transition: all 0.3s ease;" onmouseover="this.style.opacity='1'; this.style.color='#0F766E'" onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">Tất cả sản phẩm</a></li>
+                                <li class="mb-2"><a href="#" class="text-light text-decoration-none" style="font-size: 0.95rem; opacity: 0.8; transition: all 0.3s ease;" onmouseover="this.style.opacity='1'; this.style.color='#0F766E'" onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">Áo Hoodie</a></li>
+                                <li class="mb-2"><a href="#" class="text-light text-decoration-none" style="font-size: 0.95rem; opacity: 0.8; transition: all 0.3s ease;" onmouseover="this.style.opacity='1'; this.style.color='#0F766E'" onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">Áo Thun</a></li>
+                                <li class="mb-2"><a href="#" class="text-light text-decoration-none" style="font-size: 0.95rem; opacity: 0.8; transition: all 0.3s ease;" onmouseover="this.style.opacity='1'; this.style.color='#0F766E'" onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">Phụ kiện</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-3">
+                            <h6 class="fw-semibold mb-3" style="color: var(--text-light); font-size: 1.1rem; letter-spacing: 0.5px;">Hỗ trợ</h6>
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><a href="#" class="text-light text-decoration-none" style="font-size: 0.95rem; opacity: 0.8; transition: all 0.3s ease;" onmouseover="this.style.opacity='1'; this.style.color='#0F766E'" onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">Liên hệ</a></li>
+                                <li class="mb-2"><a href="#" class="text-light text-decoration-none" style="font-size: 0.95rem; opacity: 0.8; transition: all 0.3s ease;" onmouseover="this.style.opacity='1'; this.style.color='#0F766E'" onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">Hướng dẫn chọn size</a></li>
+                                <li class="mb-2"><a href="#" class="text-light text-decoration-none" style="font-size: 0.95rem; opacity: 0.8; transition: all 0.3s ease;" onmouseover="this.style.opacity='1'; this.style.color='#0F766E'" onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">Thông tin vận chuyển</a></li>
+                                <li class="mb-2"><a href="#" class="text-light text-decoration-none" style="font-size: 0.95rem; opacity: 0.8; transition: all 0.3s ease;" onmouseover="this.style.opacity='1'; this.style.color='#0F766E'" onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">Đổi trả</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-3">
+                            <h6 class="fw-semibold mb-3" style="color: var(--text-light); font-size: 1.1rem; letter-spacing: 0.5px;">Về chúng tôi</h6>
+                            <ul class="list-unstyled">
+                                <li class="mb-2"><a href="#" class="text-light text-decoration-none" style="font-size: 0.95rem; opacity: 0.8; transition: all 0.3s ease;" onmouseover="this.style.opacity='1'; this.style.color='#0F766E'" onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">Câu chuyện của chúng tôi</a></li>
+                                <li class="mb-2"><a href="#" class="text-light text-decoration-none" style="font-size: 0.95rem; opacity: 0.8; transition: all 0.3s ease;" onmouseover="this.style.opacity='1'; this.style.color='#0F766E'" onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">Đại học UEH</a></li>
+                                <li class="mb-2"><a href="#" class="text-light text-decoration-none" style="font-size: 0.95rem; opacity: 0.8; transition: all 0.3s ease;" onmouseover="this.style.opacity='1'; this.style.color='#0F766E'" onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">Phát triển bền vững</a></li>
+                                <li class="mb-2"><a href="#" class="text-light text-decoration-none" style="font-size: 0.95rem; opacity: 0.8; transition: all 0.3s ease;" onmouseover="this.style.opacity='1'; this.style.color='#0F766E'" onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">Cơ hội việc làm</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-3">
+                            <h6 class="fw-semibold mb-3" style="color: var(--text-light); font-size: 1.1rem; letter-spacing: 0.5px;">Bản tin</h6>
+                            <p class="text-light opacity-75 mb-3" style="font-size: 0.9rem;">
+                                Nhận thông tin cập nhật về sản phẩm mới và ưu đãi đặc biệt.
+                            </p>
+                            <div class="input-group mb-3">
+                                <input type="email" class="form-control" placeholder="Email của bạn" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff;" onfocus="this.style.background='rgba(255,255,255,0.15)'" onblur="this.style.background='rgba(255,255,255,0.1)'">
+                                <button class="btn" type="button" style="background: #0F766E; border: 1px solid #0F766E; color: white; transition: all 0.3s ease;" onmouseover="this.style.background='#065f56'" onmouseout="this.style.background='#0F766E'">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <line x1="22" y1="2" x2="11" y2="13"></line>
+                                        <polygon points="22,2 15,22 11,13 2,9"></polygon>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="footer-bottom">
-                <p>&copy; 2025 UniMerch. Bảo lưu mọi quyền. Được tạo ra cho sinh viên UEH khác biệt.</p>
+            
+            <!-- Bottom section -->
+            <div class="border-top pt-4" style="border-color: rgba(255,255,255,0.1) !important;">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <p class="mb-0 text-light" style="opacity: 0.7; font-size: 0.9rem;">
+                            © 2025 UEH Merchandise. Đã đăng ký bản quyền. Được tạo với ❤️ dành cho sinh viên UEH.
+                        </p>
+                    </div>
+                    <div class="col-md-6 text-md-end mt-3 mt-md-0">
+                        <a href="#" class="text-light text-decoration-none me-4" style="font-size: 0.9rem; opacity: 0.8; transition: all 0.3s ease;" onmouseover="this.style.opacity='1'; this.style.color='#0F766E'" onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">Chính sách bảo mật</a>
+                        <a href="#" class="text-light text-decoration-none" style="font-size: 0.9rem; opacity: 0.8; transition: all 0.3s ease;" onmouseover="this.style.opacity='1'; this.style.color='#0F766E'" onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">Điều khoản dịch vụ</a>
+                    </div>
+                </div>
             </div>
         </div>
     </footer>

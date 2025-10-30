@@ -419,6 +419,7 @@ function hideLoadingState() {
         // Remove overlay after animation completes
         setTimeout(() => {
             overlay.style.display = 'none';
+            document.body.classList.remove('loading');
         }, 300);
     }
 }
@@ -438,6 +439,11 @@ function generateRatingStars() {
     }
 }
 
+function formatPrice(price) {
+    // Support for both number and string
+    let n = typeof price === 'number' ? price : parseFloat(price);
+    return n.toLocaleString('vi-VN') + 'đ';
+}
 
 // Change quantity
 function changeQuantity(change) {
@@ -455,7 +461,7 @@ function changeQuantity(change) {
 // Update total price
 function updateTotalPrice() {
     const total = currentProduct.price * quantity;
-    document.getElementById('totalPrice').textContent = `$${total}`;
+    document.getElementById('totalPrice').textContent = formatPrice(total);
 }
 
 // Add to cart
@@ -869,6 +875,15 @@ async function checkUserReviewStatus() {
     writeReviewSection.style.display = 'none';
     writeReviewButton.style.display = 'none';
     
+    // Add click handler to button to scroll to form
+    if (writeReviewButton && !writeReviewButton.hasAttribute('data-listener')) {
+        writeReviewButton.setAttribute('data-listener', 'true');
+        writeReviewButton.addEventListener('click', function() {
+            writeReviewSection.style.display = 'block';
+            writeReviewSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        });
+    }
+    
     // First check if user is authenticated
     if (!window.apiService?.isAuthenticated()) {
         displayLoginMessage();
@@ -880,8 +895,9 @@ async function checkUserReviewStatus() {
         
         if (response.success) {
             if (!response.data.has_reviewed) {
-                writeReviewSection.style.display = 'block';
-                writeReviewSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                // Show button instead of section
+                writeReviewButton.style.display = 'inline-block';
+                // Don't auto-scroll on page load
             } else {
             }
         }

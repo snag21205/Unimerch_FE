@@ -53,25 +53,65 @@ async function loadCategories() {
 
 // Render category filter buttons
 function renderCategoryFilters() {
-    const filterContainer = document.querySelector('.d-flex.flex-wrap.gap-2');
+    const filterContainer = document.querySelector('.d-flex.flex-wrap.gap-2.align-items-center');
     if (!filterContainer) return;
     
-    // Clear existing filters
+    // Keep the label if it exists
+    const label = filterContainer.querySelector('span');
+    
+    // Clear existing filters except the label
     filterContainer.innerHTML = '';
+    if (label) {
+        filterContainer.appendChild(label);
+    }
     
     // Add "All" button
     const allButton = document.createElement('button');
-    allButton.className = 'btn btn-outline-dark rounded-pill px-3 py-2 filter-btn active';
+    allButton.className = 'btn rounded-pill px-4 py-2 filter-btn active';
     allButton.setAttribute('data-filter', 'all');
     allButton.textContent = 'Tất cả';
+    allButton.style.cssText = `
+        background: var(--accent);
+        border: 2px solid var(--accent);
+        color: var(--bg-dark);
+        font-weight: 700;
+        font-size: 0.85rem;
+        letter-spacing: 0.5px;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+    `;
     filterContainer.appendChild(allButton);
     
     // Add category buttons
     allCategories.forEach(category => {
         const button = document.createElement('button');
-        button.className = 'btn btn-outline-dark rounded-pill px-3 py-2 filter-btn';
+        button.className = 'btn rounded-pill px-4 py-2 filter-btn';
         button.setAttribute('data-filter', category.id || category.category_id);
         button.textContent = category.name || category.category_name;
+        button.style.cssText = `
+            background: rgba(255,255,255,0.08);
+            border: 2px solid rgba(255,255,255,0.2);
+            color: var(--text-light);
+            font-weight: 600;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        `;
+        button.addEventListener('mouseover', function() {
+            if (!this.classList.contains('active')) {
+                this.style.background = 'rgba(255,255,255,0.15)';
+                this.style.borderColor = 'var(--accent)';
+                this.style.color = 'var(--accent)';
+            }
+        });
+        button.addEventListener('mouseout', function() {
+            if (!this.classList.contains('active')) {
+                this.style.background = 'rgba(255,255,255,0.08)';
+                this.style.borderColor = 'rgba(255,255,255,0.2)';
+                this.style.color = 'var(--text-light)';
+            }
+        });
         filterContainer.appendChild(button);
     });
 }
@@ -365,68 +405,128 @@ function renderProducts() {
     
     // Show products grid and hide no results
     container.style.display = 'flex';
+    container.classList.remove('loaded');
     if (noResults) {
         noResults.style.display = 'none';
     }
     
-    // Render product cards - always use consistent design
-    container.innerHTML = allProducts.map(product => `
-        <div class="col">
-            <div class="card h-100 border-0 shadow-sm" style="transition: all 0.3s ease; cursor: pointer;" 
-                 onclick="goToProductDetail(${product.id})" 
-                 onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='0 12px 40px rgba(0,0,0,0.15)'" 
-                 onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 20px rgba(0,0,0,0.1)'">
-                
-                <!-- Product Image -->
-                <div class="position-relative overflow-hidden" style="height: 250px;">
-                    <img src="${getProductImageUrl(product)}" 
-                         class="card-img-top w-100 h-100" 
-                         style="object-fit: cover; transition: transform 0.3s ease;"
-                         alt="${product.name}"
-                         onmouseover="this.style.transform='scale(1.05)'"
-                         onmouseout="this.style.transform='scale(1)'"
-                         onerror="this.src='../../assets/images/products/demo.png'; this.onerror=null;">
-                </div>
-                
-                <!-- Product Info -->
-                <div class="card-body p-3">
-                    <h6 class="card-title fw-semibold mb-2" style="color: #111; font-size: 1rem; line-height: 1.3;">
-                        ${product.name}
-                    </h6>
-                    <p class="card-text text-muted small mb-3" style="font-size: 0.8rem; line-height: 1.4; height: 2.4em; overflow: hidden;">
-                        ${product.description ? product.description.substring(0, 60) + '...' : 'Sản phẩm chất lượng cao từ UEH'}
-                    </p>
+    // Render product cards - exact same design as main-products.js
+    container.innerHTML = allProducts.map(product => {
+        // Calculate display price and discount
+        const displayPrice = product.discount_price || product.price;
+        const hasDiscount = product.discount_price !== null && product.discount_price < product.price;
+        const discountPercent = hasDiscount ? Math.round(((product.price - product.discount_price) / product.price) * 100) : 0;
+        const isOutOfStock = product.quantity === 0 || product.status === 'out_of_stock';
+        
+        return `
+            <div class="col">
+                <div class="product-card-simple" onclick="goToProductDetail(${product.id})" style="
+                    cursor: pointer; 
+                    border: 1px solid #444;
+                    border-radius: 18px;
+                    background: #1a1a1a;
+                    overflow: hidden;
+                    transition: transform 0.3s ease;
+                    max-width: 315px;
+                    margin: 0 auto;
+                    position: relative;
+                " onmouseover="this.style.transform='translateY(-5px)'" 
+                   onmouseout="this.style.transform='translateY(0)'">
                     
-                    <!-- Price -->
-                    <div class="d-flex align-items-center justify-content-between mb-3">
-                        <div class="price-info">
-                            <span class="h6 fw-bold text-dark mb-0">${formatPrice(product.discount_price || product.price)}</span>
-                            ${product.discount_price && product.discount_price < product.price ? 
-                                `<small class="text-muted text-decoration-line-through ms-2">${formatPrice(product.price)}</small>` : ''
-                            }
+                    <!-- Product Image Section -->
+                    <div class="position-relative overflow-hidden" style="
+                        background: #1a1a1a;
+                        height: 400px;
+                    ">
+                        ${hasDiscount ? `
+                            <div class="position-absolute" style="top: 16px; right: 16px; z-index: 10;">
+                                <div class="badge bg-danger text-white px-3 py-2 rounded-pill" style="font-size: 0.75rem; font-weight: 600;">
+                                    -${discountPercent}%
+                                </div>
+                            </div>
+                        ` : ''}
+                        
+                        <img src="${getProductImageUrl(product)}" 
+                             alt="${product.name}" 
+                             class="product-image" 
+                             onerror="this.src='../../assets/images/products/demo.png'; this.onerror=null;"
+                             style="
+                                width: 100%;
+                                height: 100%;
+                                object-fit: cover;
+                                object-position: center;
+                                transition: transform 0.4s ease;
+                        " onmouseover="this.style.transform='scale(1.05)'"
+                           onmouseout="this.style.transform='scale(1)'">
+                    </div>
+
+                    <!-- Product Content -->
+                    <div class="p-4" style="background: #16181d; color: white;">
+                        
+                        <!-- Product Title -->
+                        <h5 class="fw-bold mb-3" style="
+                            font-size: 1.3rem;
+                            line-height: 1.4;
+                            color: white;
+                        ">${product.name}</h5>
+                        
+                        <!-- Price Section -->
+                        <div class="mb-3">
+                            ${hasDiscount ? `
+                                <div class="d-flex align-items-baseline gap-2">
+                                    <span class="fw-bold" style="font-size: 1.5rem; color: white;">${formatPrice(displayPrice)}</span>
+                                    <span class="text-decoration-line-through" style="font-size: 1rem; color: #666;">${formatPrice(product.price)}</span>
+                                </div>
+                            ` : `
+                                <span class="fw-bold" style="font-size: 1.5rem; color: white;">${formatPrice(displayPrice)}</span>
+                            `}
                         </div>
-                        ${product.discount_price && product.discount_price < product.price ? 
-                            `<span class="badge bg-danger rounded-pill" style="font-size: 0.7rem;">-${Math.round(((product.price - product.discount_price) / product.price) * 100)}%</span>` : ''
-                        }
+                        
+                        <!-- Action Button -->
+                        <button class="btn w-100" 
+                                onclick="addToCart(${product.id}, event)" 
+                                ${isOutOfStock ? 'disabled' : ''}
+                                style="
+                                    font-size: 1rem; 
+                                    font-weight: 600; 
+                                    padding: 14px;
+                                    background: #2a2a2a;
+                                    color: white;
+                                    border: 1px solid #444;
+                                    border-radius: 12px;
+                                    transition: all 0.3s ease;
+                                    ${isOutOfStock ? 'opacity: 0.5; cursor: not-allowed;' : ''}
+                                " 
+                                onmouseover="if(!this.disabled) this.style.background='#18b0b4'" 
+                                onmouseout="if(!this.disabled) this.style.background='#2a2a2a'">
+                            ${isOutOfStock ? 'Hết hàng' : 'Thêm vào giỏ'}
+                        </button>
                     </div>
                     
-                    <!-- Action Button -->
-                    <button class="btn btn-dark w-100 rounded-pill py-2" 
-                            onclick="addToCart(${product.id}, event)"
-                            style="font-weight: 500; transition: all 0.3s ease; font-size: 0.9rem;"
-                            onmouseover="this.style.transform='translateY(-1px)'"
-                            onmouseout="this.style.transform='translateY(0)'">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 6px;">
-                            <circle cx="8" cy="21" r="1"></circle>
-                            <circle cx="19" cy="21" r="1"></circle>
-                            <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57L20.5 9H5.12"></path>
-                        </svg>
-                        Thêm vào giỏ
-                    </button>
+                    <!-- Stock Status Overlay -->
+                    ${isOutOfStock ? `
+                        <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center" style="
+                            background: rgba(0, 0, 0, 0.8); 
+                            z-index: 15;
+                            backdrop-filter: blur(4px);
+                        ">
+                            <div class="text-center">
+                                <div class="badge bg-white text-dark px-4 py-2 rounded-pill mb-2" style="font-size: 0.9rem; font-weight: 600;">
+                                    Hết hàng
+                                </div>
+                                <p class="text-white mb-0" style="font-size: 0.8rem;">Sẽ cập nhật sớm</p>
+                            </div>
+                        </div>
+                    ` : ''}
                 </div>
             </div>
-        </div>
-    `).join('');
+        `;
+    }).join('');
+    
+    // Trigger fade-in animation
+    setTimeout(() => {
+        container.classList.add('loaded');
+    }, 50);
 }
 
 // Update pagination
@@ -516,12 +616,30 @@ function updateResultsInfo() {
 // Update active filter button
 function updateActiveFilter(activeButton) {
     document.querySelectorAll('.filter-btn').forEach(btn => {
-        btn.classList.remove('active', 'btn-dark');
-        btn.classList.add('btn-outline-dark');
+        btn.classList.remove('active');
+        btn.style.cssText = `
+            background: rgba(255,255,255,0.08);
+            border: 2px solid rgba(255,255,255,0.2);
+            color: var(--text-light);
+            font-weight: 600;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        `;
     });
     
-    activeButton.classList.remove('btn-outline-dark');
-    activeButton.classList.add('active', 'btn-dark');
+    activeButton.classList.add('active');
+    activeButton.style.cssText = `
+        background: var(--accent);
+        border: 2px solid var(--accent);
+        color: var(--bg-dark);
+        font-weight: 700;
+        font-size: 0.85rem;
+        letter-spacing: 0.5px;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+    `;
 }
 
 // Update clear filters button visibility
