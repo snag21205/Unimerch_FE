@@ -121,12 +121,16 @@
             imageUrl = 'assets/images/products/demo.png';
         }
         
+        // API returns prices in correct VND format, no conversion needed
+        let price = parseFloat(apiProduct.price) || 0;
+        let discountPrice = apiProduct.discount_price ? parseFloat(apiProduct.discount_price) : null;
+        
         return {
             id: apiProduct.id,
             name: apiProduct.name || apiProduct.title || 'Unknown Product',
             description: apiProduct.description || 'No description available',
-            price: parseFloat(apiProduct.price) || 0,
-            discount_price: apiProduct.discount_price ? parseFloat(apiProduct.discount_price) : null,
+            price: price,
+            discount_price: discountPrice,
             quantity: apiProduct.quantity || apiProduct.stock || 0,
             image_url: imageUrl,
             category_id: apiProduct.category_id,
@@ -436,12 +440,7 @@
         // Support for both number and string
         let n = typeof price === 'number' ? price : parseFloat(price);
         
-        // If price is in cents (has 3 extra zeros), divide by 1000
-        // Check if price seems too large (more than 1 million suggests it might be in cents)
-        if (n >= 1000000) {
-            n = n / 1000;
-        }
-        
+        // Format price as VND currency (API already returns correct VND amount)
         return new Intl.NumberFormat('vi-VN', {
             style: 'currency',
             currency: 'VND',
@@ -815,6 +814,7 @@ function createProductCard(product) {
     window.transformProductData = transformProductData; // Export transform function
     window.loadProductsFromAPI = loadProductsFromAPI; // Export load function
     window.createProductCard = createProductCard; // Export card creation function
+    window.formatPrice = formatPrice; // Export formatPrice function
     
     // ===== INITIALIZATION =====
     function initialize() {
