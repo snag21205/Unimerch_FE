@@ -647,3 +647,241 @@ input::placeholder,
   color: var(--text-muted) !important;
   opacity: 0.6 !important;
 }
+
+/* ===== LIST GROUP DARK THEME ===== */
+.list-group {
+  background: transparent !important;
+}
+
+.list-group-item {
+  background: var(--card-dark) !important;
+  color: var(--text-light) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  transition: all 0.2s ease;
+}
+
+.list-group-item:hover {
+  background: rgba(24, 176, 180, 0.05) !important;
+}
+
+.list-group-item.active {
+  background: rgba(24, 176, 180, 0.15) !important;
+  border-color: var(--accent) !important;
+  color: var(--accent) !important;
+}
+
+.list-group-flush .list-group-item {
+  border-width: 0 0 1px;
+  border-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+.list-group-flush .list-group-item:last-child {
+  border-bottom-width: 0;
+}
+
+/* ===== INPUT GROUP DARK THEME ===== */
+.input-group-text {
+  background: rgba(255, 255, 255, 0.05) !important;
+  color: var(--text-muted) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.input-group .form-control {
+  background: rgba(255, 255, 255, 0.03) !important;
+  color: var(--text-light) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.input-group .form-control:focus {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 0.25rem rgba(24, 176, 180, 0.1) !important;
+}
+
+/* ===== ALERT DARK THEME ===== */
+.alert {
+  border-radius: 12px;
+  border-width: 1px;
+}
+
+.alert-warning {
+  background: rgba(245, 158, 11, 0.15) !important;
+  border-color: rgba(245, 158, 11, 0.3) !important;
+  color: #fbbf24 !important;
+}
+
+.alert-danger {
+  background: rgba(239, 68, 68, 0.15) !important;
+  border-color: rgba(239, 68, 68, 0.3) !important;
+  color: #f87171 !important;
+}
+
+.alert-success {
+  background: rgba(16, 185, 129, 0.15) !important;
+  border-color: rgba(16, 185, 129, 0.3) !important;
+  color: #34d399 !important;
+}
+
+.alert-info {
+  background: rgba(59, 130, 246, 0.15) !important;
+  border-color: rgba(59, 130, 246, 0.3) !important;
+  color: #60a5fa !important;
+}
+
+/* ===== MODAL DARK THEME ===== */
+.modal-content {
+  background: var(--card-dark) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.7);
+}
+
+.modal-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.modal-header:not(.bg-primary):not(.bg-danger):not(.bg-warning):not(.bg-info) {
+  background: var(--card-dark) !important;
+  color: var(--text-light) !important;
+}
+
+.modal-body {
+  background: var(--card-dark) !important;
+  color: var(--text-light) !important;
+}
+
+.modal-footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--card-dark) !important;
+}
+
+.modal-title {
+  color: inherit;
+}
+
+/* ===== DROPDOWN DARK THEME ===== */
+.dropdown-menu {
+  background: var(--card-dark) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.6);
+}
+
+.dropdown-item {
+  color: var(--text-light) !important;
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+  background: rgba(24, 176, 180, 0.1) !important;
+  color: var(--accent) !important;
+}
+
+.dropdown-divider {
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* ===== SPINNER DARK THEME ===== */
+.spinner-border,
+.spinner-border-sm {
+  border-color: rgba(24, 176, 180, 0.2);
+  border-right-color: var(--accent);
+}
+
+.spinner-border.text-primary,
+.spinner-border-sm.text-primary {
+  border-color: rgba(24, 176, 180, 0.2);
+  border-right-color: var(--accent);
+}
+
+/* ===== FORCE DARK THEME FOR ALL WHITE BACKGROUNDS ===== */
+/* Card Headers */
+.card-header.bg-white,
+.card-header {
+  background: var(--card-dark) !important;
+  color: var(--text-light) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Input Groups */
+.input-group-text.bg-white {
+  background: rgba(255, 255, 255, 0.05) !important;
+  color: var(--text-muted) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Table Headers */
+thead.table-light,
+thead.table-light th,
+.table-light,
+.table-light th,
+.table-light td {
+  background: rgba(255, 255, 255, 0.03) !important;
+  color: var(--text-light) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Review Comment Box */
+#adminReviewComment.bg-light {
+  background: rgba(255, 255, 255, 0.03) !important;
+  color: var(--text-light) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* All bg-white and bg-light classes */
+.bg-white,
+.bg-light {
+  background: var(--card-dark) !important;
+  color: var(--text-light) !important;
+}
+
+/* Form selects and inputs */
+.form-select,
+.form-control {
+  background: rgba(255, 255, 255, 0.03) !important;
+  color: var(--text-light) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.form-select:focus,
+.form-control:focus {
+  background: rgba(255, 255, 255, 0.05) !important;
+  color: var(--text-light) !important;
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 0.25rem rgba(24, 176, 180, 0.1) !important;
+}
+
+.form-select option {
+  background: var(--card-dark) !important;
+  color: var(--text-light) !important;
+}
+
+/* Labels */
+label,
+.form-label {
+  color: var(--text-light) !important;
+}
+
+/* Small text */
+small,
+.small {
+  color: var(--text-muted) !important;
+}
+
+/* Strong text */
+strong {
+  color: var(--text-light) !important;
+}
+
+/* Paragraph */
+p {
+  color: var(--text-light) !important;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-light) !important;
+}
+
+/* Invalid feedback */
+.invalid-feedback {
+  color: #f87171 !important;
+}
