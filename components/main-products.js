@@ -432,6 +432,24 @@
     }
     
     // ===== HELPER FUNCTIONS =====
+    function formatPrice(price) {
+        // Support for both number and string
+        let n = typeof price === 'number' ? price : parseFloat(price);
+        
+        // If price is in cents (has 3 extra zeros), divide by 1000
+        // Check if price seems too large (more than 1 million suggests it might be in cents)
+        if (n >= 1000000) {
+            n = n / 1000;
+        }
+        
+        return new Intl.NumberFormat('vi-VN', {
+            style: 'currency',
+            currency: 'VND',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0
+        }).format(n);
+    }
+    
     function generateStars(rating) {
         let stars = '';
         for (let i = 1; i <= 5; i++) {
