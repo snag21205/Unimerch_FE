@@ -905,6 +905,31 @@ body {
     outline: none;
 }
 
+/* Placeholder styling for all form controls */
+.form-control::placeholder,
+textarea.form-control::placeholder,
+input.form-control::placeholder,
+.form-control::-webkit-input-placeholder,
+textarea.form-control::-webkit-input-placeholder,
+input.form-control::-webkit-input-placeholder {
+    color: var(--text-muted) !important;
+    opacity: 0.7 !important;
+}
+
+.form-control::-moz-placeholder,
+textarea.form-control::-moz-placeholder,
+input.form-control::-moz-placeholder {
+    color: var(--text-muted) !important;
+    opacity: 0.7 !important;
+}
+
+.form-control:-ms-input-placeholder,
+textarea.form-control:-ms-input-placeholder,
+input.form-control:-ms-input-placeholder {
+    color: var(--text-muted) !important;
+    opacity: 0.7 !important;
+}
+
 .create-order-content .form-control::placeholder {
     color: var(--text-muted);
 }

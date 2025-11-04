@@ -180,7 +180,7 @@ function renderSellerProductsTable() {
 }
 
 function setupSellerProductsPagination(totalPages) {
-    const paginationList = document.getElementById('sellerProductsPaginationList');
+    const paginationList = document.getElementById('productsPaginationList');
     if (!paginationList) return;
     
     let paginationHTML = '';
@@ -220,6 +220,9 @@ window.changeSellerPage = function(page) {
     sellerCurrentPage = page;
     renderSellerProductsTable();
 };
+
+// Also export as changeAdminPage for compatibility
+window.changeAdminPage = window.changeSellerPage;
 
 window.showAddProductModal = function() {
     // Load categories if not already loaded

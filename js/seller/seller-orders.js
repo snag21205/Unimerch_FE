@@ -95,14 +95,14 @@ function renderSellerOrdersTable() {
                 <td><strong>#${order.id}</strong></td>
                 <td>
                     <div class="fw-semibold">${customerName}</div>
-                    <small class="text-muted">-</small>
+                    <small class="text-light">-</small>
                 </td>
                 <td>
                     <div class="fw-semibold">${formatMoney(order.total_amount)} ₫</div>
                 </td>
                 <td>${statusBadge}</td>
                 <td>
-                    <small class="text-muted">${formatDate(order.created_at)}</small>
+                    <small class="text-light">${formatDate(order.created_at)}</small>
                 </td>
                 <td class="text-center">
                     <button class="btn btn-sm btn-outline-info me-1" onclick="showOrderDetail(${order.id})" title="Xem chi tiết">
@@ -213,6 +213,20 @@ window.showOrderDetail = async function(orderId) {
                 <td>${formatMoney(item.price * item.quantity)} ₫</td>
             </tr>
         `).join('');
+        
+        // Setup status actions
+        const statusActions = document.getElementById('orderStatusActions');
+        if (statusActions) {
+            statusActions.innerHTML = `
+                <button class="btn btn-warning" onclick="showUpdateOrderStatusModal(${order.id}, '${order.status}')">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-1">
+                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                    </svg>
+                    Cập Nhật Trạng Thái
+                </button>
+            `;
+        }
         
         // Show modal
         const modal = new bootstrap.Modal(document.getElementById('orderDetailModal'));

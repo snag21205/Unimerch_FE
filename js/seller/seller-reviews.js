@@ -96,7 +96,7 @@ function renderSellerReviewsTable() {
     if (filteredReviews.length === 0) {
         tbody.innerHTML = `
             <tr>
-                <td colspan="6" class="text-center py-4 text-light">
+                <td colspan="7" class="text-center py-4 text-muted">
                     ${sellerReviewsSearchQuery || sellerReviewsRatingFilter || sellerReviewsProductFilter ? 'Không tìm thấy đánh giá phù hợp' : 'Chưa có đánh giá nào'}
                 </td>
             </tr>
@@ -112,23 +112,31 @@ function renderSellerReviewsTable() {
         return `
             <tr>
                 <td>${globalIndex}</td>
-                <td>
-                    <div class="fw-semibold">${review.product_name || 'N/A'}</div>
-                    <small class="text-light">ID: ${review.product_id}</small>
-                </td>
-                <td>
-                    <div class="fw-semibold">${review.username || 'N/A'}</div>
-                    <small class="text-light">${review.user_full_name || '-'}</small>
-                </td>
-                <td>${ratingStars}</td>
-                <td>
-                    <div class="text-truncate" style="max-width: 200px;" title="${review.comment || ''}">
-                        ${review.comment || '-'}
-                    </div>
-                </td>
-                <td>
-                    <small class="text-light">${formatDate(review.created_at)}</small>
-                </td>
+                                <td>
+                                    <div class="fw-semibold">${review.product_name || 'N/A'}</div>
+                                    <small class="text-muted">ID: ${review.product_id}</small>
+                                </td>
+                                <td>
+                                    <div class="fw-semibold">${review.username || 'N/A'}</div>
+                                    <small class="text-muted">${review.user_full_name || '-'}</small>
+                                </td>
+                                <td>${ratingStars}</td>
+                                <td>
+                                    <div class="text-truncate" style="max-width: 200px;" title="${review.comment || ''}">
+                                        ${review.comment || '-'}
+                                    </div>
+                                </td>
+                                <td>
+                                    <small class="text-muted">${formatDate(review.created_at)}</small>
+                                </td>
+                                <td class="text-center">
+                                    <button class="btn btn-sm btn-outline-primary" onclick="showSellerReviewDetail(${review.id})" title="Xem chi tiết">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                            <circle cx="12" cy="12" r="3"></circle>
+                                        </svg>
+                                    </button>
+                                </td>
             </tr>
         `;
     }).join('');

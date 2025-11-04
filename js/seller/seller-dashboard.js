@@ -1,5 +1,5 @@
 // Seller Dashboard Main Controller
-// Handles initialization, tab management, and common utilities
+// Handles initialization, tab management, dashboard stats, and common utilities
 
 // ===== GLOBAL VARIABLES =====
 let currentSellerId = null;
@@ -15,9 +15,11 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize tabs
     initializeTabs();
     
+    // Load dashboard by default
+    loadSellerDashboardFromAPI();
+    
     // Load products and reviews filter after seller info is initialized
     setTimeout(() => {
-        loadMyProducts();
         loadSellerProductsForReviewFilter();
     }, 100);
 });
@@ -26,16 +28,12 @@ document.addEventListener('DOMContentLoaded', function() {
 function initializeSellerInfo() {
     try {
         const token = apiService.getToken();
-        console.log('Token:', token ? 'exists' : 'not found');
-        
         if (token) {
             const sellerId = apiService.getCurrentUserId();
-            console.log('Seller ID from token:', sellerId);
             currentSellerId = sellerId;
             
             // Set global variable for other modules
             window.currentSellerId = sellerId;
-            console.log('Global currentSellerId set to:', window.currentSellerId);
             
             // Get user info from localStorage
             const userInfo = JSON.parse(localStorage.getItem('userInfo') || '{}');
@@ -45,6 +43,10 @@ function initializeSellerInfo() {
             // Update UI
             document.getElementById('sellerName').textContent = sellerName;
             document.getElementById('sellerEmail').textContent = sellerEmail;
+            
+            // Update initial
+            const initial = (sellerName.charAt(0) || 'S').toUpperCase();
+            document.getElementById('userInitial').textContent = initial;
         }
     } catch (error) {
         // Error initializing seller info
@@ -71,19 +73,21 @@ function setupEventListeners() {
     };
     
     // Seller product search
-    const sellerProductSearchInput = document.getElementById('sellerProductSearchInput');
-    if (sellerProductSearchInput) {
-        sellerProductSearchInput.addEventListener('input', function() {
+    const productSearchInput = document.getElementById('productSearchInput');
+    if (productSearchInput) {
+        productSearchInput.addEventListener('input', function() {
             sellerSearchQuery = this.value.toLowerCase();
             sellerCurrentPage = 1;
-            renderSellerProductsTable();
+            if (typeof renderSellerProductsTable === 'function') {
+                renderSellerProductsTable();
+            }
         });
     }
     
     // Seller image preview
-    const sellerImageUrlInput = document.getElementById('productImageUrl');
-    if (sellerImageUrlInput) {
-        sellerImageUrlInput.addEventListener('input', function() {
+    const imageUrlInput = document.getElementById('productImageUrl');
+    if (imageUrlInput) {
+        imageUrlInput.addEventListener('input', function() {
             const url = this.value;
             const preview = document.getElementById('productImagePreview');
             const container = document.getElementById('productImagePreviewContainer');
@@ -103,52 +107,62 @@ function setupEventListeners() {
     }
     
     // Seller orders search
-    const sellerOrderSearchInput = document.getElementById('sellerOrderSearchInput');
-    if (sellerOrderSearchInput) {
-        sellerOrderSearchInput.addEventListener('input', function() {
+    const orderSearchInput = document.getElementById('orderSearchInput');
+    if (orderSearchInput) {
+        orderSearchInput.addEventListener('input', function() {
             sellerOrdersSearchQuery = this.value.toLowerCase();
             sellerOrdersCurrentPage = 1;
-            renderSellerOrdersTable();
+            if (typeof renderSellerOrdersTable === 'function') {
+                renderSellerOrdersTable();
+            }
         });
     }
     
     // Seller orders status filter
-    const sellerOrderStatusFilter = document.getElementById('sellerOrderStatusFilter');
-    if (sellerOrderStatusFilter) {
-        sellerOrderStatusFilter.addEventListener('change', function() {
+    const orderStatusFilter = document.getElementById('orderStatusFilter');
+    if (orderStatusFilter) {
+        orderStatusFilter.addEventListener('change', function() {
             sellerOrdersStatusFilter = this.value;
             sellerOrdersCurrentPage = 1;
-            loadMyOrders();
+            if (typeof loadMyOrders === 'function') {
+                loadMyOrders();
+            }
         });
     }
     
     // Seller reviews search
-    const sellerReviewSearchInput = document.getElementById('sellerReviewSearchInput');
-    if (sellerReviewSearchInput) {
-        sellerReviewSearchInput.addEventListener('input', function() {
+    const reviewSearchInput = document.getElementById('sellerReviewSearchInput');
+    if (reviewSearchInput) {
+        reviewSearchInput.addEventListener('input', function() {
             sellerReviewsSearchQuery = this.value.toLowerCase();
             sellerReviewsCurrentPage = 1;
-            renderSellerReviewsTable();
+            if (typeof renderSellerReviewsTable === 'function') {
+                renderSellerReviewsTable();
+            }
         });
     }
     
     // Seller reviews rating filter
-    const sellerReviewRatingFilter = document.getElementById('sellerReviewRatingFilter');
-    if (sellerReviewRatingFilter) {
-        sellerReviewRatingFilter.addEventListener('change', function() {
+    const reviewRatingFilter = document.getElementById('sellerReviewRatingFilter');
+    if (reviewRatingFilter) {
+        reviewRatingFilter.addEventListener('change', function() {
             sellerReviewsRatingFilter = this.value;
             sellerReviewsCurrentPage = 1;
-            renderSellerReviewsTable();
+            if (typeof renderSellerReviewsTable === 'function') {
+                renderSellerReviewsTable();
+            }
         });
     }
     
     // Seller reviews product filter
-    const sellerReviewProductFilter = document.getElementById('sellerReviewProductFilter');
-    if (sellerReviewProductFilter) {
-        sellerReviewProductFilter.addEventListener('change', function() {
+    const reviewProductFilter = document.getElementById('sellerReviewProductFilter');
+    if (reviewProductFilter) {
+        reviewProductFilter.addEventListener('change', function() {
             sellerReviewsProductFilter = this.value;
             sellerReviewsCurrentPage = 1;
-            renderSellerReviewsTable();
+            if (typeof renderSellerReviewsTable === 'function') {
+                renderSellerReviewsTable();
+            }
         });
     }
 }
@@ -167,7 +181,7 @@ async function handleLogout() {
 
 // ===== TAB MANAGEMENT =====
 function initializeTabs() {
-    const navLinks = document.querySelectorAll('.navbar-nav .nav-link[data-tab], .nav-link[data-tab]');
+    const navLinks = document.querySelectorAll('.nav-link[data-tab]');
     navLinks.forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
@@ -194,6 +208,7 @@ function switchTab(tabName) {
         
         // Update header title
         const titles = {
+            'dashboard': 'Bảng Điều Khiển',
             'products': 'Quản Lý Sản Phẩm',
             'orders': 'Quản Lý Đơn Hàng',
             'reviews': 'Quản Lý Đánh Giá'
@@ -206,14 +221,23 @@ function switchTab(tabName) {
         
         // Load tab content based on tab name
         switch(tabName) {
+            case 'dashboard':
+                loadSellerDashboardFromAPI();
+                break;
             case 'products':
-                loadMyProducts();
+                if (typeof loadMyProducts === 'function') {
+                    loadMyProducts();
+                }
                 break;
             case 'orders':
-                loadMyOrders();
+                if (typeof loadMyOrders === 'function') {
+                    loadMyOrders();
+                }
                 break;
             case 'reviews':
-                loadSellerReviews();
+                if (typeof loadSellerReviews === 'function') {
+                    loadSellerReviews();
+                }
                 break;
         }
     }
@@ -224,7 +248,6 @@ window.switchTab = switchTab;
 
 // ===== UTILITY FUNCTIONS =====
 function showToast(message, type = 'info') {
-    // Create toast container if it doesn't exist
     let toastContainer = document.getElementById('toastContainer');
     if (!toastContainer) {
         toastContainer = document.createElement('div');
@@ -233,49 +256,39 @@ function showToast(message, type = 'info') {
         toastContainer.style.zIndex = '1080';
         document.body.appendChild(toastContainer);
     }
-    
     const toastId = 'toast-' + Date.now();
-    const toastHTML = `
-        <div id="${toastId}" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="toast-header">
-                <div class="rounded me-2" style="width: 12px; height: 12px; background-color: ${getToastColor(type)};"></div>
-                <strong class="me-auto">Thông Báo</strong>
-                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
-            <div class="toast-body">
-                ${message}
-            </div>
-        </div>
-    `;
-    
-    toastContainer.insertAdjacentHTML('beforeend', toastHTML);
-    
-    const toastElement = document.getElementById(toastId);
-    const toast = new bootstrap.Toast(toastElement);
-    toast.show();
-    
-    toastElement.addEventListener('hidden.bs.toast', () => {
-        toastElement.remove();
-    });
-}
-
-function getToastColor(type) {
-    const colors = {
-        'success': '#10b981',
-        'error': '#ef4444',
-        'warning': '#f59e0b',
-        'info': '#3b82f6'
+    const icons = {
+      success: `<i class="bi bi-check-circle-fill toast-icon" style="color:#10b981;"></i>`,
+      danger: `<i class="bi bi-x-circle-fill toast-icon" style="color:#ef4444;"></i>`,
+      warning: `<i class="bi bi-exclamation-circle-fill toast-icon" style="color:#f59e0b;"></i>`,
+      info: `<i class="bi bi-info-circle-fill toast-icon" style="color:#18b0b4;"></i>`
     };
-    return colors[type] || colors.info;
-}
-
-function capitalizeFirst(str) {
-    return str.charAt(0).toUpperCase() + str.slice(1);
+    const titles = {
+      success: 'Thành công', danger: 'Lỗi', warning: 'Cảnh báo', info: 'Thông báo'
+    };
+    const toastHTML = `
+    <div id="${toastId}" class="toast fade show" role="alert" aria-live="assertive" aria-atomic="true" style="min-width:280px;max-width:370px;">
+      <div class="toast-header">
+        ${icons[type] || ''}
+        <strong class="me-auto" style="color: var(--accent); font-size:1rem; font-family:'Montserrat',sans-serif;">${titles[type] || 'Thông báo'}</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+      <div class="toast-body" style="font-family:'Be Vietnam Pro',sans-serif;">
+        ${message}
+      </div>
+    </div>`;
+    toastContainer.insertAdjacentHTML('beforeend', toastHTML);
+    const toastElem = document.getElementById(toastId);
+    const bsToast = new bootstrap.Toast(toastElem, { delay: 3000 });
+    bsToast.show();
+    toastElem.addEventListener('hidden.bs.toast', function() {
+      toastElem.remove();
+    });
 }
 
 function formatDate(dateString) {
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
+    return date.toLocaleDateString('vi-VN', {
         year: 'numeric',
         month: 'short',
         day: 'numeric'
@@ -291,4 +304,3 @@ function formatMoney(x) {
 window.showToast = showToast;
 window.formatDate = formatDate;
 window.formatMoney = formatMoney;
-window.currentSellerId = currentSellerId;

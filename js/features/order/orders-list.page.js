@@ -159,7 +159,7 @@ function showLoadingState() {
                 <div class="spinner-border text-primary mb-3" role="status">
                     <span class="visually-hidden">Loading...</span>
                 </div>
-                <p class="text-muted">Đang tải đơn hàng...</p>
+                <p class="text-light">Đang tải đơn hàng...</p>
             </div>
         `;
     }
