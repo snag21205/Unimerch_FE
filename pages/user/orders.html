@@ -13,255 +13,26 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <style>
-        :root {
-            --accent: #18b0b4;
-            --ueh-blue: rgb(78, 160, 255);
-            --bg-dark: #0d0f12;
-            --text-light: #f1f3f5;
-            --text-muted: #a8a8a8;
-            --card-dark: #16181d;
-        }
-        
-        body {
-            background: var(--bg-dark) !important;
-            color: var(--text-light) !important;
-            font-family: 'Be Vietnam Pro', -apple-system, BlinkMacSystemFont, sans-serif;
-        }
-        
-        /* Cards */
-        .card {
-            background: var(--card-dark) !important;
-            border: 1px solid rgba(255, 255, 255, 0.1) !important;
-            color: var(--text-light) !important;
-        }
-        
-        /* Order tabs */
-        .order-tabs-container {
-            background: var(--card-dark);
-            border-radius: 12px;
-            padding: 1rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .order-tab {
-            background: transparent;
-            border: none;
-            color: var(--text-muted);
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            transition: all 0.3s;
-        }
-        
-        .order-tab:hover {
-            background: rgba(255, 255, 255, 0.05);
-            color: var(--accent);
-        }
-        
-        .order-tab.active {
-            background: var(--accent);
-            color: white;
-        }
-        
-        .order-count {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 0.25rem 0.5rem;
-            border-radius: 12px;
-            font-size: 0.75rem;
-            margin-left: 0.5rem;
-        }
-        
-        .order-tab.active .order-count {
-            background: rgba(255, 255, 255, 0.2);
-        }
-        
-        /* Badges */
-        .badge {
-            font-weight: 500;
-        }
-        
-        .badge.bg-warning {
-            background: #f59e0b !important;
-        }
-        
-        .badge.bg-info {
-            background: var(--ueh-blue) !important;
-        }
-        
-        .badge.bg-primary {
-            background: var(--accent) !important;
-        }
-        
-        .badge.bg-success {
-            background: #10b981 !important;
-        }
-        
-        .badge.bg-danger {
-            background: #ef4444 !important;
-        }
-        
-        /* Buttons */
-        .btn-primary {
-            background: var(--accent);
-            border-color: var(--accent);
-        }
-        
-        .btn-primary:hover {
-            background: #149b9f;
-            border-color: #149b9f;
-        }
-        
-        .btn-outline-primary {
-            color: var(--accent);
-            border-color: var(--accent);
-        }
-        
-        .btn-outline-primary:hover {
-            background: var(--accent);
-            border-color: var(--accent);
-            color: white;
-        }
-        
-        /* Text colors */
-        h1, h2, h3, h4, h5, h6 {
-            color: var(--text-light) !important;
-        }
-        
-        .text-muted {
-            color: var(--text-muted) !important;
-        }
-        
-        /* Empty state */
-        #emptyState svg {
-            stroke: var(--text-muted);
-        }
-        
-        /* Override ALL orders.css light theme - FORCE DARK EVERYWHERE */
-        .order-card,
-        .order-card-header,
-        .order-card-body,
-        .order-card-footer,
-        .order-header,
-        .order-footer,
-        .card-header,
-        .card-body,
-        .card-footer,
-        [class*="order"][class*="header"],
-        [class*="order"][class*="footer"],
-        .order-card > div,
-        .order-card > div:first-child,
-        .order-card > div:last-child {
-            background: var(--card-dark) !important;
-            background-color: var(--card-dark) !important;
-            border-color: rgba(255, 255, 255, 0.1) !important;
-        }
-        
-        .order-card {
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3) !important;
-        }
-        
-        .order-card:hover {
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4) !important;
-            border-color: rgba(24, 176, 180, 0.3) !important;
-        }
-        
-        .order-card-header,
-        .card-header {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
-            padding: 1rem !important;
-        }
-        
-        .order-card-footer,
-        .card-footer {
-            border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
-            padding: 1rem !important;
-        }
-        
-        .order-item {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
-            background: transparent !important;
-        }
-        
-        .order-item:last-child {
-            border-bottom: none !important;
-        }
-        
-        /* ALL text colors - only use base palette */
-        .order-card *,
-        .order-card h1, .order-card h2, .order-card h3, 
-        .order-card h4, .order-card h5, .order-card h6,
-        .product-name,
-        .order-id,
-        .order-date,
-        strong {
-            color: var(--text-light) !important;
-        }
-        
-        /* Muted text */
-        .product-info,
-        .order-meta,
-        .text-secondary,
-        small,
-        .order-card small {
-            color: var(--text-muted) !important;
-        }
-        
-        /* Prices - use accent teal only */
-        .price,
-        .total-price,
-        .order-total,
-        .product-price {
-            color: var(--accent) !important;
-        }
-        
-        /* Remove ALL blue colors from orders.css */
-        .order-tab.active {
-            background: var(--accent) !important;
-            color: white !important;
-            border-bottom-color: var(--accent) !important;
-        }
-        
-        .order-tab:hover {
-            background: rgba(24, 176, 180, 0.1) !important;
-            color: var(--accent) !important;
-        }
-        
-        .order-count {
-            background: var(--accent) !important;
-            color: white !important;
-        }
-        
-        .order-tab:not(.active) .order-count {
-            background: rgba(255, 255, 255, 0.2) !important;
-            color: var(--text-muted) !important;
-        }
-        
-        /* Status badges */
-        .status-badge,
-        .order-status-badge {
-            font-weight: 500 !important;
-            padding: 0.25rem 0.75rem !important;
-            border-radius: 12px !important;
-        }
-    </style>
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 </head>
-<body>
+<body class="bg-dark text-white">
     <!-- Navbar Container -->
     <div id="navbar-container"></div>
 
     <!-- Add top padding to account for fixed navbar -->
-    <div style="padding-top: 90px;">
+    <div class="pt-5">
         <!-- Main Content -->
         <div class="container py-4">
             <!-- Page Header -->
             <div class="mb-4">
-                <h1 class="h3 fw-bold mb-1">Đơn hàng của tôi</h1>
+                <h1 class="h3 fw-bold mb-1 text-white">Đơn hàng của tôi</h1>
                 <p class="text-muted mb-0">Quản lý và theo dõi tất cả đơn hàng của bạn</p>
             </div>
 
             <!-- Order Status Tabs -->
-            <div class="order-tabs-container mb-4">
-                <div class="order-tabs">
+            <div class="order-tabs-container mb-4 rounded p-3">
+                <div class="order-tabs d-flex flex-wrap gap-2">
                     <button class="order-tab active" data-status="CHO_XAC_NHAN">
                         <span>Chờ xác nhận</span>
                         <span class="order-count">2</span>
@@ -297,10 +68,7 @@
             <!-- Empty State -->
             <div id="emptyState" class="text-center py-5 d-none">
                 <div class="mb-3">
-                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="1">
-                        <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
-                        <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
-                    </svg>
+                    <i class="bi bi-clipboard-x text-muted" style="font-size: 4rem;"></i>
                 </div>
                 <h5 class="text-muted">Chưa có đơn hàng nào</h5>
                 <p class="text-muted mb-3">Hãy bắt đầu mua sắm để có đơn hàng đầu tiên!</p>

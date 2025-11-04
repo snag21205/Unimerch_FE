@@ -13,206 +13,15 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <style>
-        :root {
-            --accent: #18b0b4;
-            --ueh-blue: rgb(78, 160, 255);
-            --bg-dark: #0d0f12;
-            --text-light: #f1f3f5;
-            --text-muted: #a8a8a8;
-            --card-dark: #16181d;
-        }
-        
-        body {
-            background: var(--bg-dark) !important;
-            color: var(--text-light) !important;
-            font-family: 'Be Vietnam Pro', -apple-system, BlinkMacSystemFont, sans-serif;
-        }
-        
-        .card {
-            background: var(--card-dark) !important;
-            border: 1px solid rgba(255, 255, 255, 0.1) !important;
-            color: var(--text-light) !important;
-        }
-        
-        .card-title {
-            color: var(--text-light) !important;
-        }
-        
-        /* Form controls */
-        .form-control, .form-select, textarea.form-control {
-            background: rgba(255, 255, 255, 0.05) !important;
-            border: 1px solid rgba(255, 255, 255, 0.1) !important;
-            color: var(--text-light) !important;
-        }
-        
-        .form-control:focus, .form-select:focus {
-            background: rgba(255, 255, 255, 0.08) !important;
-            border-color: var(--accent) !important;
-            color: var(--text-light) !important;
-            box-shadow: 0 0 0 0.2rem rgba(24, 176, 180, 0.25) !important;
-        }
-        
-        .form-control::placeholder {
-            color: var(--text-muted) !important;
-        }
-        
-        .form-label {
-            color: var(--text-light) !important;
-        }
-        
-        /* Payment options */
-        .payment-option {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            padding: 1rem;
-            transition: all 0.3s;
-        }
-        
-        .payment-option:hover {
-            background: rgba(255, 255, 255, 0.05);
-            border-color: var(--accent);
-        }
-        
-        .payment-option:has(.form-check-input:checked) {
-            background: rgba(24, 176, 180, 0.1);
-            border-color: var(--accent);
-        }
-        
-        .form-check-input {
-            background-color: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.2);
-        }
-        
-        .form-check-input:checked {
-            background-color: var(--accent);
-            border-color: var(--accent);
-        }
-        
-        .form-check-label {
-            color: var(--text-light);
-        }
-        
-        .payment-icon {
-            font-size: 2rem;
-        }
-        
-        /* Buttons */
-        .btn-primary {
-            background: var(--accent);
-            border-color: var(--accent);
-        }
-        
-        .btn-primary:hover {
-            background: #149b9f;
-            border-color: #149b9f;
-        }
-        
-        .btn-lg {
-            padding: 0.875rem 1.5rem;
-        }
-        
-        /* Text colors */
-        h1, h2, h3, h4, h5, h6 {
-            color: var(--text-light) !important;
-        }
-        
-        .text-muted {
-            color: var(--text-muted) !important;
-        }
-        
-        .text-primary {
-            color: var(--accent) !important;
-        }
-        
-        .text-danger {
-            color: #ef4444 !important;
-        }
-        
-        small {
-            color: var(--text-muted);
-        }
-        
-        small a {
-            color: var(--accent) !important;
-        }
-        
-        .spinner-border {
-            color: var(--accent) !important;
-        }
-        
-        .border-top {
-            border-color: rgba(255, 255, 255, 0.1) !important;
-        }
-        
-        /* Override ALL light backgrounds */
-        #orderItems,
-        .order-item,
-        .order-summary,
-        .summary-card {
-            background: transparent !important;
-        }
-        
-        /* Order items in summary */
-        .order-item {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
-            padding: 1rem 0;
-        }
-        
-        .order-item:last-child {
-            border-bottom: none !important;
-        }
-        
-        .order-item img {
-            border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            background: rgba(255, 255, 255, 0.02);
-        }
-        
-        /* ALL text - base palette only */
-        .product-name,
-        .item-name,
-        #orderItems *,
-        .summary-label,
-        strong {
-            color: var(--text-light) !important;
-        }
-        
-        /* Muted text */
-        .item-quantity,
-        .item-size,
-        small {
-            color: var(--text-muted) !important;
-        }
-        
-        /* Prices - teal accent only */
-        .product-price,
-        .item-price,
-        #subtotal,
-        #shippingFee,
-        #totalAmount {
-            color: var(--accent) !important;
-            font-weight: 600;
-        }
-        
-        /* Summary totals */
-        .border-top {
-            border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
-        }
-        
-        /* Position sticky card */
-        .position-sticky {
-            top: 100px;
-        }
-    </style>
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 </head>
-<body>
+<body class="bg-dark text-white">
     <!-- Navbar Container -->
     <div id="navbar-container"></div>
 
     <!-- Add top padding to account for fixed navbar -->
-    <div style="padding-top: 90px;">
+    <div class="pt-5">
         <!-- Main Content -->
         <div class="container py-4">
             <!-- Loading State -->
@@ -227,7 +36,7 @@
             <div id="createOrderContent" class="d-none">
                 <!-- Page Header -->
                 <div class="mb-4">
-                    <h2 class="h3 fw-bold mb-1">Tạo đơn hàng</h2>
+                    <h2 class="h3 fw-bold mb-1 text-white">Tạo đơn hàng</h2>
                     <p class="text-muted mb-0">Xác nhận thông tin và hoàn tất đơn hàng của bạn</p>
                 </div>
 
@@ -235,9 +44,9 @@
                     <!-- Left Column - Order Form -->
                     <div class="col-lg-8 mb-4">
                         <!-- Shipping Information -->
-                        <div class="card border-0 shadow-sm mb-4">
+                        <div class="card bg-dark text-white border-secondary shadow-sm mb-4">
                             <div class="card-body">
-                                <h5 class="card-title mb-3">
+                                <h5 class="card-title mb-3 text-white">
                                     <i class="bi bi-truck me-2"></i>
                                     Thông tin giao hàng
                                 </h5>
@@ -245,80 +54,57 @@
                                 <form id="shippingForm">
                                     <div class="row mb-3">
                                         <div class="col-md-6">
-                                            <label for="fullName" class="form-label">Họ và tên *</label>
-                                            <input type="text" class="form-control" id="fullName" required>
+                                            <label for="fullName" class="form-label text-white">Họ và tên *</label>
+                                            <input type="text" class="form-control bg-dark text-white border-secondary" id="fullName" required>
                                         </div>
                                         <div class="col-md-6">
-                                            <label for="phone" class="form-label">Số điện thoại *</label>
-                                            <input type="tel" class="form-control" id="phone" required>
+                                            <label for="phone" class="form-label text-white">Số điện thoại *</label>
+                                            <input type="tel" class="form-control bg-dark text-white border-secondary" id="phone" required>
                                         </div>
                                     </div>
                                     
                                     <div class="mb-3">
-                                        <label for="email" class="form-label">Email</label>
-                                        <input type="email" class="form-control" id="email">
+                                        <label for="email" class="form-label text-white">Email</label>
+                                        <input type="email" class="form-control bg-dark text-white border-secondary" id="email">
                                     </div>
                                     
                                     <div class="mb-3">
-                                        <label for="address" class="form-label">Địa chỉ giao hàng *</label>
-                                        <textarea class="form-control" id="address" rows="3" placeholder="Số nhà, tên đường, phường/xã, quận/huyện, tỉnh/thành phố" required></textarea>
+                                        <label for="address" class="form-label text-white">Địa chỉ giao hàng *</label>
+                                        <textarea class="form-control bg-dark text-white border-secondary" id="address" rows="3" placeholder="Số nhà, tên đường, phường/xã, quận/huyện, tỉnh/thành phố" required></textarea>
                                     </div>
                                     
                                     <div class="mb-3">
-                                        <label for="notes" class="form-label">Ghi chú đơn hàng</label>
-                                        <textarea class="form-control" id="notes" rows="2" placeholder="Ghi chú về đơn hàng (không bắt buộc)"></textarea>
+                                        <label for="notes" class="form-label text-white">Ghi chú đơn hàng</label>
+                                        <textarea class="form-control bg-dark text-white border-secondary" id="notes" rows="2" placeholder="Ghi chú về đơn hàng (không bắt buộc)"></textarea>
                                     </div>
                                 </form>
                             </div>
                         </div>
 
                         <!-- Payment Method -->
-                        <div class="card border-0 shadow-sm">
+                        <div class="card bg-dark text-white border-secondary shadow-sm">
                             <div class="card-body">
-                                <h5 class="card-title mb-3">
+                                <h5 class="card-title mb-3 text-white">
                                     <i class="bi bi-credit-card me-2"></i>
                                     Phương thức thanh toán
                                 </h5>
                                 
                                 <div class="payment-methods">
-                                    <div class="form-check payment-option mb-3">
+                                    <div class="form-check bg-dark border border-secondary rounded p-3 mb-3">
                                         <input class="form-check-input" type="radio" name="paymentMethod" id="cod" value="COD" checked>
-                                        <label class="form-check-label w-100" for="cod">
+                                        <label class="form-check-label w-100 text-white" for="cod">
                                             <div class="d-flex align-items-center">
                                                 <div class="payment-icon me-3">💵</div>
                                                 <div>
                                                     <strong>Thanh toán khi nhận hàng (COD)</strong>
-                                                    <div class="text-muted small">Thanh toán bằng tiền mặt khi nhận hàng</div>
+                                                    <div class="text-light small">Thanh toán bằng tiền mặt khi nhận hàng</div>
                                                 </div>
                                             </div>
                                         </label>
                                     </div>
                                     
-                                    <div class="form-check payment-option mb-3">
-                                        <input class="form-check-input" type="radio" name="paymentMethod" id="bank_transfer" value="Banking">
-                                        <label class="form-check-label w-100" for="bank_transfer">
-                                            <div class="d-flex align-items-center">
-                                                <div class="payment-icon me-3">🏦</div>
-                                                <div>
-                                                    <strong>Chuyển khoản ngân hàng</strong>
-                                                    <div class="text-muted small">Chuyển khoản trước khi giao hàng</div>
-                                                </div>
-                                            </div>
-                                        </label>
-                                    </div>
+                                 
                                     
-                                    <div class="form-check payment-option mb-3">
-                                        <input class="form-check-input" type="radio" name="paymentMethod" id="momo" value="E-Wallet">
-                                        <label class="form-check-label w-100" for="momo">
-                                            <div class="d-flex align-items-center">
-                                                <div class="payment-icon me-3">📱</div>
-                                                <div>
-                                                    <strong>Ví MoMo</strong>
-                                                    <div class="text-muted small">Thanh toán qua ví điện tử MoMo</div>
-                                                </div>
-                                            </div>
-                                        </label>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -326,9 +112,9 @@
 
                     <!-- Right Column - Order Summary -->
                     <div class="col-lg-4">
-                        <div class="card border-0 shadow-sm position-sticky" style="top: 120px;">
+                        <div class="card bg-dark text-white border-secondary shadow-sm position-sticky" style="top: 120px;">
                             <div class="card-body">
-                                <h5 class="card-title mb-3">
+                                <h5 class="card-title mb-3 text-white">
                                     <i class="bi bi-receipt me-2"></i>
                                     Tóm tắt đơn hàng
                                 </h5>
@@ -339,18 +125,18 @@
                                 </div>
                                 
                                 <!-- Order Summary -->
-                                <div class="border-top pt-3">
-                                    <div class="d-flex justify-content-between mb-2">
+                                <div class="border-top border-secondary pt-3">
+                                    <div class="d-flex justify-content-between mb-2 text-white">
                                         <span>Tạm tính:</span>
-                                        <span id="subtotal">0₫</span>
+                                        <span id="subtotal" class="text-primary fw-semibold">0₫</span>
                                     </div>
-                                    <div class="d-flex justify-content-between mb-2">
+                                    <div class="d-flex justify-content-between mb-2 text-white">
                                         <span>Phí vận chuyển:</span>
-                                        <span id="shippingFee">30,000₫</span>
+                                        <span id="shippingFee" class="text-primary fw-semibold">30,000₫</span>
                                     </div>
-                                    <div class="d-flex justify-content-between mb-3 border-top pt-2">
-                                        <strong>Tổng cộng:</strong>
-                                        <strong class="text-primary" id="totalAmount">30,000₫</strong>
+                                    <div class="d-flex justify-content-between mb-3 border-top border-secondary pt-2">
+                                        <strong class="text-white">Tổng cộng:</strong>
+                                        <strong class="text-primary fw-semibold" id="totalAmount">30,000₫</strong>
                                     </div>
                                     
                                     <!-- Create Order Button -->
@@ -358,13 +144,6 @@
                                         <i class="bi bi-check-circle me-2"></i>
                                         Đặt hàng
                                     </button>
-                                    
-                                    <div class="text-center mt-3">
-                                        <small class="text-muted">
-                                            Bằng việc đặt hàng, bạn đồng ý với 
-                                            <a href="#" class="text-decoration-none">Điều khoản sử dụng</a>
-                                        </small>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -375,11 +154,7 @@
             <!-- Error State -->
             <div id="errorState" class="text-center py-5 d-none">
                 <div class="mb-3">
-                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#dc3545" stroke-width="1">
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <line x1="12" y1="8" x2="12" y2="12"></line>
-                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
-                    </svg>
+                    <i class="bi bi-exclamation-circle text-danger" style="font-size: 4rem;"></i>
                 </div>
                 <h5 class="text-danger">Có lỗi xảy ra</h5>
                 <p class="text-muted mb-3" id="errorMessage">Không thể tải thông tin đơn hàng</p>

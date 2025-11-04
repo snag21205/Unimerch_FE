@@ -166,7 +166,7 @@
                     <div class="spinner-border text-primary mb-3" role="status">
                         <span class="visually-hidden">Loading...</span>
                     </div>
-                    <p class="text-muted">Loading products...</p>
+                    <p class="text-light">Loading products...</p>
                 </div>
             `;
         }
@@ -612,7 +612,7 @@ function createProductCard(product) {
         if (products.length === 0) {
             html = `
                 <div class="col-12 text-center py-5">
-                    <div class="text-muted">
+                    <div class="text-light">
                         <h5>No products available</h5>
                         <p>Please check back later or try refreshing the page.</p>
                     </div>
@@ -758,17 +758,36 @@ function createProductCard(product) {
     
     function showToast(message, type = 'info') {
         const toast = document.createElement('div');
-        toast.className = `alert alert-${type === 'success' ? 'success' : 'info'} position-fixed`;
+        toast.className = `alert position-fixed`;
         toast.style.top = '20px';
         toast.style.right = '20px';
         toast.style.zIndex = '9999';
+        
+        // Dark theme styling to match website design - solid backgrounds
+        if (type === 'success') {
+            toast.style.background = '#18b0b4';
+            toast.style.borderColor = '#18b0b4';
+            toast.style.color = '#ffffff';
+        } else {
+            toast.style.background = '#16181d';
+            toast.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+            toast.style.color = '#f1f3f5';
+        }
+        
+        toast.style.borderRadius = '12px';
+        toast.style.borderWidth = '1px';
+        toast.style.borderStyle = 'solid';
+        toast.style.padding = '1rem 1.5rem';
+        toast.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.5)';
+        toast.style.fontWeight = '500';
+        toast.style.minWidth = '250px';
         toast.textContent = message;
         
         document.body.appendChild(toast);
         
         setTimeout(() => {
             toast.remove();
-        }, 500);
+        }, 3000);
     }
     
     // ===== FILTER FUNCTIONALITY =====

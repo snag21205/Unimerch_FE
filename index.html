@@ -17,32 +17,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/home.css">
     <link rel="stylesheet" href="css/navbar.css">
-    
-    <style>
-        /* Override font cho toàn trang - sử dụng Be Vietnam Pro */
-        body {
-            font-family: 'Be Vietnam Pro', -apple-system, BlinkMacSystemFont, sans-serif;
-        }
-        
-        /* Dùng Montserrat cho các heading lớn - đẹp hơn cho tiếng Việt */
-        h1, h2, h3, .mega-text, .collection-title, .email-title {
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 800;
-        }
-        
-        /* Các text nhỏ hơn dùng Be Vietnam Pro */
-        p, span, a, button, .hero-tagline, .collection-desc, .product-name, 
-        .email-subtitle, .value-pill, .product-info, .nav-link {
-            font-family: 'Be Vietnam Pro', sans-serif;
-        }
-    </style>
 </head>
 <body>
     <!-- Navbar Container -->
     <div id="navbar-container"></div>
 
     <!-- Hero Section -->
-    <section class="hero-section" id="hero">
+    <section class="hero-section pt-5" id="hero">
         <div class="container h-100">
             <div class="hero-grid">
                 <!-- Left: Mascot -->
@@ -60,6 +41,11 @@
                     <h1 class="mega-text">MERCH</h1>
                     <h1 class="mega-text mega-text-accent">CHO UEH</h1>
                     <p class="hero-tagline">Mặc Đẹp. Học Giỏi.</p>
+                    <!-- CTA Card -->
+                    <a href="#shop" class="cta-card">
+                        <div class="cta-card-text">XEM SẢN PHẨM</div>
+                        <i class="bi bi-arrow-right cta-card-icon"></i>
+                    </a>
                 </div>
                 
                 <!-- Right: Vertical Text -->
@@ -72,12 +58,6 @@
                 </div>
             </div>
         </div>
-        
-        <!-- CTA Card -->
-        <a href="#shop" class="cta-card">
-            <div class="cta-card-text">XEM SẢN PHẨM</div>
-            <i class="bi bi-arrow-right cta-card-icon"></i>
-        </a>
     </section>
 
     <!-- Value Pills -->
@@ -240,25 +220,6 @@
         </div>
     </section>
 
- <!-- Search Modal -->
- <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header border-0">
-                <h5 class="modal-title" id="searchModalLabel">Tìm kiếm sản phẩm</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="mb-3">
-                    <input type="text" class="form-control form-control-lg" id="searchInput" placeholder="Tìm kiếm sản phẩm..." autofocus>
-                </div>
-                <div id="searchResults">
-                    <p class="text-muted">Bắt đầu nhập để tìm kiếm sản phẩm...</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
 
 <!-- Quick View Modal -->
@@ -347,53 +308,6 @@
                         </a>
                     </div>
                 </div>
-                <div class="col-lg-8">
-                    <div class="row g-4">
-                        <div class="col-md-3">
-                            <h6 class="fw-semibold mb-3" style="color: var(--text-light); font-size: 1.1rem; letter-spacing: 0.5px;">Cửa hàng</h6>
-                            <ul class="list-unstyled">
-                                <li class="mb-2"><a href="pages/products/all-products.html" class="text-light text-decoration-none" style="font-size: 0.95rem; opacity: 0.8; transition: all 0.3s ease;" onmouseover="this.style.opacity='1'; this.style.color='#0F766E'" onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">Sản phẩm nổi bật</a></li>
-                                <li class="mb-2"><a href="pages/products/all-products.html" class="text-light text-decoration-none" style="font-size: 0.95rem; opacity: 0.8; transition: all 0.3s ease;" onmouseover="this.style.opacity='1'; this.style.color='#0F766E'" onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">Tất cả sản phẩm</a></li>
-                                <li class="mb-2"><a href="#" class="text-light text-decoration-none" style="font-size: 0.95rem; opacity: 0.8; transition: all 0.3s ease;" onmouseover="this.style.opacity='1'; this.style.color='#0F766E'" onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">Áo Hoodie</a></li>
-                                <li class="mb-2"><a href="#" class="text-light text-decoration-none" style="font-size: 0.95rem; opacity: 0.8; transition: all 0.3s ease;" onmouseover="this.style.opacity='1'; this.style.color='#0F766E'" onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">Áo Thun</a></li>
-                                <li class="mb-2"><a href="#" class="text-light text-decoration-none" style="font-size: 0.95rem; opacity: 0.8; transition: all 0.3s ease;" onmouseover="this.style.opacity='1'; this.style.color='#0F766E'" onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">Phụ kiện</a></li>
-                            </ul>
-                        </div>
-                        <div class="col-md-3">
-                            <h6 class="fw-semibold mb-3" style="color: var(--text-light); font-size: 1.1rem; letter-spacing: 0.5px;">Hỗ trợ</h6>
-                            <ul class="list-unstyled">
-                                <li class="mb-2"><a href="#" class="text-light text-decoration-none" style="font-size: 0.95rem; opacity: 0.8; transition: all 0.3s ease;" onmouseover="this.style.opacity='1'; this.style.color='#0F766E'" onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">Liên hệ</a></li>
-                                <li class="mb-2"><a href="#" class="text-light text-decoration-none" style="font-size: 0.95rem; opacity: 0.8; transition: all 0.3s ease;" onmouseover="this.style.opacity='1'; this.style.color='#0F766E'" onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">Hướng dẫn chọn size</a></li>
-                                <li class="mb-2"><a href="#" class="text-light text-decoration-none" style="font-size: 0.95rem; opacity: 0.8; transition: all 0.3s ease;" onmouseover="this.style.opacity='1'; this.style.color='#0F766E'" onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">Thông tin vận chuyển</a></li>
-                                <li class="mb-2"><a href="#" class="text-light text-decoration-none" style="font-size: 0.95rem; opacity: 0.8; transition: all 0.3s ease;" onmouseover="this.style.opacity='1'; this.style.color='#0F766E'" onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">Đổi trả</a></li>
-                            </ul>
-                        </div>
-                        <div class="col-md-3">
-                            <h6 class="fw-semibold mb-3" style="color: var(--text-light); font-size: 1.1rem; letter-spacing: 0.5px;">Về chúng tôi</h6>
-                            <ul class="list-unstyled">
-                                <li class="mb-2"><a href="#" class="text-light text-decoration-none" style="font-size: 0.95rem; opacity: 0.8; transition: all 0.3s ease;" onmouseover="this.style.opacity='1'; this.style.color='#0F766E'" onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">Câu chuyện của chúng tôi</a></li>
-                                <li class="mb-2"><a href="#" class="text-light text-decoration-none" style="font-size: 0.95rem; opacity: 0.8; transition: all 0.3s ease;" onmouseover="this.style.opacity='1'; this.style.color='#0F766E'" onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">Đại học UEH</a></li>
-                                <li class="mb-2"><a href="#" class="text-light text-decoration-none" style="font-size: 0.95rem; opacity: 0.8; transition: all 0.3s ease;" onmouseover="this.style.opacity='1'; this.style.color='#0F766E'" onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">Phát triển bền vững</a></li>
-                                <li class="mb-2"><a href="#" class="text-light text-decoration-none" style="font-size: 0.95rem; opacity: 0.8; transition: all 0.3s ease;" onmouseover="this.style.opacity='1'; this.style.color='#0F766E'" onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">Cơ hội việc làm</a></li>
-                            </ul>
-                        </div>
-                        <div class="col-md-3">
-                            <h6 class="fw-semibold mb-3" style="color: var(--text-light); font-size: 1.1rem; letter-spacing: 0.5px;">Bản tin</h6>
-                            <p class="text-light opacity-75 mb-3" style="font-size: 0.9rem;">
-                                Nhận thông tin cập nhật về sản phẩm mới và ưu đãi đặc biệt.
-                            </p>
-                            <div class="input-group mb-3">
-                                <input type="email" class="form-control" placeholder="Email của bạn" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff;" onfocus="this.style.background='rgba(255,255,255,0.15)'" onblur="this.style.background='rgba(255,255,255,0.1)'">
-                                <button class="btn" type="button" style="background: #0F766E; border: 1px solid #0F766E; color: white; transition: all 0.3s ease;" onmouseover="this.style.background='#065f56'" onmouseout="this.style.background='#0F766E'">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <line x1="22" y1="2" x2="11" y2="13"></line>
-                                        <polygon points="22,2 15,22 11,13 2,9"></polygon>
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
             
             <!-- Bottom section -->
@@ -403,10 +317,6 @@
                         <p class="mb-0 text-light" style="opacity: 0.7; font-size: 0.9rem;">
                             © 2025 UEH Merchandise. Đã đăng ký bản quyền. Được tạo với ❤️ dành cho sinh viên UEH.
                         </p>
-                    </div>
-                    <div class="col-md-6 text-md-end mt-3 mt-md-0">
-                        <a href="#" class="text-light text-decoration-none me-4" style="font-size: 0.9rem; opacity: 0.8; transition: all 0.3s ease;" onmouseover="this.style.opacity='1'; this.style.color='#0F766E'" onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">Chính sách bảo mật</a>
-                        <a href="#" class="text-light text-decoration-none" style="font-size: 0.9rem; opacity: 0.8; transition: all 0.3s ease;" onmouseover="this.style.opacity='1'; this.style.color='#0F766E'" onmouseout="this.style.opacity='0.8'; this.style.color='#f8f9fa'">Điều khoản dịch vụ</a>
                     </div>
                 </div>
             </div>

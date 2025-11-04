@@ -133,7 +133,7 @@ function renderOrderProgress(order) {
     const steps = [
         { key: 'pending', label: 'Đơn hàng đã đặt', icon: '📝' },
         { key: 'processing', label: 'Đang vận chuyển', icon: '🚚' },
-        { key: 'shipped', label: 'Chờ giao hàng', icon: '�' },
+        { key: 'shipped', label: 'Chờ giao hàng', icon: '⌛' },
         { key: 'delivered', label: 'Đã giao hàng', icon: '✅' }
     ];
     
@@ -151,7 +151,7 @@ function renderOrderProgress(order) {
                 <div class="progress-step ${isCompleted ? 'completed' : ''} ${isActive ? 'active' : ''} mx-auto mb-2">
                     <span class="step-icon">${step.icon}</span>
                 </div>
-                <small class="text-muted">${step.label}</small>
+                <small class="text-light">${step.label}</small>
             </div>
         `;
         
@@ -172,7 +172,7 @@ function renderOrderItems(order) {
     const items = order.items || [];
     
     if (items.length === 0) {
-        itemsContainer.innerHTML = '<p class="text-muted">Không có sản phẩm nào</p>';
+        itemsContainer.innerHTML = '<p class="text-light">Không có sản phẩm nào</p>';
         return;
     }
     
@@ -185,10 +185,10 @@ function renderOrderItems(order) {
                  onerror="this.src='../../assets/images/products/demo.png'">
             <div class="flex-grow-1">
                 <h6 class="mb-1">${item.product_name || item.name}</h6>
-                <p class="text-muted mb-1 small">Số lượng: x${item.quantity}</p>
+                <p class="text-light mb-1 small">Số lượng: x${item.quantity}</p>
                 <p class="mb-0">
                     <span class="fw-semibold">${formatPrice(item.price)}</span>
-                    ${item.quantity > 1 ? `<small class="text-muted ms-2">Tổng: ${formatPrice(item.price * item.quantity)}</small>` : ''}
+                    ${item.quantity > 1 ? `<small class="text-light ms-2">Tổng: ${formatPrice(item.price * item.quantity)}</small>` : ''}
                 </p>
             </div>
         </div>

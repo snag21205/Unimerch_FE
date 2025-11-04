@@ -13,190 +13,15 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <style>
-        :root {
-            --accent: #18b0b4;
-            --ueh-blue: rgb(78, 160, 255);
-            --bg-dark: #0d0f12;
-            --text-light: #f1f3f5;
-            --text-muted: #a8a8a8;
-            --card-dark: #16181d;
-        }
-        
-        body {
-            background: var(--bg-dark) !important;
-            color: var(--text-light) !important;
-            font-family: 'Be Vietnam Pro', -apple-system, BlinkMacSystemFont, sans-serif;
-        }
-        
-        .card {
-            background: var(--card-dark) !important;
-            border: 1px solid rgba(255, 255, 255, 0.1) !important;
-            color: var(--text-light) !important;
-        }
-        
-        .breadcrumb {
-            background: transparent;
-        }
-        
-        .breadcrumb-item a {
-            color: var(--accent);
-            text-decoration: none;
-        }
-        
-        .breadcrumb-item.active {
-            color: var(--text-muted);
-        }
-        
-        .badge {
-            font-weight: 500;
-        }
-        
-        .btn-primary {
-            background: var(--accent);
-            border-color: var(--accent);
-        }
-        
-        .btn-primary:hover {
-            background: #149b9f;
-            border-color: #149b9f;
-        }
-        
-        .btn-outline-primary {
-            color: var(--accent);
-            border-color: var(--accent);
-        }
-        
-        .btn-outline-primary:hover {
-            background: var(--accent);
-            color: white;
-        }
-        
-        .btn-outline-danger {
-            color: #ef4444;
-            border-color: #ef4444;
-        }
-        
-        .btn-outline-danger:hover {
-            background: #ef4444;
-            color: white;
-        }
-        
-        h1, h2, h3, h4, h5, h6 {
-            color: var(--text-light) !important;
-        }
-        
-        .text-muted {
-            color: var(--text-muted) !important;
-        }
-        
-        .text-danger {
-            color: #ef4444 !important;
-        }
-        
-        .spinner-border {
-            color: var(--accent) !important;
-        }
-        
-        /* Override ALL orders.css - FORCE DARK EVERYWHERE */
-        .order-card,
-        .order-card-header,
-        .order-card-body,
-        .order-card-footer,
-        .order-header,
-        .order-footer,
-        .card-body,
-        .card-header,
-        .card-footer,
-        .progress-card,
-        [class*="order"][class*="header"],
-        [class*="order"][class*="footer"],
-        .card > div,
-        .card > div:first-child,
-        .card > div:last-child {
-            background: var(--card-dark) !important;
-            background-color: var(--card-dark) !important;
-            border-color: rgba(255, 255, 255, 0.1) !important;
-        }
-        
-        .order-item {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
-            background: transparent !important;
-        }
-        
-        .order-item:last-child {
-            border-bottom: none !important;
-        }
-        
-        /* ALL text - base palette only */
-        .order-card *,
-        .card *,
-        .product-name,
-        .order-id,
-        strong,
-        .summary-label {
-            color: var(--text-light) !important;
-        }
-        
-        /* Muted text */
-        .product-info,
-        .order-meta,
-        small,
-        .text-secondary {
-            color: var(--text-muted) !important;
-        }
-        
-        /* Prices - teal accent only */
-        .price,
-        .total-price,
-        .order-total,
-        .product-price,
-        .summary-value {
-            color: var(--accent) !important;
-        }
-        
-        /* Summary items */
-        .summary-row {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
-            background: transparent !important;
-        }
-        
-        .summary-row:last-child {
-            border-bottom: none !important;
-        }
-        
-        /* Progress timeline */
-        .progress-timeline {
-            background: transparent !important;
-        }
-        
-        .timeline-item {
-            border-left: 2px solid rgba(255, 255, 255, 0.1) !important;
-        }
-        
-        .timeline-item.completed,
-        .timeline-item.active {
-            border-left-color: var(--accent) !important;
-        }
-        
-        .timeline-dot {
-            background: var(--card-dark) !important;
-            border: 2px solid rgba(255, 255, 255, 0.2) !important;
-        }
-        
-        .timeline-item.completed .timeline-dot,
-        .timeline-item.active .timeline-dot {
-            background: var(--accent) !important;
-            border-color: var(--accent) !important;
-        }
-    </style>
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 </head>
-<body>
+<body class="bg-dark text-white">
     <!-- Navbar Container -->
     <div id="navbar-container"></div>
 
     <!-- Add top padding to account for fixed navbar -->
-    <div style="padding-top: 90px;">
+    <div class="pt-5">
         <!-- Main Content -->
         <div class="container py-4">
             <!-- Loading State -->
@@ -204,38 +29,38 @@
                 <div class="spinner-border text-primary mb-3" role="status">
                     <span class="visually-hidden">Loading...</span>
                 </div>
-                <p class="text-muted">Đang tải chi tiết đơn hàng...</p>
+                <p class="text-light">Đang tải chi tiết đơn hàng...</p>
             </div>
 
             <!-- Order Detail Content -->
             <div id="orderDetailContent" class="d-none">
                 <!-- Breadcrumb -->
                 <nav aria-label="breadcrumb" class="mb-4">
-                    <ol class="breadcrumb">
+                    <ol class="breadcrumb bg-transparent">
                         <li class="breadcrumb-item"><a href="orders.html" class="text-decoration-none">Đơn hàng của tôi</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Chi tiết đơn hàng</li>
+                        <li class="breadcrumb-item active text-light" aria-current="page">Chi tiết đơn hàng</li>
                     </ol>
                 </nav>
 
                 <!-- Order Header -->
-                <div class="card border-0 shadow-sm mb-4">
+                <div class="card bg-dark text-white border-secondary shadow-sm mb-4">
                     <div class="card-body">
                         <div class="row align-items-center">
                             <div class="col-md-6">
-                                <h4 class="mb-1">Đơn hàng <span id="orderIdDisplay">#123</span></h4>
-                                <p class="text-muted mb-0">Đặt hàng lúc: <span id="orderDateDisplay"></span></p>
+                                <h4 class="mb-1 text-white">Đơn hàng <span id="orderIdDisplay" class="text-white">#123</span></h4>
+                                <p class="text-light mb-0">Đặt hàng lúc: <span id="orderDateDisplay"></span></p>
                             </div>
                             <div class="col-md-6 text-md-end">
-                                <span id="orderStatusBadge" class="badge fs-6 px-3 py-2 rounded-pill">Chờ xác nhận</span>
+                                <span id="orderStatusBadge" class="badge bg-secondary fs-6 px-3 py-2 rounded-pill">Chờ xác nhận</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Order Progress -->
-                <div class="card border-0 shadow-sm mb-4">
+                <div class="card bg-dark text-white border-secondary shadow-sm mb-4">
                     <div class="card-body">
-                        <h6 class="card-title mb-3">Tiến trình đơn hàng</h6>
+                        <h6 class="card-title mb-3 text-white">Tiến trình đơn hàng</h6>
                         <div id="orderProgress" class="progress-timeline">
                             <!-- Progress will be rendered here -->
                         </div>
@@ -243,9 +68,9 @@
                 </div>
 
                 <!-- Order Items -->
-                <div class="card border-0 shadow-sm mb-4">
+                <div class="card bg-dark text-white border-secondary shadow-sm mb-4">
                     <div class="card-body">
-                        <h6 class="card-title mb-3">Sản phẩm đã đặt</h6>
+                        <h6 class="card-title mb-3 text-white">Sản phẩm đã đặt</h6>
                         <div id="orderItems">
                             <!-- Items will be rendered here -->
                         </div>
@@ -256,9 +81,9 @@
                 <div class="row">
                     <!-- Order Summary -->
                     <div class="col-lg-6 mb-4">
-                        <div class="card border-0 shadow-sm">
+                        <div class="card bg-dark text-white border-secondary shadow-sm">
                             <div class="card-body">
-                                <h6 class="card-title mb-3">Tóm tắt đơn hàng</h6>
+                                <h6 class="card-title mb-3 text-white">Tóm tắt đơn hàng</h6>
                                 <div id="orderSummary">
                                     <!-- Summary will be rendered here -->
                                 </div>
@@ -268,9 +93,9 @@
 
                     <!-- Shipping & Payment Info -->
                     <div class="col-lg-6 mb-4">
-                        <div class="card border-0 shadow-sm">
+                        <div class="card bg-dark text-white border-secondary shadow-sm">
                             <div class="card-body">
-                                <h6 class="card-title mb-3">Thông tin giao hàng & thanh toán</h6>
+                                <h6 class="card-title mb-3 text-white">Thông tin giao hàng & thanh toán</h6>
                                 <div id="shippingPaymentInfo">
                                     <!-- Info will be rendered here -->
                                 </div>
@@ -280,7 +105,7 @@
                 </div>
 
                 <!-- Order Actions -->
-                <div class="card border-0 shadow-sm">
+                <div class="card bg-dark text-white border-secondary shadow-sm">
                     <div class="card-body">
                         <div class="d-flex flex-wrap gap-2" id="orderActions">
                             <!-- Actions will be rendered here -->
@@ -292,14 +117,10 @@
             <!-- Error State -->
             <div id="errorState" class="text-center py-5 d-none">
                 <div class="mb-3">
-                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#dc3545" stroke-width="1">
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <line x1="12" y1="8" x2="12" y2="12"></line>
-                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
-                    </svg>
+                    <i class="bi bi-exclamation-circle text-danger" style="font-size: 4rem;"></i>
                 </div>
                 <h5 class="text-danger">Không thể tải chi tiết đơn hàng</h5>
-                <p class="text-muted mb-3">Đơn hàng không tồn tại hoặc có lỗi xảy ra</p>
+                <p class="text-light mb-3">Đơn hàng không tồn tại hoặc có lỗi xảy ra</p>
                 <a href="orders.html" class="btn btn-primary">Quay lại danh sách đơn hàng</a>
             </div>
         </div>

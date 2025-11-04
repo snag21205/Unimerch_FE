@@ -6,6 +6,7 @@
     --apple-blue-hover: #16c9cd;
     --apple-blue-light: rgba(24, 176, 180, 0.1);
     --accent: #18b0b4;
+    --ueh-blue: rgb(78, 160, 255);
     --bg-dark: #0d0f12;
     --card-dark: #16181d;
     --text-primary: #f1f3f5;
@@ -549,28 +550,32 @@ body {
 }
 
 .btn-primary {
-    background: var(--apple-blue);
-    border-color: var(--apple-blue);
+    background-color: var(--accent);
+    border-color: var(--accent);
     color: var(--bg-dark);
 }
 
 .btn-primary:hover {
-    background: var(--apple-blue-hover);
-    border-color: var(--apple-blue-hover);
+    background-color: #149b9f;
+    border-color: #149b9f;
     color: var(--bg-dark);
     transform: translateY(-1px);
 }
 
 .btn-outline-primary {
+    color: var(--accent);
+    border-color: var(--accent);
     background: transparent;
-    border-color: var(--apple-blue);
-    color: var(--apple-blue);
 }
 
 .btn-outline-primary:hover {
-    background: rgba(24, 176, 180, 0.1);
-    border-color: var(--apple-blue);
-    color: var(--apple-blue);
+    background-color: var(--accent);
+    border-color: var(--accent);
+    color: white;
+}
+
+.text-primary {
+    color: var(--accent) !important;
 }
 
 .btn-secondary {
@@ -679,6 +684,28 @@ body {
 
 .step-icon {
     font-size: 20px;
+}
+
+/* Progress step label - force white color */
+.progress-timeline .text-light,
+.progress-timeline small {
+    color: #ffffff !important;
+}
+
+/* Order items text color */
+#orderItems .text-light,
+#orderItems small {
+    color: #ffffff !important;
+}
+
+/* Global text-light override for all order pages */
+.text-light {
+    color: #ffffff !important;
+}
+
+/* Breadcrumb text */
+.breadcrumb-item.text-light {
+    color: #ffffff !important;
 }
 
 .progress-line {
@@ -977,4 +1004,112 @@ body {
         margin-left: 0 !important;
         margin-top: 8px;
     }
+}
+
+/* Additional Styles from orders.html */
+
+/* Price styling */
+.price,
+.total-price,
+.order-total,
+.product-price,
+.summary-value {
+    color: var(--accent);
+    font-weight: 600;
+}
+
+/* Badge colors with bg- prefix */
+.badge.bg-warning {
+    background-color: #f59e0b !important;
+}
+
+.badge.bg-info {
+    background-color: var(--ueh-blue) !important;
+}
+
+.badge.bg-primary {
+    background-color: var(--accent) !important;
+}
+
+.badge.bg-success {
+    background-color: #10b981 !important;
+}
+
+.badge.bg-danger {
+    background-color: #ef4444 !important;
+}
+
+/* Additional Styles from order-detail.html */
+
+/* Breadcrumb styling */
+.breadcrumb-item a {
+    color: var(--accent);
+}
+
+/* Timeline styling */
+.timeline-item {
+    border-left: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.timeline-item.completed,
+.timeline-item.active {
+    border-left-color: var(--accent);
+}
+
+.timeline-dot {
+    background: #16181d;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.timeline-item.completed .timeline-dot,
+.timeline-item.active .timeline-dot {
+    background: var(--accent);
+    border-color: var(--accent);
+}
+
+/* Summary row borders */
+.summary-row {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.summary-row:last-child {
+    border-bottom: none;
+}
+
+/* Summary value styling */
+.summary-value {
+    color: var(--accent);
+    font-weight: 600;
+}
+
+/* Additional Styles from create-order.html */
+
+/* Payment icon styling */
+.payment-icon {
+    font-size: 2rem;
+}
+
+/* Dark theme form controls focus */
+.form-control:focus, .form-select:focus {
+    background-color: rgba(255, 255, 255, 0.08) !important;
+    border-color: var(--accent) !important;
+    box-shadow: 0 0 0 0.2rem rgba(24, 176, 180, 0.25) !important;
+}
+
+/* Form check input styling for dark theme */
+.form-check-input:checked {
+    background-color: var(--accent);
+    border-color: var(--accent);
+}
+
+/* Payment option hover effect */
+.form-check.bg-dark:hover {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    border-color: var(--accent) !important;
+}
+
+/* Payment option checked state */
+.form-check.bg-dark:has(.form-check-input:checked) {
+    background-color: rgba(24, 176, 180, 0.1) !important;
+    border-color: var(--accent) !important;
 }

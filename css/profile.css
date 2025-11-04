@@ -1,104 +1,102 @@
-/* Profile Page Styles */
+/* Profile Page Styles - Dark Theme */
+
+:root {
+    --accent: #18b0b4;
+    --ueh-blue: rgb(78, 160, 255);
+}
+
 body {
-    background-color: #f8f9fa;
+    background: #0d0f12 !important;
+    color: #f1f3f5 !important;
     font-family: 'Inter', sans-serif;
 }
 
+.btn-primary {
+    background-color: var(--accent);
+    border-color: var(--accent);
+}
+
+.btn-primary:hover {
+    background-color: #149b9f;
+    border-color: #149b9f;
+}
+
+.btn-save {
+    background-color: var(--accent) !important;
+    border-color: var(--accent) !important;
+    color: white !important;
+}
+
+.btn-save:hover {
+    background-color: #149b9f !important;
+    border-color: #149b9f !important;
+    transform: translateY(-2px);
+}
+
+.text-primary {
+    color: var(--accent) !important;
+}
+
+/* Profile header */
 .profile-header {
-    background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
-    color: white;
-    padding: 3rem 0;
+    background: linear-gradient(135deg, rgba(24, 176, 180, 0.1), rgba(78, 160, 255, 0.1));
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .profile-avatar {
-    width: 120px;
-    height: 120px;
-    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    width: 80px;
+    height: 80px;
+    background: var(--accent);
+    color: white;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 3rem;
+    font-size: 2rem;
     font-weight: 600;
-    color: white;
     margin: 0 auto 1rem;
-    border: 4px solid rgba(255,255,255,0.2);
 }
 
-.profile-card {
-    background: white;
-    border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-    border: none;
+/* Dark theme form controls */
+.form-control:focus, .form-select:focus {
+    background-color: rgba(255, 255, 255, 0.08) !important;
+    border-color: var(--accent) !important;
+    box-shadow: 0 0 0 0.2rem rgba(24, 176, 180, 0.25) !important;
 }
 
+.form-control[readonly] {
+    background-color: rgba(255, 255, 255, 0.02) !important;
+    border-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+/* Form check input styling for dark theme */
+.form-check-input:checked {
+    background-color: var(--accent);
+    border-color: var(--accent);
+}
+
+/* Nav tabs styling */
 .nav-tabs .nav-link {
-    border: none;
-    color: #6b7280;
-    font-weight: 500;
-    padding: 1rem 1.5rem;
-    border-radius: 8px 8px 0 0;
+    color: #a8a8a8 !important;
+}
+
+.nav-tabs .nav-link:hover {
+    color: var(--accent) !important;
 }
 
 .nav-tabs .nav-link.active {
-    background-color: #f8f9fa;
-    color: #1f2937;
-    border-bottom: 2px solid #0F766E;
+    color: var(--accent) !important;
+    border-bottom-color: var(--accent) !important;
 }
 
-.form-control, .form-select {
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
-    padding: 0.75rem 1rem;
-    font-size: 0.95rem;
+/* Hide Bootstrap validation icons to prevent overlap with toggle buttons */
+.form-control.is-valid,
+.form-control.is-invalid {
+    background-image: none !important;
+    padding-right: 3rem !important;
 }
 
-.form-control:focus, .form-select:focus {
-    border-color: #0F766E;
-    box-shadow: 0 0 0 0.2rem rgba(15, 118, 110, 0.25);
-}
-
-.order-item {
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
-    transition: all 0.3s ease;
-}
-
-.order-item:hover {
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    transform: translateY(-2px);
-}
-
-.order-status {
-    font-size: 0.8rem;
-    font-weight: 600;
-    padding: 0.4rem 0.8rem;
-    border-radius: 20px;
-}
-
-.status-completed {
-    background-color: #ffffff;
-    color: #000000;
-}
-
-.status-pending {
-    background-color: #ffffff;
-    color: #000000;
-}
-
-.status-shipping {
-    background-color: #ffffff;
-    color: #000000;
-}
-
-.btn-save {
-    background: linear-gradient(135deg, #0F766E 0%, #059669 100%);
-    border: none;
-    border-radius: 8px;
-    padding: 0.75rem 2rem;
-    font-weight: 500;
-}
-
-.btn-save:hover {
-    background: linear-gradient(135deg, #059669 0%, #047857 100%);
+/* Ensure toggle button is always visible */
+.position-relative .btn {
+    z-index: 10 !important;
 }

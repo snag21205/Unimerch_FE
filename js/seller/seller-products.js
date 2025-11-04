@@ -117,7 +117,7 @@ function renderSellerProductsTable() {
     if (paginatedProducts.length === 0) {
         tbody.innerHTML = `
             <tr>
-                <td colspan="7" class="text-center py-4 text-muted">
+                <td colspan="7" class="text-center py-4 text-light">
                     ${sellerSearchQuery ? 'Không tìm thấy sản phẩm phù hợp' : 'Chưa có sản phẩm nào'}
                 </td>
             </tr>
@@ -142,7 +142,7 @@ function renderSellerProductsTable() {
                 </td>
                 <td>
                     <div class="fw-semibold">${product.name}</div>
-                    ${product.description ? `<small class="text-muted">${product.description.substring(0, 50)}${product.description.length > 50 ? '...' : ''}</small>` : ''}
+                    ${product.description ? `<small class="text-light">${product.description.substring(0, 50)}${product.description.length > 50 ? '...' : ''}</small>` : ''}
                 </td>
                 <td>
                     <div class="fw-semibold">${formatMoney(product.price)} ₫</div>

@@ -39,12 +39,13 @@ html {
 /* Hero Parallax */
 .hero-section {
     position: relative;
-    height: 90vh;
-    min-height: 700px;
+    height: auto;
+    min-height: 100vh;
     overflow: hidden;
     display: flex;
     align-items: center;
     background: var(--bg-dark);
+    padding: 5rem 0;
 }
 
 .hero-grid {
@@ -132,11 +133,8 @@ html {
 }
 
 .cta-card {
-    position: absolute;
-    bottom: 2rem;
-    left: 50%;                 /* Thêm - bắt đầu từ giữa */
-    transform: translateX(-50%); 
-    z-index: 1000;
+    position: relative;
+    margin-top: 2rem;
     background: var(--accent);
     color: var(--bg-dark);
     padding: 1.5rem 2rem;
@@ -144,7 +142,7 @@ html {
     cursor: pointer;
     transition: all 0.3s ease;
     text-decoration: none;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: 1rem;
     color: var(--text-light);
@@ -481,6 +479,50 @@ html {
     font-size: 0.9rem;
 }
 
+/* Typographic Section */
+.typo-section {
+    position: relative;
+    padding: 6rem 0;
+    overflow: hidden;
+    background: var(--bg-dark);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.typo-bg-text {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    transform: translateY(-50%);
+    font-family: 'Montserrat', sans-serif;
+    font-size: clamp(6rem, 15vw, 12rem);
+    font-weight: 900;
+    color: rgba(255, 255, 255, 0.03);
+    white-space: nowrap;
+    overflow: hidden;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    z-index: 1;
+    pointer-events: none;
+    user-select: none;
+}
+
+.typo-section .container {
+    position: relative;
+    z-index: 2;
+}
+
+.typo-section h2 {
+    position: relative;
+    z-index: 2;
+}
+
+.typo-section p {
+    position: relative;
+    z-index: 2;
+}
+
 /* Reveal Animation */
 .reveal {
     opacity: 0;
@@ -491,6 +533,42 @@ html {
 .reveal.in {
     opacity: 1;
     transform: translateY(0);
+}
+
+/* Tablet Adjustments */
+@media (max-width: 992px) {
+    .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .hero-left,
+    .hero-right {
+        display: none;
+    }
+    
+    .collection-content {
+        margin-top: 2rem;
+    }
+    
+    .collection-title {
+        font-size: clamp(2rem, 5vw, 4rem);
+    }
+    
+    .lookbook-item {
+        width: 250px;
+        height: 350px;
+    }
+    
+    .value-pills {
+        padding: 1.5rem 0;
+    }
+    
+    .value-pill {
+        font-size: 0.8rem;
+        padding: 0.5rem 1rem;
+        margin: 0.3rem;
+    }
 }
 
 /* Mobile Adjustments */
@@ -512,20 +590,35 @@ html {
     }
     
     .cta-card {
-        position: relative;
-        bottom: auto;
-        right: auto;
-        margin: 2rem auto 0;
+        margin-top: 1.5rem;
+        padding: 1.2rem 1.5rem;
+        width: 100%;
         max-width: 300px;
+        justify-content: center;
+    }
+    
+    .cta-card-text {
+        font-size: 1.2rem;
     }
     
     .hero-section {
         height: 80vh;
         min-height: 600px;
+        padding: 2rem 0;
+    }
+    
+    .mega-text {
+        font-size: clamp(3rem, 15vw, 8rem);
+        line-height: 0.9;
+    }
+    
+    .hero-tagline {
+        font-size: clamp(0.8rem, 2vw, 1rem);
+        margin-top: 0.5rem;
     }
     
     .collection-band {
-        padding: 4rem 0;
+        padding: 3rem 0;
     }
     
     .collection-bg {
@@ -533,22 +626,373 @@ html {
         width: 100%;
     }
     
+    .collection-content {
+        padding: 1rem 0;
+    }
+    
+    .collection-title {
+        font-size: clamp(2rem, 6vw, 4rem);
+        margin-bottom: 1rem;
+    }
+    
+    .collection-desc {
+        font-size: 1rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .btn-collection {
+        padding: 0.7rem 1.5rem;
+        font-size: 0.8rem;
+    }
+    
     .btn-primary-custom {
         width: 100%;
         margin-bottom: 1rem;
     }
     
-    .mega-text {
-        font-size: clamp(3rem, 15vw, 8rem);
+    .value-pills {
+        padding: 1.5rem 0;
+    }
+    
+    .value-pill {
+        font-size: 0.75rem;
+        padding: 0.5rem 1rem;
+        margin: 0.3rem;
+    }
+    
+    .lookbook-section {
+        padding: 3rem 0;
+    }
+    
+    .lookbook-item {
+        width: 200px;
+        height: 280px;
+    }
+    
+    .marquee-content {
+        gap: 1rem;
+    }
+    
+    .typo-section {
+        padding: 3rem 0;
     }
     
     .typo-bg-text {
-        font-size: clamp(4rem, 20vw, 10rem);
+        font-size: clamp(3rem, 15vw, 8rem);
+    }
+    
+    /* Featured Products Section */
+    #shop {
+        padding: 3rem 0 !important;
+    }
+    
+    #shop h2 {
+        font-size: clamp(1.8rem, 5vw, 2.5rem) !important;
+        margin-bottom: 1.5rem !important;
+    }
+    
+    #shop p {
+        font-size: 0.9rem !important;
+    }
+    
+    #featuredProductsGrid {
+        padding: 0 1rem;
+    }
+    
+    /* Footer responsive */
+    footer .row {
+        margin-bottom: 2rem !important;
+    }
+    
+    footer .col-lg-4,
+    footer .col-md-3 {
+        margin-bottom: 2rem;
+    }
+    
+    footer .social-links {
+        margin-top: 1rem;
+    }
+    
+    footer .input-group {
+        flex-direction: column;
+    }
+    
+    footer .input-group .btn {
+        margin-top: 0.5rem;
+        width: 100%;
     }
 }
 
+/* Small Mobile Adjustments */
 @media (max-width: 576px) {
     .hero-section {
         min-height: 500px;
+        height: 70vh;
     }
+    
+    .mega-text {
+        font-size: clamp(2.5rem, 12vw, 6rem);
+    }
+    
+    .hero-tagline {
+        font-size: 0.85rem;
+    }
+    
+    .cta-card {
+        padding: 1rem 1.2rem;
+        margin-top: 1.5rem;
+        max-width: 100%;
+    }
+    
+    .cta-card-text {
+        font-size: 1rem;
+    }
+    
+    .cta-card-icon {
+        font-size: 1.2rem;
+    }
+    
+    .value-pills {
+        padding: 1rem 0;
+    }
+    
+    .value-pill {
+        font-size: 0.7rem;
+        padding: 0.4rem 0.8rem;
+        margin: 0.25rem;
+        display: inline-block;
+        width: auto;
+    }
+    
+    .collection-band {
+        padding: 2.5rem 0;
+    }
+    
+    .collection-title {
+        font-size: clamp(1.8rem, 7vw, 3rem);
+    }
+    
+    .collection-desc {
+        font-size: 0.9rem;
+    }
+    
+    .btn-collection {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.75rem;
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .lookbook-section {
+        padding: 2rem 0;
+    }
+    
+    .lookbook-item {
+        width: 180px;
+        height: 240px;
+    }
+    
+    .marquee-content {
+        gap: 0.75rem;
+    }
+    
+    .typo-section {
+        padding: 2rem 0;
+    }
+    
+    .typo-bg-text {
+        font-size: clamp(2.5rem, 12vw, 6rem);
+    }
+    
+    #shop {
+        padding: 2rem 0 !important;
+    }
+    
+    #shop h2 {
+        font-size: clamp(1.5rem, 6vw, 2rem) !important;
+        margin-bottom: 1rem !important;
+    }
+    
+    #shop p {
+        font-size: 0.85rem !important;
+    }
+    
+    /* Footer small mobile */
+    footer {
+        padding: 2rem 0 1rem !important;
+    }
+    
+    footer .col-lg-4 h4 {
+        font-size: 1.2rem !important;
+    }
+    
+    footer .col-md-3 h6 {
+        font-size: 0.95rem !important;
+    }
+    
+    footer .col-md-3 ul li a {
+        font-size: 0.85rem !important;
+    }
+    
+    footer .border-top {
+        margin-top: 1.5rem !important;
+        padding-top: 1.5rem !important;
+    }
+    
+    footer .text-md-end {
+        text-align: center !important;
+        margin-top: 1rem !important;
+    }
+    
+    /* Modal responsive */
+    .modal-dialog {
+        margin: 0.5rem;
+    }
+    
+    .modal-content {
+        border-radius: 0.5rem;
+    }
+    
+    .modal-header {
+        padding: 1rem !important;
+    }
+    
+    .modal-body {
+        padding: 1rem !important;
+    }
+    
+    /* Offcanvas responsive */
+    .offcanvas {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+}
+
+/* Extra small devices */
+@media (max-width: 400px) {
+    .mega-text {
+        font-size: clamp(2rem, 10vw, 5rem);
+    }
+    
+    .value-pill {
+        font-size: 0.65rem;
+        padding: 0.35rem 0.7rem;
+    }
+    
+    .collection-title {
+        font-size: clamp(1.5rem, 8vw, 2.5rem);
+    }
+    
+    .lookbook-item {
+        width: 150px;
+        height: 200px;
+    }
+}
+
+/* Font Overrides - from index.html */
+/* Override font cho toàn trang - sử dụng Be Vietnam Pro */
+body {
+    font-family: 'Be Vietnam Pro', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* Dùng Montserrat cho các heading lớn - đẹp hơn cho tiếng Việt */
+h1, h2, h3, .mega-text, .collection-title, .email-title {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+}
+
+/* Các text nhỏ hơn dùng Be Vietnam Pro */
+p, span, a, button, .hero-tagline, .collection-desc, .product-name, 
+.email-subtitle, .value-pill, .product-info, .nav-link {
+    font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+/* Cart Offcanvas Styling */
+#cartOffcanvas {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    color: #ffffff;
+}
+
+#cartOffcanvas .offcanvas-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 1.5rem;
+}
+
+#cartOffcanvas .offcanvas-title {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 1.25rem;
+    letter-spacing: 0.5px;
+}
+
+#cartOffcanvas .btn-close {
+    filter: brightness(0) invert(1);
+    opacity: 0.8;
+}
+
+#cartOffcanvas .btn-close:hover {
+    opacity: 1;
+}
+
+#cartOffcanvas .offcanvas-body {
+    padding: 1.5rem;
+}
+
+#cartOffcanvas .text-muted {
+    color: rgba(255, 255, 255, 0.6) !important;
+}
+
+#cartOffcanvas hr {
+    border-color: rgba(255, 255, 255, 0.1);
+    margin: 1.5rem 0;
+}
+
+#cartOffcanvas .btn-link {
+    color: #ff6b6b;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+#cartOffcanvas .btn-link:hover {
+    color: #ff5252;
+    text-decoration: underline;
+}
+
+#cartOffcanvas .selected-count {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+#cartOffcanvas #cartSubtotal {
+    color: #ffffff;
+    font-size: 1.25rem;
+}
+
+#cartOffcanvas .btn-dark {
+    background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
+    color: #1a1a1a;
+    border: none;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+}
+
+#cartOffcanvas .btn-dark:hover {
+    background: linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 255, 255, 0.3);
+}
+
+/* Cart Item Styling */
+#cartOffcanvas .cart-item {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+}
+
+#cartOffcanvas .cart-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateX(5px);
 }

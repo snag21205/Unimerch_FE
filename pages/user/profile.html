@@ -17,209 +17,25 @@
     <link rel="stylesheet" href="../../css/navbar.css">
     <link rel="stylesheet" href="../../css/profile.css">
     
-    <!-- Custom CSS to match dark theme -->
-    <style>
-        :root {
-            --accent: #18b0b4;
-            --ueh-blue: rgb(78, 160, 255);
-            --bg-dark: #0d0f12;
-            --text-light: #f1f3f5;
-            --text-muted: #a8a8a8;
-            --card-dark: #16181d;
-        }
-        
-        body {
-            background: var(--bg-dark) !important;
-            color: var(--text-light) !important;
-            font-family: 'Be Vietnam Pro', -apple-system, BlinkMacSystemFont, sans-serif;
-        }
-        
-        /* Cards */
-        .profile-card, .card {
-            background: var(--card-dark) !important;
-            border: 1px solid rgba(255, 255, 255, 0.1) !important;
-            color: var(--text-light) !important;
-        }
-        
-        /* Form controls */
-        .form-control, .form-select {
-            background: rgba(255, 255, 255, 0.05) !important;
-            border: 1px solid rgba(255, 255, 255, 0.1) !important;
-            color: var(--text-light) !important;
-        }
-        
-        .form-control:focus, .form-select:focus {
-            background: rgba(255, 255, 255, 0.08) !important;
-            border-color: var(--accent) !important;
-            color: var(--text-light) !important;
-            box-shadow: 0 0 0 0.2rem rgba(24, 176, 180, 0.25) !important;
-        }
-        
-        .form-control::placeholder {
-            color: var(--text-muted) !important;
-        }
-        
-        .form-control[readonly] {
-            background: rgba(255, 255, 255, 0.02) !important;
-            border-color: rgba(255, 255, 255, 0.05) !important;
-        }
-        
-        .form-label {
-            color: var(--text-light) !important;
-        }
-        
-        .form-text {
-            color: var(--text-muted) !important;
-        }
-        
-        /* Tabs */
-        .nav-tabs {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
-        }
-        
-        .nav-tabs .nav-link {
-            color: var(--text-muted) !important;
-            border: none !important;
-            background: transparent !important;
-        }
-        
-        .nav-tabs .nav-link:hover {
-            color: var(--accent) !important;
-            border: none !important;
-        }
-        
-        .nav-tabs .nav-link.active {
-            color: var(--accent) !important;
-            background: transparent !important;
-            border-bottom: 2px solid var(--accent) !important;
-        }
-        
-        /* Buttons */
-        .btn-save {
-            background: var(--accent) !important;
-            border: none !important;
-            color: white !important;
-        }
-        
-        .btn-save:hover {
-            background: #149b9f !important;
-            transform: translateY(-2px);
-        }
-        
-        .btn-outline-danger {
-            border-color: #dc3545 !important;
-            color: #dc3545 !important;
-        }
-        
-        .btn-outline-danger:hover {
-            background: #dc3545 !important;
-            color: white !important;
-        }
-        
-        /* Profile header */
-        .profile-header {
-            background: linear-gradient(135deg, rgba(24, 176, 180, 0.1), rgba(78, 160, 255, 0.1));
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 3rem 0;
-        }
-        
-        .profile-avatar {
-            width: 80px;
-            height: 80px;
-            background: var(--accent);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            font-weight: 600;
-            margin: 0 auto 1rem;
-        }
-        
-        /* Card titles */
-        .card-title {
-            color: var(--text-light) !important;
-        }
-        
-        .card-text {
-            color: var(--text-muted) !important;
-        }
-        
-        /* Text colors */
-        .text-muted {
-            color: var(--text-muted) !important;
-        }
-        
-        .text-danger {
-            color: #ff6b6b !important;
-        }
-        
-        h1, h2, h3, h4, h5, h6 {
-            color: var(--text-light) !important;
-        }
-        
-        /* Form check */
-        .form-check-input {
-            background-color: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.2);
-        }
-        
-        .form-check-input:checked {
-            background-color: var(--accent);
-            border-color: var(--accent);
-        }
-        
-        .form-check-label {
-            color: var(--text-light);
-        }
-        
-        /* Invalid feedback */
-        .invalid-feedback {
-            color: #ff6b6b !important;
-        }
-        /* Hide Bootstrap validation icons to prevent overlap with toggle buttons */
-        .form-control.is-valid {
-            background-image: none !important;
-            padding-right: 3rem !important; /* Space for toggle button */
-        }
-        
-        .form-control.is-invalid {
-            background-image: none !important;
-            padding-right: 3rem !important; /* Space for toggle button */
-        }
-        
-        /* Keep the colored borders */
-        .form-control.is-valid {
-            border-color: #198754 !important;
-        }
-        
-        .form-control.is-invalid {
-            border-color: #dc3545 !important;
-        }
-        
-        /* Ensure toggle button is always visible */
-        .position-relative .btn {
-            z-index: 10 !important;
-        }
-    </style>
-    
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 </head>
-<body>
+<body class="bg-dark text-white">
     <!-- Navbar Container -->
     <div id="navbar-container"></div>
 
     <!-- Profile Header -->
-    <section class="profile-header" style="margin-top: 80px;">
+    <section class="profile-header py-5 mt-5 border-bottom">
         <div class="container">
             <div class="text-center">
                 <div class="profile-avatar" id="profileAvatar">U</div>
-                <h1 class="h3 mb-2" id="headerName">User Profile</h1>
-                <p class="mb-0 opacity-75" id="headerEmail">user@ueh.edu.vn</p>
+                <h1 class="h3 mb-2 text-white" id="headerName">User Profile</h1>
+                <p class="mb-0" id="headerEmail">user@ueh.edu.vn</p>
             </div>
         </div>
     </section>
@@ -229,34 +45,18 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-10 col-xl-8">
-                    <div class="profile-card">
+                    <div class="card bg-dark text-white border-secondary shadow-sm">
                         <!-- Tabs Navigation -->
-                        <ul class="nav nav-tabs" id="profileTabs" role="tablist">
+                        <ul class="nav nav-tabs border-bottom border-secondary" id="profileTabs" role="tablist">
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link active" id="personal-tab" data-bs-toggle="tab" data-bs-target="#personal" type="button" role="tab">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-2">
-                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                                        <circle cx="12" cy="7" r="4"></circle>
-                                    </svg>
+                                    <i class="bi bi-person me-2"></i>
                                     Thông tin cá nhân
                                 </button>
                             </li>
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="orders-tab" data-bs-toggle="tab" data-bs-target="#orders" type="button" role="tab">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-2">
-                                        <circle cx="8" cy="21" r="1"></circle>
-                                        <circle cx="19" cy="21" r="1"></circle>
-                                        <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57L20.5 9H5.12"></path>
-                                    </svg>
-                                    Lịch sử đơn hàng
-                                </button>
-                            </li>
-                            <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="settings-tab" data-bs-toggle="tab" data-bs-target="#settings" type="button" role="tab">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-2">
-                                        <circle cx="12" cy="12" r="3"></circle>
-                                        <path d="M12 1v6m0 6v6m-8-8h6m6 0h6"></path>
-                                    </svg>
+                                    <i class="bi bi-gear me-2"></i>
                                     Cài đặt
                                 </button>
                             </li>
@@ -266,43 +66,39 @@
                         <div class="tab-content p-4" id="profileTabContent">
                             <!-- Personal Info Tab -->
                             <div class="tab-pane fade show active" id="personal" role="tabpanel">
-                                <h5 class="mb-4">Thông tin cá nhân</h5>
+                                <h5 class="mb-4 text-white">Thông tin cá nhân</h5>
                                 <form id="personalInfoForm">
                                     <div class="row g-3">
                                         <div class="col-md-6">
-                                            <label for="firstName" class="form-label">Tên</label>
-                                            <input type="text" class="form-control" id="firstName" placeholder="Nhập tên của bạn">
+                                            <label for="firstName" class="form-label text-white">Tên</label>
+                                            <input type="text" class="form-control bg-dark text-white border-secondary" id="firstName" placeholder="Nhập tên của bạn">
                                         </div>
                                         <div class="col-md-6">
-                                            <label for="lastName" class="form-label">Họ</label>
-                                            <input type="text" class="form-control" id="lastName" placeholder="Nhập họ của bạn">
+                                            <label for="lastName" class="form-label text-white">Họ</label>
+                                            <input type="text" class="form-control bg-dark text-white border-secondary" id="lastName" placeholder="Nhập họ của bạn">
                                         </div>
                                         <div class="col-md-6">
-                                            <label for="email" class="form-label">Địa chỉ email</label>
-                                            <input type="email" class="form-control" id="email" placeholder="your.email@ueh.edu.vn" readonly>
-                                            <div class="form-text">Email không thể thay đổi vì lý do bảo mật</div>
+                                            <label for="email" class="form-label text-white">Địa chỉ email</label>
+                                            <input type="email" class="form-control bg-dark text-white border-secondary" id="email" placeholder="your.email@ueh.edu.vn" readonly>
+                                            <div class="form-text text-light">Email không thể thay đổi vì lý do bảo mật</div>
                                         </div>
                                         <div class="col-md-6">
-                                            <label for="phone" class="form-label">Số điện thoại</label>
-                                            <input type="tel" class="form-control" id="phone" placeholder="0123456789" maxlength="10" pattern="[0-9]{10}">
-                                            <div class="form-text">Nhập 10 số (VD: 0123456789)</div>
-                                            <div class="invalid-feedback" id="phone-error"></div>
+                                            <label for="phone" class="form-label text-white">Số điện thoại</label>
+                                            <input type="tel" class="form-control bg-dark text-white border-secondary" id="phone" placeholder="0123456789" maxlength="10" pattern="[0-9]{10}">
+                                            <div class="form-text text-light">Nhập 10 số (VD: 0123456789)</div>
+                                            <div class="invalid-feedback text-danger" id="phone-error"></div>
                                         </div>
                                         <div class="col-md-6">
-                                            <label for="studentId" class="form-label">Mã số sinh viên</label>
-                                            <input type="text" class="form-control" id="studentId" placeholder="31XXXX">
+                                            <label for="studentId" class="form-label text-white">Mã số sinh viên</label>
+                                            <input type="text" class="form-control bg-dark text-white border-secondary" id="studentId" placeholder="31XXXX">
                                         </div>
                                         <div class="col-12">
-                                            <label for="address" class="form-label">Địa chỉ</label>
-                                            <textarea class="form-control" id="address" rows="3" placeholder="Nhập địa chỉ đầy đủ của bạn"></textarea>
+                                            <label for="address" class="form-label text-white">Địa chỉ</label>
+                                            <textarea class="form-control bg-dark text-white border-secondary" id="address" rows="3" placeholder="Nhập địa chỉ đầy đủ của bạn"></textarea>
                                         </div>
                                         <div class="col-12">
                                             <button type="submit" class="btn btn-save text-white">
-                                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-2">
-                                                    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
-                                                    <polyline points="17,21 17,13 7,13 7,21"></polyline>
-                                                    <polyline points="7,3 7,8 15,8"></polyline>
-                                                </svg>
+                                                <i class="bi bi-save me-2"></i>
                                                 Lưu thay đổi
                                             </button>
                                         </div>
@@ -310,80 +106,52 @@
                                 </form>
                             </div>
 
-                            <!-- Order History Tab -->
-                            <div class="tab-pane fade" id="orders" role="tabpanel">
-                                <div class="d-flex justify-content-between align-items-center mb-4">
-                                    <h5 class="mb-0">Lịch sử đơn hàng</h5>
-                                    <div class="d-flex gap-2">
-                                        <select class="form-select form-select-sm" id="orderFilter" style="width: auto;">
-                                            <option value="all">Tất cả đơn hàng</option>
-                                            <option value="completed">Đã hoàn thành</option>
-                                            <option value="pending">Đang chờ</option>
-                                            <option value="shipping">Đang giao hàng</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                
-                                <div id="ordersList">
-                                    <!-- Orders will be populated by JavaScript -->
-                                </div>
-                            </div>
-
                             <!-- Settings Tab -->
                             <div class="tab-pane fade" id="settings" role="tabpanel">
-                                <h5 class="mb-4">Cài đặt tài khoản</h5>
+                                <h5 class="mb-4 text-white">Cài đặt tài khoản</h5>
                                 
                                 <!-- Change Password -->
-                                <div class="card mb-4">
+                                <div class="card bg-dark text-white border-secondary mb-4">
                                     <div class="card-body">
-                                        <h6 class="card-title">Đổi mật khẩu</h6>
+                                        <h6 class="card-title text-white">Đổi mật khẩu</h6>
                                         <form id="changePasswordForm">
                                             <div class="row g-3">
                                                 <div class="col-12">
-                                                    <label for="currentPassword" class="form-label">Mật khẩu hiện tại</label>
+                                                    <label for="currentPassword" class="form-label text-white">Mật khẩu hiện tại</label>
                                                     <div class="position-relative">
-                                                        <input type="password" class="form-control" id="currentPassword" required>
-                                                        <button type="button" class="btn btn-link position-absolute end-0 top-50 translate-middle-y me-2" 
+                                                        <input type="password" class="form-control bg-dark text-white border-secondary" id="currentPassword" required>
+                                                        <button type="button" class="btn btn-link position-absolute end-0 top-50 translate-middle-y me-2 text-white" 
                                                                 onclick="togglePassword('currentPassword')" style="border: none; background: none; z-index: 10;">
-                                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                                                                <circle cx="12" cy="12" r="3"></circle>
-                                                            </svg>
+                                                            <i class="bi bi-eye"></i>
                                                         </button>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <label for="newPassword" class="form-label">Mật khẩu mới</label>
+                                                    <label for="newPassword" class="form-label text-white">Mật khẩu mới</label>
                                                     <div class="position-relative">
-                                                        <input type="password" class="form-control" id="newPassword" required minlength="8">
-                                                        <button type="button" class="btn btn-link position-absolute end-0 top-50 translate-middle-y me-2" 
+                                                        <input type="password" class="form-control bg-dark text-white border-secondary" id="newPassword" required minlength="8">
+                                                        <button type="button" class="btn btn-link position-absolute end-0 top-50 translate-middle-y me-2 text-white" 
                                                                 onclick="togglePassword('newPassword')" style="border: none; background: none; z-index: 10;">
-                                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                                                                <circle cx="12" cy="12" r="3"></circle>
-                                                            </svg>
+                                                            <i class="bi bi-eye"></i>
                                                         </button>
                                                     </div>
-                                                    <div class="form-text mt-2">
+                                                    <div class="form-text mt-2 text-light">
                                                         Yêu cầu mật khẩu:
                                                         <ul class="mb-0 mt-1" style="font-size: 0.75rem; list-style: none; padding-left: 0;">
-                                                            <li id="length-req" class="text-muted" style="padding: 1px 0;">• Ít nhất 8 ký tự</li>
-                                                            <li id="uppercase-req" class="text-muted" style="padding: 1px 0;">• Ít nhất 1 chữ in hoa</li>
-                                                            <li id="number-req" class="text-muted" style="padding: 1px 0;">• Ít nhất 1 số</li>
-                                                            <li id="special-req" class="text-muted" style="padding: 1px 0;">• Ít nhất 1 ký tự đặc biệt</li>
+                                                            <li id="length-req" class="text-light" style="padding: 1px 0;">• Ít nhất 8 ký tự</li>
+                                                            <li id="uppercase-req" class="text-light" style="padding: 1px 0;">• Ít nhất 1 chữ in hoa</li>
+                                                            <li id="number-req" class="text-light" style="padding: 1px 0;">• Ít nhất 1 số</li>
+                                                            <li id="special-req" class="text-light" style="padding: 1px 0;">• Ít nhất 1 ký tự đặc biệt</li>
                                                         </ul>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <label for="confirmPassword" class="form-label">Xác nhận mật khẩu mới</label>
+                                                    <label for="confirmPassword" class="form-label text-white">Xác nhận mật khẩu mới</label>
                                                     <div class="position-relative">
-                                                        <input type="password" class="form-control" id="confirmPassword" required>
-                                                        <button type="button" class="btn btn-link position-absolute end-0 top-50 translate-middle-y me-2" 
+                                                        <input type="password" class="form-control bg-dark text-white border-secondary" id="confirmPassword" required>
+                                                        <button type="button" class="btn btn-link position-absolute end-0 top-50 translate-middle-y me-2 text-white" 
                                                                 onclick="togglePassword('confirmPassword')" style="border: none; background: none; z-index: 10;">
-                                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                                                                <circle cx="12" cy="12" r="3"></circle>
-                                                            </svg>
+                                                            <i class="bi bi-eye"></i>
                                                         </button>
                                                     </div>
                                                 </div>
@@ -396,18 +164,18 @@
                                 </div>
 
                                 <!-- Notification Preferences -->
-                                <div class="card mb-4">
+                                <div class="card bg-dark text-white border-secondary mb-4">
                                     <div class="card-body">
-                                        <h6 class="card-title">Thông báo</h6>
+                                        <h6 class="card-title text-white">Thông báo</h6>
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" id="emailNotifications" checked>
-                                            <label class="form-check-label" for="emailNotifications">
+                                            <label class="form-check-label text-white" for="emailNotifications">
                                                 Thông báo qua email về cập nhật đơn hàng
                                             </label>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" id="promotionalEmails" checked>
-                                            <label class="form-check-label" for="promotionalEmails">
+                                            <label class="form-check-label text-white" for="promotionalEmails">
                                                 Email quảng cáo và sản phẩm mới
                                             </label>
                                         </div>
@@ -415,10 +183,10 @@
                                 </div>
 
                                 <!-- Account Actions -->
-                                <div class="card">
+                                <div class="card bg-dark text-white border-secondary">
                                     <div class="card-body">
                                         <h6 class="card-title text-danger">Vùng nguy hiểm</h6>
-                                        <p class="card-text text-muted">Khi bạn xóa tài khoản, không thể khôi phục lại.</p>
+                                        <p class="card-text text-light">Khi bạn xóa tài khoản, không thể khôi phục lại.</p>
                                         <button class="btn btn-outline-danger" onclick="confirmDeleteAccount()">Xóa tài khoản</button>
                                     </div>
                                 </div>

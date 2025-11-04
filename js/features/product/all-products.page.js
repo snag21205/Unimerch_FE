@@ -53,7 +53,7 @@ async function loadCategories() {
 
 // Render category filter buttons
 function renderCategoryFilters() {
-    const filterContainer = document.querySelector('.d-flex.flex-wrap.gap-2.align-items-center');
+    const filterContainer = document.querySelector('.filter-scroll-wrapper');
     if (!filterContainer) return;
     
     // Keep the label if it exists
@@ -67,7 +67,7 @@ function renderCategoryFilters() {
     
     // Add "All" button
     const allButton = document.createElement('button');
-    allButton.className = 'btn rounded-pill px-4 py-2 filter-btn active';
+    allButton.className = 'btn rounded-pill filter-btn active';
     allButton.setAttribute('data-filter', 'all');
     allButton.textContent = 'Tất cả';
     allButton.style.cssText = `
@@ -75,17 +75,20 @@ function renderCategoryFilters() {
         border: 2px solid var(--accent);
         color: var(--bg-dark);
         font-weight: 700;
-        font-size: 0.85rem;
+        font-size: 0.75rem;
         letter-spacing: 0.5px;
         transition: all 0.3s ease;
         text-transform: uppercase;
+        padding: 0.35rem 0.75rem;
+        white-space: nowrap;
+        flex-shrink: 0;
     `;
     filterContainer.appendChild(allButton);
     
     // Add category buttons
     allCategories.forEach(category => {
         const button = document.createElement('button');
-        button.className = 'btn rounded-pill px-4 py-2 filter-btn';
+        button.className = 'btn rounded-pill filter-btn';
         button.setAttribute('data-filter', category.id || category.category_id);
         button.textContent = category.name || category.category_name;
         button.style.cssText = `
@@ -93,10 +96,13 @@ function renderCategoryFilters() {
             border: 2px solid rgba(255,255,255,0.2);
             color: var(--text-light);
             font-weight: 600;
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             letter-spacing: 0.5px;
             transition: all 0.3s ease;
             text-transform: uppercase;
+            padding: 0.35rem 0.75rem;
+            white-space: nowrap;
+            flex-shrink: 0;
         `;
         button.addEventListener('mouseover', function() {
             if (!this.classList.contains('active')) {
@@ -622,10 +628,13 @@ function updateActiveFilter(activeButton) {
             border: 2px solid rgba(255,255,255,0.2);
             color: var(--text-light);
             font-weight: 600;
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             letter-spacing: 0.5px;
             transition: all 0.3s ease;
             text-transform: uppercase;
+            padding: 0.35rem 0.75rem;
+            white-space: nowrap;
+            flex-shrink: 0;
         `;
     });
     
@@ -635,10 +644,13 @@ function updateActiveFilter(activeButton) {
         border: 2px solid var(--accent);
         color: var(--bg-dark);
         font-weight: 700;
-        font-size: 0.85rem;
+        font-size: 0.75rem;
         letter-spacing: 0.5px;
         transition: all 0.3s ease;
         text-transform: uppercase;
+        padding: 0.35rem 0.75rem;
+        white-space: nowrap;
+        flex-shrink: 0;
     `;
 }
 

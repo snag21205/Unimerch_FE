@@ -700,14 +700,14 @@ function renderReviews() {
                         <div class="fw-semibold">${review.user_full_name || review.username || 'Anonymous'}</div>
                         <div class="d-flex align-items-center">
                             ${generateStarsHTML(review.rating)}
-                            <span class="text-muted ms-2" style="font-size: 0.8rem;">
+                            <span class="text-light ms-2" style="font-size: 0.8rem;">
                                 ${new Date(review.created_at).toLocaleDateString()}
                             </span>
                         </div>
                     </div>
                     ${actionButtons}
                 </div>
-                <div class="text-muted">
+                <div class="text-light">
                     ${review.comment || 'No comment provided'}
                 </div>
             </div>
@@ -852,7 +852,7 @@ function displayLoginMessage() {
     const noReviewsSection = document.getElementById('noReviews');
     if (noReviewsSection && !window.apiService?.isAuthenticated()) {
         noReviewsSection.innerHTML = `
-            <div class="text-muted">
+            <div class="text-light">
                 <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="mb-3">
                     <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
                 </svg>
@@ -991,14 +991,14 @@ function renderFilteredReviews(reviews) {
                         <div class="fw-semibold">${review.user_full_name || review.username || 'Anonymous'}</div>
                         <div class="d-flex align-items-center">
                             ${generateStarsHTML(review.rating)}
-                            <span class="text-muted ms-2" style="font-size: 0.8rem;">
+                            <span class="text-light ms-2" style="font-size: 0.8rem;">
                                 ${new Date(review.created_at).toLocaleDateString()}
                             </span>
                         </div>
                     </div>
                     ${actionButtons}
                 </div>
-                <div class="text-muted">
+                <div class="text-light">
                     ${review.comment || 'No comment provided'}
                 </div>
             </div>

@@ -1,0 +1,487 @@
+/* Products Page Styles - All Products Page */
+
+/* Font Overrides */
+body { 
+    font-family: 'Be Vietnam Pro', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+h1, h2, h3, .mega-text { 
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+}
+
+/* Reveal animation for hero */
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: revealUp 0.8s ease forwards;
+}
+
+.reveal:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+@keyframes revealUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Search input focus effect */
+#searchInput:focus {
+    background: rgba(255,255,255,0.12) !important;
+    border-color: var(--accent) !important;
+    box-shadow: 0 0 0 3px rgba(246,167,193,0.2) !important;
+    outline: none;
+}
+
+/* Sort select focus effect */
+#sortSelect:focus {
+    background: rgba(255,255,255,0.12) !important;
+    border-color: var(--accent) !important;
+    box-shadow: 0 0 0 3px rgba(246,167,193,0.2) !important;
+    outline: none;
+}
+
+/* Sort select styling */
+#sortSelect option {
+    background: var(--bg-dark);
+    color: var(--text-light);
+}
+
+/* Smooth transitions for product grid */
+#productsGrid {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+#productsGrid.loaded {
+    opacity: 1;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-dark);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.1);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(246,167,193,0.5);
+}
+
+#searchInput::placeholder {
+    color: white;
+    opacity: 1;
+}
+
+/* Filter Scroll Container */
+.filter-scroll-container {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent) rgba(255,255,255,0.1);
+    padding-bottom: 0.5rem;
+    margin-bottom: -0.5rem;
+}
+
+.filter-scroll-container::-webkit-scrollbar {
+    height: 6px;
+}
+
+.filter-scroll-container::-webkit-scrollbar-track {
+    background: rgba(255,255,255,0.05);
+    border-radius: 3px;
+}
+
+.filter-scroll-container::-webkit-scrollbar-thumb {
+    background: var(--accent);
+    border-radius: 3px;
+}
+
+.filter-scroll-container::-webkit-scrollbar-thumb:hover {
+    background: #ffc1d9;
+}
+
+.filter-scroll-wrapper {
+    min-width: max-content;
+    padding-right: 1rem;
+}
+
+.filter-btn {
+    white-space: nowrap;
+    flex-shrink: 0;
+    min-width: auto;
+}
+
+/* Responsive Styles for All Products Page */
+@media (max-width: 992px) {
+    /* Hero Section */
+    .hero-section {
+        padding: 5rem 0 3rem !important;
+        min-height: 50vh !important;
+    }
+    
+    .mega-text {
+        font-size: clamp(2.5rem, 8vw, 6rem) !important;
+    }
+    
+    .hero-tagline {
+        font-size: 1rem !important;
+    }
+    
+    /* Search Bar */
+    .input-group {
+        max-width: 100% !important;
+    }
+    
+    #searchInput {
+        padding: 0.875rem 1.25rem !important;
+        font-size: 0.95rem !important;
+    }
+    
+    #searchBtn {
+        padding: 0.875rem 1rem !important;
+    }
+    
+    /* Filter Bar */
+    .filter-bar {
+        padding: 1rem 0 !important;
+    }
+    
+    /* Category Filters */
+    .filter-scroll-container {
+        padding-bottom: 0.75rem;
+        margin-bottom: -0.75rem;
+    }
+    
+    .filter-btn {
+        font-size: 0.7rem !important;
+        padding: 0.35rem 0.7rem !important;
+    }
+    
+    .filter-scroll-wrapper {
+        gap: 0.5rem !important;
+    }
+    
+    /* Sort Section */
+    .col-lg-4 {
+        margin-top: 1rem;
+    }
+    
+    .d-flex.justify-content-lg-end {
+        justify-content: flex-start !important;
+    }
+    
+    #sortSelect {
+        min-width: 120px !important;
+        width: 100% !important;
+    }
+    
+    /* Products Grid */
+    #productsGrid {
+        padding: 0 0.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    /* Hero Section */
+    .hero-section {
+        padding: 4rem 0 2rem !important;
+        min-height: 40vh !important;
+    }
+    
+    .mega-text {
+        font-size: clamp(2rem, 10vw, 5rem) !important;
+        margin-bottom: 0.5rem !important;
+    }
+    
+    .hero-tagline {
+        font-size: 0.9rem !important;
+        margin-top: 1rem !important;
+    }
+    
+    .reveal {
+        margin-bottom: 2rem !important;
+    }
+    
+    /* Search Bar */
+    .input-group {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    #searchInput {
+        border-radius: 12px !important;
+        padding: 0.875rem 1.25rem !important;
+        width: 100% !important;
+    }
+    
+    #searchBtn {
+        border-radius: 12px !important;
+        width: 100% !important;
+        padding: 0.875rem 1.5rem !important;
+    }
+    
+    /* Filter Bar */
+    .filter-bar {
+        padding: 0.875rem 0 !important;
+    }
+    
+    .container-fluid {
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+    }
+    
+    /* Category Filters */
+    .col-lg-8 {
+        margin-bottom: 0.75rem !important;
+    }
+    
+    .filter-scroll-container {
+        padding-bottom: 0.75rem;
+        margin-bottom: -0.75rem;
+    }
+    
+    .filter-scroll-wrapper {
+        gap: 0.4rem !important;
+    }
+    
+    .filter-btn {
+        font-size: 0.65rem !important;
+        padding: 0.3rem 0.65rem !important;
+    }
+    
+    /* Sort Section */
+    .col-lg-4 {
+        width: 100%;
+        margin-top: 0;
+    }
+    
+    .d-flex.align-items-center.justify-content-lg-end {
+        flex-direction: column;
+        align-items: stretch !important;
+        gap: 1rem !important;
+    }
+    
+    .d-flex.align-items-center.gap-2 {
+        flex-direction: column;
+        align-items: stretch !important;
+        gap: 0.5rem !important;
+    }
+    
+    .d-flex.align-items-center.gap-2 .text-light {
+        font-size: 0.85rem;
+    }
+    
+    #sortSelect {
+        width: 100% !important;
+        min-width: 100% !important;
+    }
+    
+    #clearFiltersBtn {
+        width: 100%;
+    }
+    
+    /* Results Info */
+    #resultsInfo {
+        font-size: 0.8rem !important;
+    }
+    
+    /* Products Grid */
+    #productsGrid {
+        padding: 0;
+    }
+    
+    /* Loading Spinner */
+    #loadingSpinner {
+        padding: 2rem 0 !important;
+    }
+    
+    #loadingSpinner .spinner-border {
+        width: 2.5rem !important;
+        height: 2.5rem !important;
+    }
+    
+    #loadingSpinner p {
+        font-size: 0.95rem !important;
+    }
+    
+    /* No Results */
+    #noResults {
+        padding: 2rem 0 !important;
+    }
+    
+    #noResults svg {
+        width: 60px !important;
+        height: 60px !important;
+    }
+    
+    #noResults h3 {
+        font-size: 1.75rem !important;
+    }
+    
+    #noResults p {
+        font-size: 0.95rem !important;
+    }
+    
+    #noResults .btn {
+        width: 100%;
+        padding: 0.75rem 1.5rem !important;
+    }
+    
+    /* Pagination */
+    .pagination {
+        flex-wrap: wrap;
+        gap: 0.5rem !important;
+    }
+    
+    .pagination .page-link {
+        padding: 0.5rem 0.75rem !important;
+        font-size: 0.85rem !important;
+    }
+}
+
+@media (max-width: 576px) {
+    /* Hero Section */
+    .hero-section {
+        padding: 3rem 0 1.5rem !important;
+        min-height: 35vh !important;
+    }
+    
+    .mega-text {
+        font-size: clamp(1.75rem, 12vw, 4rem) !important;
+        line-height: 0.95 !important;
+    }
+    
+    .hero-tagline {
+        font-size: 0.85rem !important;
+        margin-top: 0.75rem !important;
+    }
+    
+    /* Search Bar */
+    #searchInput {
+        padding: 0.75rem 1rem !important;
+        font-size: 0.9rem !important;
+    }
+    
+    #searchBtn {
+        padding: 0.75rem 1.25rem !important;
+    }
+    
+    #searchBtn svg {
+        width: 18px !important;
+        height: 18px !important;
+    }
+    
+    /* Filter Bar */
+    .filter-bar {
+        padding: 0.75rem 0 !important;
+    }
+    
+    .container-fluid {
+        padding-left: 0.75rem !important;
+        padding-right: 0.75rem !important;
+    }
+    
+    /* Category Filters */
+    .filter-scroll-container {
+        padding-bottom: 0.75rem;
+        margin-bottom: -0.75rem;
+    }
+    
+    .filter-scroll-wrapper {
+        gap: 0.35rem !important;
+    }
+    
+    .filter-btn {
+        font-size: 0.6rem !important;
+        padding: 0.3rem 0.6rem !important;
+    }
+    
+    /* Sort Section */
+    .d-flex.align-items-center.gap-2 .text-light {
+        font-size: 0.8rem;
+    }
+    
+    #sortSelect {
+        font-size: 0.85rem !important;
+        padding: 0.5rem 0.75rem !important;
+    }
+    
+    #clearFiltersBtn {
+        font-size: 0.8rem !important;
+        padding: 0.5rem 1rem !important;
+    }
+    
+    /* Results Info */
+    #resultsInfo {
+        font-size: 0.75rem !important;
+    }
+    
+    /* Products Grid */
+    #productsGrid {
+        gap: 1rem !important;
+    }
+    
+    /* Loading Spinner */
+    #loadingSpinner {
+        padding: 1.5rem 0 !important;
+    }
+    
+    #loadingSpinner .spinner-border {
+        width: 2rem !important;
+        height: 2rem !important;
+    }
+    
+    #loadingSpinner p {
+        font-size: 0.85rem !important;
+        letter-spacing: 0.5px !important;
+    }
+    
+    /* No Results */
+    #noResults {
+        padding: 1.5rem 0 !important;
+    }
+    
+    #noResults svg {
+        width: 50px !important;
+        height: 50px !important;
+        margin-bottom: 1rem !important;
+    }
+    
+    #noResults h3 {
+        font-size: 1.5rem !important;
+        letter-spacing: 1px !important;
+    }
+    
+    #noResults p {
+        font-size: 0.9rem !important;
+        margin-bottom: 1rem !important;
+    }
+    
+    #noResults .btn {
+        padding: 0.65rem 1.25rem !important;
+        font-size: 0.85rem !important;
+    }
+    
+    /* Pagination */
+    .pagination {
+        gap: 0.25rem !important;
+    }
+    
+    .pagination .page-link {
+        padding: 0.4rem 0.6rem !important;
+        font-size: 0.8rem !important;
+    }
+}
+
