@@ -122,6 +122,7 @@
     min-width: 250px !important;
     max-height: none !important;
     overflow: visible !important;
+    text-align: left !important;
 }
 
 @keyframes dropdownFadeIn {
@@ -144,6 +145,8 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    text-align: left !important;
+    justify-content: flex-start !important;
 }
 
 .dropdown-item:hover,
@@ -166,6 +169,7 @@
     padding: 0.75rem 1rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     margin-bottom: 0.5rem;
+    text-align: left !important;
 }
 
 .dropdown-header .fw-semibold,
@@ -273,6 +277,176 @@
 /* Make sure buttons in dropdown are styled properly */
 .dropdown-menu button.dropdown-item {
     width: 100%;
-    text-align: left;
+    text-align: left !important;
+    justify-content: flex-start !important;
     cursor: pointer;
+}
+
+/* Ensure all dropdown content is left-aligned */
+.dropdown-menu * {
+    text-align: left !important;
+}
+
+.dropdown-menu .dropdown-header *,
+.dropdown-menu .dropdown-item *,
+.dropdown-menu .dropdown-item span,
+.dropdown-menu .dropdown-item svg {
+    text-align: left !important;
+}
+
+/* Responsive Navbar Styles */
+@media (max-width: 992px) {
+    .navbar-brand {
+        font-size: 1.3rem;
+    }
+    
+    .nav-link {
+        font-size: 0.85rem;
+        margin: 0 0.5rem;
+    }
+    
+    .btn-primary-custom {
+        font-size: 0.8rem;
+        padding: 0.6rem 1.5rem;
+    }
+    
+    #authSection .d-flex {
+        gap: 0.5rem;
+    }
+    
+    .dropdown-menu {
+        min-width: 220px !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .navbar-custom {
+        padding: 0.5rem 0;
+        min-height: 60px;
+    }
+    
+    .navbar-brand {
+        font-size: 1.2rem;
+    }
+    
+    .navbar-nav {
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .nav-link {
+        padding: 0.75rem 0;
+        margin: 0;
+        font-size: 0.9rem;
+    }
+    
+    .navbar-nav .nav-item {
+        margin-bottom: 0.5rem;
+    }
+    
+    /* Right side controls - move to right on mobile */
+    .navbar-collapse .d-flex.align-items-center.gap-3 {
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        justify-content: flex-end;
+        align-items: center;
+    }
+    
+    #authSection {
+        margin-top: 0;
+        padding-top: 0;
+        border-top: none;
+    }
+    
+    #authSection .d-flex {
+        flex-direction: row;
+        align-items: center;
+        gap: 0.75rem;
+        justify-content: flex-end;
+    }
+    
+    .btn-primary-custom {
+        width: auto;
+        text-align: center;
+        justify-content: center;
+    }
+    
+    .dropdown-menu {
+        min-width: 100% !important;
+        margin-top: 0.5rem !important;
+        text-align: left !important;
+    }
+    
+    .dropdown-menu .dropdown-item {
+        text-align: left !important;
+        justify-content: flex-start !important;
+    }
+    
+    .dropdown-menu .dropdown-header {
+        text-align: left !important;
+    }
+    
+    .dropdown-toggle {
+        width: auto;
+        justify-content: space-between;
+    }
+    
+    .btn-link {
+        padding: 0.4rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .navbar-custom {
+        padding: 0.4rem 0;
+        min-height: 56px;
+    }
+    
+    .navbar-brand {
+        font-size: 1.1rem;
+    }
+    
+    .nav-link {
+        font-size: 0.85rem;
+    }
+    
+    /* Ensure right side controls stay on the right */
+    .navbar-collapse .d-flex.align-items-center.gap-3 {
+        justify-content: flex-end;
+        gap: 0.5rem;
+    }
+    
+    #authSection .d-flex {
+        gap: 0.5rem;
+    }
+    
+    .btn-primary-custom {
+        font-size: 0.75rem;
+        padding: 0.5rem 1.2rem;
+        width: auto;
+    }
+    
+    .btn-link {
+        padding: 0.35rem;
+    }
+    
+    .dropdown-menu {
+        font-size: 0.9rem;
+        text-align: left !important;
+    }
+    
+    .dropdown-item {
+        padding: 0.5rem 0.75rem !important;
+        font-size: 0.85rem;
+        text-align: left !important;
+        justify-content: flex-start !important;
+    }
+    
+    .dropdown-header {
+        padding: 0.5rem 0.75rem !important;
+        font-size: 0.85rem;
+        text-align: left !important;
+    }
 }
