@@ -99,7 +99,409 @@
         #searchInput::placeholder {
             color: white;
             opacity: 1;
-          }
+        }
+        
+        /* Filter Scroll Container */
+        .filter-scroll-container {
+            overflow-x: auto;
+            overflow-y: hidden;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent) rgba(255,255,255,0.1);
+            padding-bottom: 0.5rem;
+            margin-bottom: -0.5rem;
+        }
+        
+        .filter-scroll-container::-webkit-scrollbar {
+            height: 6px;
+        }
+        
+        .filter-scroll-container::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.05);
+            border-radius: 3px;
+        }
+        
+        .filter-scroll-container::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 3px;
+        }
+        
+        .filter-scroll-container::-webkit-scrollbar-thumb:hover {
+            background: #ffc1d9;
+        }
+        
+        .filter-scroll-wrapper {
+            min-width: max-content;
+            padding-right: 1rem;
+        }
+        
+        .filter-btn {
+            white-space: nowrap;
+            flex-shrink: 0;
+            min-width: auto;
+        }
+        
+        /* Responsive Styles for All Products Page */
+        @media (max-width: 992px) {
+            /* Hero Section */
+            .hero-section {
+                padding: 5rem 0 3rem !important;
+                min-height: 50vh !important;
+            }
+            
+            .mega-text {
+                font-size: clamp(2.5rem, 8vw, 6rem) !important;
+            }
+            
+            .hero-tagline {
+                font-size: 1rem !important;
+            }
+            
+            /* Search Bar */
+            .input-group {
+                max-width: 100% !important;
+            }
+            
+            #searchInput {
+                padding: 0.875rem 1.25rem !important;
+                font-size: 0.95rem !important;
+            }
+            
+            #searchBtn {
+                padding: 0.875rem 1rem !important;
+            }
+            
+            /* Filter Bar */
+            .filter-bar {
+                padding: 1rem 0 !important;
+            }
+            
+            /* Category Filters */
+            .filter-scroll-container {
+                padding-bottom: 0.75rem;
+                margin-bottom: -0.75rem;
+            }
+            
+            .filter-btn {
+                font-size: 0.7rem !important;
+                padding: 0.35rem 0.7rem !important;
+            }
+            
+            .filter-scroll-wrapper {
+                gap: 0.5rem !important;
+            }
+            
+            /* Sort Section */
+            .col-lg-4 {
+                margin-top: 1rem;
+            }
+            
+            .d-flex.justify-content-lg-end {
+                justify-content: flex-start !important;
+            }
+            
+            #sortSelect {
+                min-width: 120px !important;
+                width: 100% !important;
+            }
+            
+            /* Products Grid */
+            #productsGrid {
+                padding: 0 0.5rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            /* Hero Section */
+            .hero-section {
+                padding: 4rem 0 2rem !important;
+                min-height: 40vh !important;
+            }
+            
+            .mega-text {
+                font-size: clamp(2rem, 10vw, 5rem) !important;
+                margin-bottom: 0.5rem !important;
+            }
+            
+            .hero-tagline {
+                font-size: 0.9rem !important;
+                margin-top: 1rem !important;
+            }
+            
+            .reveal {
+                margin-bottom: 2rem !important;
+            }
+            
+            /* Search Bar */
+            .input-group {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+            
+            #searchInput {
+                border-radius: 12px !important;
+                padding: 0.875rem 1.25rem !important;
+                width: 100% !important;
+            }
+            
+            #searchBtn {
+                border-radius: 12px !important;
+                width: 100% !important;
+                padding: 0.875rem 1.5rem !important;
+            }
+            
+            /* Filter Bar */
+            .filter-bar {
+                padding: 0.875rem 0 !important;
+            }
+            
+            .container-fluid {
+                padding-left: 1rem !important;
+                padding-right: 1rem !important;
+            }
+            
+            /* Category Filters */
+            .col-lg-8 {
+                margin-bottom: 0.75rem !important;
+            }
+            
+            .filter-scroll-container {
+                padding-bottom: 0.75rem;
+                margin-bottom: -0.75rem;
+            }
+            
+            .filter-scroll-wrapper {
+                gap: 0.4rem !important;
+            }
+            
+            .filter-btn {
+                font-size: 0.65rem !important;
+                padding: 0.3rem 0.65rem !important;
+            }
+            
+            /* Sort Section */
+            .col-lg-4 {
+                width: 100%;
+                margin-top: 0;
+            }
+            
+            .d-flex.align-items-center.justify-content-lg-end {
+                flex-direction: column;
+                align-items: stretch !important;
+                gap: 1rem !important;
+            }
+            
+            .d-flex.align-items-center.gap-2 {
+                flex-direction: column;
+                align-items: stretch !important;
+                gap: 0.5rem !important;
+            }
+            
+            .d-flex.align-items-center.gap-2 .text-light {
+                font-size: 0.85rem;
+            }
+            
+            #sortSelect {
+                width: 100% !important;
+                min-width: 100% !important;
+            }
+            
+            #clearFiltersBtn {
+                width: 100%;
+            }
+            
+            /* Results Info */
+            #resultsInfo {
+                font-size: 0.8rem !important;
+            }
+            
+            /* Products Grid */
+            #productsGrid {
+                padding: 0;
+            }
+            
+            /* Loading Spinner */
+            #loadingSpinner {
+                padding: 2rem 0 !important;
+            }
+            
+            #loadingSpinner .spinner-border {
+                width: 2.5rem !important;
+                height: 2.5rem !important;
+            }
+            
+            #loadingSpinner p {
+                font-size: 0.95rem !important;
+            }
+            
+            /* No Results */
+            #noResults {
+                padding: 2rem 0 !important;
+            }
+            
+            #noResults svg {
+                width: 60px !important;
+                height: 60px !important;
+            }
+            
+            #noResults h3 {
+                font-size: 1.75rem !important;
+            }
+            
+            #noResults p {
+                font-size: 0.95rem !important;
+            }
+            
+            #noResults .btn {
+                width: 100%;
+                padding: 0.75rem 1.5rem !important;
+            }
+            
+            /* Pagination */
+            .pagination {
+                flex-wrap: wrap;
+                gap: 0.5rem !important;
+            }
+            
+            .pagination .page-link {
+                padding: 0.5rem 0.75rem !important;
+                font-size: 0.85rem !important;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            /* Hero Section */
+            .hero-section {
+                padding: 3rem 0 1.5rem !important;
+                min-height: 35vh !important;
+            }
+            
+            .mega-text {
+                font-size: clamp(1.75rem, 12vw, 4rem) !important;
+                line-height: 0.95 !important;
+            }
+            
+            .hero-tagline {
+                font-size: 0.85rem !important;
+                margin-top: 0.75rem !important;
+            }
+            
+            /* Search Bar */
+            #searchInput {
+                padding: 0.75rem 1rem !important;
+                font-size: 0.9rem !important;
+            }
+            
+            #searchBtn {
+                padding: 0.75rem 1.25rem !important;
+            }
+            
+            #searchBtn svg {
+                width: 18px !important;
+                height: 18px !important;
+            }
+            
+            /* Filter Bar */
+            .filter-bar {
+                padding: 0.75rem 0 !important;
+            }
+            
+            .container-fluid {
+                padding-left: 0.75rem !important;
+                padding-right: 0.75rem !important;
+            }
+            
+            /* Category Filters */
+            .filter-scroll-container {
+                padding-bottom: 0.75rem;
+                margin-bottom: -0.75rem;
+            }
+            
+            .filter-scroll-wrapper {
+                gap: 0.35rem !important;
+            }
+            
+            .filter-btn {
+                font-size: 0.6rem !important;
+                padding: 0.3rem 0.6rem !important;
+            }
+            
+            /* Sort Section */
+            .d-flex.align-items-center.gap-2 .text-light {
+                font-size: 0.8rem;
+            }
+            
+            #sortSelect {
+                font-size: 0.85rem !important;
+                padding: 0.5rem 0.75rem !important;
+            }
+            
+            #clearFiltersBtn {
+                font-size: 0.8rem !important;
+                padding: 0.5rem 1rem !important;
+            }
+            
+            /* Results Info */
+            #resultsInfo {
+                font-size: 0.75rem !important;
+            }
+            
+            /* Products Grid */
+            #productsGrid {
+                gap: 1rem !important;
+            }
+            
+            /* Loading Spinner */
+            #loadingSpinner {
+                padding: 1.5rem 0 !important;
+            }
+            
+            #loadingSpinner .spinner-border {
+                width: 2rem !important;
+                height: 2rem !important;
+            }
+            
+            #loadingSpinner p {
+                font-size: 0.85rem !important;
+                letter-spacing: 0.5px !important;
+            }
+            
+            /* No Results */
+            #noResults {
+                padding: 1.5rem 0 !important;
+            }
+            
+            #noResults svg {
+                width: 50px !important;
+                height: 50px !important;
+                margin-bottom: 1rem !important;
+            }
+            
+            #noResults h3 {
+                font-size: 1.5rem !important;
+                letter-spacing: 1px !important;
+            }
+            
+            #noResults p {
+                font-size: 0.9rem !important;
+                margin-bottom: 1rem !important;
+            }
+            
+            #noResults .btn {
+                padding: 0.65rem 1.25rem !important;
+                font-size: 0.85rem !important;
+            }
+            
+            /* Pagination */
+            .pagination {
+                gap: 0.25rem !important;
+            }
+            
+            .pagination .page-link {
+                padding: 0.4rem 0.6rem !important;
+                font-size: 0.8rem !important;
+            }
+        }
     </style>
     
 </head>
@@ -165,29 +567,33 @@
     </section>
 
     <!-- Filter Bar -->
-    <section class="py-4" style="background: rgba(0,0,0,0.3); border-top: 1px solid rgba(255,255,255,0.05); border-bottom: 1px solid rgba(255,255,255,0.05);">
+    <section class="py-2 py-md-3 filter-bar" style="background: rgba(0,0,0,0.3); border-top: 1px solid rgba(255,255,255,0.05); border-bottom: 1px solid rgba(255,255,255,0.05);">
         <div class="container-fluid px-3 px-lg-5">
             <div class="row align-items-center">
                 <!-- Category Filters -->
-                <div class="col-lg-8 mb-3 mb-lg-0">
-                    <div class="d-flex flex-wrap gap-2 align-items-center">
-                        <!-- Category filter buttons will be generated by JavaScript -->
+                <div class="col-lg-8 mb-2 mb-lg-0">
+                    <div class="filter-scroll-container">
+                        <div class="d-flex gap-1 align-items-center filter-scroll-wrapper">
+                            <!-- Category filter buttons will be generated by JavaScript -->
+                        </div>
                     </div>
                 </div>
                 
                 <!-- Sort & Clear -->
                 <div class="col-lg-4">
-                    <div class="d-flex align-items-center justify-content-lg-end gap-3">
+                    <div class="d-flex align-items-center justify-content-lg-end gap-2 flex-wrap">
                         <div class="d-flex align-items-center gap-2">
-                            <span class="text-light small">Sắp xếp:</span>
+                            <span class="text-light small" style="font-size: 0.8rem; white-space: nowrap;">Sắp xếp:</span>
                             <select class="form-select form-select-sm" 
                                     id="sortSelect" 
                                     style="
                                         width: auto; 
-                                        min-width: 150px; 
+                                        min-width: 140px; 
                                         background: rgba(255,255,255,0.08); 
                                         border: 2px solid rgba(255,255,255,0.2); 
                                         color: var(--text-light);
+                                        padding: 0.35rem 0.75rem;
+                                        font-size: 0.85rem;
                                     ">
                                 <option value="newest">Mới nhất</option>
                                 <option value="oldest">Cũ nhất</option>
@@ -200,7 +606,7 @@
                         
                         <button class="btn btn-sm btn-outline-secondary" 
                                 id="clearFiltersBtn" 
-                                style="display: none; border-color: rgba(255,255,255,0.2); color: var(--text-light);">
+                                style="display: none; border-color: rgba(255,255,255,0.2); color: var(--text-light); padding: 0.35rem 0.75rem; font-size: 0.85rem;">
                             <i class="bi bi-x-circle me-1"></i>
                             Xóa bộ lọc
                         </button>
@@ -209,9 +615,9 @@
             </div>
             
             <!-- Results Info -->
-            <div class="row mt-3">
+            <div class="row mt-2">
                 <div class="col-12">
-                    <span class="text-light small" id="resultsInfo" style="opacity: 0.7;">Đang tải...</span>
+                    <span class="text-light small" id="resultsInfo" style="opacity: 0.7; font-size: 0.8rem;">Đang tải...</span>
                 </div>
             </div>
         </div>
