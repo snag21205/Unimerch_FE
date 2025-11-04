@@ -121,12 +121,16 @@
             imageUrl = 'assets/images/products/demo.png';
         }
         
+        // API returns prices in correct VND format, no conversion needed
+        let price = parseFloat(apiProduct.price) || 0;
+        let discountPrice = apiProduct.discount_price ? parseFloat(apiProduct.discount_price) : null;
+        
         return {
             id: apiProduct.id,
             name: apiProduct.name || apiProduct.title || 'Unknown Product',
             description: apiProduct.description || 'No description available',
-            price: parseFloat(apiProduct.price) || 0,
-            discount_price: apiProduct.discount_price ? parseFloat(apiProduct.discount_price) : null,
+            price: price,
+            discount_price: discountPrice,
             quantity: apiProduct.quantity || apiProduct.stock || 0,
             image_url: imageUrl,
             category_id: apiProduct.category_id,
@@ -432,6 +436,19 @@
     }
     
     // ===== HELPER FUNCTIONS =====
+    function formatPrice(price) {
+        // Support for both number and string
+        let n = typeof price === 'number' ? price : parseFloat(price);
+        
+        // Format price as VND currency (API already returns correct VND amount)
+        return new Intl.NumberFormat('vi-VN', {
+            style: 'currency',
+            currency: 'VND',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0
+        }).format(n);
+    }
+    
     function generateStars(rating) {
         let stars = '';
         for (let i = 1; i <= 5; i++) {
@@ -797,6 +814,7 @@ function createProductCard(product) {
     window.transformProductData = transformProductData; // Export transform function
     window.loadProductsFromAPI = loadProductsFromAPI; // Export load function
     window.createProductCard = createProductCard; // Export card creation function
+    window.formatPrice = formatPrice; // Export formatPrice function
     
     // ===== INITIALIZATION =====
     function initialize() {

@@ -1,20 +1,35 @@
 /* Orders Page Styles - Apple Minimalist Design */
 
-/* Color Variables */
+/* Color Variables - Dark Theme */
 :root {
-    --apple-blue: #007AFF;
-    --apple-blue-hover: #0056CC;
-    --apple-blue-light: rgba(0, 122, 255, 0.1);
-    --text-primary: #1D1D1F;
-    --text-secondary: #86868B;
-    --text-muted: #f2efef;
-    --border-light: #D2D2D7;
-    --bg-white: #fff;
-    --bg-light: #F2F2F7;
-    --shadow-light: 0 2px 8px rgba(0, 0, 0, 0.08);
-    --shadow-hover: 0 4px 16px rgba(0, 0, 0, 0.12);
+    --apple-blue: #18b0b4;
+    --apple-blue-hover: #16c9cd;
+    --apple-blue-light: rgba(24, 176, 180, 0.1);
+    --accent: #18b0b4;
+    --bg-dark: #0d0f12;
+    --card-dark: #16181d;
+    --text-primary: #f1f3f5;
+    --text-secondary: #bfc4cc;
+    --text-muted: #86868B;
+    --border-light: rgba(255, 255, 255, 0.08);
+    --border-dark: rgba(255, 255, 255, 0.05);
+    --bg-white: var(--card-dark);
+    --bg-light: rgba(255, 255, 255, 0.03);
+    --shadow-light: 0 2px 8px rgba(0, 0, 0, 0.3);
+    --shadow-hover: 0 4px 16px rgba(0, 0, 0, 0.5);
     --border-radius: 12px;
     --border-radius-sm: 8px;
+    
+    --warning-color: #f59e0b;
+    --success-color: #10b981;
+    --danger-color: #ef4444;
+    --info-color: #3b82f6;
+}
+
+/* Global Body Styles */
+body {
+    background: var(--bg-dark);
+    color: var(--text-primary);
 }
 
 /* Order Tabs Container */
@@ -25,6 +40,7 @@
     padding: 0;
     overflow: hidden;
     margin-bottom: 24px;
+    border: 1px solid var(--border-light);
 }
 
 .order-tabs {
@@ -74,7 +90,7 @@
 .order-count {
     display: inline-block;
     background: var(--apple-blue);
-    color: white;
+    color: var(--bg-dark);
     font-size: 11px;
     font-weight: 600;
     padding: 2px 6px;
@@ -85,7 +101,8 @@
 }
 
 .order-tab:not(.active) .order-count {
-    background: var(--text-muted);
+    background: rgba(255, 255, 255, 0.2);
+    color: var(--text-secondary);
 }
 
 /* Order Cards */
@@ -111,7 +128,7 @@
     align-items: center;
     padding: 16px 20px;
     border-bottom: 1px solid var(--border-light);
-    background: var(--bg-light);
+    background: rgba(255, 255, 255, 0.02);
 }
 
 .order-info {
@@ -136,16 +153,34 @@
     border-radius: 20px;
     font-size: 12px;
     font-weight: 600;
-    text-transform: uppercase;
+    text-transform: lowercase;
     letter-spacing: 0.5px;
 }
 
-.status-pending { background: #ffffff; color: #000000; }
-.status-shipping { background: #ffffff; color: #000000; }
-.status-ready { background: #ffffff; color: #000000; }
-.status-completed { background: #ffffff; color: #000000; }
-.status-cancelled { background: #ffffff; color: #000000; }
-.status-refund { background: #ffffff; color: #000000; }
+.status-pending { 
+    background: var(--warning-color); 
+    color: var(--bg-dark);
+}
+.status-shipping { 
+    background: var(--info-color); 
+    color: white;
+}
+.status-ready { 
+    background: var(--apple-blue); 
+    color: var(--bg-dark);
+}
+.status-completed { 
+    background: var(--success-color); 
+    color: white;
+}
+.status-cancelled { 
+    background: var(--danger-color); 
+    color: white;
+}
+.status-refund { 
+    background: var(--text-muted); 
+    color: white;
+}
 
 /* Order Items */
 .order-items {
@@ -158,7 +193,7 @@
     gap: 16px;
     align-items: center;
     padding: 12px 0;
-    border-bottom: 1px solid #f5f5f5;
+    border-bottom: 1px solid var(--border-dark);
 }
 
 .order-item:last-child {
@@ -218,7 +253,7 @@
 .order-footer {
     padding: 20px;
     border-top: 1px solid var(--border-light);
-    background: #fafafa;
+    background: var(--bg-light);
 }
 
 .order-summary {
@@ -287,22 +322,26 @@
 .order-actions .btn-primary {
     background: var(--apple-blue);
     border-color: var(--apple-blue);
+    color: var(--bg-dark);
 }
 
 .order-actions .btn-primary:hover {
     background: var(--apple-blue-hover);
     border-color: var(--apple-blue-hover);
     transform: translateY(-1px);
+    color: var(--bg-dark);
 }
 
 .order-actions .btn-outline-primary {
     color: var(--apple-blue);
     border-color: var(--apple-blue);
+    background: transparent;
 }
 
 .order-actions .btn-outline-primary:hover {
-    background: var(--apple-blue);
+    background: rgba(24, 176, 180, 0.1);
     border-color: var(--apple-blue);
+    color: var(--apple-blue);
 }
 
 .order-detail-link {
@@ -324,23 +363,31 @@
 
 #emptyState svg {
     margin-bottom: 16px;
+    opacity: 0.5;
 }
 
 #emptyState h5 {
-    color: var(--text-secondary);
+    color: var(--text-primary);
     margin-bottom: 8px;
 }
 
 #emptyState p {
-    color: var(--text-muted);
+    color: var(--text-secondary);
     margin-bottom: 24px;
 }
 
 #emptyState .btn {
     background: var(--apple-blue);
     border-color: var(--apple-blue);
+    color: var(--bg-dark);
     padding: 12px 32px;
     font-weight: 500;
+}
+
+#emptyState .btn:hover {
+    background: var(--apple-blue-hover);
+    border-color: var(--apple-blue-hover);
+    color: var(--bg-dark);
 }
 
 /* Responsive Design */
@@ -439,19 +486,51 @@
     }
 }
 
+/* General Badge Styles */
+.badge {
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+.badge-warning {
+    background: var(--warning-color);
+    color: var(--bg-dark);
+}
+
+.badge-success {
+    background: var(--success-color);
+    color: white;
+}
+
+.badge-danger {
+    background: var(--danger-color);
+    color: white;
+}
+
+.badge-info {
+    background: var(--info-color);
+    color: white;
+}
+
+.badge-primary {
+    background: var(--apple-blue);
+    color: var(--bg-dark);
+}
+
 /* Loading Animation */
 .loading {
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 40px;
+    color: var(--text-primary);
 }
 
 .loading::after {
     content: '';
     width: 32px;
     height: 32px;
-    border: 3px solid var(--border-light);
+    border: 3px solid rgba(255, 255, 255, 0.1);
     border-top: 3px solid var(--apple-blue);
     border-radius: 50%;
     animation: spin 1s linear infinite;
@@ -462,6 +541,50 @@
     100% { transform: rotate(360deg); }
 }
 
+/* General Button Styles */
+.btn {
+    font-weight: 500;
+    border-radius: var(--border-radius-sm);
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background: var(--apple-blue);
+    border-color: var(--apple-blue);
+    color: var(--bg-dark);
+}
+
+.btn-primary:hover {
+    background: var(--apple-blue-hover);
+    border-color: var(--apple-blue-hover);
+    color: var(--bg-dark);
+    transform: translateY(-1px);
+}
+
+.btn-outline-primary {
+    background: transparent;
+    border-color: var(--apple-blue);
+    color: var(--apple-blue);
+}
+
+.btn-outline-primary:hover {
+    background: rgba(24, 176, 180, 0.1);
+    border-color: var(--apple-blue);
+    color: var(--apple-blue);
+}
+
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: var(--text-primary);
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+    color: var(--text-primary);
+}
+
 /* Smooth Transitions */
 * {
     transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
@@ -470,7 +593,7 @@
 /* Custom Scrollbar for Order Tabs */
 .order-tabs {
     scrollbar-width: thin;
-    scrollbar-color: var(--border-light) transparent;
+    scrollbar-color: rgba(255, 255, 255, 0.1) transparent;
 }
 
 .order-tabs::-webkit-scrollbar {
@@ -482,12 +605,30 @@
 }
 
 .order-tabs::-webkit-scrollbar-thumb {
-    background: var(--border-light);
+    background: rgba(255, 255, 255, 0.1);
     border-radius: 2px;
 }
 
 .order-tabs::-webkit-scrollbar-thumb:hover {
-    background: var(--text-muted);
+    background: rgba(24, 176, 180, 0.5);
+}
+
+/* Global Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-dark);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(24, 176, 180, 0.5);
 }
 
 /* Order Detail Page Specific Styles */
@@ -502,13 +643,14 @@
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    background: var(--border-light);
+    background: rgba(255, 255, 255, 0.1);
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
     transition: all 0.3s ease;
     margin: 0 auto;
+    color: var(--text-secondary);
 }
 
 .progress-step.completed {
@@ -519,19 +661,19 @@
 .progress-step.active {
     background: var(--apple-blue);
     color: white;
-    box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.2);
+    box-shadow: 0 0 0 4px rgba(24, 176, 180, 0.2);
     animation: pulse 2s infinite;
 }
 
 @keyframes pulse {
     0% {
-        box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.2);
+        box-shadow: 0 0 0 4px rgba(24, 176, 180, 0.2);
     }
     50% {
-        box-shadow: 0 0 0 8px rgba(0, 122, 255, 0.1);
+        box-shadow: 0 0 0 8px rgba(24, 176, 180, 0.1);
     }
     100% {
-        box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.2);
+        box-shadow: 0 0 0 4px rgba(24, 176, 180, 0.2);
     }
 }
 
@@ -541,7 +683,7 @@
 
 .progress-line {
     height: 2px;
-    background: var(--border-light);
+    background: rgba(255, 255, 255, 0.1);
     flex: 1;
     margin: 0 15px;
     position: relative;
@@ -555,7 +697,8 @@
 
 /* Order Detail Cards */
 .order-detail-content .card {
-    border: none;
+    background: var(--card-dark);
+    border: 1px solid var(--border-light);
     border-radius: var(--border-radius);
     box-shadow: var(--shadow-light);
     transition: all 0.3s ease;
@@ -563,6 +706,7 @@
 
 .order-detail-content .card:hover {
     box-shadow: var(--shadow-hover);
+    border-color: rgba(24, 176, 180, 0.3);
 }
 
 .order-detail-content .card-title {
@@ -570,6 +714,11 @@
     font-weight: 600;
     font-size: 16px;
     margin-bottom: 16px;
+}
+
+.order-detail-content .card-body {
+    background: var(--card-dark);
+    color: var(--text-primary);
 }
 
 /* Order Item Styles for Detail Page */
@@ -588,11 +737,56 @@
     letter-spacing: 0.5px;
 }
 
+.order-detail-content .badge-warning {
+    background: var(--warning-color);
+    color: var(--bg-dark);
+}
+
+.order-detail-content .badge-success {
+    background: var(--success-color);
+    color: white;
+}
+
+.order-detail-content .badge-danger {
+    background: var(--danger-color);
+    color: white;
+}
+
+.order-detail-content .badge-info {
+    background: var(--info-color);
+    color: white;
+}
+
 /* Action Buttons */
 .order-detail-content .btn {
     border-radius: var(--border-radius-sm);
     font-weight: 500;
     transition: all 0.2s ease;
+}
+
+.order-detail-content .btn-primary {
+    background: var(--apple-blue);
+    border-color: var(--apple-blue);
+    color: var(--bg-dark);
+}
+
+.order-detail-content .btn-primary:hover {
+    background: var(--apple-blue-hover);
+    border-color: var(--apple-blue-hover);
+    color: var(--bg-dark);
+    transform: translateY(-1px);
+}
+
+.order-detail-content .btn-outline-primary {
+    background: transparent;
+    border-color: var(--apple-blue);
+    color: var(--apple-blue);
+}
+
+.order-detail-content .btn-outline-primary:hover {
+    background: rgba(24, 176, 180, 0.1);
+    border-color: var(--apple-blue);
+    color: var(--apple-blue);
 }
 
 .order-detail-content .btn:hover {
@@ -606,11 +800,22 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    color: var(--text-primary);
 }
 
 #errorState svg {
     opacity: 0.5;
     margin-bottom: 16px;
+}
+
+#errorState h5,
+#loadingState h5 {
+    color: var(--text-primary);
+}
+
+#errorState p,
+#loadingState p {
+    color: var(--text-secondary);
 }
 
 /* Create Order Page Specific Styles */
@@ -641,7 +846,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--bg-light);
+    background: rgba(255, 255, 255, 0.05);
     border-radius: var(--border-radius-sm);
 }
 
@@ -662,11 +867,19 @@
     padding: 12px 16px;
     font-size: 14px;
     transition: all 0.2s ease;
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--text-primary);
 }
 
 .create-order-content .form-control:focus {
     border-color: var(--apple-blue);
-    box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+    box-shadow: 0 0 0 3px rgba(24, 176, 180, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+    outline: none;
+}
+
+.create-order-content .form-control::placeholder {
+    color: var(--text-muted);
 }
 
 .create-order-content .form-label {
@@ -690,12 +903,14 @@
     font-weight: 600;
     letter-spacing: 0.5px;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 14px rgba(0, 122, 255, 0.3);
+    box-shadow: 0 4px 14px rgba(24, 176, 180, 0.3);
+    color: var(--bg-dark);
 }
 
 #createOrderBtn:hover:not(:disabled) {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 122, 255, 0.4);
+    box-shadow: 0 6px 20px rgba(24, 176, 180, 0.4);
+    color: var(--bg-dark);
 }
 
 #createOrderBtn:disabled {
