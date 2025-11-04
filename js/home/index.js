@@ -366,7 +366,7 @@ function renderFeaturedProducts(products) {
     if (!products || products.length === 0) {
         container.innerHTML = `
             <div class="col-12 text-center">
-                <p class="text-muted">Hiện tại chưa có sản phẩm nổi bật nào.</p>
+                <p class="text-light">Hiện tại chưa có sản phẩm nổi bật nào.</p>
             </div>
         `;
         return;
@@ -401,7 +401,7 @@ function renderFeaturedProducts(products) {
                         <h6 class="card-title fw-semibold mb-2" style="color: #111; font-size: 1.1rem; line-height: 1.3;">
                             ${product.name}
                         </h6>
-                        <p class="card-text text-muted small mb-3" style="font-size: 0.85rem; line-height: 1.4;">
+                        <p class="card-text text-light small mb-3" style="font-size: 0.85rem; line-height: 1.4;">
                             ${product.description ? product.description.substring(0, 80) + '...' : 'Sản phẩm chất lượng cao từ UEH'}
                         </p>
                         
@@ -410,7 +410,7 @@ function renderFeaturedProducts(products) {
                             <div class="price-info">
                                 <span class="h5 fw-bold text-dark mb-0">${formatPrice(product.discount_price || product.price)}</span>
                                 ${product.discount_price && product.discount_price < product.price ? 
-                                    `<small class="text-muted text-decoration-line-through ms-2">${formatPrice(product.price)}</small>` : ''
+                                    `<small class="text-light text-decoration-line-through ms-2">${formatPrice(product.price)}</small>` : ''
                                 }
                             </div>
                             ${product.discount_price && product.discount_price < product.price ? 
