@@ -5,10 +5,29 @@
 
 // Initialize on page load
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('=== Register page initialized ===');
+    
     const registerForm = document.getElementById('registerForm');
-    const usernameInput = document.getElementById('username');
-    const passwordInput = document.getElementById('password');
-    const confirmPasswordInput = document.getElementById('confirmPassword');
+    if (!registerForm) {
+        console.error('❌ Register form not found!');
+        return;
+    }
+    
+    // Find inputs within the register form to avoid conflicts with navbar
+    const usernameInput = registerForm.querySelector('#username');
+    const passwordInput = registerForm.querySelector('#password');
+    const confirmPasswordInput = registerForm.querySelector('#confirmPassword');
+    const submitButton = registerForm.querySelector('button[type="submit"]');
+    
+    console.log('Elements found:', {
+        registerForm: !!registerForm,
+        usernameInput: !!usernameInput,
+        passwordInput: !!passwordInput,
+        confirmPasswordInput: !!confirmPasswordInput,
+        submitButton: !!submitButton
+    });
+    
+    console.log('✅ Register form found, attaching event listeners');
     
     // Add real-time username validation
     if (usernameInput) {
@@ -43,18 +62,68 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Form submission
-    if (registerForm) {
-        registerForm.addEventListener('submit', handleRegisterSubmit);
+    // Form submission - use both submit and click events for reliability
+    console.log('✅ Attaching submit listener to form');
+    registerForm.addEventListener('submit', async function(e) {
+        console.log('📝 Form submit event triggered');
+        e.preventDefault(); // Always prevent default to handle manually
+        e.stopPropagation();
+        
+        registerForm.dataset.submitted = 'true';
+        
+        try {
+            console.log('▶️ Calling handleRegisterSubmit...');
+            await handleRegisterSubmit(e);
+        } catch (error) {
+            console.error('❌ Error in form submit handler:', error);
+            registerForm.dataset.submitted = '';
+            
+            // Use custom alert if available
+            if (window.UiUtils && window.UiUtils.alert) {
+                await UiUtils.alert('Có lỗi xảy ra khi xử lý đăng ký: ' + error.message);
+            } else {
+                alert('Có lỗi xảy ra khi xử lý đăng ký: ' + error.message);
+            }
+        }
+    });
+    
+    // Also listen to button click as backup - directly trigger form submit
+    if (submitButton) {
+        console.log('✅ Attaching click listener to submit button');
+        submitButton.addEventListener('click', function(e) {
+            console.log('🔘 Submit button clicked!');
+            e.preventDefault();
+            e.stopPropagation();
+            
+            // Manually trigger form submit event
+            const form = e.target.closest('form') || registerForm;
+            if (form) {
+                console.log('📤 Triggering form submit from button click');
+                const submitEvent = new Event('submit', { bubbles: true, cancelable: true });
+                form.dispatchEvent(submitEvent);
+            } else {
+                console.error('❌ Could not find form element');
+            }
+        });
+    } else {
+        console.error('❌ Submit button not found!');
     }
+    
+    console.log('✅ Event listeners attached successfully');
+    console.log('=== Initialization complete ===');
 });
 
 /**
  * Validate username requirements in real-time
  */
 function validateUsernameRealTime() {
-    const usernameField = document.getElementById('username');
-    const username = usernameField.value.trim();
+    const registerForm = document.getElementById('registerForm');
+    if (!registerForm) return;
+    
+    const usernameField = registerForm.querySelector('#username');
+    if (!usernameField) return;
+    
+    const username = (usernameField.value || '').trim();
     
     // If empty, clear all validation
     if (!username) {
@@ -88,10 +157,15 @@ function validateUsernameRealTime() {
  * Show username requirements indicators
  */
 function showUsernameRequirements(requirements) {
+    const registerForm = document.getElementById('registerForm');
+    if (!registerForm) return;
+    
+    const usernameField = registerForm.querySelector('#username');
+    if (!usernameField) return;
+    
     let container = document.getElementById('usernameRequirementsContainer');
     
     if (!container) {
-        const usernameField = document.getElementById('username');
         container = document.createElement('div');
         container.id = 'usernameRequirementsContainer';
         container.className = 'mt-2 mb-2';
@@ -127,7 +201,12 @@ function removeUsernameRequirements() {
  * Validate password requirements and update UI in real-time
  */
 function validatePasswordRequirementsRealTime(password) {
-    const passwordField = document.getElementById('password');
+    const registerForm = document.getElementById('registerForm');
+    if (!registerForm) return false;
+    
+    const passwordField = registerForm.querySelector('#password');
+    if (!passwordField) return false;
+    
     const requirementsContainer = document.getElementById('passwordRequirementsContainer');
     
     // If empty, clear validation
@@ -209,9 +288,16 @@ function updatePasswordReq(element, isMet, text) {
  * Validate password match in real-time
  */
 function validatePasswordMatch() {
-    const password = document.getElementById('password').value;
-    const confirmPassword = document.getElementById('confirmPassword').value;
-    const confirmField = document.getElementById('confirmPassword');
+    const registerForm = document.getElementById('registerForm');
+    if (!registerForm) return false;
+    
+    const passwordField = registerForm.querySelector('#password');
+    const confirmField = registerForm.querySelector('#confirmPassword');
+    
+    if (!passwordField || !confirmField) return false;
+    
+    const password = passwordField.value || '';
+    const confirmPassword = confirmField.value || '';
     
     if (!confirmPassword) {
         clearFieldError('confirmPassword');
@@ -242,7 +328,10 @@ function validatePasswordMatch() {
  * Show field error with red highlighting
  */
 function showFieldError(fieldId, message) {
-    const field = document.getElementById(fieldId);
+    const registerForm = document.getElementById('registerForm');
+    if (!registerForm) return;
+    
+    const field = registerForm.querySelector(`#${fieldId}`);
     if (!field) return;
     
     // Add is-invalid class to turn field red
@@ -266,7 +355,10 @@ function showFieldError(fieldId, message) {
  * Clear field error
  */
 function clearFieldError(fieldId) {
-    const field = document.getElementById(fieldId);
+    const registerForm = document.getElementById('registerForm');
+    if (!registerForm) return;
+    
+    const field = registerForm.querySelector(`#${fieldId}`);
     if (!field) return;
     
     field.classList.remove('is-invalid');
@@ -296,14 +388,40 @@ function clearAllErrors() {
  */
 function validateForm() {
     const form = document.getElementById('registerForm');
+    if (!form) {
+        console.error('❌ Register form not found in validateForm');
+        return false;
+    }
+    
     clearAllErrors();
     
-    const fullName = document.getElementById('fullName').value.trim();
-    const username = document.getElementById('username').value.trim();
-    const email = document.getElementById('email').value.trim();
-    const password = document.getElementById('password').value;
-    const confirmPassword = document.getElementById('confirmPassword').value;
-    const agreeTerms = document.getElementById('agreeTerms').checked;
+    const fullNameField = form.querySelector('#fullName');
+    const usernameField = form.querySelector('#username');
+    const emailField = form.querySelector('#email');
+    const passwordField = form.querySelector('#password');
+    const confirmPasswordField = form.querySelector('#confirmPassword');
+    const agreeTermsField = form.querySelector('#agreeTerms');
+    
+    if (!fullNameField || !usernameField || !emailField || !passwordField || !confirmPasswordField || !agreeTermsField) {
+        console.error('❌ Required form fields not found');
+        return false;
+    }
+    
+    const fullName = (fullNameField.value || '').trim();
+    const username = (usernameField.value || '').trim();
+    const email = (emailField.value || '').trim();
+    const password = passwordField.value || '';
+    const confirmPassword = confirmPasswordField.value || '';
+    const agreeTerms = agreeTermsField.checked;
+    
+    console.log('Form validation - values:', {
+        fullName: fullName ? 'filled' : 'empty',
+        username: username ? 'filled' : 'empty',
+        email: email ? 'filled' : 'empty',
+        password: password ? 'filled' : 'empty',
+        confirmPassword: confirmPassword ? 'filled' : 'empty',
+        agreeTerms: agreeTerms
+    });
     
     let isValid = true;
     
@@ -369,15 +487,15 @@ function validateForm() {
     
     // Validate Terms Agreement
     if (!agreeTerms) {
-        const agreeField = document.getElementById('agreeTerms');
-        agreeField.classList.add('is-invalid');
-        const feedback = agreeField.closest('.mb-4')?.querySelector('.invalid-feedback');
+        agreeTermsField.classList.add('is-invalid');
+        const feedback = agreeTermsField.closest('.mb-4')?.querySelector('.invalid-feedback');
         if (feedback) {
             feedback.style.display = 'block';
         }
         isValid = false;
     }
     
+    console.log('Form validation result:', isValid ? '✅ VALID' : '❌ INVALID');
     return isValid;
 }
 
@@ -385,7 +503,24 @@ function validateForm() {
  * Handle register form submission
  */
 async function handleRegisterSubmit(e) {
-    e.preventDefault();
+    console.log('=== handleRegisterSubmit called ===');
+    
+    if (e) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+    
+    const registerForm = document.getElementById('registerForm');
+    if (!registerForm) {
+        console.error('❌ Register form not found in handleRegisterSubmit');
+        return;
+    }
+    
+    // Prevent double submission
+    if (registerForm.dataset.submitting === 'true') {
+        console.log('⚠️ Form already submitting, ignoring...');
+        return;
+    }
     
     // Clear previous messages
     const successMessage = document.getElementById('successMessage');
@@ -394,24 +529,55 @@ async function handleRegisterSubmit(e) {
     if (errorMessage) errorMessage.style.display = 'none';
     
     // Validate form
+    console.log('🔍 Validating form...');
     if (!validateForm()) {
-        console.log('Form validation failed');
+        console.log('❌ Form validation failed');
+        return;
+    }
+    
+    // Get form fields within the form
+    const fullNameField = registerForm.querySelector('#fullName');
+    const usernameField = registerForm.querySelector('#username');
+    const emailField = registerForm.querySelector('#email');
+    const passwordField = registerForm.querySelector('#password');
+    const studentIdField = registerForm.querySelector('#studentId');
+    const phoneField = registerForm.querySelector('#phone');
+    const addressField = registerForm.querySelector('#address');
+    
+    if (!fullNameField || !usernameField || !emailField || !passwordField) {
+        console.error('❌ Required form fields not found');
         return;
     }
     
     // Gather form data
     const formData = {
-        fullName: document.getElementById('fullName').value.trim(),
-        username: document.getElementById('username').value.trim(),
-        email: document.getElementById('email').value.trim(),
-        password: document.getElementById('password').value,
-        studentId: document.getElementById('studentId').value.trim() || null,
-        phone: document.getElementById('phone').value.trim() || null,
-        address: document.getElementById('address').value.trim() || null
+        fullName: (fullNameField.value || '').trim(),
+        username: (usernameField.value || '').trim(),
+        email: (emailField.value || '').trim(),
+        password: passwordField.value || '',
+        studentId: (studentIdField?.value || '').trim() || null,
+        phone: (phoneField?.value || '').trim() || null,
+        address: (addressField?.value || '').trim() || null
     };
     
+    console.log('📦 Form data gathered:', {
+        fullName: formData.fullName ? 'filled' : 'empty',
+        username: formData.username ? 'filled' : 'empty',
+        email: formData.email ? 'filled' : 'empty',
+        password: formData.password ? 'filled' : 'empty',
+        hasStudentId: !!formData.studentId,
+        hasPhone: !!formData.phone,
+        hasAddress: !!formData.address
+    });
+    
     // Disable submit button
-    const submitButton = document.querySelector('button[type="submit"]');
+    const submitButton = registerForm.querySelector('button[type="submit"]');
+    if (!submitButton) {
+        console.error('❌ Submit button not found');
+        return;
+    }
+    
+    registerForm.dataset.submitting = 'true';
     const originalButtonText = submitButton.innerHTML;
     submitButton.disabled = true;
     submitButton.innerHTML = `
@@ -420,8 +586,15 @@ async function handleRegisterSubmit(e) {
     `;
     
     try {
+        // Check if apiService is available
+        if (!window.apiService) {
+            throw new Error('API service không khả dụng. Vui lòng tải lại trang.');
+        }
+        
+        console.log('📤 Calling register API...');
         // Call register API
-        const response = await apiService.register(formData);
+        const response = await window.apiService.register(formData);
+        console.log('✅ Register API response:', response);
         
         if (response.success || response.data) {
             // Show success message
@@ -460,6 +633,7 @@ async function handleRegisterSubmit(e) {
         }
     } finally {
         // Re-enable submit button
+        registerForm.dataset.submitting = '';
         submitButton.disabled = false;
         submitButton.innerHTML = originalButtonText;
     }
