@@ -3,110 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register - Unimerch</title>
+    <title>Đăng ký - Unimerch</title>
     
     <!-- Bootstrap 5.3 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     
-    <!-- Minimal custom styles -->
-    <link rel="stylesheet" href="../../css/styles.css">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../../css/navbar.css">
+    <link rel="stylesheet" href="../../css/home.css">
+    <link rel="stylesheet" href="../../css/auth.css">
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body class="bg-white">
-    <!-- Simple Navigation -->
-    <nav class="navbar navbar-light bg-white border-bottom">
-        <div class="container-fluid px-4">
-            <a class="navbar-brand fw-semibold fs-4" href="../../index.html" style="color: #111;">Unimerch</a>
-            <a href="login.html" class="btn btn-outline-dark btn-sm rounded-pill px-3">Đăng nhập</a>
-        </div>
-    </nav>
+<body>
+    <!-- Navbar Container -->
+    <div id="navbar-container"></div>
 
     <!-- Register Form -->
-    <main class="d-flex align-items-center justify-content-center" style="min-height: 90vh;">
+    <main class="login-container">
         <div class="container">
             <div class="row justify-content-center">
-                <div class="col-md-5 col-lg-4">
-                    <div class="text-center mb-5">
-                        <h1 class="h2 fw-bold mb-2" style="color: #111; letter-spacing: -0.02em;">Tạo tài khoản</h1>
-                        <p class="text-muted">Tham gia cộng đồng Unimerch ngay hôm nay</p>
-                    </div>
-                    
-                    <form id="registerForm" class="needs-validation" novalidate>
+                <div class="col-md-10 col-lg-8">
+                    <div class="login-card register-card">
+                        <div class="text-center mb-4">
+                            <h1 class="login-title">Tạo tài khoản</h1>
+                            <p class="login-subtitle">Tham gia cộng đồng Unimerch ngay hôm nay</p>
+                        </div>
+                        
+                        <form id="registerForm" class="needs-validation" novalidate>
                         <!-- Full Name Field -->
                         <div class="mb-4">
-                            <label for="fullName" class="form-label fw-medium" style="color: #374151;">Họ và tên</label>
-                            <input type="text" class="form-control form-control-lg rounded-3" id="fullName" required 
-                                   style="border: 2px solid #e5e7eb; padding: 0.875rem 1rem; background: #fafafa;" 
+                            <label for="fullName" class="form-label">Họ và tên</label>
+                            <input type="text" class="form-control" id="fullName" required 
                                    placeholder="Nhập họ và tên của bạn" minlength="2" maxlength="50">
-                            <div class="invalid-feedback" style="display: none;"></div>
+                            <div class="invalid-feedback"></div>
                         </div>
 
                         <!-- Username Field -->
                         <div class="mb-4">
-                            <label for="username" class="form-label fw-medium" style="color: #374151;">Tên đăng nhập</label>
-                            <input type="text" class="form-control form-control-lg rounded-3" id="username" required 
-                                   style="border: 2px solid #e5e7eb; padding: 0.875rem 1rem; background: #fafafa;" 
+                            <label for="username" class="form-label">Tên đăng nhập</label>
+                            <input type="text" class="form-control" id="username" required 
                                    placeholder="Chọn tên đăng nhập" minlength="3" maxlength="20">
-                            <div class="invalid-feedback" style="display: none;"></div>
+                            <div class="invalid-feedback"></div>
                             <div class="form-text">Phải có độ dài từ 3-20 ký tự</div>
                         </div>
 
                         <!-- Email Field -->
                         <div class="mb-4">
-                            <label for="email" class="form-label fw-medium" style="color: #374151;">Địa chỉ email</label>
-                            <input type="email" class="form-control form-control-lg rounded-3" id="email" required 
-                                   style="border: 2px solid #e5e7eb; padding: 0.875rem 1rem; background: #fafafa;" 
+                            <label for="email" class="form-label">Địa chỉ email</label>
+                            <input type="email" class="form-control" id="email" required 
                                    placeholder="Nhập địa chỉ email của bạn">
-                            <div class="invalid-feedback" style="display: none;"></div>
+                            <div class="invalid-feedback"></div>
                         </div>
                         
                         <!-- Password Field -->
                         <div class="mb-4">
-                            <label for="password" class="form-label fw-medium" style="color: #374151;">Mật khẩu</label>
+                            <label for="password" class="form-label">Mật khẩu</label>
                             <div class="position-relative">
-                                <input type="password" class="form-control form-control-lg rounded-3" id="password" required 
-                                       style="border: 2px solid #e5e7eb; padding: 0.875rem 1rem; background: #fafafa;" 
-                                       placeholder="Tạo mật khẩu" minlength="8" autocomplete="new-password">
-                                <button type="button" class="btn btn-link position-absolute end-0 top-50 translate-middle-y me-2" 
-                                        onclick="togglePassword('password')" style="border: none; background: none; z-index: 10;">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                                        <circle cx="12" cy="12" r="3"></circle>
-                                    </svg>
+                                <input type="password" class="form-control" id="password" required 
+                                       placeholder="Tạo mật khẩu" minlength="8" autocomplete="new-password"
+                                       style="padding-right: 3rem;">
+                                <button type="button" class="password-toggle" onclick="togglePassword('password', 'togglePasswordIcon')">
+                                    <i class="bi bi-eye" id="togglePasswordIcon"></i>
                                 </button>
                             </div>
-                            <div class="invalid-feedback" style="display: none;"></div>
+                            <div class="invalid-feedback"></div>
                             <!-- Password Requirements Container -->
                             <div id="passwordRequirementsContainer" class="mt-2 mb-2" style="display: none;">
                                 <small class="d-block" style="font-size: 0.75rem;">
-                                    <span id="password-length-req" class="requirement text-danger fw-medium" style="display: block; padding: 2px 0;">✗ Ít nhất 8 ký tự</span>
-                                    <span id="password-uppercase-req" class="requirement text-danger fw-medium" style="display: block; padding: 2px 0;">✗ Ít nhất 1 chữ cái in hoa (A-Z)</span>
-                                    <span id="password-number-req" class="requirement text-danger fw-medium" style="display: block; padding: 2px 0;">✗ Ít nhất 1 số (0-9)</span>
-                                    <span id="password-special-req" class="requirement text-danger fw-medium" style="display: block; padding: 2px 0;">✗ Ít nhất 1 ký tự đặc biệt (!@#$%^&*)</span>
+                                    <span id="password-length-req" class="requirement text-danger fw-medium">✗ Ít nhất 8 ký tự</span>
+                                    <span id="password-uppercase-req" class="requirement text-danger fw-medium">✗ Ít nhất 1 chữ cái in hoa (A-Z)</span>
+                                    <span id="password-number-req" class="requirement text-danger fw-medium">✗ Ít nhất 1 số (0-9)</span>
+                                    <span id="password-special-req" class="requirement text-danger fw-medium">✗ Ít nhất 1 ký tự đặc biệt (!@#$%^&*)</span>
                                 </small>
                             </div>
                         </div>
                         
                         <!-- Confirm Password Field -->
                         <div class="mb-4">
-                            <label for="confirmPassword" class="form-label fw-medium" style="color: #374151;">Xác nhận mật khẩu</label>
+                            <label for="confirmPassword" class="form-label">Xác nhận mật khẩu</label>
                             <div class="position-relative">
-                                <input type="password" class="form-control form-control-lg rounded-3" id="confirmPassword" required 
-                                       style="border: 2px solid #e5e7eb; padding: 0.875rem 1rem; background: #fafafa;" 
-                                       placeholder="Xác nhận mật khẩu của bạn" autocomplete="new-password">
-                                <button type="button" class="btn btn-link position-absolute end-0 top-50 translate-middle-y me-2" 
-                                        onclick="togglePassword('confirmPassword')" style="border: none; background: none; z-index: 10;">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                                        <circle cx="12" cy="12" r="3"></circle>
-                                    </svg>
+                                <input type="password" class="form-control" id="confirmPassword" required 
+                                       placeholder="Xác nhận mật khẩu của bạn" autocomplete="new-password"
+                                       style="padding-right: 3rem;">
+                                <button type="button" class="password-toggle" onclick="togglePassword('confirmPassword', 'toggleConfirmPasswordIcon')">
+                                    <i class="bi bi-eye" id="toggleConfirmPasswordIcon"></i>
                                 </button>
                             </div>
-                            <div class="invalid-feedback" style="display: none;"></div>
+                            <div class="invalid-feedback"></div>
                         </div>
 
                         <!-- Optional Fields Collapsible Section -->
@@ -114,37 +104,32 @@
                             <div class="d-grid">
                                 <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#optionalFields" 
                                         aria-expanded="false" aria-controls="optionalFields" style="font-size: 0.875rem;">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-1">
-                                        <polyline points="6,9 12,15 18,9"></polyline>
-                                    </svg>
+                                    <i class="bi bi-chevron-down me-1"></i>
                                     Thêm thông tin tùy chọn (MSSV, Điện thoại, Địa chỉ)
                                 </button>
                             </div>
                             <div class="collapse mt-3" id="optionalFields">
-                                <div class="card card-body bg-light border-0">
+                                <div class="card card-body">
                                     <!-- Student ID Field -->
                                     <div class="mb-3">
-                                        <label for="studentId" class="form-label fw-medium" style="color: #374151;">MSSV (Tùy chọn)</label>
-                                        <input type="text" class="form-control rounded-3" id="studentId" 
-                                               style="border: 2px solid #e5e7eb; padding: 0.75rem 1rem;" 
+                                        <label for="studentId" class="form-label">MSSV (Tùy chọn)</label>
+                                        <input type="text" class="form-control" id="studentId" 
                                                placeholder="ví dụ: SV2024001">
                                         <div class="form-text">Nhập mã số sinh viên của trường đại học (nếu có)</div>
                                     </div>
 
                                     <!-- Phone Field -->
                                     <div class="mb-3">
-                                        <label for="phone" class="form-label fw-medium" style="color: #374151;">Số điện thoại (Tùy chọn)</label>
-                                        <input type="tel" class="form-control rounded-3" id="phone" 
-                                               style="border: 2px solid #e5e7eb; padding: 0.75rem 1rem;" 
+                                        <label for="phone" class="form-label">Số điện thoại (Tùy chọn)</label>
+                                        <input type="tel" class="form-control" id="phone" 
                                                placeholder="ví dụ: 0987654321">
                                         <div class="form-text">Nhập số điện thoại để nhận thông báo đơn hàng</div>
                                     </div>
 
                                     <!-- Address Field -->
                                     <div class="mb-0">
-                                        <label for="address" class="form-label fw-medium" style="color: #374151;">Địa chỉ (Tùy chọn)</label>
-                                        <textarea class="form-control rounded-3" id="address" rows="2" 
-                                                  style="border: 2px solid #e5e7eb; padding: 0.75rem 1rem;" 
+                                        <label for="address" class="form-label">Địa chỉ (Tùy chọn)</label>
+                                        <textarea class="form-control" id="address" rows="2" 
                                                   placeholder="Nhập địa chỉ của bạn để giao hàng"></textarea>
                                         <div class="form-text">Địa chỉ đầy đủ để giao sản phẩm</div>
                                     </div>
@@ -156,20 +141,18 @@
                         <div class="mb-4">
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" id="agreeTerms" required>
-                                <label class="form-check-label text-muted" for="agreeTerms">
-                                    Tôi đồng ý với <a href="#" class="text-decoration-none" style="color: #2563eb;">Điều khoản dịch vụ</a> 
-                                    và <a href="#" class="text-decoration-none" style="color: #2563eb;">Chính sách bảo mật</a>
+                                <label class="form-check-label" for="agreeTerms">
+                                    Tôi đồng ý với <a href="#" class="text-link">Điều khoản dịch vụ</a> 
+                                    và <a href="#" class="text-link">Chính sách bảo mật</a>
                                 </label>
-                                <div class="invalid-feedback" style="display: none;">Bạn phải đồng ý với các điều khoản.</div>
+                                <div class="invalid-feedback">Bạn phải đồng ý với các điều khoản.</div>
                             </div>
                         </div>
 
                         <!-- Success Message -->
-                        <div id="successMessage" class="alert alert-success rounded-3 d-none" role="alert" style="display: none;">
+                        <div id="successMessage" class="alert alert-success d-none" role="alert">
                             <div class="d-flex align-items-start">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-3 mt-1 flex-shrink-0">
-                                    <polyline points="20,6 9,17 4,12"></polyline>
-                                </svg>
+                                <i class="bi bi-check-circle-fill me-2 fs-5"></i>
                                 <div class="flex-grow-1">
                                     <h6 class="mb-1 fw-semibold">Đăng ký thành công!</h6>
                                     <p class="mb-0 small">Tài khoản của bạn đã được tạo. Bạn sẽ được chuyển đến trang đăng nhập...</p>
@@ -179,22 +162,16 @@
                         
                         <!-- Register Button -->
                         <div class="d-grid gap-2 mb-4">
-                            <button type="submit" class="btn btn-dark btn-lg rounded-3" style="
-                                font-weight: 600; 
-                                padding: 0.875rem;
-                                background: linear-gradient(135deg, #1f2937 0%, #374151 100%);
-                                border: none;
-                                letter-spacing: -0.01em;
-                            ">
+                            <button type="submit" class="btn btn-login btn-lg">
                                 Tạo tài khoản
                             </button>
                         </div>
                         
                         <!-- Login Link -->
                         <div class="text-center">
-                            <p class="text-muted mb-0">
+                            <p class="mb-0" style="color: var(--text-muted);">
                                 Đã có tài khoản? 
-                                <a href="login.html" class="text-decoration-none fw-medium" style="color: #2563eb;">
+                                <a href="login.html" class="text-link">
                                     Đăng nhập tại đây
                                 </a>
                             </p>
@@ -207,8 +184,38 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Shared Services -->
     <script src="../../js/shared/utils.js"></script>
     <script src="../../js/shared/api.service.js"></script>
+    
+    <!-- Cart Service -->
+    <script src="../../js/features/cart/cart.service.js"></script>
+    <script src="../../js/features/cart/cart.ui.js"></script>
+    
+    <!-- Navbar Component -->
+    <script src="../../components/navbar.js"></script>
+    
+    <!-- Auth Scripts -->
+    <script src="../../js/features/auth/index-auth.js"></script>
     <script src="../../js/features/auth/register.page.js"></script>
+    
+    <script>
+        // Toggle password visibility
+        function togglePassword(fieldId, iconId) {
+            const passwordInput = document.getElementById(fieldId);
+            const toggleIcon = document.getElementById(iconId);
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('bi-eye');
+                toggleIcon.classList.add('bi-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('bi-eye-slash');
+                toggleIcon.classList.add('bi-eye');
+            }
+        }
+    </script>
 </body>
 </html>

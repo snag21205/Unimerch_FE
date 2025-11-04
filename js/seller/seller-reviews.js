@@ -96,7 +96,7 @@ function renderSellerReviewsTable() {
     if (filteredReviews.length === 0) {
         tbody.innerHTML = `
             <tr>
-                <td colspan="6" class="text-center py-4 text-muted">
+                <td colspan="6" class="text-center py-4 text-light">
                     ${sellerReviewsSearchQuery || sellerReviewsRatingFilter || sellerReviewsProductFilter ? 'Không tìm thấy đánh giá phù hợp' : 'Chưa có đánh giá nào'}
                 </td>
             </tr>
@@ -114,11 +114,11 @@ function renderSellerReviewsTable() {
                 <td>${globalIndex}</td>
                 <td>
                     <div class="fw-semibold">${review.product_name || 'N/A'}</div>
-                    <small class="text-muted">ID: ${review.product_id}</small>
+                    <small class="text-light">ID: ${review.product_id}</small>
                 </td>
                 <td>
                     <div class="fw-semibold">${review.username || 'N/A'}</div>
-                    <small class="text-muted">${review.user_full_name || '-'}</small>
+                    <small class="text-light">${review.user_full_name || '-'}</small>
                 </td>
                 <td>${ratingStars}</td>
                 <td>
@@ -127,7 +127,7 @@ function renderSellerReviewsTable() {
                     </div>
                 </td>
                 <td>
-                    <small class="text-muted">${formatDate(review.created_at)}</small>
+                    <small class="text-light">${formatDate(review.created_at)}</small>
                 </td>
             </tr>
         `;

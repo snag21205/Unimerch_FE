@@ -137,7 +137,7 @@
 }
 
 .dropdown-item {
-    color: var(--text-light) !important;
+    color: #ffffff !important;
     border-radius: 8px;
     padding: 0.65rem 1rem;
     margin: 0.15rem 0;
@@ -152,7 +152,7 @@
 .dropdown-item:hover,
 .dropdown-item:focus {
     background: rgba(246, 167, 193, 0.15) !important;
-    color: var(--accent) !important;
+    color: #F6A7C1 !important;
 }
 
 .dropdown-item svg {
@@ -165,7 +165,7 @@
 }
 
 .dropdown-header {
-    color: var(--text-light) !important;
+    color: #ffffff !important;
     padding: 0.75rem 1rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     margin-bottom: 0.5rem;
@@ -174,7 +174,7 @@
 
 .dropdown-header .fw-semibold,
 .dropdown-header #userFullName {
-    color: var(--text-light) !important;
+    color: #ffffff !important;
     font-weight: 600 !important;
 }
 
@@ -196,7 +196,7 @@
 #userAvatar {
     width: 32px;
     height: 32px;
-    background: var(--accent);
+    background: #F6A7C1;
     color: white;
     border-radius: 50%;
     display: flex;
@@ -204,6 +204,11 @@
     justify-content: center;
     font-weight: 600;
     font-size: 14px;
+}
+
+/* Username text color */
+#username {
+    color: #ffffff !important;
 }
 
 /* Dropdown toggle button */

@@ -253,7 +253,7 @@ function renderOrderItems() {
     const container = document.getElementById('orderItems');
     
     if (!orderData.items || orderData.items.length === 0) {
-        container.innerHTML = '<p class="text-muted">Không có sản phẩm nào</p>';
+        container.innerHTML = '<p class="text-light">Không có sản phẩm nào</p>';
         return;
     }
 
@@ -266,7 +266,7 @@ function renderOrderItems() {
         const variants = [];
         if (item.size) variants.push(`Size: ${item.size}`);
         if (item.color) variants.push(`Màu: ${item.color}`);
-        const variantText = variants.length > 0 ? `<small class="text-muted d-block">${variants.join(' • ')}</small>` : '';
+        const variantText = variants.length > 0 ? `<small class="text-light d-block">${variants.join(' • ')}</small>` : '';
         
         return `
             <div class="d-flex align-items-center mb-3 pb-3 border-bottom">
@@ -279,10 +279,10 @@ function renderOrderItems() {
                     <h6 class="mb-1 fw-semibold">${item.product_name}</h6>
                     ${variantText}
                     <div class="d-flex justify-content-between align-items-center">
-                        <small class="text-muted">Số lượng: ${item.quantity}</small>
+                        <small class="text-light">Số lượng: ${item.quantity}</small>
                         <div class="text-end">
                             ${item.discount_price && item.discount_price < item.price ? 
-                                `<small class="text-decoration-line-through text-muted">${formatPrice(item.price)}</small><br>
+                                `<small class="text-decoration-line-through text-light">${formatPrice(item.price)}</small><br>
                                  <span class="fw-semibold text-primary">${formatPrice(currentPrice)}</span>` :
                                 `<span class="fw-semibold">${formatPrice(currentPrice)}</span>`
                             }

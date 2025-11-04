@@ -103,13 +103,13 @@ class CartUI {
         if (!items || items.length === 0) {
             this.cartItemsContainer.innerHTML = `
                 <div class="text-center py-5">
-                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="text-muted mb-3">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="text-light mb-3">
                         <circle cx="8" cy="21" r="1"></circle>
                         <circle cx="19" cy="21" r="1"></circle>
                         <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57L20.5 9H5.12"></path>
                     </svg>
-                    <p class="text-muted mb-0">Giỏ hàng của bạn đang trống</p>
-                    <small class="text-muted">Thêm sản phẩm để bắt đầu mua sắm</small>
+                    <p class="text-light mb-0">Giỏ hàng của bạn đang trống</p>
+                    <small class="text-light">Thêm sản phẩm để bắt đầu mua sắm</small>
                 </div>
             `;
             this.selectedItems.clear();
@@ -280,10 +280,10 @@ class CartUI {
                         <div class="d-flex align-items-center justify-content-between mb-2">
                             <div class="price-info">
                                 ${hasValidDiscount ? `
-                                    <span class="text-decoration-line-through text-muted small me-2">${this.formatPrice(originalPrice)}</span>
+                                    <span class="text-decoration-line-through text-light small me-2">${this.formatPrice(originalPrice)}</span>
                                     <span class="text-danger fw-semibold">${this.formatPrice(discountPrice)}</span>
                                 ` : `
-                                    <span class="text-muted">${this.formatPrice(originalPrice)}</span>
+                                    <span class="text-light">${this.formatPrice(originalPrice)}</span>
                                 `}
                             </div>
                             <button class="btn btn-link btn-sm text-danger p-0" 

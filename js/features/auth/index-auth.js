@@ -17,6 +17,51 @@ function parseJWTToken(token) {
 }
 
 /**
+ * Calculate relative path to admin/seller page based on current location
+ */
+function getDashboardPath(targetPath) {
+    const currentPath = window.location.pathname;
+    
+    // Remove leading slash and split by '/'
+    const pathParts = currentPath.replace(/^\//, '').split('/').filter(p => p);
+    
+    // Remove filename (last part)
+    if (pathParts.length > 0) {
+        pathParts.pop();
+    }
+    
+    // Calculate how many levels up we need to go
+    // From root: pages/admin/admin.html
+    // From pages/user/: ../admin/admin.html
+    // From pages/products/: ../admin/admin.html
+    // From pages/admin/: admin.html (same level)
+    
+    let relativePath;
+    
+    if (pathParts.length === 0) {
+        // At root level (index.html)
+        relativePath = `pages/${targetPath}`;
+    } else if (pathParts.length === 1 && pathParts[0] === 'pages') {
+        // At pages/ level (shouldn't happen, but just in case)
+        relativePath = `${targetPath}`;
+    } else if (pathParts.length === 2 && pathParts[0] === 'pages') {
+        // At pages/user/ or pages/products/ or pages/admin/ level
+        if (pathParts[1] === 'admin' || pathParts[1] === 'seller') {
+            // Already in admin/seller folder, use same level
+            relativePath = `${targetPath.split('/').pop()}`;
+        } else {
+            // In pages/user/ or pages/products/, go up one level then into admin/seller
+            relativePath = `../${targetPath}`;
+        }
+    } else {
+        // Fallback: use absolute path
+        relativePath = `/pages/${targetPath}`;
+    }
+    
+    return relativePath;
+}
+
+/**
  * Update dashboard link based on user role
  */
 function updateDashboardLink() {
@@ -41,26 +86,16 @@ function updateDashboardLink() {
         dashboardMenuItem.classList.remove('d-none');
         if (dashboardDivider) dashboardDivider.classList.remove('d-none');
         
-        // Check if we're in all-products page and adjust path accordingly
-        const currentPath = window.location.pathname;
-        if (currentPath.includes('all-products.html')) {
-            dashboardLink.href = '../../pages/admin/admin.html';
-        } else {
-            dashboardLink.href = 'pages/admin/admin.html';
-        }
+        // Calculate correct path based on current location
+        dashboardLink.href = getDashboardPath('admin/admin.html');
         
         if (dashboardLinkText) dashboardLinkText.textContent = '👨‍💼 Trang Quản Trị';
     } else if (userRole === 'seller') {
         dashboardMenuItem.classList.remove('d-none');
         if (dashboardDivider) dashboardDivider.classList.remove('d-none');
         
-        // Check if we're in all-products page and adjust path accordingly
-        const currentPath = window.location.pathname;
-        if (currentPath.includes('all-products.html')) {
-            dashboardLink.href = '../../pages/seller/seller.html';
-        } else {
-            dashboardLink.href = 'pages/seller/seller.html';
-        }
+        // Calculate correct path based on current location
+        dashboardLink.href = getDashboardPath('seller/seller.html');
         
         if (dashboardLinkText) dashboardLinkText.textContent = '🏪 Trang Người Bán';
     } else {

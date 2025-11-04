@@ -39,12 +39,13 @@ html {
 /* Hero Parallax */
 .hero-section {
     position: relative;
-    height: 90vh;
-    min-height: 700px;
+    height: auto;
+    min-height: 100vh;
     overflow: hidden;
     display: flex;
     align-items: center;
     background: var(--bg-dark);
+    padding: 5rem 0;
 }
 
 .hero-grid {
@@ -886,4 +887,112 @@ html {
         width: 150px;
         height: 200px;
     }
+}
+
+/* Font Overrides - from index.html */
+/* Override font cho toàn trang - sử dụng Be Vietnam Pro */
+body {
+    font-family: 'Be Vietnam Pro', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* Dùng Montserrat cho các heading lớn - đẹp hơn cho tiếng Việt */
+h1, h2, h3, .mega-text, .collection-title, .email-title {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+}
+
+/* Các text nhỏ hơn dùng Be Vietnam Pro */
+p, span, a, button, .hero-tagline, .collection-desc, .product-name, 
+.email-subtitle, .value-pill, .product-info, .nav-link {
+    font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+/* Cart Offcanvas Styling */
+#cartOffcanvas {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    color: #ffffff;
+}
+
+#cartOffcanvas .offcanvas-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 1.5rem;
+}
+
+#cartOffcanvas .offcanvas-title {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 1.25rem;
+    letter-spacing: 0.5px;
+}
+
+#cartOffcanvas .btn-close {
+    filter: brightness(0) invert(1);
+    opacity: 0.8;
+}
+
+#cartOffcanvas .btn-close:hover {
+    opacity: 1;
+}
+
+#cartOffcanvas .offcanvas-body {
+    padding: 1.5rem;
+}
+
+#cartOffcanvas .text-muted {
+    color: rgba(255, 255, 255, 0.6) !important;
+}
+
+#cartOffcanvas hr {
+    border-color: rgba(255, 255, 255, 0.1);
+    margin: 1.5rem 0;
+}
+
+#cartOffcanvas .btn-link {
+    color: #ff6b6b;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+#cartOffcanvas .btn-link:hover {
+    color: #ff5252;
+    text-decoration: underline;
+}
+
+#cartOffcanvas .selected-count {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+#cartOffcanvas #cartSubtotal {
+    color: #ffffff;
+    font-size: 1.25rem;
+}
+
+#cartOffcanvas .btn-dark {
+    background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
+    color: #1a1a1a;
+    border: none;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+}
+
+#cartOffcanvas .btn-dark:hover {
+    background: linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 255, 255, 0.3);
+}
+
+/* Cart Item Styling */
+#cartOffcanvas .cart-item {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+}
+
+#cartOffcanvas .cart-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateX(5px);
 }

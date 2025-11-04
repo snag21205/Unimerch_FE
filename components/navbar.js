@@ -73,24 +73,13 @@ class NavbarComponent {
                     <a class="nav-link" href="pages/products/all-products.html">Tất cả sản phẩm</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#about">About</a>
+                    <a class="nav-link" href="pages/user/orders.html">ĐƠN HÀNG</a>
                 </li>
             </ul>
             
             <!-- Right side controls -->
             <div class="d-flex align-items-center gap-3">
-                <!-- Search Button -->
-                <button class="btn btn-link p-0 border-0" 
-                        id="searchBtn" 
-                        data-bs-toggle="modal" 
-                        data-bs-target="#searchModal"
-                        aria-label="Tìm kiếm sản phẩm">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" 
-                         stroke="currentColor" stroke-width="2" aria-hidden="true">
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <path d="m21 21-4.35-4.35"></path>
-                    </svg>
-                </button>
+               
                 
                 <!-- Cart Button -->
                 <button class="btn btn-link p-0 border-0 position-relative" 
@@ -152,7 +141,7 @@ class NavbarComponent {
                                 <li>
                                     <div class="dropdown-header">
                                         <div class="fw-semibold" style="font-size: 14px;" id="userFullName">Chào mừng trở lại!</div>
-                                        <small class="text-muted" id="userEmail">user@ueh.edu.vn</small>
+                                        <small class="text-light" id="userEmail">user@ueh.edu.vn</small>
                                     </div>
                                 </li>
                                 <li><hr class="dropdown-divider"></li>
@@ -243,6 +232,9 @@ class NavbarComponent {
                 document.body.insertAdjacentHTML('afterbegin', html);
                 this.navbarElement = document.querySelector('#mainNav');
             }
+            
+            // Hide cart button if not on allowed pages (after DOM insertion)
+            this.hideCartButtonIfNeeded();
         } catch (error) {
             console.error('Failed to load navbar HTML:', error);
             throw error;
@@ -265,53 +257,131 @@ class NavbarComponent {
             // Fix all navigation links
             html = html.replace(/href="pages\//g, `href="${prefix}pages/`);
             html = html.replace(/href="#featured"/g, `href="${prefix}index.html#featured"`);
-            html = html.replace(/href="#about"/g, `href="${prefix}index.html#about"`);
-            html = html.replace(/href="#"/g, `href="${prefix}index.html"`);
             
-            // Fix brand link (without hash)
+            // Fix brand link specifically (don't touch cart offcanvas links)
             html = html.replace(/<a class="navbar-brand" href="#">/g, `<a class="navbar-brand" href="${prefix}index.html">`);
         }
         
         return html;
+    }
+    
+    /**
+     * Hide cart button if not on allowed pages (DOM manipulation)
+     */
+    hideCartButtonIfNeeded() {
+        const currentPath = window.location.pathname;
+        const currentPage = currentPath.split('/').pop() || 'index.html';
+        
+        // Allowed pages: index.html, all-products.html
+        const allowedPages = ['index.html', 'all-products.html'];
+        const isAllowedPage = allowedPages.includes(currentPage) || 
+                             currentPath.endsWith('/') || 
+                             currentPath === '/' ||
+                             currentPath.includes('/index.html') ||
+                             currentPath.includes('/all-products.html');
+        
+        const cartBtn = document.getElementById('cartBtn');
+        if (cartBtn) {
+            if (!isAllowedPage) {
+                cartBtn.style.display = 'none';
+            } else {
+                cartBtn.style.display = '';
+            }
+        }
     }
 
     /**
      * Initialize Bootstrap dropdowns with proper configuration
      */
     initDropdowns() {
-        // Wait for DOM to be fully ready
-        setTimeout(() => {
-            const dropdownElementList = document.querySelectorAll('.dropdown-toggle');
+        // Wait for Bootstrap to be loaded and DOM to be ready
+        const initDropdownsInternal = () => {
+            // Check if Bootstrap is available
+            if (typeof bootstrap === 'undefined' || !bootstrap.Dropdown) {
+                console.warn('Bootstrap not loaded yet, retrying dropdown initialization...');
+                setTimeout(initDropdownsInternal, 100);
+                return;
+            }
+
+            // Find dropdown within the navbar to avoid conflicts
+            const navbar = document.getElementById('mainNav');
+            if (!navbar) {
+                console.warn('Navbar not found');
+                setTimeout(initDropdownsInternal, 100);
+                return;
+            }
+
+            const dropdownElementList = navbar.querySelectorAll('.dropdown-toggle');
+            
+            if (dropdownElementList.length === 0) {
+                // Check if loggedIn div is visible - if not, wait for it
+                const loggedInDiv = document.getElementById('loggedIn');
+                if (loggedInDiv && loggedInDiv.classList.contains('d-none')) {
+                    console.log('LoggedIn div is hidden, waiting for auth state...');
+                    setTimeout(initDropdownsInternal, 200);
+                    return;
+                }
+                
+                console.warn('No dropdown elements found in navbar');
+                setTimeout(initDropdownsInternal, 200);
+                return;
+            }
+            
+            console.log(`Found ${dropdownElementList.length} dropdown element(s)`);
             
             dropdownElementList.forEach((dropdownToggleEl) => {
-                // Initialize each dropdown with custom config
-                new bootstrap.Dropdown(dropdownToggleEl, {
-                    popperConfig: function(defaultBsPopperConfig) {
-                        // Modify default config to use fixed strategy
-                        return {
-                            ...defaultBsPopperConfig,
-                            strategy: 'fixed',
-                            modifiers: [
-                                ...(defaultBsPopperConfig.modifiers || []),
-                                {
-                                    name: 'offset',
-                                    options: {
-                                        offset: [0, 8]
-                                    }
-                                },
-                                {
-                                    name: 'preventOverflow',
-                                    options: {
-                                        boundary: 'viewport'
-                                    }
-                                }
-                            ]
-                        };
+                // Check if dropdown is already initialized
+                const existingInstance = bootstrap.Dropdown.getInstance(dropdownToggleEl);
+                if (existingInstance) {
+                    // Dispose existing instance before re-initializing
+                    existingInstance.dispose();
+                }
+                
+                try {
+                    // Initialize each dropdown - use simpler config for better compatibility
+                    const dropdownInstance = new bootstrap.Dropdown(dropdownToggleEl);
+                    
+                    // Verify initialization
+                    const verifyInstance = bootstrap.Dropdown.getInstance(dropdownToggleEl);
+                    if (verifyInstance) {
+                        console.log('✅ Dropdown initialized successfully');
+                    } else {
+                        console.error('❌ Dropdown initialization failed - instance not found');
+                    }
+                } catch (error) {
+                    console.error('❌ Error initializing dropdown:', error);
+                    // Fallback: try using data attributes only (Bootstrap auto-init)
+                    console.log('Trying fallback: using data attributes only...');
+                    dropdownToggleEl.setAttribute('data-bs-toggle', 'dropdown');
+                }
+            });
+            
+            console.log(`✅ Initialized ${dropdownElementList.length} dropdown(s)`);
+        };
+
+        // Start initialization after a short delay to ensure DOM is ready
+        setTimeout(initDropdownsInternal, 300);
+        
+        // Also set up a MutationObserver to watch for loggedIn div visibility changes
+        const loggedInDiv = document.getElementById('loggedIn');
+        if (loggedInDiv && typeof MutationObserver !== 'undefined') {
+            const observer = new MutationObserver((mutations) => {
+                mutations.forEach((mutation) => {
+                    if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+                        const target = mutation.target;
+                        if (target.id === 'loggedIn' && !target.classList.contains('d-none')) {
+                            console.log('LoggedIn div is now visible, initializing dropdowns...');
+                            setTimeout(initDropdownsInternal, 100);
+                        }
                     }
                 });
             });
             
-        }, 200);
+            observer.observe(loggedInDiv, {
+                attributes: true,
+                attributeFilter: ['class']
+            });
+        }
     }
 
     /**
@@ -340,6 +410,9 @@ class NavbarComponent {
                 if (typeof updateDashboardLink === 'function') {
                     updateDashboardLink();
                 }
+                
+                // Re-initialize dropdowns after auth state update
+                this.initDropdowns();
             }, 100);
         }, 100);
 
@@ -355,6 +428,8 @@ class NavbarComponent {
                 if (typeof updateDashboardLink === 'function') {
                     updateDashboardLink();
                 }
+                // Re-initialize dropdowns after auth state update
+                this.initDropdowns();
             }, 100);
         });
 
