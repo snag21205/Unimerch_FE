@@ -2,12 +2,14 @@
 // Handles order management, status updates, and order details
 
 // ===== ORDERS VARIABLES =====
-let adminOrders = [];
+let adminOrders = []; // All orders (loaded from all pages)
+let adminOrdersAllData = []; // All orders before sorting/filtering
 let adminOrdersCurrentPage = 1;
 let adminOrdersTotalPages = 1;
 let adminOrdersPerPage = 10;
 let adminOrdersSearchQuery = '';
 let adminOrdersStatusFilter = '';
+let adminOrdersSortOrder = 'newest'; // 'newest' or 'oldest'
 let adminOrderToUpdate = null;
 
 // ===== ORDERS FUNCTIONS =====
@@ -22,31 +24,91 @@ async function loadAdminOrders() {
         tableContainer.classList.add('d-none');
         emptyState.classList.add('d-none');
         
-        // Get ALL orders from API
-        const queryParams = {
-            page: adminOrdersCurrentPage,
-            limit: adminOrdersPerPage
-        };
+        // Load ALL orders from API by fetching all pages
+        adminOrdersAllData = [];
+        let currentPage = 1;
+        let hasMorePages = true;
+        let totalPages = 1;
         
-        // Only add status filter if it has a value
-        if (adminOrdersStatusFilter && adminOrdersStatusFilter.trim() !== '') {
-            queryParams.status = adminOrdersStatusFilter;
+        console.log('📤 Loading ALL admin orders...');
+        
+        // Fetch all pages
+        while (hasMorePages && currentPage <= 100) { // Safety limit: max 100 pages
+            const queryParams = {
+                page: currentPage,
+                limit: 100 // Fetch more per page to reduce API calls
+            };
+            
+            // Only add status filter if it has a value
+            if (adminOrdersStatusFilter && adminOrdersStatusFilter.trim() !== '') {
+                queryParams.status = adminOrdersStatusFilter;
+            }
+            
+            console.log(`📥 Fetching page ${currentPage}...`);
+            const response = await apiService.getAdminOrders(queryParams);
+            
+            const orders = response?.data?.orders || [];
+            if (orders.length === 0) {
+                hasMorePages = false;
+                break;
+            }
+            
+            adminOrdersAllData = adminOrdersAllData.concat(orders);
+            
+            // Check if there are more pages
+            if (response?.data?.pagination) {
+                totalPages = response.data.pagination.total_pages || 1;
+                if (currentPage >= totalPages) {
+                    hasMorePages = false;
+                }
+            } else {
+                // If no pagination info, stop when we get fewer orders than limit
+                if (orders.length < 100) {
+                    hasMorePages = false;
+                }
+            }
+            
+            currentPage++;
         }
         
-        const response = await apiService.getAdminOrders(queryParams);
+        console.log('📦 Total orders loaded from all pages:', adminOrdersAllData.length);
         
-        adminOrders = response?.data?.orders || [];
-        
-        // Update pagination info
-        if (response?.data?.pagination) {
-            adminOrdersTotalPages = response.data.pagination.total_pages || 1;
-            adminOrdersCurrentPage = response.data.pagination.current_page || 1;
+        // Sort ALL orders client-side
+        if (adminOrdersAllData.length > 0) {
+            adminOrdersAllData.sort((a, b) => {
+                const dateA = new Date(a.created_at);
+                const dateB = new Date(b.created_at);
+                if (adminOrdersSortOrder === 'newest') {
+                    return dateB - dateA; // Descending (newest first)
+                } else {
+                    return dateA - dateB; // Ascending (oldest first)
+                }
+            });
         }
+        
+        // Calculate pagination based on sorted data
+        adminOrdersTotalPages = Math.ceil(adminOrdersAllData.length / adminOrdersPerPage);
+        if (adminOrdersCurrentPage > adminOrdersTotalPages && adminOrdersTotalPages > 0) {
+            adminOrdersCurrentPage = adminOrdersTotalPages;
+        }
+        
+        // Get orders for current page
+        const startIndex = (adminOrdersCurrentPage - 1) * adminOrdersPerPage;
+        const endIndex = startIndex + adminOrdersPerPage;
+        adminOrders = adminOrdersAllData.slice(startIndex, endIndex);
+        
+        console.log('✅ Orders sorted and paginated:', {
+            total: adminOrdersAllData.length,
+            currentPage: adminOrdersCurrentPage,
+            totalPages: adminOrdersTotalPages,
+            pageOrders: adminOrders.length,
+            sortOrder: adminOrdersSortOrder
+        });
         
         // Hide loading
         loading.classList.add('d-none');
         
-        if (adminOrders.length === 0) {
+        if (adminOrdersAllData.length === 0) {
             emptyState.classList.remove('d-none');
         } else {
             tableContainer.classList.remove('d-none');
@@ -54,6 +116,7 @@ async function loadAdminOrders() {
         }
         
     } catch (error) {
+        console.error('❌ Error loading admin orders:', error);
         loading.classList.add('d-none');
         showToast('Không thể tải danh sách đơn hàng', 'error');
     }

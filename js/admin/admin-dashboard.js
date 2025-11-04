@@ -115,6 +115,16 @@ function setupEventListeners() {
         });
     }
     
+    // Admin orders sort filter
+    const adminOrderSortFilter = document.getElementById('adminOrderSortFilter');
+    if (adminOrderSortFilter) {
+        adminOrderSortFilter.addEventListener('change', function() {
+            adminOrdersSortOrder = this.value;
+            adminOrdersCurrentPage = 1; // Reset to first page
+            loadAdminOrders();
+        });
+    }
+    
     // Admin users search
     const adminUserSearchInput = document.getElementById('adminUserSearchInput');
     if (adminUserSearchInput) {

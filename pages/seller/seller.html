@@ -14,12 +14,13 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Be+Vietnam+Pro:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-    <!-- Seller CSS -->
-    <link rel="stylesheet" href="../../css/seller.css">
+    <!-- Admin CSS (reuse for seller) -->
+    <link rel="stylesheet" href="../../css/admin.css">
 </head>
 <body>
+
     <!-- Mobile Menu Toggle -->
     <button class="mobile-menu-toggle btn" onclick="toggleSidebar()">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -32,14 +33,27 @@
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
         <div class="sidebar-brand">
-            <h1>🏪 Người Bán</h1>
-            <p class="text-muted mb-0" style="font-size: 0.875rem;">UEH Merch</p>
+            <h1 style="color: var(--accent);">UNIMERCH</h1>
+            <p class="mb-0" style="font-size: 0.875rem; color: var(--text-muted); font-weight: 500;">Seller Dashboard</p>
         </div>
         
         <nav class="sidebar-nav">
             <div class="nav-section">
+                <div class="nav-section-title">Tổng Quan</div>
+                <a href="#" class="nav-link active" data-tab="dashboard">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="7" height="7"></rect>
+                        <rect x="14" y="3" width="7" height="7"></rect>
+                        <rect x="14" y="14" width="7" height="7"></rect>
+                        <rect x="3" y="14" width="7" height="7"></rect>
+                    </svg>
+                    Bảng Điều Khiển
+                </a>
+            </div>
+            
+            <div class="nav-section">
                 <div class="nav-section-title">Quản Lý</div>
-                <a href="#" class="nav-link active" data-tab="products">
+                <a href="#" class="nav-link" data-tab="products">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M20 7H4a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2zM4 7v11a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7"></path>
                     </svg>
@@ -109,30 +123,136 @@
                     <h1 class="header-title">Bảng Điều Khiển</h1>
                     <p class="header-subtitle">Chào mừng trở lại! Đây là tổng quan hoạt động của bạn hôm nay.</p>
                 </div>
-                <div class="d-flex align-items-center gap-3">
-                    <button class="btn btn-outline-primary" onclick="refreshData()">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-2">
-                            <polyline points="23 4 23 10 17 10"></polyline>
-                            <polyline points="1 20 1 14 7 14"></polyline>
-                            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
-                        </svg>
-                        Làm Mới
-                    </button>
-                    <button class="btn btn-primary" onclick="showAddProductModal()">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-2">
-                            <line x1="12" y1="5" x2="12" y2="19"></line>
-                            <line x1="5" y1="12" x2="19" y2="12"></line>
-                        </svg>
-                        Thêm Sản Phẩm
-                    </button>
-                </div>
+              
             </div>
         </div>
 
         <!-- Dashboard Content -->
-        
+        <div class="container-fluid p-4" id="dashboard-tab">
+            <!-- Stats Cards -->
+            <div class="row mb-4">
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="stats-card revenue fade-in">
+                        <div class="stats-number" id="card_total_revenue">-</div>
+                        <div class="stats-label">Tổng Doanh Thu</div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="stats-card orders fade-in" style="animation-delay: 0.1s;">
+                        <div class="stats-number" id="card_total_orders">-</div>
+                        <div class="stats-label">Tổng Đơn Hàng</div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="stats-card customers fade-in" style="animation-delay: 0.2s;">
+                        <div class="stats-number" id="card_total_products">-</div>
+                        <div class="stats-label">Sản Phẩm</div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="stats-card products fade-in" style="animation-delay: 0.3s;">
+                        <div class="stats-number" id="card_total_reviews">-</div>
+                        <div class="stats-label">Đánh Giá</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Row -->
+            <div class="row mb-4">
+                <div class="col-lg-8 mb-4">
+                    <div class="card slide-up">
+                        <div class="card-header">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h5 class="mb-1">Phân Tích Doanh Thu</h5>
+                                    <small class="text-muted">Doanh thu theo ngày trong kỳ đã chọn</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-container">
+                                <canvas id="revenueChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 mb-4">
+                    <div class="card slide-up" style="animation-delay: 0.1s;">
+                        <div class="card-header">
+                            <h5 class="mb-1">Trạng Thái Đơn Hàng</h5>
+                            <small class="text-muted">Phân bố trạng thái đơn hàng</small>
+                        </div>
+                        <div class="card-body text-center">
+                            <canvas id="orderStatusChart" style="max-height: 250px;"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tables Row -->
+            <div class="row">
+                <div class="col-lg-6 mb-4">
+                    <div class="card slide-up" style="animation-delay: 0.2s;">
+                        <div class="card-header">
+                            <h5 class="mb-1">Sản Phẩm Bán Chạy</h5>
+                            <small class="text-muted">Sản phẩm bán chạy nhất tháng này</small>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>Sản Phẩm</th>
+                                            <th>Đã Bán</th>
+                                            <th>Doanh Thu</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="topProductsTable">
+                                        <tr>
+                                            <td colspan="3" class="text-center">
+                                                <div class="spinner-border spinner-border-sm text-primary" role="status">
+                                                    <span class="visually-hidden">Đang tải...</span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 mb-4">
+                    <div class="card slide-up" style="animation-delay: 0.3s;">
+                        <div class="card-header">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h5 class="mb-1">Đơn Hàng Gần Đây</h5>
+                                    <small class="text-muted">Các đơn hàng mới nhất</small>
+                                </div>
+                                <a href="#" class="btn btn-sm btn-outline-primary" onclick="switchTab('orders')">Xem Tất Cả</a>
+                            </div>
+                        </div>
+                        <div class="card-body p-0" id="recentOrdersList">
+                            <div class="list-group list-group-flush">
+                                <div class="list-group-item border-0 py-3 text-center">
+                                    <div class="spinner-border spinner-border-sm text-primary" role="status">
+                                        <span class="visually-hidden">Đang tải...</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Products Tab -->
-        <div class="container-fluid p-4" id="products-tab">
+        <div class="container-fluid p-4 d-none" id="products-tab">
             <!-- Header with Search and Add Button -->
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <div class="flex-grow-1 me-3" style="max-width: 400px;">
@@ -154,11 +274,11 @@
                     Thêm Sản Phẩm
                 </button>
             </div>
-
+            
             <!-- Products Table Card -->
             <div class="card">
                 <div class="card-header bg-white py-3">
-                    <h5 class="mb-0">Danh Sách Sản Phẩm</h5>
+                    <h5 class="mb-0">Quản Lý Sản Phẩm</h5>
                 </div>
                 <div class="card-body p-0">
                     <!-- Loading Spinner -->
@@ -193,7 +313,7 @@
                         <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="text-muted mb-3">
                             <path d="M20 7H4a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2zM4 7v11a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7"></path>
                         </svg>
-                        <p class="text-muted mb-3">Chưa có sản phẩm nào</p>
+                        <p class="text-muted mb-3">Chưa có sản phẩm nào trong hệ thống</p>
                         <button class="btn btn-success" onclick="showAddProductModal()">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-1">
                                 <line x1="12" y1="5" x2="12" y2="19"></line>
@@ -207,7 +327,7 @@
                 <!-- Pagination -->
                 <div class="card-footer d-none" id="productsPagination">
                     <nav aria-label="Products pagination">
-                        <ul class="pagination pagination-sm justify-content-center mb-0" id="productsPaginationList">
+                        <ul id="productsPaginationList" class="pagination pagination-sm justify-content-center mb-0">
                             <!-- Pagination items will be loaded here -->
                         </ul>
                     </nav>
@@ -241,11 +361,11 @@
                     </select>
                 </div>
             </div>
-
+            
             <!-- Orders Table Card -->
             <div class="card">
                 <div class="card-header bg-white py-3">
-                    <h5 class="mb-0">Đơn Hàng Có Sản Phẩm Của Tôi</h5>
+                    <h5 class="mb-0">Quản Lý Đơn Hàng</h5>
                 </div>
                 <div class="card-body p-0">
                     <!-- Loading Spinner -->
@@ -281,14 +401,14 @@
                             <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
                             <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
                         </svg>
-                        <p class="text-muted mb-3">Chưa có đơn hàng nào</p>
+                        <p class="text-muted mb-3">Chưa có đơn hàng nào trong hệ thống</p>
                     </div>
                 </div>
 
                 <!-- Pagination -->
                 <div class="card-footer d-none" id="ordersPagination">
                     <nav aria-label="Orders pagination">
-                        <ul class="pagination pagination-sm justify-content-center mb-0" id="ordersPaginationList">
+                        <ul id="ordersPaginationList" class="pagination pagination-sm justify-content-center mb-0">
                             <!-- Pagination items will be loaded here -->
                         </ul>
                     </nav>
@@ -304,7 +424,7 @@
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-2">
                         <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"></polygon>
                     </svg>
-                    Đánh Giá Sản Phẩm
+                    Quản Lý Đánh Giá
                 </h4>
             </div>
 
@@ -338,19 +458,10 @@
                                 <option value="">Tất cả sản phẩm</option>
                             </select>
                         </div>
-                        <div class="col-md-2">
-                            <button class="btn btn-outline-secondary w-100" onclick="loadSellerReviews()">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-1">
-                                    <path d="M3 12a9 9 0 0 1 9-9 9 9 0 0 1 9 9 9 9 0 0 1-9 9 9 9 0 0 1-9-9"></path>
-                                    <path d="M21 12a9 9 0 0 1-9 9 9 9 0 0 1-9-9 9 9 0 0 1 9-9 9 9 0 0 1 9 9"></path>
-                                </svg>
-                                Làm mới
-                            </button>
-                        </div>
-                    </div>
+                      
                 </div>
             </div>
-
+            
             <!-- Reviews Table -->
             <div class="card">
                 <div class="card-body p-0">
@@ -479,7 +590,7 @@
                             </div>
                         </div>
 
-                        <div class="mb-3" id="editProductStatus" style="display: none;">
+                        <div class="mb-3">
                             <label for="productStatus" class="form-label">Trạng thái</label>
                             <select class="form-select" id="productStatus" name="status">
                                 <option value="available">Còn hàng</option>
@@ -656,22 +767,6 @@
         </div>
     </div>
 
-    <!-- Toast Container -->
-    <div class="toast-container position-fixed top-0 end-0 p-3" id="toastContainer"></div>
-
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
-    <!-- API Service -->
-    <script src="../../js/shared/api.service.js"></script>
-    
-    <!-- Auth Protection -->
-    <script src="../../js/features/auth/auth-protection.service.js"></script>
-    <script>
-        // Protect this page - only sellers can access
-        protectPage('seller');
-    </script>
-    
     <!-- Review Detail Modal -->
     <div class="modal fade" id="sellerReviewDetailModal" tabindex="-1" aria-labelledby="sellerReviewDetailModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -729,6 +824,22 @@
         </div>
     </div>
 
+    <!-- Toast Container -->
+    <div class="toast-container position-fixed top-0 end-0 p-3" id="toastContainer"></div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- API Service -->
+    <script src="../../js/shared/api.service.js"></script>
+    
+    <!-- Auth Protection -->
+    <script src="../../js/features/auth/auth-protection.service.js"></script>
+    <script>
+        // Protect this page - only sellers can access
+        protectPage('seller');
+    </script>
+    
     <!-- Seller JavaScript Modules -->
     <script src="../../js/seller/seller-products.js"></script>
     <script src="../../js/seller/seller-orders.js"></script>
@@ -736,4 +847,3 @@
     <script src="../../js/seller/seller-dashboard.js"></script>
 </body>
 </html>
-
