@@ -616,6 +616,7 @@ function renderReviewStats() {
     const totalReviews = document.getElementById('totalReviews');
     const ratingDistribution = document.getElementById('ratingDistribution');
     
+    // Safely update each element only if it exists
     if (averageRating) {
         averageRating.textContent = reviewStats.average_rating ? reviewStats.average_rating.toFixed(1) : '0.0';
     }
@@ -770,7 +771,10 @@ function initializeReviewFunctionality() {
 
 // Select rating for review
 function selectRating(rating) {
-    document.getElementById('selectedRating').value = rating;
+    const ratingInput = document.getElementById('selectedRating');
+    if (ratingInput) {
+        ratingInput.value = rating;
+    }
     
     // Update visual state
     document.querySelectorAll('.rating-input button').forEach((button, index) => {
@@ -800,50 +804,84 @@ async function handleReviewSubmit(event) {
         comment: formData.get('comment')
     };
     
+    // Validate rating
+    if (!reviewData.rating || reviewData.rating < 1 || reviewData.rating > 5) {
+        alert('Vui lòng chọn số sao đánh giá (1-5)');
+        return;
+    }
+    
     try {
         let response;
+        const wasEditing = isEditing;
+        
         if (isEditing && editingReviewId) {
+            // Update existing review
             response = await window.apiService.updateReview(editingReviewId, reviewData);
-            if (response.success) {
-                alert('Đánh giá đã được cập nhật thành công!');
-            }
         } else {
+            // Create new review
             response = await window.apiService.createReview(reviewData);
-            if (response.success) {
-                alert('Đánh giá của bạn đã được gửi thành công!');
-            }
         }
         
+        // Only proceed if API confirms success
         if (response.success) {
+            // Reset form
             event.target.reset();
-            document.getElementById('writeReviewSection').style.display = 'none';
+            selectRating(0); // Reset star rating visual
+            
+            // Hide form
+            const writeReviewSection = document.getElementById('writeReviewSection');
+            if (writeReviewSection) {
+                writeReviewSection.style.display = 'none';
+                
+                // Reset form title and submit button
+                const formTitle = writeReviewSection.querySelector('.card-header h6');
+                if (formTitle) {
+                    formTitle.textContent = 'Viết đánh giá';
+                }
+            }
+            
+            const submitButton = document.querySelector('#reviewForm button[type="submit"]');
+            if (submitButton) {
+                submitButton.innerHTML = `
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-2">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                    </svg>
+                    Gửi đánh giá
+                `;
+            }
+            
+            // Reset editing state
             isEditing = false;
             editingReviewId = null;
             
-            // Reset form title and submit button
-            const writeReviewSection = document.getElementById('writeReviewSection');
-            writeReviewSection.querySelector('.card-header h6').textContent = 'Viết đánh giá';
-            const submitButton = document.querySelector('#reviewForm button[type="submit"]');
-            submitButton.innerHTML = `
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-2">
-                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                </svg>
-                Gửi đánh giá
-            `;
-            
-            // Reload reviews and update UI
+            // Reload reviews and update UI (AJAX style - no page reload)
             await loadProductReviews(currentProduct.id);
             await loadProductReviewStats(currentProduct.id);
-            updateRatingDisplay(); // Update the product rating display
             
-            // Update reviews stats section too
-            const ratingStars = document.getElementById('ratingStars');
-            if (ratingStars) {
-                ratingStars.innerHTML = generateStarsHTML(reviewStats.average_rating || 0);
+            // Update rating display safely
+            updateRatingDisplay();
+            
+            // Show success message AFTER everything is updated
+            if (wasEditing) {
+                alert('Đánh giá đã được cập nhật thành công!');
+            } else {
+                alert('Đánh giá của bạn đã được gửi thành công!');
+                
+                // Hide write review button after first review
+                const writeReviewButton = document.getElementById('writeReviewButton');
+                if (writeReviewButton) {
+                    writeReviewButton.style.display = 'none';
+                }
             }
+        } else {
+            // Show specific error message from API if available
+            const errorMessage = response.message || 'Có lỗi xảy ra khi gửi đánh giá. Vui lòng thử lại.';
+            alert(errorMessage);
         }
     } catch (error) {
-        alert('Có lỗi xảy ra khi gửi đánh giá. Vui lòng thử lại.');
+        // Only show error if there's an actual error
+        const errorMessage = error.message || 'Có lỗi xảy ra khi gửi đánh giá. Vui lòng thử lại.';
+        alert(errorMessage);
     }
 }
 
@@ -1018,7 +1056,8 @@ async function editReview(reviewId) {
     try {
         const review = productReviews.find(r => r.id === reviewId);
         if (!review) {
-            throw new Error('Review not found');
+            alert('Không tìm thấy đánh giá');
+            return;
         }
 
         // Set form to edit mode
@@ -1027,14 +1066,30 @@ async function editReview(reviewId) {
         
         // Show the review form
         const writeReviewSection = document.getElementById('writeReviewSection');
+        if (!writeReviewSection) {
+            alert('Không tìm thấy form đánh giá');
+            return;
+        }
+        
         writeReviewSection.style.display = 'block';
         
         // Update form title
-        writeReviewSection.querySelector('.card-header h6').textContent = 'Sửa đánh giá';
+        const formTitle = writeReviewSection.querySelector('.card-header h6');
+        if (formTitle) {
+            formTitle.textContent = 'Sửa đánh giá';
+        }
         
         // Fill in existing review data
-        document.getElementById('selectedRating').value = review.rating;
-        document.getElementById('reviewComment').value = review.comment;
+        const ratingInput = document.getElementById('selectedRating');
+        const commentInput = document.getElementById('reviewComment');
+        
+        if (ratingInput) {
+            ratingInput.value = review.rating;
+        }
+        
+        if (commentInput) {
+            commentInput.value = review.comment || '';
+        }
         
         // Update rating stars
         selectRating(review.rating);
@@ -1044,15 +1099,17 @@ async function editReview(reviewId) {
         
         // Update submit button text
         const submitButton = document.querySelector('#reviewForm button[type="submit"]');
-        submitButton.innerHTML = `
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-2">
-                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-            </svg>
-            Cập nhật đánh giá
-        `;
+        if (submitButton) {
+            submitButton.innerHTML = `
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="me-2">
+                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                </svg>
+                Cập nhật đánh giá
+            `;
+        }
     } catch (error) {
-        alert('Có lỗi xảy ra khi chuẩn bị sửa đánh giá');
+        alert('Có lỗi xảy ra khi chuẩn bị sửa đánh giá. Vui lòng thử lại.');
     }
 }
 
@@ -1072,10 +1129,12 @@ async function deleteReview(reviewId) {
         if (response.success) {
             // Remove from local array
             productReviews = productReviews.filter(r => r.id !== reviewId);
+            
+            // Refresh stats first
+            await loadProductReviewStats(currentProduct.id);
+            
             // Update UI
             renderReviews();
-            // Refresh stats and update displays
-            await loadProductReviewStats(currentProduct.id);
             updateRatingDisplay();
             
             // Update reviews stats section
@@ -1084,9 +1143,16 @@ async function deleteReview(reviewId) {
                 ratingStars.innerHTML = generateStarsHTML(reviewStats.average_rating || 0);
             }
             
+            // Check if user can write review again (show button if they deleted their only review)
+            await checkUserReviewStatus();
+            
             alert('Đã xóa đánh giá thành công');
+        } else {
+            const errorMessage = response.message || 'Có lỗi xảy ra khi xóa đánh giá';
+            alert(errorMessage);
         }
     } catch (error) {
-        alert('Có lỗi xảy ra khi xóa đánh giá');
+        const errorMessage = error.message || 'Có lỗi xảy ra khi xóa đánh giá';
+        alert(errorMessage);
     }
 }

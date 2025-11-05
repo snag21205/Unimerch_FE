@@ -76,17 +76,28 @@ body {
 }
 
 /* Nav tabs styling */
+.nav-tabs {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
 .nav-tabs .nav-link {
     color: #a8a8a8 !important;
+    border: none;
+    border-bottom: 3px solid transparent;
+    background: transparent;
+    transition: all 0.3s ease;
 }
 
 .nav-tabs .nav-link:hover {
     color: var(--accent) !important;
+    border-bottom-color: rgba(24, 176, 180, 0.3);
 }
 
 .nav-tabs .nav-link.active {
     color: var(--accent) !important;
-    border-bottom-color: var(--accent) !important;
+    background-color: rgba(24, 176, 180, 0.1) !important;
+    border-bottom: 3px solid var(--accent) !important;
+    font-weight: 600;
 }
 
 /* Hide Bootstrap validation icons to prevent overlap with toggle buttons */
