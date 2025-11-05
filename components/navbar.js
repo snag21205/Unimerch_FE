@@ -33,7 +33,6 @@ class NavbarComponent {
             this.initDropdowns();
             
             this.isInitialized = true;
-            console.log('Navbar component initialized successfully');
         } catch (error) {
             console.error('Failed to initialize navbar component:', error);
         }
@@ -317,7 +316,6 @@ class NavbarComponent {
                 // Check if loggedIn div is visible - if not, wait for it
                 const loggedInDiv = document.getElementById('loggedIn');
                 if (loggedInDiv && loggedInDiv.classList.contains('d-none')) {
-                    console.log('LoggedIn div is hidden, waiting for auth state...');
                     setTimeout(initDropdownsInternal, 200);
                     return;
                 }
@@ -326,8 +324,6 @@ class NavbarComponent {
                 setTimeout(initDropdownsInternal, 200);
                 return;
             }
-            
-            console.log(`Found ${dropdownElementList.length} dropdown element(s)`);
             
             dropdownElementList.forEach((dropdownToggleEl) => {
                 // Check if dropdown is already initialized
@@ -341,13 +337,6 @@ class NavbarComponent {
                     // Initialize each dropdown - use simpler config for better compatibility
                     const dropdownInstance = new bootstrap.Dropdown(dropdownToggleEl);
                     
-                    // Verify initialization
-                    const verifyInstance = bootstrap.Dropdown.getInstance(dropdownToggleEl);
-                    if (verifyInstance) {
-                        console.log('✅ Dropdown initialized successfully');
-                    } else {
-                        console.error('❌ Dropdown initialization failed - instance not found');
-                    }
                 } catch (error) {
                     console.error('❌ Error initializing dropdown:', error);
                     // Fallback: try using data attributes only (Bootstrap auto-init)
@@ -356,7 +345,6 @@ class NavbarComponent {
                 }
             });
             
-            console.log(`✅ Initialized ${dropdownElementList.length} dropdown(s)`);
         };
 
         // Start initialization after a short delay to ensure DOM is ready
@@ -370,7 +358,6 @@ class NavbarComponent {
                     if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
                         const target = mutation.target;
                         if (target.id === 'loggedIn' && !target.classList.contains('d-none')) {
-                            console.log('LoggedIn div is now visible, initializing dropdowns...');
                             setTimeout(initDropdownsInternal, 100);
                         }
                     }
