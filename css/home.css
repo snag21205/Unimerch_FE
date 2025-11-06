@@ -46,6 +46,8 @@ html {
     align-items: center;
     background: var(--bg-dark);
     padding: 5rem 0;
+    padding-top: 80px !important; /* Tăng từ 10px lên 120px */
+
 }
 
 .hero-grid {
@@ -590,15 +592,23 @@ html {
     }
     
     .cta-card {
-        margin-top: 1.5rem;
-        padding: 1.2rem 1.5rem;
-        width: 100%;
-        max-width: 300px;
+        margin-top: 1.2rem;
+        padding: 0.8rem 1.1rem;
+        width: auto;
+        max-width: 240px;
         justify-content: center;
+        gap: 0.5rem;
+        border-radius: 12px;
     }
     
     .cta-card-text {
-        font-size: 1.2rem;
+        font-size: 1rem;
+        letter-spacing: 0.3px;
+        font-weight: 700;
+    }
+    
+    .cta-card-icon {
+        font-size: 1.1rem;
     }
     
     .hero-section {
@@ -728,6 +738,7 @@ html {
     .hero-section {
         min-height: 500px;
         height: 70vh;
+
     }
     
     .mega-text {
@@ -739,17 +750,17 @@ html {
     }
     
     .cta-card {
-        padding: 1rem 1.2rem;
-        margin-top: 1.5rem;
-        max-width: 100%;
+        padding: 0.7rem 1rem;
+        margin-top: 1rem;
+        max-width: 200px;
     }
     
     .cta-card-text {
-        font-size: 1rem;
+        font-size: 0.95rem;
     }
     
     .cta-card-icon {
-        font-size: 1.2rem;
+        font-size: 1rem;
     }
     
     .value-pills {
@@ -995,4 +1006,59 @@ p, span, a, button, .hero-tagline, .collection-desc, .product-name,
 #cartOffcanvas .cart-item:hover {
     background: rgba(255, 255, 255, 0.08);
     transform: translateX(5px);
+}
+/* Mobile optimization - Screens smaller than 768px */
+@media (max-width: 767px) {
+    /* Giảm height của image trên mobile */
+    .product-image-container {
+        height: 280px !important;
+    }
+    
+    /* Giảm padding của content section */
+    .product-content {
+        padding: 1rem !important;
+    }
+    
+    /* Giảm font size của title */
+    .product-title {
+        font-size: 1rem !important;
+        margin-bottom: 0.5rem !important;
+        line-height: 1.25 !important;
+    }
+    
+    /* Giảm font size của price */
+    .price-main {
+        font-size: 1.1rem !important;
+    }
+    
+    .price-old {
+        font-size: 0.8rem !important;
+    }
+    
+    /* Giảm padding của button */
+    .product-btn {
+        font-size: 0.85rem !important;
+        padding: 10px !important;
+    }
+    
+    /* Giảm size discount badge */
+    .discount-badge .badge {
+        font-size: 0.7rem !important;
+        padding: 0.35rem 0.65rem !important;
+    }
+}
+
+/* Very small screens (phones < 375px) */
+@media (max-width: 374px) {
+    .product-image-container {
+        height: 250px !important;
+    }
+    
+    .product-title {
+        font-size: 0.95rem !important;
+    }
+    
+    .price-main {
+        font-size: 1rem !important;
+    }
 }

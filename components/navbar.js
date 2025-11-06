@@ -43,7 +43,7 @@ class NavbarComponent {
      */
     getNavbarHTML() {
         return `<!-- Navbar Component -->
-<nav class="navbar navbar-expand-lg navbar-custom fixed-top" 
+<nav class="navbar navbar-expand-lg navbar-custom navbar-dark fixed-top" 
      id="mainNav"
      role="navigation"
      aria-label="Main navigation">

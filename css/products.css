@@ -128,7 +128,8 @@ h1, h2, h3, .mega-text {
     /* Hero Section */
     .hero-section {
         padding: 5rem 0 3rem !important;
-        min-height: 50vh !important;
+        min-height: 60vh !important;
+        padding-top: 100px !important;
     }
     
     .mega-text {
@@ -198,6 +199,8 @@ h1, h2, h3, .mega-text {
     .hero-section {
         padding: 4rem 0 2rem !important;
         min-height: 40vh !important;
+        padding-top: 120px !important; /* Tăng từ 10px lên 120px */
+
     }
     
     .mega-text {
@@ -356,6 +359,8 @@ h1, h2, h3, .mega-text {
     .hero-section {
         padding: 3rem 0 1.5rem !important;
         min-height: 35vh !important;
+        padding-top: 120px !important; /* Tăng từ 10px lên 120px */
+
     }
     
     .mega-text {
@@ -485,3 +490,68 @@ h1, h2, h3, .mega-text {
     }
 }
 
+/* Mobile optimization - Screens smaller than 768px */
+@media (max-width: 767px) {
+    /* Giảm height của image trên mobile */
+    .product-image-container {
+        height: 280px !important;
+    }
+    
+    /* Giảm padding của content section */
+    .product-content {
+        padding: 1rem !important;
+    }
+    
+    /* Giảm font size của title */
+    .product-title {
+        font-size: 1rem !important;
+        margin-bottom: 0.5rem !important;
+        line-height: 1.25 !important;
+    }
+    
+    /* Giảm font size của price */
+    .price-main {
+        font-size: 1.1rem !important;
+    }
+    
+    .price-old {
+        font-size: 0.8rem !important;
+    }
+    
+    /* Giảm padding của button */
+    .product-btn {
+        font-size: 0.85rem !important;
+        padding: 10px !important;
+    }
+    
+    /* Giảm size discount badge */
+    .discount-badge .badge {
+        font-size: 0.7rem !important;
+        padding: 0.35rem 0.65rem !important;
+    }
+    
+    /* Giảm margin bottom của các section */
+    .product-price {
+        margin-bottom: 0.5rem !important;
+    }
+}
+
+/* Very small screens (phones < 375px) */
+@media (max-width: 374px) {
+    .product-image-container {
+        height: 250px !important;
+    }
+    
+    .product-title {
+        font-size: 0.95rem !important;
+    }
+    
+    .price-main {
+        font-size: 1rem !important;
+    }
+    
+    .product-btn {
+        font-size: 0.8rem !important;
+        padding: 9px !important;
+    }
+}
