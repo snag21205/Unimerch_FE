@@ -24,9 +24,20 @@
 .search-input-custom {
     background: rgba(255,255,255,0.08);
     border: 2px solid rgba(255,255,255,0.2);
-    color: var(--text-light);
+    color: #ffffff !important; /* Màu chữ trắng khi nhập */
     padding: 1rem 1.5rem;
     border-radius: 12px 0 0 12px;
+}
+
+.search-input-custom::placeholder {
+    color: rgba(255,255,255,0.5) !important; /* Placeholder màu trắng mờ */
+}
+
+.search-input-custom:focus {
+    color: #ffffff !important; /* Màu chữ trắng khi focus */
+    background: rgba(255,255,255,0.12);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 0.2rem rgba(255, 193, 217, 0.25);
 }
 
 .search-btn-custom {
