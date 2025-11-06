@@ -27,50 +27,33 @@
     <div id="navbar-container"></div>
 
     <!-- Hero Header with Search -->
-    <section class="hero-section" style="min-height: 60vh; height: auto; padding: 8rem 0 4rem;">
+    <section class="hero-section">
         <div class="container h-100">
             <div class="row justify-content-center text-center">
                 <div class="col-lg-10">
                     <!-- Main Title -->
                     <div class="reveal mb-5">
-                        <h1 class="mega-text mb-3" style="font-size: clamp(3.5rem, 10vw, 8rem); line-height: 0.9;">
+                        <h1 class="mega-text mb-3">
                             BỘ SƯU TẬP
                         </h1>
-                        <h1 class="mega-text mega-text-accent" style="font-size: clamp(3.5rem, 10vw, 8rem); line-height: 0.9;">
+                        <h1 class="mega-text mega-text-accent">
                             UEH 2025
                         </h1>
-                        <p class="hero-tagline mt-4" style="font-size: 1.1rem;">
+                        <p class="hero-tagline mt-4">
                             Khám phá toàn bộ sản phẩm chính hãng
                         </p>
                     </div>
                     
                     <!-- Inline Search Bar -->
                     <div class="reveal mb-4">
-                        <div class="input-group" style="max-width: 600px; margin: 0 auto;">
+                        <div class="input-group search-wrapper">
                             <input type="text" 
-                                   class="form-control form-control-lg" 
+                                   class="form-control form-control-lg search-input-custom" 
                                    id="searchInput" 
-                                   placeholder="Tìm kiếm sản phẩm..." 
-                                   style="
-                                       background: rgba(255,255,255,0.08); 
-                                       border: 2px solid rgba(255,255,255,0.2); 
-                                       color: var(--text-light);
-                                       padding: 1rem 1.5rem;
-                                       border-radius: 12px 0 0 12px;
-                                   ">
-                            <button class="btn px-4" 
+                                   placeholder="Tìm kiếm sản phẩm...">
+                            <button class="btn px-4 search-btn-custom" 
                                     type="button" 
-                                    id="searchBtn"
-                                    style="
-                                        background: var(--accent); 
-                                        border: none; 
-                                        color: var(--bg-dark);
-                                        font-weight: 700;
-                                        border-radius: 0 12px 12px 0;
-                                        transition: all 0.3s ease;
-                                    "
-                                    onmouseover="this.style.background='#ffc1d9'"
-                                    onmouseout="this.style.background='var(--accent)'">
+                                    id="searchBtn">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                                     <circle cx="11" cy="11" r="8"></circle>
                                     <path d="m21 21-4.35-4.35"></path>
@@ -84,7 +67,7 @@
     </section>
 
     <!-- Filter Bar -->
-    <section class="py-2 py-md-3 filter-bar" style="background: rgba(0,0,0,0.3); border-top: 1px solid rgba(255,255,255,0.05); border-bottom: 1px solid rgba(255,255,255,0.05);">
+    <section class="py-2 py-md-3 filter-bar">
         <div class="container-fluid px-3 px-lg-5">
             <div class="row align-items-center">
                 <!-- Category Filters -->
@@ -100,18 +83,8 @@
                 <div class="col-lg-4">
                     <div class="d-flex align-items-center justify-content-lg-end gap-2 flex-wrap">
                         <div class="d-flex align-items-center gap-2">
-                            <span class="text-light small" style="font-size: 0.8rem; white-space: nowrap;">Sắp xếp:</span>
-                            <select class="form-select form-select-sm" 
-                                    id="sortSelect" 
-                                    style="
-                                        width: auto; 
-                                        min-width: 140px; 
-                                        background: rgba(255,255,255,0.08); 
-                                        border: 2px solid rgba(255,255,255,0.2); 
-                                        color: var(--text-light);
-                                        padding: 0.35rem 0.75rem;
-                                        font-size: 0.85rem;
-                                    ">
+                            <span class="text-light small sort-label">Sắp xếp:</span>
+                            <select class="form-select form-select-sm sort-select-custom" id="sortSelect">
                                 <option value="newest">Mới nhất</option>
                                 <option value="oldest">Cũ nhất</option>
                                 <option value="price_low">Giá thấp đến cao</option>
@@ -121,9 +94,7 @@
                             </select>
                         </div>
                         
-                        <button class="btn btn-sm btn-outline-secondary" 
-                                id="clearFiltersBtn" 
-                                style="display: none; border-color: rgba(255,255,255,0.2); color: var(--text-light); padding: 0.35rem 0.75rem; font-size: 0.85rem;">
+                        <button class="btn btn-sm btn-outline-secondary clear-filters-btn" id="clearFiltersBtn">
                             <i class="bi bi-x-circle me-1"></i>
                             Xóa bộ lọc
                         </button>
@@ -134,52 +105,43 @@
             <!-- Results Info -->
             <div class="row mt-2">
                 <div class="col-12">
-                    <span class="text-light small" id="resultsInfo" style="opacity: 0.7; font-size: 0.8rem;">Đang tải...</span>
+                    <span class="text-light small results-info" id="resultsInfo">Đang tải...</span>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Products Grid -->
-    <section class="py-5" style="background: var(--bg-dark); min-height: 50vh;">
+    <section class="py-5 products-section">
         <div class="container-fluid px-3 px-lg-5">
             <!-- Loading Spinner -->
-            <div id="loadingSpinner" class="text-center py-5">
-                <div class="spinner-border" style="color: var(--accent); width: 3rem; height: 3rem;" role="status">
+            <div id="loadingSpinner" class="text-center py-5 loading-spinner-wrapper">
+                <div class="spinner-border" role="status">
                     <span class="visually-hidden">Đang tải...</span>
                 </div>
-                <p class="text-light mt-4" style="font-size: 1.1rem; letter-spacing: 1px;">ĐANG TẢI SẢN PHẨM...</p>
+                <p class="text-light mt-4 loading-text">ĐANG TẢI SẢN PHẨM...</p>
             </div>
             
             <!-- Products Grid -->
-            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-4" id="productsGrid" style="display: none;">
+            <div class="row g-3 g-md-4 d-none" id="productsGrid">
                 <!-- Products will be populated by JavaScript -->
+                <!-- Grid: 2 products on mobile, 3 on tablet, 4 on desktop -->
             </div>
             
             <!-- No Results Message -->
-            <div id="noResults" class="text-center py-5" style="display: none;">
-                <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="var(--text-light)" stroke-width="1.5" class="mb-4" style="opacity: 0.5;">
+            <div id="noResults" class="text-center py-5 d-none">
+                <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="var(--text-light)" stroke-width="1.5" class="mb-4 no-results-icon">
                     <circle cx="11" cy="11" r="8"></circle>
                     <path d="m21 21-4.35-4.35"></path>
                     <line x1="8" y1="11" x2="14" y2="11"></line>
                 </svg>
-                <h3 class="mb-3" style="color: var(--text-light); font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem; letter-spacing: 2px;">
+                <h3 class="mb-3 no-results-title">
                     KHÔNG TÌM THẤY SẢN PHẨM
                 </h3>
-                <p class="text-light mb-4" style="font-size: 1.1rem;">
+                <p class="text-light mb-4 no-results-text">
                     Hãy thử thay đổi từ khóa tìm kiếm hoặc bộ lọc của bạn
                 </p>
-                <button class="btn btn-lg rounded-pill px-5" 
-                        onclick="clearAllFilters()"
-                        style="
-                            background: var(--accent); 
-                            border: none; 
-                            color: var(--bg-dark);
-                            font-weight: 700;
-                            transition: all 0.3s ease;
-                        "
-                        onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 8px 24px rgba(246,167,193,0.4)'"
-                        onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                <button class="btn btn-lg rounded-pill px-5 view-all-btn" onclick="clearAllFilters()">
                     Xem tất cả sản phẩm
                 </button>
             </div>
