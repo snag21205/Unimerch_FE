@@ -334,7 +334,9 @@ function transformProductData(apiProduct) {
         name: apiProduct.name || 'Unknown Product',
         description: apiProduct.description || 'No description available',
         price: parseFloat(apiProduct.price) || 0,
-        discount_price: apiProduct.discount_price ? parseFloat(apiProduct.discount_price) : null,
+        discount_price: (apiProduct.discount_price !== null && apiProduct.discount_price !== undefined) 
+            ? parseFloat(apiProduct.discount_price) 
+            : null,
         quantity: apiProduct.quantity || 0,
         image_url: imageUrl,
         category_id: apiProduct.category_id,
@@ -382,14 +384,49 @@ function updateBasicProductUI() {
     if (productTitle) productTitle.textContent = currentProduct.name;
     if (productCategory) productCategory.textContent = currentProduct.category;
     if (productDescription) productDescription.textContent = currentProduct.description;
-    if (totalPrice) totalPrice.textContent = `$${currentProduct.price}`;
     
+    // Update price with discount logic
+    updatePriceDisplay();
     
     // Update price UI
     updateTotalPrice();
     
     // Update document title
     document.title = `${currentProduct.name} - UEH Merch`;
+}
+
+// Update price display with discount logic
+function updatePriceDisplay() {
+    const priceContainer = document.getElementById('priceContainer');
+    if (!priceContainer || !currentProduct) return;
+    
+    const hasDiscount = currentProduct.discount_price !== null && 
+                       currentProduct.discount_price !== undefined && 
+                       currentProduct.discount_price > 0 && 
+                       currentProduct.discount_price < currentProduct.price;
+    
+    const displayPrice = hasDiscount ? currentProduct.discount_price : currentProduct.price;
+    
+    if (hasDiscount) {
+        // Hiển thị giá giảm ở trên, giá gốc gạch ở dưới
+        priceContainer.innerHTML = `
+            <div class="d-flex flex-column gap-2">
+                <div id="totalPrice" class="price-display" style="color: var(--accent);">
+                    ${formatPrice(displayPrice)}
+                </div>
+                <div class="text-decoration-line-through" style="font-size: 1.5rem; color: rgba(255,255,255,0.5);">
+                    ${formatPrice(currentProduct.price)}
+                </div>
+            </div>
+        `;
+    } else {
+        // Chỉ hiển thị giá gốc
+        priceContainer.innerHTML = `
+            <div id="totalPrice" class="price-display">
+                ${formatPrice(displayPrice)}
+            </div>
+        `;
+    }
 }
 
 // Update rating display after stats are loaded
@@ -460,8 +497,20 @@ function changeQuantity(change) {
 
 // Update total price
 function updateTotalPrice() {
-    const total = currentProduct.price * quantity;
-    document.getElementById('totalPrice').textContent = formatPrice(total);
+    // Use discount price if available, otherwise use regular price
+    const pricePerUnit = (currentProduct.discount_price !== null && 
+                          currentProduct.discount_price !== undefined && 
+                          currentProduct.discount_price > 0 && 
+                          currentProduct.discount_price < currentProduct.price)
+        ? currentProduct.discount_price 
+        : currentProduct.price;
+    
+    const total = pricePerUnit * quantity;
+    const totalPriceElement = document.getElementById('totalPrice');
+    
+    if (totalPriceElement) {
+        totalPriceElement.textContent = formatPrice(total);
+    }
 }
 
 // Add to cart

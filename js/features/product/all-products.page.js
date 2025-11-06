@@ -3,7 +3,7 @@
 
 // Global variables
 let currentPage = 1;
-let currentLimit = 20;
+let currentLimit = 12; // 12 products per page
 let currentFilters = {
     search: '',
     category: 'all',
@@ -11,8 +11,9 @@ let currentFilters = {
     minPrice: null,
     maxPrice: null
 };
-let allProducts = [];
-let filteredProducts = [];
+let allProducts = []; // All products from API
+let filteredProducts = []; // Products after filtering
+let displayProducts = []; // Products to display on current page
 let totalProducts = 0;
 let totalPages = 0;
 let allCategories = [];
@@ -258,10 +259,10 @@ function setupEventListeners() {
 async function loadProducts() {
     try {
         
-        // Build query parameters
+        // Build query parameters - get ALL products (no pagination on API side)
         const params = new URLSearchParams({
-            page: currentPage,
-            limit: currentLimit
+            page: 1,
+            limit: 1000 // Get all products
         });
         
         // Add search parameter
@@ -287,14 +288,23 @@ async function loadProducts() {
         
         if (response.success && response.data) {
             
+            // Get all products from response
             allProducts = response.data.products || response.data;
-            totalProducts = response.data.total || allProducts.length;
+            
+            // Apply client-side filtering and sorting
+            applyFiltersAndSort();
+            
+            // Calculate pagination based on filtered products
+            totalProducts = filteredProducts.length;
             totalPages = Math.ceil(totalProducts / currentLimit);
             
-            // Apply sorting
-            applySorting();
+            // Get products for current page
+            const startIndex = (currentPage - 1) * currentLimit;
+            const endIndex = startIndex + currentLimit;
+            displayProducts = filteredProducts.slice(startIndex, endIndex);
             
-            // Render products
+            
+            // Render products for current page
             renderProducts();
             
             // Update pagination
@@ -308,10 +318,20 @@ async function loadProducts() {
         }
         
     } catch (error) {
+        console.error('Error loading products:', error);
         showError('Có lỗi xảy ra khi tải sản phẩm.');
     } finally {
         showLoading(false);
     }
+}
+
+// Apply filters and sorting to products
+function applyFiltersAndSort() {
+    // Start with all products
+    filteredProducts = [...allProducts];
+    
+    // Apply sorting
+    applySorting();
 }
 
 // Handle search
@@ -345,8 +365,22 @@ function handleCategoryFilter(category) {
 function handleSort(sortValue) {
     
     currentFilters.sort = sortValue;
-    applySorting();
+    
+    // Re-apply filters and sorting
+    applyFiltersAndSort();
+    
+    // Recalculate pagination
+    totalProducts = filteredProducts.length;
+    totalPages = Math.ceil(totalProducts / currentLimit);
+    
+    // Get products for current page
+    const startIndex = (currentPage - 1) * currentLimit;
+    const endIndex = startIndex + currentLimit;
+    displayProducts = filteredProducts.slice(startIndex, endIndex);
+    
+    // Re-render
     renderProducts();
+    updatePagination();
     
     // Scroll to top of products section
     const productsSection = document.querySelector('section.py-5');
@@ -357,30 +391,30 @@ function handleSort(sortValue) {
 
 // Apply sorting to products
 function applySorting() {
-    if (!allProducts || allProducts.length === 0) return;
+    if (!filteredProducts || filteredProducts.length === 0) return;
     
     switch (currentFilters.sort) {
         case 'newest':
-            allProducts.sort((a, b) => new Date(b.created_at || b.updated_at) - new Date(a.created_at || a.updated_at));
+            filteredProducts.sort((a, b) => new Date(b.created_at || b.updated_at) - new Date(a.created_at || a.updated_at));
             break;
         case 'oldest':
-            allProducts.sort((a, b) => new Date(a.created_at || a.updated_at) - new Date(b.created_at || b.updated_at));
+            filteredProducts.sort((a, b) => new Date(a.created_at || a.updated_at) - new Date(b.created_at || b.updated_at));
             break;
         case 'price_low':
-            allProducts.sort((a, b) => (a.discount_price || a.price) - (b.discount_price || b.price));
+            filteredProducts.sort((a, b) => (a.discount_price || a.price) - (b.discount_price || b.price));
             break;
         case 'price_high':
-            allProducts.sort((a, b) => (b.discount_price || b.price) - (a.discount_price || a.price));
+            filteredProducts.sort((a, b) => (b.discount_price || b.price) - (a.discount_price || a.price));
             break;
         case 'name_asc':
-            allProducts.sort((a, b) => a.name.localeCompare(b.name));
+            filteredProducts.sort((a, b) => a.name.localeCompare(b.name));
             break;
         case 'name_desc':
-            allProducts.sort((a, b) => b.name.localeCompare(a.name));
+            filteredProducts.sort((a, b) => b.name.localeCompare(a.name));
             break;
         default:
             // Default to newest
-            allProducts.sort((a, b) => new Date(b.created_at || b.updated_at) - new Date(a.created_at || a.updated_at));
+            filteredProducts.sort((a, b) => new Date(b.created_at || b.updated_at) - new Date(a.created_at || a.updated_at));
     }
 }
 
@@ -396,129 +430,95 @@ function renderProducts() {
     
     // Hide loading spinner
     if (loadingSpinner) {
-        loadingSpinner.style.display = 'none';
+        loadingSpinner.classList.add('d-none');
     }
     
-    if (!allProducts || allProducts.length === 0) {
+    if (!displayProducts || displayProducts.length === 0) {
         container.innerHTML = '';
-        container.style.display = 'none';
+        container.classList.add('d-none');
         if (noResults) {
-            noResults.style.display = 'block';
+            noResults.classList.remove('d-none');
         }
         return;
     }
     
     // Show products grid and hide no results
-    container.style.display = 'flex';
+    container.classList.remove('d-none');
     container.classList.remove('loaded');
     if (noResults) {
-        noResults.style.display = 'none';
+        noResults.classList.add('d-none');
     }
     
     // Render product cards with mobile optimization
-    container.innerHTML = allProducts.map(product => {
-        const displayPrice = product.discount_price || product.price;
-        const hasDiscount = product.discount_price !== null && product.discount_price < product.price;
-        const discountPercent = hasDiscount ? Math.round(((product.price - product.discount_price) / product.price) * 100) : 0;
+    container.innerHTML = displayProducts.map((product, index) => {
+        // Convert prices to numbers for proper comparison
+        const price = parseFloat(product.price) || 0;
+        const discountPrice = product.discount_price ? parseFloat(product.discount_price) : null;
+        
+        // Check if product has valid discount
+        const hasDiscount = discountPrice !== null && 
+                           discountPrice > 0 && 
+                           discountPrice < price;
+        
+        const displayPrice = hasDiscount ? discountPrice : price;
+        const discountPercent = hasDiscount ? 
+            Math.round(((price - discountPrice) / price) * 100) : 0;
         const isOutOfStock = product.quantity === 0 || product.status === 'out_of_stock';
         
         return `
-            <div class="col">
-                <div class="product-card-simple" onclick="goToProductDetail(${product.id})" style="
-                    cursor: pointer; 
-                    border: 1px solid #444;
-                    border-radius: 18px;
-                    background: #1a1a1a;
-                    overflow: hidden;
-                    transition: transform 0.3s ease;
-                    max-width: 315px;
-                    margin: 0 auto;
-                    position: relative;
-                " onmouseover="this.style.transform='translateY(-5px)'" 
-                   onmouseout="this.style.transform='translateY(0)'">
+            <div class="col-6 col-md-4 col-lg-3">
+                <div class="product-card-simple" onclick="goToProductDetail(${product.id})">
                     
                     <!-- Product Image Section -->
-                    <div class="position-relative overflow-hidden product-image-container" style="
-                        background: #1a1a1a;
-                        height: 400px;
-                    ">
+                    <div class="position-relative overflow-hidden product-image-container">
                         ${hasDiscount ? `
-                            <div class="position-absolute discount-badge" style="top: 16px; right: 16px; z-index: 10;">
-                                <div class="badge bg-danger text-white px-3 py-2 rounded-pill" style="font-size: 0.75rem; font-weight: 600;">
+                            <div class="position-absolute discount-badge">
+                                <span class="badge bg-danger text-white px-2 py-1 rounded-pill">
                                     -${discountPercent}%
-                                </div>
+                                </span>
                             </div>
                         ` : ''}
                         
                         <img src="${getProductImageUrl(product)}" 
                              alt="${product.name}" 
                              class="product-image" 
-                             onerror="this.src='../../assets/images/products/demo.png'; this.onerror=null;"
-                             style="
-                                width: 100%;
-                                height: 100%;
-                                object-fit: cover;
-                                object-position: center;
-                                transition: transform 0.4s ease;
-                        " onmouseover="this.style.transform='scale(1.05)'"
-                           onmouseout="this.style.transform='scale(1)'">
+                             onerror="this.src='../../assets/images/products/demo.png'; this.onerror=null;">
                     </div>
 
                     <!-- Product Content -->
-                    <div class="product-content" style="background: #16181d; color: white; padding: 1.25rem;">
+                    <div class="product-content">
                         
                         <!-- Product Title -->
-                        <h5 class="product-title fw-bold mb-2" style="
-                            font-size: 1.1rem;
-                            line-height: 1.3;
-                            color: white;
-                        ">${product.name}</h5>
+                        <h5 class="product-title fw-bold mb-2">${product.name}</h5>
                         
                         <!-- Price Section -->
                         <div class="mb-2 product-price">
                             ${hasDiscount ? `
-                                <div class="d-flex align-items-baseline gap-2">
-                                    <span class="fw-bold price-main" style="font-size: 1.25rem; color: white;">${formatPrice(displayPrice)}</span>
-                                    <span class="price-old text-decoration-line-through" style="font-size: 0.875rem; color: #666;">${formatPrice(product.price)}</span>
+                                <div class="d-flex flex-column gap-1">
+                                    <span class="fw-bold price-main">${formatPrice(displayPrice)}</span>
+                                    <span class="price-old text-decoration-line-through">${formatPrice(price)}</span>
                                 </div>
                             ` : `
-                                <span class="fw-bold price-main" style="font-size: 1.25rem; color: white;">${formatPrice(displayPrice)}</span>
+                                <span class="fw-bold price-main">${formatPrice(displayPrice)}</span>
                             `}
                         </div>
                         
                         <!-- Action Button -->
                         <button class="btn w-100 product-btn" 
                                 onclick="addToCart(${product.id}, event)" 
-                                ${isOutOfStock ? 'disabled' : ''}
-                                style="
-                                    font-size: 0.9rem; 
-                                    font-weight: 600; 
-                                    padding: 12px;
-                                    background: #2a2a2a;
-                                    color: white;
-                                    border: 1px solid #444;
-                                    border-radius: 12px;
-                                    transition: all 0.3s ease;
-                                    ${isOutOfStock ? 'opacity: 0.5; cursor: not-allowed;' : ''}
-                                " 
-                                onmouseover="if(!this.disabled) this.style.background='#18b0b4'" 
-                                onmouseout="if(!this.disabled) this.style.background='#2a2a2a'">
+                                ${isOutOfStock ? 'disabled' : ''}>
                             ${isOutOfStock ? 'Hết hàng' : 'Thêm vào giỏ'}
                         </button>
                     </div>
                     
                     <!-- Stock Status Overlay -->
                     ${isOutOfStock ? `
-                        <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center" style="
-                            background: rgba(0, 0, 0, 0.8); 
-                            z-index: 15;
-                            backdrop-filter: blur(4px);
-                        ">
+                        <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center stock-overlay">
                             <div class="text-center">
-                                <div class="badge bg-white text-dark px-4 py-2 rounded-pill mb-2" style="font-size: 0.85rem; font-weight: 600;">
+                                <div class="badge bg-white text-dark px-3 py-2 rounded-pill mb-2">
                                     Hết hàng
                                 </div>
-                                <p class="text-white mb-0" style="font-size: 0.75rem;">Sẽ cập nhật sớm</p>
+                                <p class="text-white mb-0 small">Sẽ cập nhật sớm</p>
                             </div>
                         </div>
                     ` : ''}
@@ -538,10 +538,13 @@ function renderProducts() {
 function updatePagination() {
     const pagination = document.getElementById('pagination');
     
-    if (!pagination || totalPages <= 1) {
-        if (pagination) {
-            pagination.innerHTML = '';
-        }
+    if (!pagination) {
+        console.warn('Pagination element not found!');
+        return;
+    }
+    
+    if (totalPages <= 1) {
+        pagination.innerHTML = '';
         return;
     }
     
@@ -551,9 +554,35 @@ function updatePagination() {
     if (currentPage > 1) {
         paginationHTML += `
             <li class="page-item">
-                <a class="page-link" href="#" onclick="goToPage(${currentPage - 1})">Trước</a>
+                <a class="page-link" href="#" onclick="goToPage(${currentPage - 1}); return false;">
+                    <i class="bi bi-chevron-left"></i> Trước
+                </a>
             </li>
         `;
+    } else {
+        paginationHTML += `
+            <li class="page-item disabled">
+                <span class="page-link">
+                    <i class="bi bi-chevron-left"></i> Trước
+                </span>
+            </li>
+        `;
+    }
+    
+    // First page
+    if (currentPage > 3) {
+        paginationHTML += `
+            <li class="page-item">
+                <a class="page-link" href="#" onclick="goToPage(1); return false;">1</a>
+            </li>
+        `;
+        if (currentPage > 4) {
+            paginationHTML += `
+                <li class="page-item disabled">
+                    <span class="page-link">...</span>
+                </li>
+            `;
+        }
     }
     
     // Page numbers
@@ -563,7 +592,23 @@ function updatePagination() {
     for (let i = startPage; i <= endPage; i++) {
         paginationHTML += `
             <li class="page-item ${i === currentPage ? 'active' : ''}">
-                <a class="page-link" href="#" onclick="goToPage(${i})">${i}</a>
+                <a class="page-link" href="#" onclick="goToPage(${i}); return false;">${i}</a>
+            </li>
+        `;
+    }
+    
+    // Last page
+    if (currentPage < totalPages - 2) {
+        if (currentPage < totalPages - 3) {
+            paginationHTML += `
+                <li class="page-item disabled">
+                    <span class="page-link">...</span>
+                </li>
+            `;
+        }
+        paginationHTML += `
+            <li class="page-item">
+                <a class="page-link" href="#" onclick="goToPage(${totalPages}); return false;">${totalPages}</a>
             </li>
         `;
     }
@@ -572,7 +617,17 @@ function updatePagination() {
     if (currentPage < totalPages) {
         paginationHTML += `
             <li class="page-item">
-                <a class="page-link" href="#" onclick="goToPage(${currentPage + 1})">Sau</a>
+                <a class="page-link" href="#" onclick="goToPage(${currentPage + 1}); return false;">
+                    Sau <i class="bi bi-chevron-right"></i>
+                </a>
+            </li>
+        `;
+    } else {
+        paginationHTML += `
+            <li class="page-item disabled">
+                <span class="page-link">
+                    Sau <i class="bi bi-chevron-right"></i>
+                </span>
             </li>
         `;
     }
@@ -582,13 +637,32 @@ function updatePagination() {
 
 // Go to specific page
 function goToPage(page) {
-    currentPage = page;
-    loadProducts();
+    event.preventDefault(); // Prevent default anchor behavior
     
-    // Scroll to top of products section
+    currentPage = page;
+    
+    // Get products for new page
+    const startIndex = (currentPage - 1) * currentLimit;
+    const endIndex = startIndex + currentLimit;
+    displayProducts = filteredProducts.slice(startIndex, endIndex);
+    
+    
+    // Re-render products and pagination
+    renderProducts();
+    updatePagination();
+    updateResultsInfo();
+    
+    // Scroll to top of products section smoothly
     const productsSection = document.querySelector('section.py-5');
     if (productsSection) {
-        productsSection.scrollIntoView({ behavior: 'smooth' });
+        const offset = 100; // Offset for fixed navbar
+        const elementPosition = productsSection.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - offset;
+        
+        window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+        });
     }
 }
 
@@ -662,7 +736,11 @@ function updateClearFiltersButton() {
     const hasActiveFilters = currentFilters.search || 
                            (currentFilters.category && currentFilters.category !== 'all');
     
-    clearBtn.style.display = hasActiveFilters ? 'inline-block' : 'none';
+    if (hasActiveFilters) {
+        clearBtn.classList.remove('d-none');
+    } else {
+        clearBtn.classList.add('d-none');
+    }
 }
 
 // Clear all filters
@@ -717,11 +795,19 @@ function showLoading(show) {
     const productsGrid = document.getElementById('productsGrid');
     
     if (loadingSpinner) {
-        loadingSpinner.style.display = show ? 'block' : 'none';
+        if (show) {
+            loadingSpinner.classList.remove('d-none');
+        } else {
+            loadingSpinner.classList.add('d-none');
+        }
     }
     
     if (productsGrid) {
-        productsGrid.style.display = show ? 'none' : 'flex';
+        if (show) {
+            productsGrid.classList.add('d-none');
+        } else {
+            productsGrid.classList.remove('d-none');
+        }
     }
 }
 
