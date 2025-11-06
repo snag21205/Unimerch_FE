@@ -29,7 +29,7 @@
 }
 
 .nav-link {
-    color: var(--text-muted) !important;
+    color: var(--text-light) !important;
     font-weight: 400;
     font-size: 0.9rem;
     margin: 0 0.75rem;
@@ -178,7 +178,7 @@
     font-weight: 600 !important;
 }
 
-.dropdown-header .text-muted,
+.dropdown-header .text-light,
 .dropdown-header small {
     color: rgba(255, 255, 255, 0.6) !important;
 }

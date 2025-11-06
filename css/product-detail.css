@@ -150,7 +150,7 @@ h1, h2, h3, .mega-text {
     background: rgba(255,255,255,0.1);
     border: none;
     color: var(--text-light);
-    width: 36px;
+    width: 36px; 
     height: 36px;
     border-radius: 8px;
     font-size: 1.2rem;
@@ -216,7 +216,7 @@ h1, h2, h3, .mega-text {
 .feature-pill {
     background: rgba(255,255,255,0.03);
     border: 1px solid rgba(255,255,255,0.1);
-    color: var(--text-muted);
+    color: var(--text-light);
     padding: 0.75rem 1rem;
     border-radius: 8px;
     display: flex;
@@ -265,14 +265,15 @@ h1, h2, h3, .mega-text {
     background: transparent;
     padding: 0;
     margin-bottom: 2rem;
+    color: var(--text-light);
 }
 
 .breadcrumb-item + .breadcrumb-item::before {
-    color: var(--text-muted);
+    color: var(--text-light);
 }
 
 .breadcrumb-item a {
-    color: var(--text-muted);
+    color: var(--text-light);
     text-decoration: none;
     transition: color 0.3s ease;
 }
@@ -365,6 +366,7 @@ h1, h2, h3, .mega-text {
     .breadcrumb {
         margin-bottom: 1.5rem;
         font-size: 0.85rem;
+        color: var(--text-light);
     }
     
     /* Product Image Section */
