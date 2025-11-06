@@ -467,7 +467,6 @@
     
 // ===== SIMPLE PRODUCT CARD - CLEAN DESIGN =====
 function createProductCard(product) {
-    // Tính giá hiển thị (discount nếu có)
     const displayPrice = product.discount_price || product.price;
     const hasDiscount = product.discount_price !== null;
     const discountPercent = hasDiscount ? Math.round(((product.price - product.discount_price) / product.price) * 100) : 0;
@@ -476,7 +475,7 @@ function createProductCard(product) {
     return `
         <div class="product-card-simple" onclick="goToProductDetail(${product.id})" style="
             cursor: pointer; 
- border: 1px solid #444;
+            border: 1px solid #444;
             border-radius: 18px;
             background: #1a1a1a;
             overflow: hidden;
@@ -487,12 +486,12 @@ function createProductCard(product) {
            onmouseout="this.style.transform='translateY(0)'">
             
             <!-- Product Image Section -->
-            <div class="position-relative overflow-hidden" style="
+            <div class="position-relative overflow-hidden product-image-container" style="
                 background: #1a1a1a;
                 height: 400px;
             ">
                 ${hasDiscount ? `
-                    <div class="position-absolute" style="top: 16px; right: 16px; z-index: 10;">
+                    <div class="position-absolute discount-badge" style="top: 16px; right: 16px; z-index: 10;">
                         <div class="badge bg-danger text-white px-3 py-2 rounded-pill" style="font-size: 0.75rem; font-weight: 600;">
                             -${discountPercent}%
                         </div>
@@ -514,37 +513,35 @@ function createProductCard(product) {
             </div>
 
             <!-- Product Content -->
-            <div class="p-4" style="background: #16181d; color: white;">
+            <div class="product-content" style="background: #16181d; color: white; padding: 1.25rem;">
                 
                 <!-- Product Title -->
-                <h5 class="fw-bold mb-3" style="
-                    font-size: 1.3rem;
-                    line-height: 1.4;
+                <h5 class="product-title fw-bold mb-2" style="
+                    font-size: 1.1rem;
+                    line-height: 1.3;
                     color: white;
                 ">${product.name}</h5>
                 
-             
-                
                 <!-- Price Section -->
-                <div class="mb-3">
+                <div class="mb-2 product-price">
                     ${hasDiscount ? `
                         <div class="d-flex align-items-baseline gap-2">
-                            <span class="fw-bold" style="font-size: 1.5rem; color: white;">${formatPrice(displayPrice)}</span>
-                            <span class="text-decoration-line-through" style="font-size: 1rem; color: #666;">${formatPrice(product.price)}</span>
+                            <span class="fw-bold price-main" style="font-size: 1.25rem; color: white;">${formatPrice(displayPrice)}</span>
+                            <span class="price-old text-decoration-line-through" style="font-size: 0.875rem; color: #666;">${formatPrice(product.price)}</span>
                         </div>
                     ` : `
-                        <span class="fw-bold" style="font-size: 1.5rem; color: white;">${formatPrice(displayPrice)}</span>
+                        <span class="fw-bold price-main" style="font-size: 1.25rem; color: white;">${formatPrice(displayPrice)}</span>
                     `}
                 </div>
                 
                 <!-- Action Button -->
-                <button class="btn w-100" 
+                <button class="btn w-100 product-btn" 
                         onclick="addProductToCart(${product.id}, event)" 
                         ${isOutOfStock ? 'disabled' : ''}
                         style="
-                            font-size: 1rem; 
+                            font-size: 0.9rem; 
                             font-weight: 600; 
-                            padding: 14px;
+                            padding: 12px;
                             background: #2a2a2a;
                             color: white;
                             border: 1px solid #444;
@@ -566,16 +563,17 @@ function createProductCard(product) {
                     backdrop-filter: blur(4px);
                 ">
                     <div class="text-center">
-                        <div class="badge bg-white text-dark px-4 py-2 rounded-pill mb-2" style="font-size: 0.9rem; font-weight: 600;">
+                        <div class="badge bg-white text-dark px-4 py-2 rounded-pill mb-2" style="font-size: 0.85rem; font-weight: 600;">
                             Hết hàng
                         </div>
-                        <p class="text-white mb-0" style="font-size: 0.8rem;">Sẽ cập nhật sớm</p>
+                        <p class="text-white mb-0" style="font-size: 0.75rem;">Sẽ cập nhật sớm</p>
                     </div>
                 </div>
             ` : ''}
         </div>
     `;
 }
+
 
 
     
